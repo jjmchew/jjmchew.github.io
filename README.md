@@ -1,3 +1,3 @@
 # New github pages website
 
-testing markdown / html / etc
+github notes: <https://jjmchew.github.io/github.md>
