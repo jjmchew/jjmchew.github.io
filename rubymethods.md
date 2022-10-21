@@ -1,17 +1,44 @@
 # Ruby methods reference
 
 Ruby has 5 types of variables:
-- constants, 
+- constants 
 - global variables, 
 - class variables, 
 - instance variables, 
 - local variables
+>
+Constants
+- have *lexical scope*, behave differently than local variables
+  - can be defined in blocks and available outside
+  - can be accessed in methods without being passed in
+>
+\
 
 ```Ruby
 [object].object_id # returns the memory id of object
+p [object].inspect # displays an object
 ```
+example of `[object].tap` (helps display contents of an object):
+```Ruby
+(1..10)                 .tap { |x| p x }   # 1..10
+ .to_a                  .tap { |x| p x }   # [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+ .select {|x| x.even? } .tap { |x| p x }   # [2, 4, 6, 8, 10]
+ .map {|x| x*x }        .tap { |x| p x }   # [4, 16, 36, 64, 100]
+```
+- `tap`:
+  - is non-destructive
+  - will not iterate through objects, just print them
+>
+- convert string to integer:  `Integer(string)` (can add `rescue false`)
+- convert string to float:  `Float(string)` (can add `rescue false`)
+- `format()` returns a formatted string
+  - see Ruby docs [Kernel > format](https://ruby-doc.com/core/Kernel.html#method-i-format)
+  - e.g., `format('%.2f')` to format float numbers with 2 decmial places
 
->>>
+
+## Float
+- `[float].ceil( [num] )` [num] is number of decimal places to return (note this rounds *up*)
+
 
 ## Loops
 
@@ -44,10 +71,17 @@ end
 ```Ruby
 %Q(string content here)
 
+var = <<-MSG
+  [enter multi-line
+  string here]
+MSG
+
 .capitalize
 .downcase
 .upcase
 .include?"s"
+.empty?
+.start_with?(' ')
 .gsub!(/s/, "th")
 .casecmp # case insensitive comparison;  returns integer
 
@@ -101,7 +135,7 @@ end
 [hash].delete([key])
 [hash].merge!([new_hash])
 [hash].empty?
-[hash].key?( )  # check if hash contains key
+[hash].keys?( )  # check if hash contains key
 [hash].value?( ) # check if hash contains value
 [hash].select{ }  # returns key-value pairs where block is true
 [hash].fetch([key]) # pass in key, get value; can specify a default if key not present
