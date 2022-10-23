@@ -34,6 +34,34 @@ example of `[object].tap` (helps display contents of an object):
 - `format()` returns a formatted string
   - see Ruby docs [Kernel > format](https://ruby-doc.com/core/Kernel.html#method-i-format)
   - e.g., `format('%.2f')` to format float numbers with 2 decmial places
+- `puts` writes each array element on a new line, no quotes for strings
+  - e.g.
+    ```ruby
+    1
+    2
+    3
+    ```
+- `p` automatically  calls `.inspect` (e.g., out of array is `[1, 2, 3]`)
+- `!<object>` turns object into opposite of boolean equivalent
+- `!!<object>` turns an object into its boolean equivalent
+- `(10..100).cover?(42) # true` will determine if 42 lies between 10 - 100
+- multiple assignments e.g., 
+  ```Ruby
+
+    def tricky_method(a_string_param, an_array_param)
+      a_string_param += "rutabaga"
+      an_array_param += ["rutabaga"]
+      # notice return with ,
+      return a_string_param, an_array_param  
+    end
+    
+    my_string = "pumpkins"
+    my_array = ["pumpkins"]
+    # notice assignment with ,
+    my_string, my_array = tricky_method(my_string, my_array)
+  ```
+
+- statements are automatically evaluated by Ruby:  e.g., `color == 'blue' || color == 'green'`
 
 
 ## Float
@@ -79,11 +107,18 @@ MSG
 .capitalize
 .downcase
 .upcase
-.include?"s"
+.swapcase
+.include?("s")
+.match?( )
 .empty?
 .start_with?(' ')
-.gsub!(/s/, "th")
+.gsub!(/s/, "th") # can use [string] instead of regex (e.g., /s/)
 .casecmp # case insensitive comparison;  returns integer
+.strip # removes leading / trailing whitespace
+.prepend([string]) # puts [string] in front of an existing string
+.index([string]) # returns the index for start of [string]
+.count() # counts a set of characters
+.center([num]) # adds leading/trailing spaces to a string to center it within num spaces
 
 print "good to go" unless false
 
@@ -108,8 +143,9 @@ end
 ```Ruby
 %w(y n) == ['y','n']
 
-[array].pop  # removes last array element, returns element removed
+[array].pop  # removes last array element (destructive), returns element removed
 [array].push( ) OR  <<  # adds new last element
+[array].concat( ) # adds new array
 [array].unshift( ) # adds new FIRST element
 [array].delete_at([index])  # removes element at index 
 [array].delete([value])  # deletes all instances of value in array
@@ -126,6 +162,8 @@ end
 [array].each # returns the original array, use for iteration
 [array].map # returns the modified array, use for transformation
 [array].sample # returns a random element from the array
+[array].delete([element] ) # deletes by 'value' 
+[array].delete_at([index]) # deletes by 'index'
 ```
 
 ## Hash
@@ -135,7 +173,11 @@ end
 [hash].delete([key])
 [hash].merge!([new_hash])
 [hash].empty?
-[hash].keys?( )  # check if hash contains key
+
+[hash].key?( )  # check if hash contains key
+[hash].include?( )  # check if hash contains key
+[hash].member?( ) # check if hash contains key
+
 [hash].value?( ) # check if hash contains value
 [hash].select{ }  # returns key-value pairs where block is true
 [hash].fetch([key]) # pass in key, get value; can specify a default if key not present
@@ -147,4 +189,13 @@ end
 [hash].each_value # returns values in sequence
 [hash].delete_if { } # delete elements if block is true
 [hash].each_with_index { |(key, value), idx | ... }  # iterates over each key-value pair w/ idx
+[hash].assoc([key]) # turns hash into an array [key, value] with key = [key]
+```
+e.g. non-destructive modification of hash
+```Ruby
+  greetings = { a: 'hi' }
+  informal_greeting = greetings[:a].clone # makes a copy of existing hash to prevent mutate original
+  informal_greeting << ' there'
+  p greetings # {:a=>"hi"}
+  p informal_greeting # "hi there"
 ```
