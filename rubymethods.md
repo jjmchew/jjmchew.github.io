@@ -62,7 +62,15 @@ example of `[object].tap` (helps display contents of an object):
   ```
 
 - statements are automatically evaluated by Ruby:  e.g., `color == 'blue' || color == 'green'`
+- if sum of numbers is an integer, and count of numbers is an integer, then the average (sum / count) is also an integer
 
+
+## Integer
+```ruby
+[number].between?(0..10) # Comparable#between : returns true / false
+[number].divmod([number])# returns [quotient, modulus]
+
+```
 
 ## Float
 - `[float].ceil( [num] )` [num] is number of decimal places to return (note this rounds *up*)
@@ -119,6 +127,10 @@ MSG
 .index([string]) # returns the index for start of [string]
 .count() # counts a set of characters
 .center([num]) # adds leading/trailing spaces to a string to center it within num spaces
+.chars # returns an array of [string] for each character
+.size
+.length
+.reverse # reverses a string
 
 print "good to go" unless false
 
@@ -152,6 +164,7 @@ end
 [array].uniq  # removes all duplicate values (returns new array)
 [array].select {block}  # returns all values where block evaluates to true
 [array].to_s # to print
+[array].to_h # convert array in [ [key,value] ... ] format to hash
 [array].include?( )
 [array].empty? # returns true if array is empty
 [array].flatten
@@ -160,10 +173,17 @@ end
 [array].sort
 [array].product
 [array].each # returns the original array, use for iteration
-[array].map # returns the modified array, use for transformation
+[array].map # returns the modified array, use for transformation.  
 [array].sample # returns a random element from the array
 [array].delete([element] ) # deletes by 'value' 
 [array].delete_at([index]) # deletes by 'index'
+[array].join # combines array of strings into 1 string
+[array].last # return last element in array
+[array].reduce { |sum, num| etc. } # sum is the 'reducer'
+[array].slice([start index],[length]) # returns elements in array
+  arr = [1, 2, 3, 4]
+  arr.slice(3, 1) # => [4]  (new array)
+  arr.slice(3)    # =>  4   (just contents)
 ```
 
 ## Hash
