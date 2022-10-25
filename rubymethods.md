@@ -7,12 +7,13 @@ Ruby has 5 types of variables:
 - instance variables, 
 - local variables
 >
+
 Constants
 - have *lexical scope*, behave differently than local variables
   - can be defined in blocks and available outside
   - can be accessed in methods without being passed in
 >
-\
+
 
 ```Ruby
 [object].object_id # returns the memory id of object
@@ -47,7 +48,6 @@ example of `[object].tap` (helps display contents of an object):
 - `(10..100).cover?(42) # true` will determine if 42 lies between 10 - 100
 - multiple assignments e.g., 
   ```Ruby
-
     def tricky_method(a_string_param, an_array_param)
       a_string_param += "rutabaga"
       an_array_param += ["rutabaga"]
@@ -63,13 +63,22 @@ example of `[object].tap` (helps display contents of an object):
 
 - statements are automatically evaluated by Ruby:  e.g., `color == 'blue' || color == 'green'`
 - if sum of numbers is an integer, and count of numbers is an integer, then the average (sum / count) is also an integer
+- `(1..10)` (Range) returns an Enumerator: can be used like an array - i.e., can run array methods like `.map` or `.each`; it is NOT an array until you iterate across it
+
 
 
 ## Integer
 ```ruby
-[number].between?(0..10) # Comparable#between : returns true / false
-[number].divmod([number])# returns [quotient, modulus]
-
+[number].between?(0, 10) # Comparable#between : returns true / false 
+# (note comparable is inclusive, i.e., 0 and 10 are included)
+[number].divmod([number]) # returns [quotient, modulus]
+[number].even?
+[number].odd?
+[number].abs # returns absolute value
+[number].times # loops;  note:  returns [number]
+(1..[number]).to_a # makes an array [1, 2, 3, ... number ]
+[number].downto([num]) # returns an Enumerable e.g., 7.downto(2)
+[number].upto([num]) # returns an Enumerable e.g., 1.upto(10)
 ```
 
 ## Float
@@ -102,6 +111,36 @@ end
 [array].each   # note:  returns the original array it was called on
 ```
 
+## Conditionals
+
+```ruby
+print "good to go" unless false
+
+unless ...
+else
+end
+
+if ...
+elsif ...
+else
+end
+
+case ...
+  when
+  else
+end
+```
+- this is valid (can use ranges in case statements):
+  ```ruby
+  case result
+  when 90..100 then 'A'
+  when 80..89  then 'B'
+  when 70..79  then 'C'
+  when 60..69  then 'D'
+  else              'F'
+  end
+  ```
+
 ## String methods
 
 ```Ruby
@@ -131,22 +170,6 @@ MSG
 .size
 .length
 .reverse # reverses a string
-
-print "good to go" unless false
-
-unless ...
-else
-end
-
-if ...
-elsif ...
-else
-end
-
-case ...
-  when
-  else
-end
 ```
 
 ## Arrays
@@ -155,6 +178,8 @@ end
 ```Ruby
 %w(y n) == ['y','n']
 
+Array.new(num, content) # num is number of elements
+                        # content is initial value
 [array].pop  # removes last array element (destructive), returns element removed
 [array].push( ) OR  <<  # adds new last element
 [array].concat( ) # adds new array
@@ -177,6 +202,7 @@ end
 [array].sample # returns a random element from the array
 [array].delete([element] ) # deletes by 'value' 
 [array].delete_at([index]) # deletes by 'index'
+[array].split() # () optional
 [array].join # combines array of strings into 1 string
 [array].last # return last element in array
 [array].reduce { |sum, num| etc. } # sum is the 'reducer'
@@ -216,6 +242,7 @@ e.g. non-destructive modification of hash
   greetings = { a: 'hi' }
   informal_greeting = greetings[:a].clone # makes a copy of existing hash to prevent mutate original
   informal_greeting << ' there'
+
   p greetings # {:a=>"hi"}
   p informal_greeting # "hi there"
 ```
