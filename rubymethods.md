@@ -156,7 +156,7 @@ MSG
 .upcase
 .swapcase
 .include?("s")
-.match?( )
+.match?( ) # can enter regex here
 .empty?
 .start_with?(' ')
 .gsub!(/s/, "th") # can use [string] instead of regex (e.g., /s/)
