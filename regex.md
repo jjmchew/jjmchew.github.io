@@ -5,7 +5,8 @@
 >
 - Regex for JS  <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp>
   - <https://scriptular.com/>
-  - <https://regexr.com/>
+- <https://regex101.com/>
+
 >
 - `/\b#{var}\b/` : search for a var (string) within strings
   - `\b` limits operation to complete words, not substrings (e.g., don't replace 'eight' in 'freight')
