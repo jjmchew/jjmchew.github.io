@@ -15,7 +15,7 @@
 - always enclose regex in `/[regex here]/`
 - to search for special characters, need to escape them with `\`
   - `$ ^ * + ? . ( ) [ ] { } | \ /`
-  - in a character class (within `[ ]`) **only** `^ \ - [ ]` are special characters
+  - in a character class (within `[ ]`) **only** `^ \ - / [ ] . ` are special characters
     - you can use `^` or `-` as non-meta char (i.e., not special) if they are NOT the first character in the class 
   - e.g., `/\?/`
   - `:` and ` ` (space) have no special meaning in regex - function like other regular characters
@@ -25,6 +25,7 @@
 - `\r` : carriage return
 - `\t` : tab
 - add `i` after regex (e.g, `/s/i`) for case-**in**sensitive matching
+- add `g` after regex (e.g., `/s/g`) for 'global' matching (for JS)
 - note:  regex is NOT a variable or a string (in Ruby)
   - e.g.,:
   ```ruby
@@ -57,7 +58,88 @@
 
 ## Anchors
 - anchors fix regex match to `$`(end) and `^`(beginning) 
-  - e.g., `/^cat/` ('cat' at start of line) vs `/cat$/` ('cat' at end of line)
-- 
+  - e.g., `/^cat/` ('cat' at start of *line*) vs `/cat$/` ('cat' at end of *line*)
+- `\A` : ensure regex matches at beginning of *string* (doesn't seem to work for `\n`, `^` does)
+- `\z` and `\Z` : ensure matches at end of *string* (doesn't seem to work for `\n`, `$` does)
+  - `\z` always matches at end of *string* (after newline)
+  - `\Z` matches up to, but NOT including the newline (before newline) at the end
+  - use `\z` unless you need `\Z`
+>
+- `\b` : matches to word boundaries (words are sequences of word characters `\w`)
+  - a boundary is b/w 2 char: 1 is a word char, one is not
+  - `/\b[pattern]/` pattern begins at word boundary
+  - `/[pattern]\b/` pattern ends at word boundary
+- `\B` : matches to non-word boundaries (non-words are sequences of non-word characters `\W`)
+- Note:  `\b` `\B` do not work in a character class `[ ]`
+  - in brackets, it matches a backspace character
+  - `/\B[pattern]/` pattern begins at non-word boundary
+  - `/[pattern]\B/` pattern ends at non-word boundary
+
+## Quantifiers
+- `*` : match zero or more occurrences (of pattern to the left)
+  - e.g. `\d\d\d\d*` matches 3 or more digits (note the `*` is 0 or more)
+- `+` : match 1 or more occurrences (of pattern to the left)
+  - e.g. `\d\d\d+` also matches 3 or more digits
+- `?` : matches once or not at all (i.e., 0 or 1 occurrence)
+
+## Ranges
+- `p{m}` : matches exactly `m` occurrences of pattern `p`
+- `p{m,}` : matches `m` or more occurrences of `p`
+- `p{m,n}` : matches `m` or more occurrences of `p`, but not more than `n`
+>
+- note:  quantifiers are **greedy** : will match the longest possible string available (and will not match a shorter one)
+- adding `?` after pattern will return a **lazy** match (fewest number of characters possible)
+  - e.g., `xabcbcbacy` tested against `/a[abc]*c/` will return `abcbcbac` and not `abc` or `abcbc`
+  - using `/a[abc]*?c/` will match `abc` and `ac`
+  - Note:  in Ruby, `gsub` will match (replace) every instance that fits pattern, but `string#match` will only match the first instance that fits
+- remember:  once a character is 'consumed' in a match, it can't be used in another match
+- `/x` at end of regEx in Ruby allows multi-line regex:
+  - e.g.
+  ```ruby
+  /
+    ^                  # Start of line
+    (\d+,){2}          # 2 numbers at start
+    (                  # followed by...
+      (\d+,){3,}       #    at least 3 more numbers
+    )?                 #    that are optional
+    \d+                # followed by one last number
+    $                  # end of line
+  /x
+  ```
+- in Ruby:  can use `=~` for regex match 
+  - e.g., `fetch_url(text) if text =~ /\Ahttps?:\/\/\S+\z/`
+  - this is faster than using match
+  - returns an **index** within string of where match occurs, or `nil` (`null` in JS)
+- in Ruby:  can also use `String#scan` : global form of match, returns Array of all matching substrings
+
+##### backreference
+- Ruby:  `\#` : added at end of pattern is a reference to the #th 'capture group' in the regex
+  - e.g., `/(['"]).+?\1/`
+  - `( )` denote a 'group'
+  ```ruby
+  /
+    (['"]) # single OR double quotes;  NOTE use of ()
+    .+?    # 1 or more of any character except newline, lazy (shortest possible match)
+    \1     # backreference to 1st capture goupr: single OR double quotes (whatever was originally matched)
+  /
+  ```
+  - `\2`, `\3`, `\4`, etc match subsequent capture groups (reading from left to right)
+  - when using capture groups with `"` (double quotes) and `sub` or `gsub`, need add an extra `\`
+    - e.g.
+    ```ruby
+    text = %(We read "War of the Worlds".)
+    puts text.sub(/(['"]).+\1/, '\1The Time Machine\1')
+    # prints: We read "The Time Machine".
+    # VS (note double quotes and extra \ )
+    puts text.sub(/(['"]).+\1/, "\\1The Time Machine\\1")
+    ```
+- backreferences in JS use `$1`, `$2`, etc.
+
+
+
+
+
+
+
 
 

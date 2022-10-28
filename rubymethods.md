@@ -120,10 +120,10 @@ unless ...
 else
 end
 
-if ...
-elsif ...
+if ...      # Don't need explicit returns in if blocks, just ensure
+elsif ...   # last statement executed has desired return
 else
-end
+end         # Don't forget this!!
 
 case ...
   when
@@ -145,6 +145,7 @@ end
 
 ```Ruby
 %Q(string content here)
+%(We read "War of the Worlds".) # e.g.
 
 var = <<-MSG
   [enter multi-line
@@ -160,6 +161,9 @@ MSG
 .empty?
 .start_with?(' ')
 .gsub!(/s/, "th") # can use [string] instead of regex (e.g., /s/)
+# gsub replaces all matches ('global sub')
+.sub(regex, 'replacement') # only replaces first match
+.scan() # uses regex, returns Array of all matches
 .casecmp # case insensitive comparison;  returns integer
 .strip # removes leading / trailing whitespace
 .prepend([string]) # puts [string] in front of an existing string
@@ -170,7 +174,35 @@ MSG
 .size
 .length
 .reverse # reverses a string
+.split( ) # can use regex or string
 ```
+## Enumerable
+- both arrays and hash can access these methods
+- `Enumerable#any? { |el| ... }` # block should return true/false, any? returns true if 1 (first) element returns true
+- `Enumerable#all? { |el| ... }` # block should return true/false, all returns true if all? elements return true
+- `Enumerable#each_with_index { |el, index| ... }`
+- `Enumerable#each_with_object([])` # object used for collection
+- `Enumerable#first() # is optional, specify # of results`
+  - Note:  for hashes, order is preserved (by order of insertion)
+  - Note:  return of first with optional number argument is an array 
+    - e.g., `[[:a, 'ant'],[:b,'bear']]` use `.to_h` to convert to hash
+- `Enumerable#include?()`
+  - equivalent to `Hash#key?` or `Hash#has_key?`
+  - Note:  `Hash#key?` is recommended for style and explicit clarity
+  - `Hash#value?` is also recommended;  equivalent to `Hash#has_value?` and `hash.values.include?( )`
+- `Enumerable#partition { return true/false }` : converts current collection into 2 collections (i.e., nested array)
+  - e.g., 
+  ```ruby
+  odd, even = [1, 2, 3].partition do |num|
+    num.odd?
+  end
+
+  odd  # => [1, 3]
+  even # => [2]
+  ```
+
+
+
 
 ## Arrays
 <https://ruby-doc.org/core-3.1.2/Array.html>
@@ -192,9 +224,12 @@ Array.new(num, content) # num is number of elements
 [array].to_h # convert array in [ [key,value] ... ] format to hash
 [array].include?( )
 [array].empty? # returns true if array is empty
+[array].any? # return true if any elements meet condition
+[array].all? # return true if all elements meet condition
 [array].flatten
 [array].each_index
-[array].each_with_index
+[array].each_with_index { |el, index|}
+[array].each_with_object([]) { |el, array| ... } # array used for 'collection'
 [array].sort
 [array].product
 [array].each # returns the original array, use for iteration
@@ -215,10 +250,13 @@ Array.new(num, content) # num is number of elements
 ## Hash
 
 ```Ruby
+Hash.new([value]) # [value] is default value
 [hash].each { } 
 [hash].delete([key])
 [hash].merge!([new_hash])
 [hash].empty?
+[hash].any? # return true if any elements meet condition
+[hash].all? # return true if all elements meet condition
 
 [hash].key?( )  # check if hash contains key
 [hash].include?( )  # check if hash contains key
@@ -226,15 +264,17 @@ Array.new(num, content) # num is number of elements
 
 [hash].value?( ) # check if hash contains value
 [hash].select{ }  # returns key-value pairs where block is true
+[hash].keep_if { } # note returns nil if no changes were made
 [hash].fetch([key]) # pass in key, get value; can specify a default if key not present
 [hash].to_a  # converts hash to an array of [key,value] elements
 [hash].keys # returns array of keys
-[hash].map # similar to map on arrays; returns an array (NOT a hash)
+[hash].map # similar to map on arrays; **returns an array (NOT a hash)**;  will return 'nil' for elements (e.g., unspecified in if block)
 [hash].each_key # returns keys in sequence
 [hash].values # returns array of values
 [hash].each_value # returns values in sequence
 [hash].delete_if { } # delete elements if block is true
 [hash].each_with_index { |(key, value), idx | ... }  # iterates over each key-value pair w/ idx
+# can also define key-value as { |pair, idx| ... } where pair is an array
 [hash].assoc([key]) # turns hash into an array [key, value] with key = [key]
 ```
 e.g. non-destructive modification of hash
