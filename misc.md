@@ -3,6 +3,9 @@
 - `\\wsl$` to access Ubuntu files in windows explorer ('network drive')
 - in Ubuntu use `clear` to clear previous input from screen
   - in Ruby can use `system("clear") || system('cls')`
+- UUIDs:  <https://www.rfc-editor.org/rfc/rfc4122> or use `SecureRandom#uuid` in Ruby standard library
+- CoderPad Sandbox : <https://app.coderpad.io/sandbox>
+
 
 ## Coding reminders for me
 - don't add arguments to defs unless needed (don't plan too far ahead)
@@ -15,6 +18,8 @@
 - don't forget closing `end` for `if` blocks
 - double-check methods, remember `.any?` returns true/false
   - use if `?` is generally a true/false
+- be careful with `sort` - it's non-destructive.  To view outcome of running `sort`, need to assign it to a new var to inspect that var
+
 
 
 ##### Regex

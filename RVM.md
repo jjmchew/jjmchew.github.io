@@ -11,5 +11,7 @@ See current gemset
 Using gemsets
 - `rvm 2.7.5@lsrb100` or `rvm use 2.7.5@lsrb100`
 - `gem install rubocop --version 0.86.0` (example of installing gems to gemset)
+- `gem list` to see 'local gems'
+
 
 

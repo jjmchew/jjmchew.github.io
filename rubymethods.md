@@ -75,7 +75,7 @@ example of `[object].tap` (helps display contents of an object):
 [number].even?
 [number].odd?
 [number].abs # returns absolute value
-[number].times # loops;  note:  returns [number]
+[number].times # loops 0 .. number -1 ;  note:  returns [number]
 (1..[number]).to_a # makes an array [1, 2, 3, ... number ]
 [number].downto([num]) # returns an Enumerable e.g., 7.downto(2)
 [number].upto([num]) # returns an Enumerable e.g., 1.upto(10)
@@ -93,6 +93,9 @@ for i in 1..10  # note:  doesn't create local scope, returns collection of eleme
 end
 
 for friend in friends  # where friends is an array
+end
+
+for key, value in hash
 end
 
 while ...   # note:  doesn't create local scope, returns nil
@@ -152,6 +155,7 @@ var = <<-MSG
   string here]
 MSG
 
+.ord # will return ASCII # of a character e.g., "b".ord # => 98
 .capitalize
 .downcase
 .upcase
@@ -160,6 +164,7 @@ MSG
 .match?( ) # can enter regex here
 .empty?
 .start_with?(' ')
+.chr # returns first character of string
 .gsub!(/s/, "th") # can use [string] instead of regex (e.g., /s/)
 # gsub replaces all matches ('global sub')
 .sub(regex, 'replacement') # only replaces first match
@@ -200,6 +205,14 @@ MSG
   odd  # => [1, 3]
   even # => [2]
   ```
+- ```ruby
+  Enumerable.min
+  Enumerable.max
+  Enumerable.minmax
+  Enumerable.min_by
+  Enumerable.max_by
+  Enumerable.minmax_by
+  ```
 
 
 
@@ -231,6 +244,9 @@ Array.new(num, content) # num is number of elements
 [array].each_with_index { |el, index|}
 [array].each_with_object([]) { |el, array| ... } # array used for 'collection'
 [array].sort
+[array].sort! # note: destructive methods not available for hashes
+[array].sort_by { } # block indicates what to sort with
+[array].sort_by! { }
 [array].product
 [array].each # returns the original array, use for iteration
 [array].map # returns the modified array, use for transformation.  
@@ -245,6 +261,12 @@ Array.new(num, content) # num is number of elements
   arr = [1, 2, 3, 4]
   arr.slice(3, 1) # => [4]  (new array)
   arr.slice(3)    # =>  4   (just contents)
+[array].dup # make a *shallow* copy of array (objects within will be the same, when modified will affect both original and dup)
+# dup will NOT preserve frozen state of array
+[array].clone # same as dup, EXCEPT will preserve 'frozen' state
+[array].freeze # prevents changes being made to array (will throw runtime error)
+[array].frozen? # returns true / false 
+[array].count([value]) # returns counts of number of [value]
 ```
 
 ## Hash
@@ -271,16 +293,18 @@ Hash.new([value]) # [value] is default value
 [hash].map # similar to map on arrays; **returns an array (NOT a hash)**;  will return 'nil' for elements (e.g., unspecified in if block)
 [hash].each_key # returns keys in sequence
 [hash].values # returns array of values
+[hash].values_at( key1, key2, ... ) # will return an array of values at the defined keys
 [hash].each_value # returns values in sequence
 [hash].delete_if { } # delete elements if block is true
 [hash].each_with_index { |(key, value), idx | ... }  # iterates over each key-value pair w/ idx
 # can also define key-value as { |pair, idx| ... } where pair is an array
 [hash].assoc([key]) # turns hash into an array [key, value] with key = [key]
+[hash].sort_by { } # block indicates what to sort with (e.g., key or value, etc.).  Note:  returns an array
 ```
 e.g. non-destructive modification of hash
 ```Ruby
   greetings = { a: 'hi' }
-  informal_greeting = greetings[:a].clone # makes a copy of existing hash to prevent mutate original
+  informal_greeting = greetings[:a].clone # makes a copy of existing hash to prevent mutating original
   informal_greeting << ' there'
 
   p greetings # {:a=>"hi"}
