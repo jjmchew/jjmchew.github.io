@@ -1,3 +1,185 @@
+### Notes on Study Guide
+
+---
+<details >
+<summary>Local variable scope (incl. how variables interact with method invocations w/ blocks and method definitions)</summary>
+
+##### Local variable scope
+- [source](https://launchschool.com/lessons/3ce27abc/assignments/cd8e4629)
+  - local variable scoping rules in Ruby: specifically the fact that a local variable initialized outside of a block is accessible inside the block
+
+- [source](https://launchschool.com/lessons/a0f3cd44/assignments/9e9e907c)
+  - a block is defined by `{ }` or `do...end`
+  - **method definition** sets a scope for local variables in terms of the parameters of that method definition
+  - **method invocation** *uses* the scope set by the method definition
+  - method definitions *cannot* directly access local variables initialized outside of the method definition
+    - methods can access local variables passed in as arguments
+  - local variables initialized outside of the method definition cannot be reassigned from within it
+  - *blocks* can access local variables initialized outside the block and re-assign those variables
+    - methods can access local variables through interactions with blocks
+
+
+</details>
+
+---
+<details >
+<summary>Method definition and method invocation</summary>
+
+##### Method definition
+- in Ruby, (custom) methods are defined using the keyword `def` and `end`
+- methods are also defined within the Ruby Core API or core library
+- methods are defined with *parameters*
+- methods must be defined before they are executed (in main code)
+  - However, 1 method may call another defined after it (Ruby reads through all `def` statements in main code and will read the method definition into memory)
+  - i.e., the following *will* work:
+    ```ruby
+    def top
+      bottom
+    end
+
+    def bottom
+      puts "Reached the bottom"
+    end
+
+    top
+    ```
+
+
+##### Method invocation
+- methods are invoked (or called) with *arguments*
+  - reference the method name to invoke / call it
+- any method can be called with a block (i.e., the block is an argument and the block becomes *part* of the method invocation), but block will only be used if the method is defined in a way that uses that block
+  - adding `yield` allows blocks that are passed in to be executed
+- method invocation adds it to Ruby's call stack ('stack')
+  - call stack example:
+  ```ruby
+  def first                 # 1 
+    puts "first method"     # 2
+  end                       # 3
+                            # 4
+  def second                # 5     MAX call stack snapshot below:
+    first                   # 6
+    puts "second method"    # 7     puts
+  end                       # 8     first (line 2)
+                            # 9     second (line 6)
+  second                    # 10    main (line 10)
+  ```
+  
+- method calls can be passed as arguments to other methods (the returned value from the method will be used as the argument value)
+
+
+</details>
+
+---
+<details >
+<summary>Implicit return value of method invocations and blocks</summary>
+
+##### return
+- in Ruby:  methods *always* return the evaluated result of the last line of the expression *unless* an explicit return comes before it
+  - can use `return` to explicitly return a value
+
+</details>
+
+---
+<details >
+<summary>Mutating vs non-mutating methods, pass-by-reference vs pass-by-value</summary>
+
+##### Mutating vs non-mutating methods
+- [source](https://launchschool.com/books/ruby/read/more_stuff#variables_as_pointers)
+- Mutating method: lines of code that **mutate the caller** and modify the value stored at the address space
+  - any other variables that also point to that object (at the same address space) will also be affected
+- Non-mutating method:  make the variable point to a different address space (do not mutate the caller)
+
+- [source](https://launchschool.medium.com/variable-references-and-mutability-of-ruby-objects-4046bd5b6717)
+  - objects can be *mutable* or *immutable*
+    - immutable objects cannot be mutated (changed) - they can only be reassigned
+    - in Ruby:  numbers, boolean, `nil`, Range objects (e.g., `1..10`) are immutable
+      - any class can be immutable if no methods are provided to alter its state
+      - assignment of these values will bind to different objects
+      - simple assignment never mutates an immutable object
+  - Setter methods (e.g., `Array#[]=` method to change 1 element of an array) changes the value of objects in the array (i.e., each element), without changing the *array*
+    - the array itself has an `object_id` that is distinct and unique from the `object_id` of the elements
+  - "pass-by-*value*" : making a *copy* of the info in an object (i.e., method will be non-mutating)
+  - "pass-by-*reference*" : the reference can used to mutate the original object
+- [source](https://launchschool.medium.com/ruby-objects-mutating-and-non-mutating-methods-78023d849a5f)
+  - e.g., `String#sub!` is mutating with respect to calling String, but non-mutating with respect to its arguments
+  - very few methods mutate the arguments
+  - `String#concat`, `#[]=`, `#<<` (for strings, arrays), setter methods (e.g., for a hash:  `person.name = 'Bill'`) are mutating
+    - `<<` may also be used for other operations (e.g., 'bit shift' operations, which may be non-mutating)
+  ```ruby
+  def fix(value)
+    value.upcase! # mutating    
+      # value = value.upcase    # non-mutating (assignment)
+      # value = value.upcase!   # still mutating (assignment re-bound the 
+                                # original mutated object)
+    value.concat('!')
+    value
+  end
+  
+  s = 'hello'
+  t = fix(s)
+  ```
+- [source](https://launchschool.medium.com/object-passing-in-ruby-pass-by-reference-or-pass-by-value-6886e8cdc34a)
+  - `+`, `*`, `[]`, `!` are all methods;  `=` acts like a method
+  - Ruby uses *strict evaluation* : every expression is evaluated and converted to an object before it is passed to a method
+  - Ruby isn't purely *pass-by-reference* (passing immutable objects, like numbers will pass a 'reference') since **assignment** isn't a mutating operation
+    - in Ruby, assignment changes the pointer causing a variable to be bound to a different object
+    - in a method, can change the object a variable points to, but cannot change the binding of the original arguments
+      - can change the object (if mutable), but the original references are immutable
+    - Ruby is a bit like *pass-by-reference-**value***
+
+
+</details>
+
+---
+<details >
+<summary>Variables as pointers</summary>
+
+- [source](https://launchschool.com/books/ruby/read/more_stuff#variables_as_pointers)
+- variables act as pointers to a **physical memory address** (or 'physical space in memory')
+- variables can be assigned to a completely different address in memory
+- [source](https://launchschool.medium.com/variable-references-and-mutability-of-ruby-objects-4046bd5b6717)
+  - a variable is said to *reference* (or *point to*, or *bound to*) an object
+  - use `.object_id` to reference the actual object (can see if it changes through assignment, mutation, etc.)
+
+</details>
+
+---
+<details >
+<summary>Working w/ collections (Array, Hash, String)</summary>
+
+
+
+</details>
+
+---
+<details >
+<summary>puts vs return</summary>
+
+- e.g., `puts "hello world"` : 'the method invocation outputs the string hello world and returns nil'
+- if `puts` is the last line of a method with no explicit return, that method will return `nil`
+
+</details>
+
+---
+<details >
+<summary>false vs nil and 'truthiness'</summary>
+
+- `true` and *evaluates to true* are different things:  only `true` is `true` other objects can **evaluate to true**
+- every value other than `false` and `nil` **evaluate to true** (i.e., are **truthy**) in a boolean context
+- `false` and `nil` evaluate to false (i.e., are **falsey**) in a boolean context
+
+</details>
+
+---
+<details >
+<summary>How the Array#sort method works</summary>
+
+
+
+</details>
+
+---
 ### Assessment prep
 - `a = 'hello'`
   - the local variable `a` is *initialized*
@@ -164,3 +346,4 @@ puts c.object_id
 
 ### Questions for TAs
 - do we need to know the specific error names?  e.g., NameError, NoMethodError?  Or is it okay to talk about the error more generally, i.e., an error will be returned when a variable that was initialized in an inner scope is called in an outer-scope where it cannot be accessed
+  - answer was NO (from Slack):  need to know when / why errors will occur, but not what the names of the errors are
