@@ -5,6 +5,8 @@
   - in Ruby can use `system("clear") || system('cls')`
 - UUIDs:  <https://www.rfc-editor.org/rfc/rfc4122> or use `SecureRandom#uuid` in Ruby standard library
 - CoderPad Sandbox : <https://app.coderpad.io/sandbox>
+- practice markdown editor:  <https://jbt.github.io/markdown-editor/>
+- https://jsinibardy.com/first-weeks-software-engineer#introduction
 
 
 ## Coding reminders for me
@@ -20,6 +22,8 @@
   - use if `?` is generally a true/false
 - be careful with `sort` - it's non-destructive.  To view outcome of running `sort`, need to assign it to a new var to inspect that var
 
+## Assessment notes
+- make sure to read the question and *answer the question* first.  Explanations are only necessary to explain the answer for the question asked
 
 
 ##### Regex

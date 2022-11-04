@@ -18,6 +18,7 @@ Constants
 ```Ruby
 [object].object_id # returns the memory id of object
 p [object].inspect # displays an object
+[object].class # displays class of object
 ```
 example of `[object].tap` (helps display contents of an object):
 ```Ruby
@@ -64,7 +65,14 @@ example of `[object].tap` (helps display contents of an object):
 - statements are automatically evaluated by Ruby:  e.g., `color == 'blue' || color == 'green'`
 - if sum of numbers is an integer, and count of numbers is an integer, then the average (sum / count) is also an integer
 - `(1..10)` (Range) returns an Enumerator: can be used like an array - i.e., can run array methods like `.map` or `.each`; it is NOT an array until you iterate across it
-
+- `rand()` will generate a random number
+  - [docs here](https://ruby-doc.org/core-3.1.2/Kernel.html#method-i-rand) : a class > Kernel > rand
+  - e.g., `rand(0..20)` : random number between 0 and 20 inclusive
+  - `rand(10)` : generates a random number 0 >= number **<** 10
+- for current date/time:  `Time.now` (`Time#now`)
+  - can get year with `Time.now.year`
+- remember `puts` writes everything to it's own line
+  - e.g, each array element will go to it's own line
 
 
 ## Integer
@@ -83,6 +91,8 @@ example of `[object].tap` (helps display contents of an object):
 
 ## Float
 - `[float].ceil( [num] )` [num] is number of decimal places to return (note this rounds *up*)
+- `[float].round( )` : give the number of decimal places to round float to (e.g., `answer.round(2)`)
+  - note:  if the number has no decimal places (i.e., an integer), it will default to displaying with only 1 decimal place, even if 2 are defined within round.  To always display 2 decimal places, need to use `format( )`.
 
 
 ## Loops
@@ -180,6 +190,8 @@ MSG
 .length
 .reverse # reverses a string
 .split( ) # can use regex or string
+.chomp or .chomp! # removes a trailing newline
+.chop or .chop! # unconditionally removes the last character
 ```
 ## Enumerable
 - both arrays and hash can access these methods
