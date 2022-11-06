@@ -18,7 +18,10 @@
   - *blocks* can access local variables initialized outside the block and re-assign those variables
     - methods can access local variables through interactions with blocks
 
+- Note:  `loop` is invoked with a block (creates a local scope):
+  - <https://launchschool.com/books/ruby/read/loops_iterators#simpleloop>
 
+  
 </details>
 
 ---
@@ -49,6 +52,7 @@
 - methods are invoked (or called) with *arguments*
   - reference the method name to invoke / call it
 - any method can be called with a block (i.e., the block is an argument and the block becomes *part* of the method invocation), but block will only be used if the method is defined in a way that uses that block
+  - definition of a block is a `do..end` immediately following a method invocation
   - adding `yield` allows blocks that are passed in to be executed
 - method invocation adds it to Ruby's call stack ('stack')
   - call stack example:
@@ -66,7 +70,29 @@
   ```
   
 - method calls can be passed as arguments to other methods (the returned value from the method will be used as the argument value)
+- e.g., `puts "hello"` : is a method invocation where you're passing in a string 'hello' as an argument
+- if methods have the same name as local variables, then local variables will be accessed *first*
+  - e.g.
+  ```ruby
+  str = 'a string'
 
+  def str
+    "a method"
+  end
+
+  p str     # will out 'a string' (local variable before method)
+  p str()   # will now invoke the method (explict call with parentheses)
+  ```
+- e.g., `bob.name = 'bob'` is **not** normal assignment (using `=`), it's actually a method invocation
+  - e.g. `bob.name=('bob')` which can be formally defined as:
+    ```ruby
+    class Person
+      attr_accessor :name
+
+      def name=(new_name)
+      end
+    end
+    ```
 
 </details>
 
@@ -77,6 +103,19 @@
 ##### return
 - in Ruby:  methods *always* return the evaluated result of the last line of the expression *unless* an explicit return comes before it
   - can use `return` to explicitly return a value
+e.g.,
+```ruby
+def str
+  "a method"
+end
+
+p str  # prints out the return value of the method invocation
+```
+vs
+```ruby
+str = 'a string'
+p str  # printing out the value of the str variable
+```
 
 </details>
 
@@ -344,6 +383,7 @@ puts c.object_id
   ```
 
 
-### Questions for TAs
-- do we need to know the specific error names?  e.g., NameError, NoMethodError?  Or is it okay to talk about the error more generally, i.e., an error will be returned when a variable that was initialized in an inner scope is called in an outer-scope where it cannot be accessed
-  - answer was NO (from Slack):  need to know when / why errors will occur, but not what the names of the errors are
+### Additional resources
+- Control expressions - things which do not techically create 'blocks'
+  - <https://docs.ruby-lang.org/en/2.4.0/syntax/control_expressions_rdoc.html>
+
