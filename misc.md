@@ -8,6 +8,7 @@
 - practice markdown editor:  <https://jbt.github.io/markdown-editor/>
 - https://jsinibardy.com/first-weeks-software-engineer#introduction
 - <mobti.me>
+- <https://replit.com/>
 
 
 ## Coding reminders for me

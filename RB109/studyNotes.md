@@ -8,6 +8,14 @@
 - [source](https://launchschool.com/lessons/3ce27abc/assignments/cd8e4629)
   - local variable scoping rules in Ruby: specifically the fact that a local variable initialized outside of a block is accessible inside the block
 
+- [source](https://launchschool.com/books/ruby/read/variables#variablescope)
+  - methods have self-contained local variable scope: only variables initialized within the method's body can be referenced or modified from within the method's body
+    - variables initialized within the method's body are not available outside the method's body
+  - a **block** is a piece of code that follows a method's invocation, delimited by `{}` or `do...end`
+    - variables initialized in an outer scope to a block **can** be accessed
+    - variables initialized within the block **cannot** be accessed outside the block 
+    - nested blocks create nested scope
+
 - [source](https://launchschool.com/lessons/a0f3cd44/assignments/9e9e907c)
   - a block is defined by `{ }` or `do...end`
   - **method definition** sets a scope for local variables in terms of the parameters of that method definition
@@ -18,10 +26,23 @@
   - *blocks* can access local variables initialized outside the block and re-assign those variables
     - methods can access local variables through interactions with blocks
 
+- language to refer to method invocation with arguments (from [course notes](https://launchschool.com/lessons/a0f3cd44/assignments/fff0b9db))
+  - e.g.:
+  ```ruby
+  def some_method(a)
+    puts a
+  end
+
+  some_method(5)  # => 5
+  ```
+  - the integer `5` is passed into `some_method` as an argument, assigned to method parameter `a`, and thus made available to the method body as a local variable
+
 - Note:  `loop` is invoked with a block (creates a local scope):
   - <https://launchschool.com/books/ruby/read/loops_iterators#simpleloop>
 
-  
+- [control expressions](https://docs.ruby-lang.org/en/2.4.0/syntax/control_expressions_rdoc.html) do not require / create a block for execution, and thus do not create a new variable scope
+  - they are **not methods**
+  - `if`, `unless`, `case`, `while`(loop), `until`(loop), `for`(loop) 
 </details>
 
 ---
@@ -68,6 +89,7 @@
                             # 9     second (line 6)
   second                    # 10    main (line 10)
   ```
+  - methods, blocks, procs, lambdas all use the same call stack
   
 - method calls can be passed as arguments to other methods (the returned value from the method will be used as the argument value)
 - e.g., `puts "hello"` : is a method invocation where you're passing in a string 'hello' as an argument
@@ -94,6 +116,27 @@
     end
     ```
 
+- language to use when referring to values / arguments, etc:
+  - e.g.:
+  ```ruby
+  def greetings(str)
+    puts str
+    puts "Goodbye"
+  end
+
+  word = "Hello"
+
+  greetings(word)
+
+  # Outputs 'Hello'
+  # Outputs 'Goodbye'
+  ```
+  - the method is defined with a parameter `str`.  When the method is invoked, it can access the string `"Hello"` since it is passed in as an argument in the form of the local variable `word`
+- if a method is invoked with a block, but the method is not defined to use a block in any way, the block will not be executed
+  - adding the `yield` keyword can return control to execute a block that is passed in
+
+- 'block variables': the thing between the `| |`
+
 </details>
 
 ---
@@ -116,7 +159,9 @@ vs
 str = 'a string'
 p str  # printing out the value of the str variable
 ```
-
+- consider if a method:  returns a value, has side-effects, or both
+  - side-effects:  e.g., displaying something or mutating an object
+  - try to avoid methods with both meaningful return values AND a side-effect
 </details>
 
 ---
@@ -139,7 +184,18 @@ p str  # printing out the value of the str variable
   - Setter methods (e.g., `Array#[]=` method to change 1 element of an array) changes the value of objects in the array (i.e., each element), without changing the *array*
     - the array itself has an `object_id` that is distinct and unique from the `object_id` of the elements
   - "pass-by-*value*" : making a *copy* of the info in an object (i.e., method will be non-mutating)
+    - re-assigning the object within a method doesn't affect the object outside the method
   - "pass-by-*reference*" : the reference can used to mutate the original object
+    - e.g., pass a string value through a local variable in outer scope, and the method is able to update that string value (and thus the value referenced by the local variable).  e.g.:
+      ```ruby
+      def cap(str)
+        str.capitalize!   # does this affect the object outside the method?
+      end
+
+      name = "jim"
+      cap(name)
+      puts name           # => Jim
+      ```
 - [source](https://launchschool.medium.com/ruby-objects-mutating-and-non-mutating-methods-78023d849a5f)
   - e.g., `String#sub!` is mutating with respect to calling String, but non-mutating with respect to its arguments
   - very few methods mutate the arguments
@@ -167,6 +223,7 @@ p str  # printing out the value of the str variable
       - can change the object (if mutable), but the original references are immutable
     - Ruby is a bit like *pass-by-reference-**value***
 
+- 
 
 </details>
 
@@ -181,12 +238,45 @@ p str  # printing out the value of the str variable
   - a variable is said to *reference* (or *point to*, or *bound to*) an object
   - use `.object_id` to reference the actual object (can see if it changes through assignment, mutation, etc.)
 
+- in nested data structures, 'variables as pointer' behaviour is also exhibited ([course notes](https://launchschool.com/lessons/c53f2250/assignments/1a6a2665))
+  - e.g., 
+    ```ruby
+    a = [1, 3]
+    b = [2]
+    arr = [a, b]
+    arr # => [[1, 3], [2]]
+
+    a[1] = 5  #  same as arr[0][1] = 5
+    arr # => [[1, 5], [2]]
+    ```
+    when elements in array `a` are changed, the same changes are reflected in `arr` - both `a` and `arr` point to the same object
+
+- `dup` and `clone` create shallow copies of objects ('sharing' nested objects)
+- `clone` preserves the frozen state from `.freeze` 
+  - `dup` doesn't preserve the frozen state
+  - `.freeze` prevents the direct object from being changed (but nested objects could still be changed)
+    - e.g., 
+      ```ruby
+      arr = [[1], [2], [3]].freeze
+      arr[2] << 4
+      arr # => [[1], [2], [3, 4]]
+      ```
+    - use `.frozen?` to check frozen status
+
 </details>
 
 ---
 <details >
 <summary>Working w/ collections (Array, Hash, String)</summary>
 
+- `each` : iterates over each element in a collection
+  - the return value is the original collection
+- `select` : evalutes the return value of the block and includes elements for which the block evalutes to `true` within a new collection
+  - the return value is the new collection
+- `map` :  performs transformation based on the return value of the block : it takes the return value of the block and places it in a new collection for each element of the original collection
+  - the return value is the new collection
+
+- 
 
 
 </details>
@@ -198,6 +288,18 @@ p str  # printing out the value of the str variable
 - e.g., `puts "hello world"` : 'the method invocation outputs the string hello world and returns nil'
 - if `puts` is the last line of a method with no explicit return, that method will return `nil`
 
+#### returns
+- `if` can return a value - depends on what is in each branch
+  e.g. 
+  ```ruby
+  answer = if true
+            'yes'
+          else
+            'no'
+          end
+  puts answer       # => yes
+  ```
+
 </details>
 
 ---
@@ -206,7 +308,10 @@ p str  # printing out the value of the str variable
 
 - `true` and *evaluates to true* are different things:  only `true` is `true` other objects can **evaluate to true**
 - every value other than `false` and `nil` **evaluate to true** (i.e., are **truthy**) in a boolean context
+  - remember `0` evaluates to `true`
 - `false` and `nil` evaluate to false (i.e., are **falsey**) in a boolean context
+
+- in conditionals, we are evaluating **expressions** that should evaluate to `true` or `false`
 
 </details>
 
@@ -214,7 +319,24 @@ p str  # printing out the value of the str variable
 <details >
 <summary>How the Array#sort method works</summary>
 
+- [course notes](https://launchschool.com/lessons/c53f2250/assignments/2831d0e1)
+- sorting requires a comparison, typically uses `<=>`
+  - `a <=> b` compares `a` to `b`
+  - there are different versions of `<=>` (i.e., `String#<=>` is different from `Integer<=>`)
+  - `2 <=> 1`   # => 1 (first is bigger than second)
+  - `1 <=> 2`   # => -1 (first is smaller than second)
+  - `1 <=> 1`   # => 0 (first is the same as second)
+  - `1 <=> 'a'` # => `nil` (first cannot be compared to second)
 
+- e.g., `[2, 5, 3, 4, 1].sort` => `[1, 2, 3, 4, 5]`
+- e.g., `[2, 5, 3, 4, 1].sort { |a,b| b <=> a }` => `[5, 4, 3, 2, 1]`
+
+- `Enumerable#sort_by` needs to be called with a block
+  - Note:  there is an `Array#sort_by!` (which is distinct from the `Enumerable` version)
+  - e.g., `['cot', 'bed', 'mat'].sort_by { |word| word[1] }` => `['mat', bed', cot']` (i.e., sorted by 2nd letter of each word)
+  - `sort_by` always returns an array (even if a hash is sorted)
+    - need to call `to_h` on the output to create a hash (if desired)
+  - 
 
 </details>
 
@@ -242,7 +364,7 @@ p str  # printing out the value of the str variable
   - the method 'example' is defined with 1 *parameter* on the first line and is being invoked (called) with 1 *argument* (the string `hello`)
   - a local variable `i` is being initialized and the integer value `3` is assigned to it
   - the `loop` method is called and a `do...end` block is *passed in* as an argument to the method call
-  - the method `puts` is being called / invoked with the local variable `str`being passed in as an argument
+  - the method `puts` is being called / invoked with the local variable `str` being passed in as an argument
   - line 5:  local variable `i` is being reassigned to the return value of a method call to `Integer#-` on the local variable `i` with integer `1` passed in as an argument
   - line 6:  break out of loop using the keyword `break` when the value of the object referenced by local variable `i` is equal to 0
   - the code *outputs* the string `hello` 3 times and *returns* `nil`
@@ -382,7 +504,111 @@ puts c.object_id
   puts a.object_id   # e.g., 200
   ```
 
+### Logical operators
+- `&&` will only return `true` if both *expressions* evaluated are `true`
+  - can chain expressions and each will be evaluated left to right
+  - 'short-circuits' once it encounters the first `false`
+- `||` will return `true` if either of evaluated expressions is `true`.  
+  - will only return `false` if all expressions are `false`
+  - short-circuits once it encounters the first `true`
+- both `&&` and `||` exhibit **'short-circuiting'** behaviour : they will stop evaluating once a guaranteed result can be returned
+- bad example (can be unclear that `if` branch will return false if find_name does not return a name):
+  ```ruby
+  if name = find_name
+    puts "got a name"
+  else
+    puts "couldn't find it"
+  end
+  ```
+- better example:
+  ```ruby
+  name = find_name
 
+  if name && name.valid?
+    puts "great name!"
+  else
+    puts "either couldn't find name or it's invalid"
+  end
+  ```
+
+### Operator precedence
+- <https://ruby-doc.org/core-3.1.2/doc/syntax/precedence_rdoc.html>
+- [original course notes](https://launchschool.com/lessons/a0f3cd44/assignments/f76e5b21)
+- e.g. `3 + 5 * 7` : `+`, `*` are operators;  `3`, `5` are operands
+- operator precedence is based on how tightly an operator '*binds*' to its operands.  A higher precedence operator binds more tightly to its operands.
+  - if precedence is the same, then use evaluation order:
+    - method invocations happen first to get values
+    - then operators evaluated (with precendence considered), generally left-to-right
+    - with multiple assignments, evaluation is *right-to-left* (however, generally bad practice)
+      - e.g.
+      ```ruby
+      a = b = c = 3
+      puts a if a == b if a == c
+      ```
+- precedence of `{}` is slightly higher than `do..end` which can create unexpected behaviour:
+  - e.g., `{}` block has slightly higher precendence and is bound to `array.map`first, then `p` is executed
+  ```ruby
+  p array.map { |num| num + 1 }      #  outputs [2, 3, 4]
+                                     #  => [2, 3, 4]
+  # same as p(array.map { |n| n+1 })
+  ```
+  vs `do...end` has precendence and `array.map` is bound `p` first (which returns an `Enumerator`, the block is ignored by `p`)
+  ```ruby
+  p array.map do |num|
+    num + 1                 #  outputs #<Enumerator: [1, 2, 3]:map>
+  end                       #  => #<Enumerator: [1, 2, 3]:map>
+  # same as p(array.map) do |n|
+  #           n + 1
+  #         end
+  ```
+
+### Variable shadowing
+- when a block-scoped variable (parameter) has the same name as a local variable in an outer scope, it prevents access to the outer scope variable
+
+### Constant scope
+- [course notes](https://launchschool.com/lessons/a0f3cd44/assignments/fff0b9db)
+- constants have *lexical scope*
+- constants (all caps) are accessible within methods
+- constants can be initialized within a block and available in an outer scope
+
+### `p` vs `puts` vs `print`
+- e.g., `a = ["1", "2", "3"]`
+  - `p a` => `["1", "2", "3"]`
+  - `p "#{a}"` => `"[\"1\", \"2\", \"3\"]"` (note quotes added to sting, and escaped `"`)
+  - `puts a` =>
+    ```ruby
+    1
+    2
+    3
+    ```
+    (note note quotes, each element on a different line)
+  - `print a` outputs similar to `p a`, but does not include a newline afterwards
+
+- `p` calls the `inspect` method on its argument
+  - `p nil` => `nil`
+- `print` just outputs the contents
+  - `print nil` => ` ` (shows blank)
+
+### Accessing strings
+- e.g., `str = 'abcdefghi'` : using `str[2,3] # 'cde'` is actually using `String#slice` (`str.slice(2,3)`)
+  - the return is a brand new string (with different object_id)
+    - `char1 = str[2] # => "c"`
+    - `char2 = str[2] # => "c"`
+    - but `char1` and `char2` will have different object_ids
+      - this behaviour is not the same as true collections
+  - note:  `String#slice` and `Array#slice` are both totally different methods and will behave differently (e.g., return values, etc.)
+
+### Nested data strutures
+- [course notes](https://launchschool.com/lessons/c53f2250/ assignments/1a6a2665)
+- e.g.,
+  ```ruby
+  arr = [[1, 3], [2]]
+  arr[0][1] = 5
+  ```
+  - `arr[0]` is an element reference which returns `[1, 3]`
+  - `[1] = 5` looks like reference, but is *not* - it's array element update (i.e., `[1,3][1] = 5` which is a destructive action - a permanent change)
+
+- 
 ### Additional resources
 - Control expressions - things which do not techically create 'blocks'
   - <https://docs.ruby-lang.org/en/2.4.0/syntax/control_expressions_rdoc.html>
