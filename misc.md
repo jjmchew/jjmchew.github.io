@@ -40,3 +40,9 @@
 - can you confidently discuss *every* topic on the study guide? (express concepts with clarity and precision)
 - have you gone through the material a final time and not learned anything new?
 - for interviews: have you practiced answering coding questions in front of people?
+
+## Live coding feedback:
+- need to communicate more - not just talk out loud (i.e., don't just mutter to myself)
+- don't hack and slash - don't just 'try things' : work to understand the problem (e.g., with code if debugging) and act with intent
+- should know my methods pretty cold
+- are we allowed to look up methods?  (e.g., each_with_index, each_index? )

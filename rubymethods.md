@@ -36,6 +36,7 @@ example of `[object].tap` (helps display contents of an object):
 - `format()` returns a formatted string
   - see Ruby docs [Kernel > format](https://ruby-doc.com/core/Kernel.html#method-i-format)
   - e.g., `format('%.2f')` to format float numbers with 2 decmial places
+  - e.g. `format('%02d:%02d',hh,mm)` formats numbers in "hh:mm" format (2 digit number strings)
 - `puts` writes each array element on a new line, no quotes for strings
   - e.g.
     ```ruby
@@ -65,6 +66,8 @@ example of `[object].tap` (helps display contents of an object):
 - statements are automatically evaluated by Ruby:  e.g., `color == 'blue' || color == 'green'`
 - if sum of numbers is an integer, and count of numbers is an integer, then the average (sum / count) is also an integer
 - `(1..10)` (Range) returns an Enumerator: can be used like an array - i.e., can run array methods like `.map` or `.each`; it is NOT an array until you iterate across it
+  - `1..10` includes `1` and `10`
+  - `1...10` includes `1`, but *not* `10`
 - `rand()` will generate a random number
   - [docs here](https://ruby-doc.org/core-3.1.2/Kernel.html#method-i-rand) : a class > Kernel > rand
   - e.g., `rand(0..20)` : random number between 0 and 20 inclusive
@@ -88,6 +91,7 @@ example of `[object].tap` (helps display contents of an object):
 [number].downto([num]) # returns an Enumerable e.g., 7.downto(2)
 [number].upto([num]) # returns an Enumerable e.g., 1.upto(10)
 ```
+- see [course notes](https://launchschool.com/books/ruby/read/basics#divisionvsmodulo) on distinction between `remainder`, `modulo` (`%`), `divmod` : always clearest to use *positive* numbers for each of these, otherwise, signs / values could vary
 
 ## Float
 - `[float].ceil( [num] )` [num] is number of decimal places to return (note this rounds *up*)
@@ -182,6 +186,7 @@ MSG
 .casecmp # case insensitive comparison;  returns integer
 .strip # removes leading / trailing whitespace
 .prepend([string]) # puts [string] in front of an existing string
+                   # Note:  there is not String#unshift
 .index([string]) # returns the index for start of [string]
 .count() # counts a set of characters
 .center([num]) # adds leading/trailing spaces to a string to center it within num spaces

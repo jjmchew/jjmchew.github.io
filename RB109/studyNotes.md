@@ -276,7 +276,9 @@ p str  # printing out the value of the str variable
 - `map` :  performs transformation based on the return value of the block : it takes the return value of the block and places it in a new collection for each element of the original collection
   - the return value is the new collection
 
-- 
+- [courrse notes on negative indices](https://launchschool.com/lessons/85376b6d/assignments/39c98ed0)
+  - `String` and `Array` objects can be referenced using negative indices:  the last index in the collection is `-1`, the next element to the left is `-2`, and continues to increment towards the left
+
 
 
 </details>
@@ -336,7 +338,11 @@ p str  # printing out the value of the str variable
   - e.g., `['cot', 'bed', 'mat'].sort_by { |word| word[1] }` => `['mat', bed', cot']` (i.e., sorted by 2nd letter of each word)
   - `sort_by` always returns an array (even if a hash is sorted)
     - need to call `to_h` on the output to create a hash (if desired)
-  - 
+- [course notes](https://launchschool.com/lessons/c53f2250/assignments/c633cf37)
+  - when arrays are compared using `Array<=>` ([docs](https://ruby-doc.org/core-3.1.2/Array.html#method-i-3C-3D-3E)):
+    - each corresponding element is compared
+    - additional array elements are not compared, if not necessary - - if all initial elements are equal, then the shorter array comes first (is 'less than')
+
 
 </details>
 
@@ -573,9 +579,9 @@ puts c.object_id
 
 ### `p` vs `puts` vs `print`
 - e.g., `a = ["1", "2", "3"]`
-  - `p a` => `["1", "2", "3"]`
-  - `p "#{a}"` => `"[\"1\", \"2\", \"3\"]"` (note quotes added to sting, and escaped `"`)
-  - `puts a` =>
+  - `p a` : `["1", "2", "3"]` (returns value of argument)
+  - `p "#{a}"` : `"[\"1\", \"2\", \"3\"]"` (note quotes added to sting, and escaped `"`)
+  - `puts a` : (see below, returns `nil`)
     ```ruby
     1
     2
@@ -585,12 +591,14 @@ puts c.object_id
   - `print a` outputs similar to `p a`, but does not include a newline afterwards
 
 - `p` calls the `inspect` method on its argument
-  - `p nil` => `nil`
+  - `p nil` : `nil`
 - `print` just outputs the contents
-  - `print nil` => ` ` (shows blank)
+  - `print nil` : ` ` (shows blank, also returns `nil`)
 
 ### Accessing strings
+
 - e.g., `str = 'abcdefghi'` : using `str[2,3] # 'cde'` is actually using `String#slice` (`str.slice(2,3)`)
+  - called 'string element reference' or 'string character reference'
   - the return is a brand new string (with different object_id)
     - `char1 = str[2] # => "c"`
     - `char2 = str[2] # => "c"`
