@@ -6,3 +6,6 @@
 - [Lesson 4](https://launchschool.com/lessons/85376b6d/assignments) (has quiz, problems)
 - [Lesson 5](https://launchschool.com/lessons/c53f2250/assignments) (has quiz)
 - [Lesson 6](https://launchschool.com/lessons/de05b300/assignments) (has quiz)
+
+- live assessment codewars problems:  https://docs.google.com/document/d/1pV6HpGy6SFK3YlQfhGYAQw41pvQat5j5FL9eK7ADvho/edit
+

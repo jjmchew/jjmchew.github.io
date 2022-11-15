@@ -30,13 +30,21 @@
 
 ### new notes (file properly)
 
-Common array methods (all mutating)
-  - |       | first element         | last element   | returns          |
-    |------ |-----------------------|----------------|------------------|
-    |remove | `shift`               | `pop`          | removed elements |
-    |add    | `unshift` / `prepend` | `push`         | new array        |
-    
 
-- [ ] what is an expression vs operators / operands / methods
+
+- [x] what is an expression vs operators / operands / methods
     - expression - needs to evaluate to something
+    - method invocation is an expression, but method definition is not an expression
+    - any chunk that evaluates down to 1 value
+- [X] confirm:  if...else evaluates to something - it doesn't return anything (but the method may return something)
+  - Ruby is acting as if it's a pass-by-reference, if the object it passes can be mutated 
+  - if the method does not mutate, it acts like a pass-by-value 
+  - technically we wouldn't say that `if...else` returns something since *methods* return values; expressions *evaluate to* a value
 
+- [X] the language 'referencing' (is it just used for referencing a variable in code - i.e., for a return?  see Daniel Singer - Slack msg)
+- [X] what do variables 'reference'?
+- [X] the space in memory - does it *contain* an object?  *is* it an object?    What's the right language?  (e.g., Rowan's "variables in ruby act as pointers to a space in memory, an object.")
+    - it's okay to say that the same in memory *contains* an object
+    - variables act as pointers to an addres space in memory that contains a value [source](https://launchschool.com/books/ruby/read/more_stuff#variables_as_pointers)
+    - local variables can point to array objects, adding local variables [to an array] *looks the same* as adding the actual array objects they're pointing to into the array, [but the nesting creates 2 ways to access the elements within]  [source](https://launchschool.com/lessons/c53f2250/assignments/1a6a2665)
+    - initializing a variable creates a *reference* or *points to* a String object with value `'etc'`. The String object represented by literal `'etc'` is assigned to a variable that has the name of the variable by storing it's `object_id` [source](https://launchschool.medium.com/variable-references-and-mutability-of-ruby-objects-4046bd5b6717)

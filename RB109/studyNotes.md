@@ -15,6 +15,7 @@
     - variables initialized in an outer scope to a block **can** be accessed
     - variables initialized within the block **cannot** be accessed outside the block 
     - nested blocks create nested scope
+    - blocks may have a "block argument" (in pipes) [21:20](https://launchschool.medium.com/live-session-beginning-ruby-part-3-61180782f721)
 
 - [source](https://launchschool.com/lessons/a0f3cd44/assignments/9e9e907c)
   - a block is defined by `{ }` or `do...end`
@@ -136,6 +137,23 @@
   - adding the `yield` keyword can return control to execute a block that is passed in
 
 - 'block variables': the thing between the `| |`
+- discussion and language around method invocation [source](https://launchschool.medium.com/live-session-beginning-ruby-part-2-f87d821ce926)
+  ```ruby
+  def amethod(param)
+    param += " universe"
+    param << " world"
+  end
+
+  str = 'hello'
+  amethod(str) # 'passing str to amethod'
+
+  p str  # What is the output?
+  ```
+  - after  `amethod` is invoked and str is passed to amethod; on the first line, `param` is assigned to `str`:   is where the `param` method local variable is initialized (equivalent to `param = str`)
+  - next line is re-assignment;  the value doesn't matter here since param - the implicit return value of the method - is never used; after this line, `param` is no longer pointing to `str` and changes to `param` do not affect `str`
+  - we're thinking about the side-effect of `str` being passed into `amethod`
+
+- methods can generally do 3 things:  return value, execute side-effects, output something [37:30](https://launchschool.medium.com/live-session-beginning-ruby-part-3-61180782f721)
 
 </details>
 
@@ -162,6 +180,10 @@ p str  # printing out the value of the str variable
 - consider if a method:  returns a value, has side-effects, or both
   - side-effects:  e.g., displaying something or mutating an object
   - try to avoid methods with both meaningful return values AND a side-effect
+
+- technically we wouldn't say that `if...else` returns something since *methods* return values; expressions *evaluate to* a value [from slack discussion](https://launchschool.slack.com/archives/C04A1813JRF/p1668105608401989?thread_ts=1668101173.152629&cid=C04A1813JRF)
+
+- rememeber:  `loop` returns the last expression evaluated within the block; `each` returns the original object it was called on
 </details>
 
 ---
@@ -173,6 +195,7 @@ p str  # printing out the value of the str variable
 - Mutating method: lines of code that **mutate the caller** and modify the value stored at the address space
   - any other variables that also point to that object (at the same address space) will also be affected
 - Non-mutating method:  make the variable point to a different address space (do not mutate the caller)
+  - when we use variables to pass arguments to a method, we're essentially assigning the value of the original variable to a variable inside the method
 
 - [source](https://launchschool.medium.com/variable-references-and-mutability-of-ruby-objects-4046bd5b6717)
   - objects can be *mutable* or *immutable*
@@ -214,6 +237,7 @@ p str  # printing out the value of the str variable
   s = 'hello'
   t = fix(s)
   ```
+  - "we pass `s` to `fix`; this binds the String represented by `'hello'` to `value`. `s` and `value` are now aliases for the String
 - [source](https://launchschool.medium.com/object-passing-in-ruby-pass-by-reference-or-pass-by-value-6886e8cdc34a)
   - `+`, `*`, `[]`, `!` are all methods;  `=` acts like a method
   - Ruby uses *strict evaluation* : every expression is evaluated and converted to an object before it is passed to a method
@@ -223,7 +247,25 @@ p str  # printing out the value of the str variable
       - can change the object (if mutable), but the original references are immutable
     - Ruby is a bit like *pass-by-reference-**value***
 
-- 
+- note:  string concatenation is *non-mutating* **method** (it returns a new string)
+  - `param + " world"` is the same as `param.+("world")` (it's not an operator)
+
+- example from [video](https://launchschool.medium.com/live-session-beginning-ruby-part-2-f87d821ce926):
+  ```ruby
+  def amethod(param)
+    param += " universe"
+    param << " world"
+  end
+
+  str = 'hello'
+  amethod(str)
+
+  p str  # What is the output?
+  ```
+
+  - mutating an object can be dangerous - be careful
+    - use the `!` to indicate a destructive method
+  - don't return a value AND create a side-effect (causing a change, e.g. mutate the caller)
 
 </details>
 
@@ -262,6 +304,15 @@ p str  # printing out the value of the str variable
       arr # => [[1], [2], [3, 4]]
       ```
     - use `.frozen?` to check frozen status
+
+- Regarding physical space in memory:  *is* it an object?  or does it *contain* an object?
+ - probably better to say that the same in memory *contains* an object
+    - variables act as pointers to an addres space in memory that contains a value [source](https://launchschool.com/books/ruby/read/more_stuff#variables_as_pointers)
+    - local variables can point to array objects, adding local variables [to an array] *looks the same* as adding the actual array objects they're pointing to into the array, [but the nesting creates 2 ways to access the elements within]  [source](https://launchschool.com/lessons/c53f2250/assignments/1a6a2665)
+    - initializing a variable creates a *reference* or *points to* a String object with value `'etc'`. The String object represented by literal `'etc'` is assigned to a variable that has the name of the variable by storing it's `object_id` [source](https://launchschool.medium.com/variable-references-and-mutability-of-ruby-objects-4046bd5b6717)
+  - "objects are things that live in memory, that take up space in memory" [~17:20](https://launchschool.medium.com/live-session-beginning-ruby-part-2-f87d821ce926)
+
+- when variables point to objects, they can retrieve the value or they can update the value [8:20](https://launchschool.medium.com/live-session-beginning-ruby-part-3-61180782f721)
 
 </details>
 
@@ -373,7 +424,7 @@ p str  # printing out the value of the str variable
   - the method `puts` is being called / invoked with the local variable `str` being passed in as an argument
   - line 5:  local variable `i` is being reassigned to the return value of a method call to `Integer#-` on the local variable `i` with integer `1` passed in as an argument
   - line 6:  break out of loop using the keyword `break` when the value of the object referenced by local variable `i` is equal to 0
-  - the code *outputs* the string `hello` 3 times and *returns* `nil`
+  - the code *outputs* the string `hello` 3 times and *returns* `nil` [source](https://medium.com/how-i-started-learning-coding-from-scratch/advice-for-109-written-assessment-part-2-594060594f6e)
     - there is no explicit `return` within the loop method so the last evaluated *expression* is `break if i == 0` which returns `nil`
 - ```ruby
   a = 4
@@ -616,8 +667,14 @@ puts c.object_id
   - `arr[0]` is an element reference which returns `[1, 3]`
   - `[1] = 5` looks like reference, but is *not* - it's array element update (i.e., `[1,3][1] = 5` which is a destructive action - a permanent change)
 
-- 
+### Mutability
+- Immutable objects in Ruby:  integers, boolean, ranges, `nil`
+
+### Expressions
+- any chunk of code that evaluates down to 1 value
+
 ### Additional resources
 - Control expressions - things which do not techically create 'blocks'
   - <https://docs.ruby-lang.org/en/2.4.0/syntax/control_expressions_rdoc.html>
+- assessment language:  <https://drive.google.com/file/d/16Q32xXRoJ0wFMwiA8CojhdqfwCgE9rjj/view>
 

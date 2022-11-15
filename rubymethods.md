@@ -230,12 +230,20 @@ MSG
   Enumerable.max_by
   Enumerable.minmax_by
   ```
-
+- `Enumerable#find` : looks through each array element to see if it meets a given condition.  If so, it returns it
+  - e.g., `array.find { |el| array.count(el) == 2 }` will return an element in an array that occurs twice
 
 
 
 ## Arrays
 <https://ruby-doc.org/core-3.1.2/Array.html>
+
+Common array methods (all mutating)
+  - |       | first element         | last element   | returns          |
+    |------ |-----------------------|----------------|------------------|
+    |remove | `shift`               | `pop`          | removed elements |
+    |add    | `unshift` / `prepend` | `push`         | new array        |
+    
 
 ```Ruby
 %w(y n) == ['y','n']
@@ -284,8 +292,9 @@ Array.new(num, content) # num is number of elements
 [array].freeze # prevents changes being made to array (will throw runtime error)
 [array].frozen? # returns true / false 
 [array].count([value]) # returns counts of number of [value]
-```
 
+```
+- `Array#|` : gives the union of 2 arrays, the result contains no duplicates e.g., `array1 | array2`
 ## Hash
 
 ```Ruby
