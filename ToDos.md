@@ -48,3 +48,5 @@
     - variables act as pointers to an addres space in memory that contains a value [source](https://launchschool.com/books/ruby/read/more_stuff#variables_as_pointers)
     - local variables can point to array objects, adding local variables [to an array] *looks the same* as adding the actual array objects they're pointing to into the array, [but the nesting creates 2 ways to access the elements within]  [source](https://launchschool.com/lessons/c53f2250/assignments/1a6a2665)
     - initializing a variable creates a *reference* or *points to* a String object with value `'etc'`. The String object represented by literal `'etc'` is assigned to a variable that has the name of the variable by storing it's `object_id` [source](https://launchschool.medium.com/variable-references-and-mutability-of-ruby-objects-4046bd5b6717)
+
+- [ ] what's the 

@@ -1,4 +1,4 @@
-- first 22 questions from Brandi Seeley
+- first 22 questions from Brandi Seeley (https://github.com/brandiseeley/RB109/blob/master/practice_test.rb)
 
 ### Question 1:
 ### What will the following code print? Why?
@@ -24,7 +24,7 @@ nil
 ```
 Overall, the main code invokes the `p` method with the `count_sheep` method passed in as an argument.  This will output to screen, the return value of a method `count_sheep` which takes no arguments. To do so, the program must first evaluate the return value from the `count_sheep` method.
 
-Within the method `count_sheep`, the `times` method is called upon the integer `5` with a block passed in which defines a block parameter `sheep`. ==This acts like a loop, with the block parameter `sheep` receiving the integers, `0`, `1`, `2`, up to `4` for each iteration== and then executing the code within the block.
+Within the method `count_sheep`, the `times` method is called upon the integer `5` with a block passed in which defines a block parameter `sheep`. ==This acts like a loop, with the block parameter `sheep` receiving the integers, `0`, `1`, `2`, up to `4` for each iteration== [what's the right verbiage for 'times' - a loop?] and then executing the code within the block.
 
 The code within the block will first invoke the `puts` method with the referenced value of `sheep` passed in.  On the next line, if the expression `sheep >= 2` evaluates to `true`, then the `return` statement will be executed which will end execution of the `count_sheep` method and return the value defined, which in this case is `nil`. Thus, the value of `sheep` - the integer numbers `0`, `1`, `2` will be output to screen, each on a separate line, as per the behaviour of `puts` and then the `if` expression will evaluate to `true`, which ends execution of the method and returns the value `nil`. The return value of the `count_sheep` method is then passed into the final `p` invocation.  This `nil` value is output to screen as 'nil', as per the final `p` method invocation.
 
