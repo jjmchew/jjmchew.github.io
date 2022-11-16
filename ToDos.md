@@ -49,4 +49,67 @@
     - local variables can point to array objects, adding local variables [to an array] *looks the same* as adding the actual array objects they're pointing to into the array, [but the nesting creates 2 ways to access the elements within]  [source](https://launchschool.com/lessons/c53f2250/assignments/1a6a2665)
     - initializing a variable creates a *reference* or *points to* a String object with value `'etc'`. The String object represented by literal `'etc'` is assigned to a variable that has the name of the variable by storing it's `object_id` [source](https://launchschool.medium.com/variable-references-and-mutability-of-ruby-objects-4046bd5b6717)
 
-- [ ] what's the 
+#### From practiceTest2
+- [x] `times` method : what's the right language to use?  A loop?  An iterator?
+    - you can refer to it as a '`times` loop' [source](https://launchschool.com/books/ruby/read/variables#whatisavariable)
+    - e.g.,'in the first 4 iterations of the loops' the `break` was not executed.  On the 5th iteration, the `if` statement evaluated as `true` so the code within the `if` statement was executed. [source](https://launchschool.com/books/ruby/read/loops_iterators#simpleloop)
+- [X] How to refer to 'block parameters' and iteration?
+  - from James D:
+      - Each element from the calling array is passed to the block in the form of an argument, {name_of_argument}
+      - Each element from the calling array is passed to the block and assigned to the local variable {name_of_variable}
+      - [source](https://launchschool.com/lessons/c53f2250/assignments/c633cf37)
+        - 'each inner array is passed to the block in turn and assigned to the local variable `arr`
+- [x] language to use when 'executing' conditional branches - what to say?
+    - the code within the `if` is `run` or `not run` [source](https://launchschool.com/books/ruby/read/basics#literals)
+    - e.g., `if x == 3` :  is the '`if` condition' [source](https://launchschool.com/books/ruby/read/flow_control#conditionals)
+    - 'the code within the `if` statement was executed' [source](https://launchschool.com/books/ruby/read/loops_iterators#simpleloop)
+- [x] is `>=` an operator?  what is it called?  how is it used? (what language to use)
+  - it's a 'comparison operator' that takes expressions or values as its *operand* to return a boolean value [source](https://launchschool.com/books/ruby/read/flow_control#conditionals)
+- [x] confirm return values from `loop` method
+    - generally `nil`, but can return other things (e.g., enumerator, values stored in exceptions) [source](https://docs.ruby-lang.org/en/master/Kernel.html#method-i-loop)
+- [X] confirm language around mutating methods :  do they 'mutate the caller'?  how else could it be referred to?
+    - do *not* use the term 'mutating the caller';  more correct to say mutating the argument (when a method is called)
+    - need to be careful about whether the 'caller' is being mutated or not;  better to just refer to a *mutating* vs *non-mutating* method
+- [x] confirm that return values only come from methods
+    - **no**  :  Ruby expressions always return a value (even if error or `nil`).  An expression is anything that can be evaluated (pretty mch everything in Ruby is an expression). [source](https://launchschool.com/books/ruby/read/basics#literals)
+    - only use `return` keyword to define an explicit return value for a method
+      - expressions **do** something and also **return** something
+      - e.g, `return number + 3` : the 'evaluated result' of `number + 3` is returned
+    - fairly confident that only methods use the keyword `return` [source](https://launchschool.com/books/ruby/read/methods#putsvsreturnthesequel)
+- [X] what is passed to method arguments - variables or values?
+  - 'a local variable is passed to a method as an argument at invocation' [source](https://launchschool.com/lessons/a0f3cd44/assignments/9e9e907c)
+  - later in the same article, they indicate that the 'string `'Hello'` is passed in as an argument at method invocation in the form of the local variable `word`' (a method parameter)
+- [x] language to be used when passing values to blocks
+  - from James D:
+    - Each element from the calling array is passed to the block in the form of an argument, {name_of_argument}
+    - Each element from the calling array is passed to the block and assigned to the local variable {name_of_variable}
+    - [source](https://launchschool.com/lessons/c53f2250/assignments/c633cf37)
+      - 'each inner array is passed to the block in turn and assigned to the local variable `arr`
+
+- [X] confirm language for `each_with_object`
+  - e.g., 'calling `each_with_object` on the object with value ...' [source](https://launchschool.com/books/ruby/read/methods#chainingmethods)
+  - can be called a collection object [source](https://launchschool.com/lessons/85376b6d/assignments/d86be6b5)
+  - the docs call it a **memo-object** [source](https://docs.ruby-lang.org/en/master/Enumerable.html#method-i-each_with_object)
+- [X] language to use when a `p` method is invoked and a local variable is passed in - what is passed?  variable?  value?  etc.
+    - can just say 'when we call `p variable` ...' [source](https://launchschool.com/books/ruby/read/variables#whatisavariable)
+
+    - e.g.,
+      ```ruby
+      def say(words)
+        puts words + '.'    ## <= We only make the change here!
+      end
+
+      say("hello")
+      ``` 
+  - When we call say("hello"), we pass in the string "hello" as the argument in place for the words parameter. Then the code within the method definition is executed with the `words` local variable evaluated to "hello". 
+  - [source](https://launchschool.com/books/ruby/read/methods#whataremethodsandwhydoweneedthem)
+
+- [x] confirm language for 'implicit return' (i.e., last line of code is evaluated?  return value of last line of code? )
+  - in Ruby, every method returns the evaluated result of the last line that is executed. [source](https://launchschool.com/books/ruby/read/methods#putsvsreturnthesequel)
+- [X] language for access a hash (e.g., `hash[key]` ) - indexed reference?
+    - retrieving a hash value by it's key [source](https://launchschool.com/books/ruby/read/basics#literals)
+    - "hash values are retrieved by by keys" [source](https://launchschool.com/lessons/85376b6d/assignments/d86be6b5)
+- [X] review language in https://launchschool.com/lessons/c53f2250/assignments/c633cf37
+- [ ] remember to answer all parts of question - e.g., what concept - could be 'pass by value' or 'pass by reference', etc.
+
+

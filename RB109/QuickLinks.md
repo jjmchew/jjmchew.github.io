@@ -7,5 +7,7 @@
 - [Lesson 5](https://launchschool.com/lessons/c53f2250/assignments) (has quiz)
 - [Lesson 6](https://launchschool.com/lessons/de05b300/assignments) (has quiz)
 
+- [RB109](https://launchschool.com/lessons/3ce27abc/assignments)
+
 - live assessment codewars problems:  https://docs.google.com/document/d/1pV6HpGy6SFK3YlQfhGYAQw41pvQat5j5FL9eK7ADvho/edit
 

@@ -1,4 +1,5 @@
 - first 22 questions from Brandi Seeley (https://github.com/brandiseeley/RB109/blob/master/practice_test.rb)
+- James D responses:  https://gist.github.com/jamesdrabinsky/0db8cf69a598aeb6a97e9146469fb089
 
 ### Question 1:
 ### What will the following code print? Why?
@@ -66,7 +67,7 @@ Of particular interest is the fact that the local variable `a` is not reassigned
   str.length < 4
 end
 ```
-The `count` method will count the number of times the block passed in as an argument evaluates to `true` (i.e., is truthy). One way to determine how the block's return value has been treated is to initialize and assign the return value from count to a new local variable and then output that value to screen.
+The `count` method will count the number of times the block passed in as an argument evaluates to `true` (i.e., is truthy). One way to determine how the block's return value has been treated is to initialize a local variable and assign the return value from count to it, then output that value to screen.
 
 This modified first line of code would capture the return value of `count` within a new local variable `new_var`:
 ```ruby
@@ -75,9 +76,7 @@ new_var = ['ant', 'bat', 'caterpillar'].count do |str|
 An additional final line of code to output that value is: `p new_var`, which will output `2` to screen.  This demonstrates that the return block from `count` has evaluated to `true` 2 times.  From looking at the code within the block argument passed into `count`, we can see that it is evaluating the length of each string being passed in and will evaluate to `true` when that length is less than `4` - once for `'ant'` and again for `'bat'`.
 
 ### Question 4:
-### Our predict_weather method should output a message indicating whether a sunny or cloudy day 
-# lies ahead. However, the output is the same every time the method is invoked. Why? Fix the 
-# code so that it behaves as expected.
+### Our predict_weather method should output a message indicating whether a sunny or cloudy day lies ahead. However, the output is the same every time the method is invoked. Why? Fix the code so that it behaves as expected.
 
 ```ruby
 def predict_weather
@@ -285,7 +284,7 @@ In this code, the block looks at the length of each string value for each key-va
 
 ### Question 15:
 ### We want to iterate through the numbers array and return a new array containing only the even numbers. 
-# However, our code isn't producing the expected output. Why not? How can we change it to produce the expected result?
+### However, our code isn't producing the expected output. Why not? How can we change it to produce the expected result?
 
 ```ruby
 numbers = [5, 2, 9, 6, 3, 1, 8]
@@ -314,8 +313,7 @@ puts a
 The code will output an error since within the method `my_value` it tries to access a local variable `a` which does not exist with the scope of the method. Methods have a self-contained variable scope and cannot access local variables in outer scopes, such as the local variable `a`.
 
 ### Question 17:
-### The output of the code below tells you that you have around $70. However, 
-# you expected your bank account to have about $238. What did we do wrong?
+### The output of the code below tells you that you have around \$70. However, you expected your bank account to have about $238. What did we do wrong?
 
 ```ruby
 # Financially, you started the year with a clean slate.
@@ -446,10 +444,7 @@ puts a
 The code will output `7` since the local variable `a` in the main scope is unchanged by the `each` method called on local variable `array`.  As a result of variable shadowing, the block parameter `a` in the block passed in during invocation of `each` on `array` prevents the outer-scoped local variable `a` from being changed.
 
 ### Question 22:
-### Magdalena has just adopted a new pet! She wants to add her new dog, Bowser, to the pets hash. 
-# After doing so, she realizes that her dogs Sparky and Fido have been mistakenly removed. Help 
-# Magdalena fix her code so that all three of her dogs' names will be associated with the 
-# key :dog in the pets hash.
+### Magdalena has just adopted a new pet! She wants to add her new dog, Bowser, to the pets hash. After doing so, she realizes that her dogs Sparky and Fido have been mistakenly removed. Help Magdalena fix her code so that all three of her dogs' names will be associated with the key :dog in the pets hash.
 
 ```ruby
 pets = { cat: 'fluffy', dog: ['sparky', 'fido'], fish: 'oscar' }

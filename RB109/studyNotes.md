@@ -162,7 +162,7 @@
 <summary>Implicit return value of method invocations and blocks</summary>
 
 ##### return
-- in Ruby:  methods *always* return the evaluated result of the last line of the expression *unless* an explicit return comes before it
+- in Ruby:  methods *always* return the evaluated result of the last line of the expression *unless* an explicit return comes before it [source](https://launchschool.com/books/ruby/read/methods#whataremethodsandwhydoweneedthem)
   - can use `return` to explicitly return a value
 e.g.,
 ```ruby
@@ -645,6 +645,12 @@ puts c.object_id
   - `p nil` : `nil`
 - `print` just outputs the contents
   - `print nil` : ` ` (shows blank, also returns `nil`)
+- |       | returns                  | displays for `nil` | displays for strings |
+  |------ |--------------------------|--------------------|----------------------|
+  |`p`    | value passed as argument | `nil`              | shows `""`           |
+  |`print`| `nil`                    | ` ` (same line)    | no `""`, same line   | 
+  |`puts` | `nil`                    | [blank line]       | no `""`              |
+  - `puts` method outputs a string representation of the integer. [source](https://launchschool.com/lessons/c53f2250/assignments/c633cf37)
 
 ### Accessing strings
 
