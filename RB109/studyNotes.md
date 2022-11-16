@@ -330,6 +330,19 @@ p str  # printing out the value of the str variable
 - [courrse notes on negative indices](https://launchschool.com/lessons/85376b6d/assignments/39c98ed0)
   - `String` and `Array` objects can be referenced using negative indices:  the last index in the collection is `-1`, the next element to the left is `-2`, and continues to increment towards the left
 
+### `Array#each` method
+- this method iterates through an array object passing each element of the array to the block argument it was invoked with
+  - once it has finished every iteration, it returns the original array
+
+### `Array#map` method
+- iterates through the array object, passing each element of the array to the block
+  - it actually takes the return value of the block and moves it into a new array at the same index
+  - once it has finished every iteration, it returns this NEW array
+
+### `Array#select` method
+- iterates through the array object it was invoked on, passing each element to the block and runs the block
+  - it takes the return value of the block and if it **evalutes to** `true` (i.e., is truthy), then it takes that element and puts it into a new array.  If the return value doesn't evaluate to `true`, then it does nothing
+  - once it has finished every iteration, it returns the NEW array (which might be empty)
 
 
 </details>
@@ -480,20 +493,6 @@ puts b
 ##### Why?
 - On line 24, a new local variable `a` is initialized and assigned to a memory address with integer value `4`.  On lines 27 - 30 the `times` method is invoked with a `do...end` block passed in as an argument.  Within this block, a parameter `a` is also defined, however this is a different local variable `a`, scoped only to the `do...end` block which happens to share the same name as the outer-scoped variable `a`.  Within the `do...end` block, this parameter `a` creates *variable shadowing* which prevents access to the outer-scope variable `a`.  Within the `do...end` block, any reference to a variable `a` will affect the inner-scoped variable `a` and *not* the outer-scoped variable `a`.  Effectively, any assignments which take place within the block on lines 27 - 30 have no impact on the outer-scoped variable `a`.  Thus, on line 32, when the method `puts` is invoked with variable `a`, the output is the (unchanged) value at the memory address the variable was originally initialized at: `4`.
 
-### `Array#each` method
-- this method iterates through an array object passing each element of the array to the block argument it was invoked with
-  - once it has finished every iteration, it returns the original array
-
-### `Array#map` method
-- iterates through the array object, passing each element of the array to the block
-  - it actually takes the return value of the block and moves it into a new array at the same index
-  - once it has finished every iteration, it returns this NEW array
-
-### `Array#select` method
-- iterates through the array object it was invoked on, passing each element to the block and runs the block
-  - it takes the return value of the block and if it **evalutes to** `true` (i.e., is truthy), then it takes that element and puts it into a new array.  If the return value doesn't evaluate to `true`, then it does nothing
-  - once it has finished every iteration, it returns the NEW array (which might be empty)
-
   ### Mutating / non-mutating methods
   - mutating methods are those methods which change the value of a calling object (i.e., the `.object_id` will NOT change, although the value might chnage)
   - e.g.,
@@ -544,7 +543,10 @@ puts a.object_id
 puts b.object_id
 puts c.object_id
 
-# this is similar to the original initialization and assigments on lines 115 - 117 : each of the local variables `a`, `b`, `c`, are being re-assigned to integer objects.  However, it is NOT the SAME as before.  Before they were different string objects, here they are the SAME integer object.  i.e., object_id's will all be the SAME
+# this is similar to the original initialization and assigments on lines 115 - 117 : 
+# each of the local variables `a`, `b`, `c`, are being re-assigned to integer objects.  
+# However, it is NOT the SAME as before.  
+# Before they were different string objects, here they are the SAME integer object.  i.e., object_id's will all be the SAME
 ```
 - in Ruby:  integers and symbols with the same values occupy the same physical space in memory (they are the same objects)
 
@@ -638,7 +640,7 @@ puts c.object_id
     2
     3
     ```
-    (note note quotes, each element on a different line)
+    (note no quotes, each element on a different line)
   - `print a` outputs similar to `p a`, but does not include a newline afterwards
 
 - `p` calls the `inspect` method on its argument

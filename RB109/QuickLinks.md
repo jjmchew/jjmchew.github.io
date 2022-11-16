@@ -11,3 +11,8 @@
 
 - live assessment codewars problems:  https://docs.google.com/document/d/1pV6HpGy6SFK3YlQfhGYAQw41pvQat5j5FL9eK7ADvho/edit
 
+### Notes
+- [study notes](https://jjmchew.github.io/RB109/studyNotes)
+- [to dos](https://jjmchew.github.io/ToDos)
+- [RB101](https://jjmchew.github.io/RB101)
+- [SPOT wiki notes](https://drive.google.com/file/d/16Q32xXRoJ0wFMwiA8CojhdqfwCgE9rjj/view)

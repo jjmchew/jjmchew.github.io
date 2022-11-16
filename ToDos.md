@@ -19,6 +19,7 @@
   string = 'abcdefg'
   string[-4]
   ```
+    - it's called 'string element reference' (using a negative index)
 - [x] check multiple assignments - use of arrays, etc.
 - [x] need to worry about when quotes show up with string output or not?
 - check ranges (0..5) vs (0...5)
@@ -110,6 +111,13 @@
     - retrieving a hash value by it's key [source](https://launchschool.com/books/ruby/read/basics#literals)
     - "hash values are retrieved by by keys" [source](https://launchschool.com/lessons/85376b6d/assignments/d86be6b5)
 - [X] review language in https://launchschool.com/lessons/c53f2250/assignments/c633cf37
+
+### Things to remember at test time
 - [ ] remember to answer all parts of question - e.g., what concept - could be 'pass by value' or 'pass by reference', etc.
+- [ ] when predicting output, make sure to consider ALL outputs!!  including those that might be in loops
+- [ ] remember to scan for debugging questions that might take longer and leave enough time to address them
+- [ ] keep a list of questions to go back and double-check / expand
+- [ ] need to be careful with loop counters and conditionals
+  - *take the time to carefully review edges (start and end)*
 
 

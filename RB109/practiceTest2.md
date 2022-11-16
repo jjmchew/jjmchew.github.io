@@ -463,9 +463,9 @@ The line `pets[:dog] = 'bowser'` reassigns the value for key `:dog` to `'bowser'
 - 5:  B
 - 6:  B
 - 7:  C
-- 8:  B, C, D
+- ==8:  B, C, D== **WRONG**  be careful, `select` always returns a NEW array
 - 9:  B, C
-- 10: A, B, C
+- ==10: A, B, C== **WRONG** beware of transformation mixed with selection
 - 11: B, C
 - 12: B
 - 13: D
@@ -474,17 +474,17 @@ The line `pets[:dog] = 'bowser'` reassigns the value for key `:dog` to `'bowser'
 - 16: A, C
 - 17: D
 - 18: A, B, C
-- 19: A, B, C
-- 20: B, D
+- ==19: A, B, C== **WRONG** watch key-value pairs (name of local var doesn't matter)
+- ==20: B, D== **WRONG** watch out for comparisons - DETAILS!
 
 ### Lesson 2 Quiz
 - 1:  B
 - 2:  C
 - 3:  A, B, C, D
-- 4:  A
+- ==4:  A==  **WRONG** DETAILS!
 - 5:  B
-- 6:  A, B, C
-- 7:  C
+- ==6:  A, B, C== **WRONG**  need to be careful - can't evaluate the 2nd logical operator without evaluating all expressions (the last evaluates to `true`)
+- ==7:  C==  **WRONG**
 - 8:  
 
 
