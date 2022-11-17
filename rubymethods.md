@@ -203,7 +203,7 @@ MSG
 - `Enumerable#any? { |el| ... }` # block should return true/false, any? returns true if 1 (first) element returns true
 - `Enumerable#all? { |el| ... }` # block should return true/false, all returns true if all? elements return true
 - `Enumerable#each_with_index { |el, index| ... }`
-- `Enumerable#each_with_object([])` # object used for collection
+- `Enumerable#each_with_object([]) { |el, object| ... }` # object used for collection
 - `Enumerable#first() # is optional, specify # of results`
   - Note:  for hashes, order is preserved (by order of insertion)
   - Note:  return of first with optional number argument is an array 
