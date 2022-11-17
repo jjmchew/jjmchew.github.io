@@ -267,6 +267,10 @@ p str  # printing out the value of the str variable
     - use the `!` to indicate a destructive method
   - don't return a value AND create a side-effect (causing a change, e.g. mutate the caller)
 
+- mutating objects is **not** the same as changing a variable
+  - method definitions cannot modify arguments passed in to them permanently (i.e., cannot RE-ASSIGN a local variable in an outside scope)
+  - however, they **can** mutate the object referenced by a local variable in a outer-scope
+  - [source](https://launchschool.com/books/ruby/read/methods#mutatingarguments)
 </details>
 
 ---
