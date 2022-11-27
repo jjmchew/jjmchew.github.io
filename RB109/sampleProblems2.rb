@@ -174,6 +174,9 @@ p next_bigger_num(123456789) == 123456798
 
 =end 
 
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
 =begin
 The maximum sum subarray problem involves finding the maximum sum of a contiguous subsequence in an array of integers:
 
@@ -189,6 +192,8 @@ p max_sequence([11]) == 11
 p max_sequence([-32]) == 0
 p max_sequence([-2, 1, -7, 4, -10, 2, 1, 5, 4]) == 12
 
+
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 =begin
 Write a method to find the longest common prefix string amongst an array of strings
@@ -213,7 +218,7 @@ p common_prefix(["throne", "throne"]) == "throne"
 
 =end
 
-
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 =begin
 Given 2 strings, find out if there is a substring that appears in both strings.
@@ -233,52 +238,66 @@ p substring_test('1234567', '541265') == true
 p substring_test('supercalifragilisticexpialidocious', 'SoundOfItIsAtrocious') == true
 
 
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
 =begin
+Write function scramble(str1, str2) that returns true if a portion of str1 can be rearranged to match str2.  otherwise, return false
+Only lower case letters will be used (a-z).  No punctuation or digits will be included.
+=end
 
-9:26 am - 
+p scramble('javaass', 'jjss') == false
+p scramble('rkqodlw', 'world') == true
+p scramble('cedewaraaossoqqyt', 'codewars') == true
+p scramble('katas', 'steak') == false
+p scramble('scriptjava', 'javascript') == true
+p scramble('scriptingjava', 'javascript') == true
 
-Given 2 strings, find out if there is a substring that appears in both strings.
-Return true if you find a substring that appears in both strings.
-Return false if you do not.
-We only care about substrings that are longer than 1 letter long.
 
-input
-  - 2 strings
-output
-  - boolean (true or false)
-rules
-  - if there is a substring that appears in both given strings, return true
-  - if NOT, return false
-  - empty strings are empty - i.e., they don't count as a string
-  - case-insensitive
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-algorithm
-  - find the shortest string of the 2 given
-  - use the shortest string as the 'reference'
-  - initialize a 'collection' string
+=begin
+Find the length of the longest substring in given string that is the same in reverse.
+If the length of the string is 0, return value must be 0
 
-  - iterate across each letter of the reference (word)
-      - see if the other word contains that letter
-        - if SO:  then add that letter to the collection string
-                  check the next letter
-                  - if the next letter of both strings is the same, then add it to the collection string
-                  - if NOT:  reset the collection string
-        - if NOT: do nothing
-                  
-      - scan the word for another instance of the reference letter 
-        AND start iteration again
-  
-  - check the length of the collection string to see if it is longer than 1 letter
+=end
+p longest_palindrome('a') == 1
+p longest_palindrome('aa') == 2
+p longest_palindrome('aab') == 2
+p longest_palindrome('baa') == 2
+p longest_palindrome('baabcd') == 4
+p longest_palindrome('baablkj12345432133d') == 9
+p longest_palindrome('I like racecars that go fast') == 7
+
+
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+=begin
+Given an array of integers.  Take the array, find an index N where the sum of the integers to the left is equal to the sum of the integers to the right of N.
+If there is no index that would make this happen, return -1
+
+e.g., 
+given [1, 2, 3, 4, 3, 2, 1]
+return 3 since sum of [1, 2, 3] == sum of [3, 2, 1]
+
+e.g., 
+given [20, 10, -80, 10, 10, 15, 35]
+return 0, since sum of [] == sum of [10, -80, 10, 10, 15, 35]
+
+assume sum of empty array is 0
+
 
 =end
 
-p substring_test('Something', 'Fun') == false
-p substring_test('Something', 'Home') == true
-p substring_test('Sochiomething', 'Homeo') == true
-p substring_test('Something', '') == false
-p substring_test('', 'Something') == false
-p substring_test('BANANA', 'banana') == true
-p substring_test('test', 'lllt') == false
-p substring_test('','') == false
-p substring_test('1234567', '541265') == true
-p substring_test('supercalifragilisticexpialidocious', 'SoundOfItIsAtrocious') == true
+p find_even_index([1, 2, 3, 4, 3, 2, 1]) == 3
+p find_even_index([1, 100, 50, -51, 1, 1]) == 1
+p find_even_index([1, 2, 3, 4, 5, 6]) == -1
+p find_even_index([20, 10, 30, 10, 10, 15, 35]) == 3
+p find_even_index([20, 10, -80, 10, 10, 15, 35]) == 0
+p find_even_index([10, -80, 10, 10, 15, 35, 20]) == 6
+p find_even_index([-1, -2, -3, -4, -3, -2, -1]) == 3
+
+
+
+https://jsinibardy.com/codewars-kata-launch-school-109-oral-assessment
+

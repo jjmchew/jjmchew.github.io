@@ -9,7 +9,9 @@
 
 - [RB109](https://launchschool.com/lessons/3ce27abc/assignments)
 
+
 - live assessment codewars problems:  https://docs.google.com/document/d/1pV6HpGy6SFK3YlQfhGYAQw41pvQat5j5FL9eK7ADvho/edit
+- https://jsinibardy.com/codewars-kata-launch-school-109-oral-assessment
 
 ### Notes
 - [study notes](https://jjmchew.github.io/RB109/studyNotes)

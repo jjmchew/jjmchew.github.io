@@ -43,3 +43,7 @@ INTERVIEW ASSESSMENT
   - e.g., `1.upto(3).reduce(0) { |tot, n| tot += n**2 }`
 - `text = File.read('sample_text.txt')`
 - https://medium.com/@treskey/rb109-my-pedac-process-build-little-magic-boxes-with-me-4c63e08c5e79
+
+- random problem from online blog:  https://www.codewars.com/kata/58d06bfbc43d20767e000074
+
+
