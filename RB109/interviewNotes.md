@@ -42,3 +42,4 @@ INTERVIEW ASSESSMENT
 - when using `reduce`, the colletion variable comes first
   - e.g., `1.upto(3).reduce(0) { |tot, n| tot += n**2 }`
 - `text = File.read('sample_text.txt')`
+- https://medium.com/@treskey/rb109-my-pedac-process-build-little-magic-boxes-with-me-4c63e08c5e79

@@ -263,3 +263,25 @@ def solve(n,k)
   combined_array.map(&:join).min
 end
 ```
+
+### live coding with Amy
+  - not sure why reverse digits array - because 'digits' returns digits in backwards order
+  - good to take time to understand problem - check cases, etc.
+  - good communication - clear, easy to follow
+  ** - get comfortable with remainders - i.e., no remainder means it divides evenly
+  - to return index in map - some options - just save value and re-export it
+
+  - separate how from what - be 'declarative', e.g., split substrings
+  - syntax - separate syntax from logic, as much as possible.... 
+  - helper methods
+  - to determine if something is divisible - always use the remainder 
+  - good job finding the error - with substring size
+  - good effort at not giving up!
+
+```ruby
+def pangram?(string)
+  alphabet = ('a'..'z').to_a.join
+  string.chars.each { |c| alphabet.delete!(c.downcase) }
+  alphabet.empty?
+end
+```

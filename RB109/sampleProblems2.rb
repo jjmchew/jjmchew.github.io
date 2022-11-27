@@ -144,7 +144,141 @@ Note also that the order of the numbers in n does not change: solve(1284569,2) =
 More examples in the test cases.
 =end
 
-=begin 
+# p solve(123056,1) == '12056'
+# p solve(123056,2) #== '1056'
+# p solve(123056,3) == '056'
+# p solve(123056,4) == '05'
+# p solve(1284569,1) == '124569'
+# p solve(1284569,2) == '12456'
+# p solve(1284569,3) == '1245'
+# p solve(1284569,4) == '124'
 
+
+=begin 
+create a method that takes a positive integer number and returns the next bigger number formed by the same digits:
+e.g., 12 => 21
+513 => 531
+2017 => 2071
+If no bigger number can be composed using those digits, return -1
+e.g., 9 => -1
+111 => -1
+531 => -1
+
+p next_bigger_num(9) == -1
+p next_bigger_num(12) == 21
+p next_bigger_num(513) == 531
+p next_bigger_num(2017) == 2071
+p next_bigger_num(111) == -1
+p next_bigger_num(531) == -1
+p next_bigger_num(123456789) == 123456798
 
 =end 
+
+=begin
+The maximum sum subarray problem involves finding the maximum sum of a contiguous subsequence in an array of integers:
+
+maxSequence [-2, 1, -3, 4, -1, 2, 1, -5, 4] should be 6: [4, -1, 2, 1]
+
+Easy case is when the whole array is made up of onl positive numbers and the maximum sum is the sum of the whole array.  If the array is made up of only negative numbers, return 0 instead
+
+Empty array is considerd to have zero greatest sum.  Note that the empty array is also a valid subarray
+=end
+p max_sequence([]) == 0
+p max_sequence([-2, 1, -3, 4, -1, 2, 1, -5, 4]) == 6
+p max_sequence([11]) == 11
+p max_sequence([-32]) == 0
+p max_sequence([-2, 1, -7, 4, -10, 2, 1, 5, 4]) == 12
+
+
+=begin
+Write a method to find the longest common prefix string amongst an array of strings
+
+If there is no common prefix, return an empty string "".
+
+Example 1:
+given:  ["flower", "flow", "flight"]
+output: "fl"
+
+example 2:
+given: ["dog", "racecar", "car"]
+output:  ""
+
+Note:  all inputs are lowercase lettesr a-z
+
+p common_prefix(["flower", "flow", "flight"]) == "fl"
+p common_prefix(["dog", "racecar", "car"]) == ""
+p common_prefix(["interspecies", "interstellar", "interstate"]) == "inters"
+p common_prefix(["throne", "dungeon"]) == ""
+p common_prefix(["throne", "throne"]) == "throne"
+
+=end
+
+
+
+=begin
+Given 2 strings, find out if there is a substring that appears in both strings.
+Return true if you find a substring that appears in both strings.
+Return false if you do not.
+We only care about substrings that are longer than 1 letter long.
+=end
+
+p substring_test('Something', 'Fun') == false
+p substring_test('Something', 'Home') == true
+p substring_test('Something', '') == false
+p substring_test('', 'Something') == false
+p substring_test('BANANA', 'banana') == true
+p substring_test('test', 'lllt') == false
+p substring_test('','') == false
+p substring_test('1234567', '541265') == true
+p substring_test('supercalifragilisticexpialidocious', 'SoundOfItIsAtrocious') == true
+
+
+=begin
+
+9:26 am - 
+
+Given 2 strings, find out if there is a substring that appears in both strings.
+Return true if you find a substring that appears in both strings.
+Return false if you do not.
+We only care about substrings that are longer than 1 letter long.
+
+input
+  - 2 strings
+output
+  - boolean (true or false)
+rules
+  - if there is a substring that appears in both given strings, return true
+  - if NOT, return false
+  - empty strings are empty - i.e., they don't count as a string
+  - case-insensitive
+
+algorithm
+  - find the shortest string of the 2 given
+  - use the shortest string as the 'reference'
+  - initialize a 'collection' string
+
+  - iterate across each letter of the reference (word)
+      - see if the other word contains that letter
+        - if SO:  then add that letter to the collection string
+                  check the next letter
+                  - if the next letter of both strings is the same, then add it to the collection string
+                  - if NOT:  reset the collection string
+        - if NOT: do nothing
+                  
+      - scan the word for another instance of the reference letter 
+        AND start iteration again
+  
+  - check the length of the collection string to see if it is longer than 1 letter
+
+=end
+
+p substring_test('Something', 'Fun') == false
+p substring_test('Something', 'Home') == true
+p substring_test('Sochiomething', 'Homeo') == true
+p substring_test('Something', '') == false
+p substring_test('', 'Something') == false
+p substring_test('BANANA', 'banana') == true
+p substring_test('test', 'lllt') == false
+p substring_test('','') == false
+p substring_test('1234567', '541265') == true
+p substring_test('supercalifragilisticexpialidocious', 'SoundOfItIsAtrocious') == true
