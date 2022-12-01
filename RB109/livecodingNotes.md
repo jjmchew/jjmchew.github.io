@@ -286,4 +286,12 @@ def pangram?(string)
 end
 ```
 
-  - 
+### notes on live coding with Rowan
+- may have been helpful to look at test cases more carefully (started with an approach that wouldn't have worked for all cases) - good catch!
+- a bit of saying what you type (I was given feedback not to do that)
+- did a lot of code without testing 
+
+- love the humour (e.g., jail, laws, etc.)
+- debugging - might want to talk about what you're thinking about?
+  - dig harder to find out exactly why - try to replicate error
+
