@@ -299,5 +299,3 @@ p find_even_index([-1, -2, -3, -4, -3, -2, -1]) == 3
 
 
 
-https://jsinibardy.com/codewars-kata-launch-school-109-oral-assessment
-

@@ -47,3 +47,4 @@ INTERVIEW ASSESSMENT
 - random problem from online blog:  https://www.codewars.com/kata/58d06bfbc43d20767e000074
 
 
+- can just do:  `(0...string.length).each` ;  don't need to conver the range to an array first
