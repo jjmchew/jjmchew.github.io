@@ -13,7 +13,7 @@
 - live assessment codewars problems:  https://docs.google.com/document/d/1pV6HpGy6SFK3YlQfhGYAQw41pvQat5j5FL9eK7ADvho/edit
 - https://jsinibardy.com/codewars-kata-launch-school-109-oral-assessment
 - see list of additional problems written by the same Codewars person:
-https://www.codewars.com/kata/58f5c63f1e26ecda7e000029/train/ruby
+- https://www.codewars.com/kata/58f5c63f1e26ecda7e000029/train/ruby
 
 
 

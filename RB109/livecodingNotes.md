@@ -295,3 +295,24 @@ end
 - debugging - might want to talk about what you're thinking about?
   - dig harder to find out exactly why - try to replicate error
 
+
+### notes on live coding with Matic
+- like the prepared template - slick and tidy
+- saying what you type?  
+- typed a lot!  
+- when thinking about algo, dipped into syntax - best to separate?
+- about 10 minutes on pedac
+- good testing in stages initially (e.g., first test case)
+- using 'reject' - watch language 'let's just see'
+- debugging : seemed good, remember to mention what the error, 
+    - could add code to better dig into errors (e.g., debugging the 'nil' case)
+    - can create new test cases, as well
+
+- don't need to highlight the whole line to comment out (can just have cursor on the line)
+
+- translate the requirements - can be shorter / faster
+
+
+### live coding with James D.
+- `groups = Hash.new { |h, k| h[k] = [] }` initialize a new hash with default empty array
+
