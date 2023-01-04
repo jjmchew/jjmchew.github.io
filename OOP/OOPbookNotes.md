@@ -17,7 +17,7 @@
   - parent is 'superclass'
   - sibling is 'subclass'
   - a class inherits from the superclass, subclasses inherit from class
-  - an also 'mixin' a `Module`
+  - can also 'mixin' a `Module`
 - in Ruby:  methods, blocks, variables are NOT objects;  anything said to have a value *is* an object (e.g., numbers, strings, arrays, classes, modules)
     - [source](https://launchschool.com/books/oo_ruby/read/the_object_model#whatareobjects)
   - objects are created from classes, each object is an 'instance' of the class
@@ -74,3 +74,5 @@
     bob.pet = bud
     ```
   - the collaborative relationship exists in the design (or intention) of our code [[source](https://medium.com/launch-school/no-object-is-an-island-707e59ffedb4)]
+  - the collaborator object must be assigned to another object, it's not the 'receving object that had an object assigned to it ([source q8](https://launchschool.com/quizzes/0762dc7a))
+

@@ -9,6 +9,7 @@
 - https://jsinibardy.com/first-weeks-software-engineer#introduction
 - <mobti.me>
 - <https://replit.com/>
+- https://dmitryzuev.com/dev/pass-arguments-to-ruby-modules/
 
 
 ## Coding reminders for me

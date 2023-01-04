@@ -316,3 +316,21 @@ end
 ### live coding with James D.
 - `groups = Hash.new { |h, k| h[k] = [] }` initialize a new hash with default empty array
 
+### live coding with Amy
+- good review of cases
+- very calm - great, good explanations
+- great work moving forwards - doesn't need to be the most elegant solution
+- good use of 'technical terms'
+
+- writing down conditional was awesome - probably a good 'note'
+- finding opposites - lots of different way to do that
+
+- watch out when referring to elements vs indexes - make that distinction very clear in your mind;  watch pushing indexes vs pushing elements
+- watch language - 4 + 3, said as 4 minus 3
+
+- could combine all print statements to be on 1 line
+- good work debugging
+
+- could have used the 2 loops - great approach, could have thought more about why there were more elements than desired
+
+- 
