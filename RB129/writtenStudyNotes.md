@@ -10,14 +10,24 @@
 
 - define a class by thinking about:  states and behaviours  [source](https://launchschool.com/books/oo_ruby/read/classes_and_objects_part1#statesandbehaviors)
   - state is the data associated to an individual object, state is tracked by instance variables
+    - state is a collection of all 'instance variables' [source](https://medium.com/launch-school/towards-a-conceptual-model-of-object-oriented-programming-118eb971659f)
   - behaviours are defined by the instance methods of a class;  instance methods defined by a class are available to all instances of that class
+- class definitions also referred to as defining behaviours and *attributes* [source](https://medium.com/launch-school/towards-a-conceptual-model-of-object-oriented-programming-118eb971659f)
+  - classes have *attribute signifiers* within their definitions, not strictly 'instance variables'
+
 - the `initialize` method of a class is also called a *constructor* [source](https://launchschool.com/books/oo_ruby/read/classes_and_objects_part1#initializinganewobject)
 
- 
+- instance variables don't exist prior to an object being created and a value assigned to them [source](https://medium.com/launch-school/towards-a-conceptual-model-of-object-oriented-programming-118eb971659f)
+  - instance variables that have been defined, but haven't yet been initialized (i.e., a specific value assigned to them) have the value `nil`
+
+- 'getters' and 'setters' are 'contingent properties' of a class - need to be defined appropriately to be available [source](https://medium.com/launch-school/towards-a-conceptual-model-of-object-oriented-programming-118eb971659f);  not available by default
+  - gives programmer flexibility to define what can/can't be changed (encapsulation)
+
 #### Objects
 
 - anything that can be said to have a value is an object (e.g., numbers, strings, arrays, classes, modules) [source](https://launchschool.com/books/oo_ruby/read/the_object_model#whatareobjects)
   - methods, blocks, variables are not objects
+  - `if` statements, argument lists are also NOT objects [source](https://launchschool.com/lessons/d2f05460/assignments/9cadd494)
 - objects are created from classes; objects are instances of the class they are created from
 - can call `.class` on each object to see what class it is an instance of
 - creating a new object from a class is 'instantiation' [source](https://launchschool.com/books/oo_ruby/read/the_object_model#classesdefineobjects)
@@ -44,7 +54,6 @@
       - could refer to just characteristic names OR names *and* values attributed to the object
     - generally refers in Ruby to *instance variables*, which generally have accessor methods (but these aren't required)
 
-- 
 
 </details>
 
@@ -54,9 +63,12 @@
 <summary>Use `attr_*` to create setter and getter methods</summary>
 
 - [source](https://launchschool.com/books/oo_ruby/read/classes_and_objects_part1#accessormethods)
-- `attr_accessor` creates both getter and setter methods based on the symbol object(s) passed in
-- `attr_writer` creates only setter methods based on symbol object(s) passed in
-- `attr_reader` creates only getter methods based on symbol object(s) passed in
+  - the `attr_accessor` *method* is used to automatically create getter and setter methods
+    - it takes 1 or more symbol(s) as arguments and creates methods for getters and setters
+
+- `attr_accessor` *method* creates both getter and setter methods based on the symbol object(s) passed in
+- `attr_writer` *method* creates only setter methods based on symbol object(s) passed in
+- `attr_reader` *method* creates only getter methods based on symbol object(s) passed in
 
 </details>
 
@@ -80,13 +92,65 @@
 <details >
 <summary>Instance variables, class variables, and constants, including the scope of each type and how inheritance can affect that scope</summary>
 
+##### Instance Variables
 - instance variables have '`@`' symbol in front of them [source](https://launchschool.com/books/oo_ruby/read/classes_and_objects_part1#instancevariables)
   - instance variables only exist if the object instance exists;  helps to tie data to objects;  lives on until the object is destroyed
   - actual instance variables are not inherited (i.e., values stored in instance variables - state - will be different for each object which is an instance of the same class) [source](https://launchschool.com/lessons/b5948548/assignments/fd4d12cb)
-- class variables have '`@@`' symbol in front of then [source](https://launchschool.com/books/oo_ruby/read/classes_and_objects_part2#classvariables)
+  - instance variables need to be initialized within instance methods [source](https://launchschool.com/lessons/d2f05460/assignments/b4f9e5b7)
+    - if initialized within the class, they are 'class instance variables' - entirely different
+  - scope is at object level, accessible to all instance methods (without being explicitly passed in) [source](https://launchschool.com/lessons/d2f05460/assignments/b4f9e5b7)
+  - sub classes inherit the definitions for instance variables [source](https://launchschool.com/lessons/d2f05460/assignments/b8928e96)
+    - uninitialized instance variables will still return `nil`
+    - any uninitialized instance variable (even if not previously defined) will return `nil` (based upon experimentation)
+    - instance variables and their values are NOT inherited [source](https://launchschool.com/lessons/d2f05460/assignments/b8928e96)
+
+##### Class Variables
+- class variables have '`@@`' symbol in front of them [source](https://launchschool.com/books/oo_ruby/read/classes_and_objects_part2#classvariables)
   - class variables can be accessed within instance methods (e.g., `initialize` is an instance method)
+  - these are scoped at the class level [source](https://launchschool.com/lessons/d2f05460/assignments/b4f9e5b7)
+    - can be accessed by class methods as long as the class variable has been initialized prior to being called
+  - class variables are accessible to sub-classes [source](https://launchschool.com/lessons/d2f05460/assignments/b8928e96)
+    - NOTE:  sub-classes can re-define class variables and this will affect all instances of the class / super-class
+    - e.g., 
+      ```ruby
+      
+      ```
+
+##### Constants
 - constants are defined using an uppercase letter at the beginning of the variable name (convention is to use all caps) [source](https://launchschool.com/books/oo_ruby/read/classes_and_objects_part2#constants)
   - these are variables which you never want to change (during run-time)
+  - have *lexical scope* : where the constant is defined in the source code determines where it is available [source](https://launchschool.com/lessons/d2f05460/assignments/b4f9e5b7)
+    - the surrounding code structure is the lexical scope
+    - can use "namespace resolution operator" `::` to access other classes (outside of lexical scope)
+- Ruby attempts to resolve constants first through: [source](https://launchschool.com/lessons/d2f05460/assignments/b8928e96)
+  - lexical scope (which doesn't include the main / top-level scope)
+  - then inheritance hierarchy (i.e., ancestors) of the **structure that references the constant**
+  - main scope is checked last
+- example [source](https://launchschool.com/lessons/d2f05460/assignments/b8928e96):
+  - module defines a constant; that module is included in a class; an instance method from a super-class is invoked which references the constant defined in the module. However, the module included in the class is NOT accessible from the *super-class* where the method was invoked
+  ```ruby
+  module FourWheeler
+    WHEELS = 4
+  end
+
+  class Vehicle
+    def maintenance
+      "Changing #{WHEELS} tires."
+    end
+  end
+
+  class Car < Vehicle
+    include FourWheeler
+
+    def wheels
+      WHEELS
+    end
+  end
+
+  car = Car.new
+  puts car.wheels        # => 4
+  puts car.maintenance   # => NameError: uninitialized constant Vehicle::WHEELS
+  ```
 
 </details>
 
@@ -120,6 +184,7 @@
   - `protected`
     - allow access by other class instances (e.g., when used for comparators)
     - similar to `private` methods - they cannot be invoked from outside of the class, but other instances of the same class (*or subclass*) can invoke protected methods
+      - note *super class* cannot invoke protected methods of its subclass
 
 </details>
 
@@ -157,17 +222,24 @@
 - can only inherit from 1 class [source](https://launchschool.com/books/oo_ruby/read/inheritance#inheritancevsmodules)
 - class inheritance is typically used for "is a" relationships (e.g., Dog is a Mammal)
 - can call `.superclass` on a class to find the superclass [source](https://launchschool.com/books/oo_ruby/read/inheritance#accidentalmethodoverriding)
-
+- Ruby has only *single inheritance* (can only inherit from 1 super class) [source](https://launchschool.com/lessons/dfff5f6b/assignments/2cf31cc8)
 
 #### Encapsulation
 - hiding functionality and making it unavailable to the rest of the code base [source](https://launchschool.com/books/oo_ruby/read/the_object_model#whyobjectorientedprogramming)
 - a form of data protection
 - accomplished by creating objects and exposing interfaces (i.e., methods) to interact with those objects
+- can use method access control to achieve this [source](https://launchschool.com/lessons/dfff5f6b/assignments/8c6b8604)
 
 #### Polymorphism
 - ability for different data types to respond to a common interface [source](https://launchschool.com/books/oo_ruby/read/the_object_model#whyobjectorientedprogramming)
-- can be accomplished through inheritance (and override)
-- can also be accomplished by creating objects which have methods of the same name (so they can exhibit similar behaviours)
+- ability of different object types to respond to the same method invocation, often, but not always, in different ways [source](https://launchschool.com/lessons/dfff5f6b/assignments/8c6b8604)
+  - different data can respond to a common interface
+- can be accomplished through inheritance (and override) [source](https://launchschool.com/lessons/dfff5f6b/assignments/8c6b8604)
+  - can define a generic (empty, if necessary) method in the superclass which is inherited by all subclasses
+  - as required, override the generic method to define subclass-specific behaviours (e.g., `move` method of class `Animal` may be diferent for `Fish` class vs `Coral` class)
+- can also be accomplished by creating objects which have methods of the same name (so they can exhibit similar behaviours) [source](https://launchschool.com/lessons/dfff5f6b/assignments/8c6b8604)
+  - "duck-typing" : when *unrelated* types both respond to the same method name, take the same number of arguments
+  - methods should be intentionally related by design to be polymorphic (e.g., `draw` in `Circle` class should NOT be related to `draw` in `Blinds` class)
 
 
 </details>
@@ -220,7 +292,8 @@
     value = Mammal::some_out_of_place_method(4) # alternate method
 
     ```
-
+- modules are Ruby's answer to multiple inheritances (not allowed) - but can *mixin* a module [source](https://launchschool.com/lessons/dfff5f6b/assignments/2cf31cc8)
+  - mixing in a module is equivalent to cutting and pasting those methods into a class
 </details>
 
 ---
@@ -250,7 +323,7 @@
 
 - [source](https://launchschool.com/books/oo_ruby/read/classes_and_objects_part1#accessormethods)
   - to use setter, use `self.` ("to disambiguate from creating a local variable")
-    - Ruby style convention:  avoid 'self' where not required
+    - Ruby style convention:  avoid 'self' where not required [source](https://launchschool.com/books/oo_ruby/read/classes_and_objects_part1#callingmethodswithself)
 - [source](https://launchschool.com/books/oo_ruby/read/classes_and_objects_part2#moreaboutself)
     - `self` will refer to different things depending on where it is used
     - when an instance method uses `self`, it references the **calling object**
@@ -293,8 +366,21 @@
 <details >
 <summary>Fake operators and equality</summary>
 
-- more notes here
+- using `==` : it's a(n instance) method ('fake operator') [source](https://launchschool.com/lessons/d2f05460/assignments/9cadd494)
+  - will compare objects based upon their 'value', or however the `==` has been defined (Ruby core library defines `==` to compare values for Array, String, Integer, etc.)
+  - original `==` method is defined in `BasicObject` class : default for this is to determine if 2 objects are the same object
+  - re-defining `==` method also gives you the `!=` method
+  - the `===` method is implicitly used in `case` statements (e.g., used to compare ranges in `case` statements)
+    - `===` asks: if argument1 is a group, would argument2 belong in that group? returns `true` or `false` (note:  Ruby `===` is VERY different than JavaScript `===`)
+- to determine if the actual object is the same (and not just the value), can use `equal?` method [source](https://launchschool.com/lessons/d2f05460/assignments/9cadd494)
+  - e.g., `str1.equal? str2`
+- `.eql?` method is used in comparisons by `Hash` class : determines if 2 objects contain the same value and if they're of the same class
 
+- fake operators reference table : https://launchschool.com/lessons/d2f05460/assignments/9a7db2ee
+  - Fake operators (are methods): `[]` `[]=` `**` `==` `!` `~` `+` `-` `*` `%` `/` `+@` `-@` `<<` `>>` `&` `^` `|` `<=` `<` `>` `>=` `<=>` `===` `!=` `=~` `!~`
+  - NOT methods: `.` `::` `&&` `||` `..` `...` `? :` `=` `%=` `/=` `-=` `+=` `|=` `&=` `>>=` `<<=` `*=` `&&=` `||=` `**=` `{`
+  - any fake operators can be redefined in custom classes
+  - make sure that re-definitions make sense and are consistent with expected Ruby behaviour (e.g., don't redefine `==` and `!=` and create inconsistencies, don't make `<<` not add to a collection, ensure `+` when used for collections returns the *same object type* along with a concatenation of elements)
 </details>
 
 ---
@@ -302,8 +388,31 @@
 <details >
 <summary>Working with collaborator objects</summary>
 
-- more notes here
+- collaborator object:  an object that is stored as state within another object [source](https://launchschool.com/lessons/dfff5f6b/assignments/4228f149)
+  - these objects work in conjunction / collaboration with the class they are associated with
+  - collaborator objects are usually custom objects (defined by the programmer, but can be any object - strings, integers, arrays, hashes since these are all objects)
+  - collaborator objects represent connections between various actors in programs
+  - e.g.,  `bud` is the collaborator object - it's part of the state of `bob`
+    ```ruby
+    class Person
+      attr_accessor :name, :pet
 
+      def initialize(name)
+        @name = name
+      end
+    end
+
+    bob = Person.new("Robert")
+    bud = Bulldog.new             # assume Bulldog class from previous assignment
+
+    bob.pet = bud
+    ```
+- collaboration is a way of modelling (associative) relationships between different objects [source](https://medium.com/launch-school/no-object-is-an-island-707e59ffedb4)
+  - *not* inheritance relationships
+  - relationship may be defined within `initialize` method, or elsewhere within the class
+  - the actual collaboration occurs when the actual object is added to the state:
+      - may be set within `initialize` method
+      - could also use a setter method elsewhere in the program to define the collaborator object
 </details>
 
 ---
@@ -311,12 +420,81 @@
 <details >
 <summary>Other notes</summary>
 
+- typical approach to OOP: [source](https://launchschool.com/lessons/dfff5f6b/assignments/180e267e)
+  - write a textual description of the problem or exercise
+  - extract the major nouns and verbs from the description
+  - organize and associate the verbs with the nouns
+  - nouns are the classes and the verbs are the behaviours or methods
+  - example - TTT:  don't think about game flow initially, focus on organizing / modularizing code into cohesive class structure
+
+- OOP architecture [source](https://launchschool.com/lessons/dfff5f6b/assignments/ff0b0ded)
+  - there are always trade-offs between flexible code and indirection
+  - i.e., if all code is in place it's not very flexible;  splitting code up can make it more flexible and easier to maintain, but's it's harder to understand (may have more classes, etc.)
+  - a 'spike' is exploratory code to play around with the problem [source](https://launchschool.com/lessons/dfff5f6b/assignments/d632a90f)
+    - don't worry about code quality; just play - an initial brain dump
+  - if nouns keep coming up, it might be an indication a new class is required (e.g., `Move` in rock, paper, scissors)
+
+#### CRC cards
+- Class Responsibility Collaborator (CRC) cards [source](https://launchschool.com/lessons/dfff5f6b/assignments/3b584726):
+  - list the 'class name' (indicate super / sub classes)
+  - underneath:  'responsibilities' (public behaviours / methods), 'collaborators' (other objects)
+  
 #### to_s method
 - [source](https://launchschool.com/books/oo_ruby/read/classes_and_objects_part2#theto_smethod)
   - is built-in to every class in Ruby (instance method), but can be overridden to define the output when `puts` is invoked on an object of the class
     - the `puts` method automatically calls `to_s` for any argument that is *not* an array.  For an array, it writes on separate line the result of calling `to_s` on each element of the array
     - `to_s` is also automatically called in string interpolation
 
+#### exceptions
+- [source](https://launchschool.medium.com/getting-started-with-ruby-exceptions-d6318975b8d1)
+  - exceptions are raised when code behaves unexpectedly
+  - Ruby has built-in classes to handle exceptions (abbreviated list):
+    - `Exception`
+      - `ScriptError`
+        - `SyntaxError`
+      - `SignalException`
+        - `Interrupt`  (e.g., using `ctrl-c` to exit a program)
+      - `StandardError`
+        - `ArgumentError`
+        - `NameError`
+          - `NoMethodError`
+        - `RuntimeError`
+        - `TypeError`
+        - `ZeroDivisionError`
+      - `NoMemoryError`
+  - best to handle errors in a 'specific' way and not just handle all errors at `Exception`-level
+  - can handle with `begin` / `rescue` block:
+    ```ruby
+    begin
+      # code to try
+    rescue TypeError  # if specific error type is not defined, will default to `StandardError`
+      # action to take for rescue
+    rescue NoMethodError, ArgumentError # optional to list additional rescue blocks for specific error types, or multiple error types separated w/ comma
+      retry ...  #can add conditional or other code here to be executed
+    rescue ZeroDivisonError => e
+      puts e.message # standard exception object will include `Exception#message` and `Exception#backtrace`
+    ensure
+      # code here always runs (w or w/o exception);  clean up code can go here
+      # note:  if an exception is raised here, it will 'mask' earlier exceptions
+    end
+    ```
+  - can use `Kernel#raise` to throw custom errors
+    - will default to `RuntimeError` unless otherwise specified (e.g., `raise TypeError.new("message here")` )
+  - can create custom exception classes that inherit from built-in exception classes (best to subclass from `StandardError`):
+    - e.g., `class ValidateAgeError < StandardError; end`
+    - will include existing objects defined under `StandardError` including `Exception#message` and `Exception#backtrace`
+
+
+#### `Struct`
+- classes that contain ONLY data and no behaviours can be defined using `Struct` [source](https://launchschool.com/lessons/97babc46/assignments/348a722b)
+  ```ruby
+  Pet = Struct.new('Pet', :kind, :name, :age)
+  asta = Pet.new('dog', 'Asta', 10)
+  cocoa = Pet.new('cat', 'Cocoa', 2)
+  p asta.age          # => 10
+  cocoa.age = 3
+  p cocoa.age         # => 3
+  ```
 
 </details>
 

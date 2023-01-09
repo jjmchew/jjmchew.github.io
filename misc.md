@@ -10,6 +10,8 @@
 - <mobti.me>
 - <https://replit.com/>
 - https://dmitryzuev.com/dev/pass-arguments-to-ruby-modules/
+- RuboCop ABC (Assignment Branch Condition) Size errors:  https://launchschool.com/lessons/dfff5f6b/assignments/e1ba7b4b
+- Ruby exceptions:  https://launchschool.medium.com/getting-started-with-ruby-exceptions-d6318975b8d1
 
 
 ## Coding reminders for me

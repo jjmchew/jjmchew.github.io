@@ -255,4 +255,7 @@ p good_dog.walk
 
 ### Questions to answer:
   - what is the attr_* thing called?  Is it a method?  or something else?
+      - A:  `attr_accessor` is a method, `attr_reader` is a method, `attr_writer` is a method
+  - constant resolution operator and namespace resolution operator : same? 
+  - is `.new` a method?
 
