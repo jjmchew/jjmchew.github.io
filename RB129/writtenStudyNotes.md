@@ -115,6 +115,30 @@
       ```ruby
       
       ```
+  - from testing:  can assign class variables anywhere within the class (i.e., within methods is also okay)
+    - NOTE:  if class variable is initialized within an instance method (e.g., `initialize`) and that method hasn't yet been executed (e.g., no instance of class has been created and thus `initialize` executed), there will be an error (NameError) when trying to reference that class variable
+    - for example:  need to instantiate `GoodDog` before class method `how_many` will work
+    ```ruby
+    class GoodDog
+      TEETH = 23
+      
+      def initialize(name)
+        @@legs = 4
+        @name = name
+      end
+      
+      def self.how_many
+        p @@legs
+        p TEETH
+      end
+    end
+
+    sparky = GoodDog.new('Sparky') # without this line, the next doesn't work
+
+    GoodDog.how_many
+
+    p GoodDog::TEETH
+    ```
 
 ##### Constants
 - constants are defined using an uppercase letter at the beginning of the variable name (convention is to use all caps) [source](https://launchschool.com/books/oo_ruby/read/classes_and_objects_part2#constants)
@@ -151,7 +175,7 @@
   puts car.wheels        # => 4
   puts car.maintenance   # => NameError: uninitialized constant Vehicle::WHEELS
   ```
-
+  - from testing:  should not assign *constants* within methods (class or instance) - only within the class
 </details>
 
 ---
@@ -345,9 +369,9 @@
         end
       end
 
-      p Walkable::count_steps(3)
-      p Walkable.output_self
-      p Walkable::CONST
+      p Walkable::count_steps(3) # "I walked 3 steps"
+      p Walkable.output_self     # Walkable
+      p Walkable::CONST          # Walkable
       ```
 
 </details>
@@ -372,6 +396,7 @@
   - re-defining `==` method also gives you the `!=` method
   - the `===` method is implicitly used in `case` statements (e.g., used to compare ranges in `case` statements)
     - `===` asks: if argument1 is a group, would argument2 belong in that group? returns `true` or `false` (note:  Ruby `===` is VERY different than JavaScript `===`)
+    - see Q7 Quiz 3 [link](https://launchschool.com/quizzes/ac459ccb) : case statements use `===` to check equality, technically not `==`
 - to determine if the actual object is the same (and not just the value), can use `equal?` method [source](https://launchschool.com/lessons/d2f05460/assignments/9cadd494)
   - e.g., `str1.equal? str2`
 - `.eql?` method is used in comparisons by `Hash` class : determines if 2 objects contain the same value and if they're of the same class

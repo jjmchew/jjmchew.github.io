@@ -254,8 +254,15 @@ p good_dog.walk
 
 
 ### Questions to answer:
-  - what is the attr_* thing called?  Is it a method?  or something else?
-      - A:  `attr_accessor` is a method, `attr_reader` is a method, `attr_writer` is a method
-  - constant resolution operator and namespace resolution operator : same? 
-  - is `.new` a method?
+- [x] what is the attr_* thing called?  Is it a method?  or something else?
+  - A:  `attr_accessor` is a method, `attr_reader` is a method, `attr_writer` is a method
+- [ ] constant resolution operator and namespace resolution operator : same? 
+- [x] is `.new` a method?
+  - A:  YES.  .new is definitely a method.
+- [x] can CONSTANTS be defined in methods?
+  - A:  appears no:  from testing, only in class def (outside of instance method def)
+- [x] what does `.eql?` do?
+  - A:  compare if 2 objects have the same value and are of the same class
+- [x] what does `===` do?
+  - A:  if argument1 is a group, would argument2 belong in that group
 
