@@ -233,7 +233,8 @@ p Car.wheels
 - The code above outputs each of the following numbers on a separate line:  `4`, `2`, `2`, `2`, `2`, `2`.  When the class method `wheels` is first invoked, the value of class variable `@@wheels` is `4`, as defined in the first line of the class `Vehicle` definition and is what is output when `wheels` is first invoked.  However, once the class variable `@@wheels` is re-assigned to the integer value `2` by the definition of sub-class `Motorcycle`, subsequent invocations of the `wheels` class method return the new value of `@@wheels` which is `2`.
 - When using inheritance (sub-classes), avoiding the use of class variables can prevent this kind of behaviour can lead to an unexpected change in value of class variables.  Where the code may be very long and multiple classes and structures are used, any addition (or removal) of code from 1 area can unexpectedly impact code in subsequent areas and may be very hard to debug.
 
-- comments from Spot session:
+
+##### comments from Spot session:
   - first initializing class variable @@wheels
   - helpful to frame why this happens is to think about how the Ruby interpreter 'parses' code : the interpreter will go from top to bottom; any expression not within a method definition will be evaluated.  class variable assignment is evaluated, but method definitions are just 'noted' but not executed as part of parsing process;  method invocations ARE evaluated through parsing - method `wheels` is invoked, which returns the value of the constant (initially assigned as 4)
   - continue parsing : then new class is defined which subclasses from Vehicle.  then `@@wheels` is reassigned - and the interpreter will evaluate the expression (not a method definition);
