@@ -1079,6 +1079,7 @@ Kitty saunters forward
 ```
 
 - It makes sense to use a mixin module here since the method is exactly the same for both class `Cat` and class `Person`.  Use of the module minimizes repetition of code and is generally used when the method represents a "has-a" relationship with the class.  In this example, both `Cat` and `Person` would "have-a" walk.  Class inheritance is generally used with a "is-a" relationship.  In our current example, '`Cat` is-a walk' would not make sense, hence inheritance is not the best choice of code structure.
+
 ---
 
 ##### 35
@@ -1204,6 +1205,7 @@ daisy.speak
 - This code will output `Daisy says moooooooooooo!` to the screen.  The `speak` method is invoked on `daisy`, which references a `Cow` object which was instantiated with the string value `"Daisy"` passed in as an argument. 
 - Regarding the instantiation of the `Cow` object referenced by `daisy`:  since the `Cow` class does not define an `initialize` method, Ruby looked up the inheritance hierarchy to the `Animal` class for an `initialize` method (a constructor).  Since a constructor is defined for the `Animal` class, this string value `"Daisy"` was assigned to the instance variable `@name` by the constructor defined within the `Animal` class as part of the state associated with the `Cow` object referenced by `daisy`.
 - Regarding the invocation of the `speak` method on `daisy`:  Ruby will traverse the method lookup path looking for the `speak` method starting with the `Cow` class.  Since there is no method definition for `speak` within the `Cow` class, Ruby will next check the `Animal` class.  Since `speak` is defined within the `Animal` class, Ruby will execute it.  The `speak` method invokes the `puts` method with `sound` (another method passed in as an argument).  To evaluate `sound`, Ruby will again search the method lookup path starting with the object's `Cow` class.  Since `sound` is defined within the `Cow` class, Ruby will evaluate the method.  Within the `Cow#sound` method, the return value is a string which is concatenated from the output of `Animal#sound`, as indicated by the method `super` and also the string `"moooooooooooo!"`.  Evaluating `Animal#sound` will return a string with the value of the instance variable `@name` interpolated into the string `"Daisy says "`.  Concatenating the string output of `Animal#sound` with `"moooooooooooo!"` gives the final string, `"Daisy says moooooooooooo!"`, which is passed to the `puts` method for output to the screen.
+
 
 ---
 
