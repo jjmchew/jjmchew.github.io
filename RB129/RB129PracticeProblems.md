@@ -1037,7 +1037,7 @@ p device.check
 
 ---
 
-34. 
+34
 What is returned/output in the code? Why did it make more sense to use a module as a mixin vs. defining a parent class and using class inheritance?
 
 ```ruby
@@ -1095,27 +1095,29 @@ Kitty saunters forward
 - It makes sense to use a mixin module here since the method is exactly the same for both class `Cat` and class `Person`.  Use of the module minimizes repetition of code and is generally used when the method represents a "has-a" relationship with the class.  In this example, both `Cat` and `Person` would "have-a" walk.  Class inheritance is generally used with a "is-a" relationship.  In our current example, '`Cat` is-a walk' would not make sense, hence inheritance is not the best choice of code structure.
 ---
 
-35. 
+35
 What is Object Oriented Programming, and why was it created? What are the benefits of OOP, and examples of problems it solves?
 
 - Object Oriented Programming is a programming paradigm which uses programming 'objects', defined through 'classes' to help encapsulate (segregate) pieces of code to help organize and structure code, reduce dependencies and code conflicts, and increase reusability of code snippets.  Especially in larger codebases where there is an increased likelihood of variables or functions having the same name and creating errors, the ability to separate various parts of the code and ensure they do not conflict becomes important.  Also, with larger distributed teams, the need to define clear 'interfaces' for different parts of the code ensured that dependencies between different areas of code could be more clearly tracked and reduced.
 
 ---
 
-36. 
+36
 What is the relationship between classes and objects in Ruby?
 
-- Classes 
+- Classes are like a 'blueprint' for objects and define what attributes and behaviours objects will have.  Objects are instantiated from classes and have the instance methods and instance variables defined by the class definition.  The actual values of the instance variables within each object may vary depending on what arguments may have been passed in when the object was first instantiated and how that object may have been manipulated within the larger codebase.
 
 ---
 
-37. When should we use class inheritance vs. interface inheritance?
-```ruby
-```
+37
+When should we use class inheritance vs. interface inheritance?
+
+- Class inheritance is most appropriate for objects that have a hierarchical, "is-a" relationship.  For example, when thinking about animals, cats can be thought of as a subset of animals, i.e., a cat *is an* animal, hence the use of class inheritance may be appropriate.  However, if thinking about cats and considering an "ability to climb", there is a different type of relationship.  An "ability to climb" is *not* a cat, and thus an inheritance relationship may not be appropriate.  In this situation, the relationship is a "has-a" relationship; i.e., a cat *has an* ability to climb.  These "has-a" relationships may be better represented using interface inheritance and can be easily implemented through the use of mixin modules.
 
 ---
 
-38. If we use `==` to compare the individual `Cat` objects in the code above, will the return value be `true`? Why or why not? What does this demonstrate about classes and objects in Ruby, as well as the `==` method?
+38
+If we use `==` to compare the individual `Cat` objects in the code above, will the return value be `true`? Why or why not? What does this demonstrate about classes and objects in Ruby, as well as the `==` method?
 
 ```ruby
 class Cat
@@ -1126,9 +1128,13 @@ ginger = Cat.new
 paws = Cat.new
 ```
 
+- If we use the `==` method to compare individual `Cat` objects in the code above, the return value will be `false`.  This is because when custom class objects are compared using the `==` method, by default the method will compare the actual objects themselves are the same (i.e., have the same object id).  Since each new instance of the `Cat` class will create a new object with a distinct object id, the `==` method will return `false` when comparing these objects with each other.
+- This demonstrates that although objects may share a common class, each object is unique (and assigned a different location in memory).
+
 ---
 
-39. Describe the inheritance structure in the code above, and identify all the superclasses.
+39
+Describe the inheritance structure in the code above, and identify all the superclasses.
 
 ```ruby
 class Thing
@@ -1141,9 +1147,12 @@ class SomethingElse < AnotherThing
 end
 ```
 
+- In the code above, class `Thing`, as a custom class, inherits from `Object`, class `AnotherThing` inherits from `Thing`, and class `SomethingElse` inherits from `AnotherThing`.  Thus, the superclasses are `Object`, `Thing` and `AnotherThing`.
+
 ---
 
-40. What is the method lookup path that Ruby will use as a result of the call to the `fly` method? Explain how we can verify this.
+40
+What is the method lookup path that Ruby will use as a result of the call to the `fly` method? Explain how we can verify this.
 
 ```ruby
 module Flight
@@ -1173,9 +1182,13 @@ pingu = Penguin.new
 pingu.fly
 ```
 
+- The method lookup path when the instance method `fly` is invoked will be:  `Penguin`, `Migratory`, `Aquatic`, `Bird`, `Animal`, `Object`, `Kernel`, `BasicObject`.  Since the module `Flight` is not part of the method lookup path, invoking the `fly` method on a `Penguin` object will return an error.
+- This can be verified by calling the `ancestors` method on the `Penguin` class and viewing the return value using the code: `p Penguin.ancestors`.
+
 ---
 
-41. What does this code output and why?
+41
+What does this code output and why?
 
 ```ruby
 class Animal
@@ -1202,6 +1215,9 @@ daisy = Cow.new("Daisy")
 daisy.speak
 ```
 
+- This code will output `Daisy says moooooooooooo!` to the screen.  The `speak` method is invoked on `daisy`, which references a `Cow` object which was instantiated with the string value `"Daisy"` passed in as an argument. 
+- Regarding the instantiation of the `Cow` object referenced by `daisy`:  since the `Cow` class does not define an `initialize` method, Ruby looked up the inheritance hierarchy to the `Animal` class for an `initialize` method (a constructor).  Since a constructor is defined for the `Animal` class, this string value `"Daisy"` was assigned to the instance variable `@name` by the constructor defined within the `Animal` class as part of the state associated with the `Cow` object referenced by `daisy`.
+- Regarding the invocation of the `speak` method on `daisy`:  Ruby will traverse the method lookup path looking for the `speak` method starting with the `Cow` class.  Since there is no method definition for `speak` within the `Cow` class, Ruby will next check the `Animal` class.  Since `speak` is defined within the `Animal` class, Ruby will execute it.  The `speak` method invokes the `puts` method with `sound` (another method passed in as an argument).  To evaluate `sound`, Ruby will again search the method lookup path starting with the object's `Cow` class.  Since `sound` is defined within the `Cow` class, Ruby will evaluate the method.  Within the `Cow#sound` method, the return value is a string which is concatenated from the output of `Animal#sound`, as indicated by the 
 ---
 
 42. Do `molly` and `max` have the same states and behaviors in the code above? Explain why or why not, and what this demonstrates about objects in Ruby.
