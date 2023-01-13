@@ -525,3 +525,7 @@ p Vehicle.wheels
 - [ ] review definitions of encapsulation, inheritance
 - [ ] review - Why OOP?
 - [ ] is 'super' a 'keyword'?  or a method?  What is it?
+- [ ] practice problems Q44 : instance 1 of `self` - what does it refer to?  Does it do anything?  Is it useful?
+- [ ] practice problems q47 : beware of nested inheritance!  Need to check each 'super'
+- [ ] practice problems q49 : double check methods - 'Integer', 'Array', 'Range'?
+- [ ] practice problems q50 : double check scope of various variable types (constant, class, instance)
