@@ -49,10 +49,11 @@ X - q11:  C
 REVIEW `.eql?`, `===`
 
 ### [Quiz 5](https://launchschool.com/quizzes/d0e9e9d9)
-- q1 :  
-- q2 :  
-- q3 :  
-- q4 :  
-- q5 :  
-- q6 :  
-- q7 :  
+- q1 :  B
+- q2 :  C
+- q3 :  A
+- q4 :  B
+- q5 :  C
+- q6 :  C
+- q7 :  B, E
+

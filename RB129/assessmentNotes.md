@@ -252,6 +252,53 @@ p good_dog.walk
         - Attribute names and their values are just instance variables and values, so they are not inheritable
         State is a tied directly to individual objects, so is not inheritable.
 
+### notes from Spot session (Jan 12)
+- written and interview assessments are quite similar - for both assessments, be comfortable with concepts and syntax to be able to teach them to someone else - 
+- our goal in written assessment:  concept-based questions and code-based questions;  see how well we understand and can explain;  in code - show we are fluent in syntax and structure of OOP in Ruby - explain and ilustrate with code
+- interview is the same - should feel the same - explain concepts, expect us to illustrate what we're talking about;  be comfortable with explaining and coding;  should feel like a conversation
+- coordination between explaining and illustrating with code:  try first explaining, then coding.  e.g., polymorphism
+  - first talk about polymorphism and explain concisely
+  - then show some simple code and describe and comment on things that seem relevant
+- another way:  could create code example first, then explain your code
+- another way:  could code and talk at the same time
+- interview feels like a conversation - but there is a longer question at the end;  but try and keep a mental clock going - you may need to manage time on your own (can ask the TA about whether or not they had any other questions)
+  - may help to start with a general answer - the method look-up path is.....,  then spend a bit of time talking about the code example
+
+
+question:
+```ruby
+class Animal
+  def initialize(name)
+    @name = name
+  end
+
+  def speak
+    puts sound
+  end
+
+  def sound
+    "#{@name} says "
+  end
+end
+
+class Cow < Animal
+  def sound
+    super + "moooooooooooo!"
+  end
+end
+
+daisy = Cow.new("Daisy")
+daisy.speak
+```
+- How to refer to the invocation of the `speak` method?
+  - be specific with language:  "the method `speak` is invoked on the daisy object"
+  - the instance method `speak` , that the `Cow` class inherits from the `Animal` class 
+    - the `speak` instance method is defined in the `Animal` class
+
+- polymorphism is ability to invoke a method of the same name on different class / object types
+  - can use duck-typing : create the same method name in different classes
+  - can use inheritance / override
+  - can use modules (interface inheritance) - include modules on different objects and have access to same methods
 
 ### Questions to answer:
 - [x] what is the attr_* thing called?  Is it a method?  or something else?
@@ -266,3 +313,213 @@ p good_dog.walk
 - [x] what does `===` do?
   - A:  if argument1 is a group, would argument2 belong in that group
 
+- [ ] Quiz 5, question 7:  Why wouldn't answer C work - theoretically, the `burger`, `side`, and `drink` getter methods could query the OPTIONS hash and return the appropriate value
+
+- [ ] review:  Object, Kernel, BasicObject - IN THAT ORDER!
+- [ ] confirm practice problems question #3 : what is the lookup path from Describable?
+  - A:  from modules, the lookup path will NOT include the class that included the module, it stops at the module and doesn't go further up (if namespace resolution operator isn't used)
+  - lookup path for instance methods always starts with the calling object / class (i.e., will start at the bottom again)
+    ```ruby
+    module Describable
+      SIDES = 1
+
+      def describe_shape
+        p self.class
+        p self.class.ancestors
+        new_method
+        "I am a #{self.class} and have #{SIDES} sides."
+      end
+    end
+
+    class Geometry
+      SIDES = 2
+
+      def new_method
+        p "I'm part of class #{self.class}"
+      end
+    end
+
+    class Shape < Geometry
+      SIDES = 3
+      include Describable
+
+      def self.sides
+        self::SIDES
+      end
+      
+      def sides
+        self.class::SIDES
+      end
+
+      # def new_method
+      #   p "I'm part of class Shape"
+      # end
+    end
+
+    class Quadrilateral < Shape
+      SIDES = 4
+
+      # def new_method
+      #   p "I'm part of class Quadrilateral"
+      # end
+    end
+
+    class Square < Quadrilateral; 
+      SIDES = 5
+
+      # def new_method
+      #   p "I'm part of class Square"
+      # end
+    end
+
+    p Square.sides 
+    p Square.new.sides 
+    p Square.new.describe_shape
+    ```
+
+- [x] practice problems question 7 : possible to 'reset' `@@wheels`?  Why isn't it reset when class `Vehicles` is interacted with?
+  - A:  propose that class variables are assigned their values based upon the lexical (?) order in which classes or sub-classes define new values for the class variable.  i.e., if there is a subsequent re-definition of a class or a sub-class which inherits the class variable redefines the value of the class variable, then subsequent references to that class variable will contain the new value
+  - [ ] How do you say this?
+```ruby
+class Vehicle
+  @@wheels = 4
+  
+  def self.wheels
+    @@wheels
+  end
+
+  def self.pizza
+    "I like pizza"
+  end
+end
+
+p Vehicle.wheels
+p Vehicle.pizza
+
+class Motorcycle < Vehicle
+  @@wheels = 2
+end
+
+p Vehicle.wheels
+p Motorcycle.wheels
+
+class Car < Vehicle
+  @@wheels = 3
+end
+
+p Vehicle.wheels
+
+class Motorcycle
+  def self.wheels
+    p "new def!"
+    @@wheels
+  end
+end
+
+p Vehicle.wheels
+p Motorcycle.wheels
+p Car.pizza
+
+class Cart #< Vehicle
+  @@wheels = 7
+end
+
+p Vehicle.wheels
+```
+
+-[x] what happens when classes are 're-defined' later in the code?
+  - A: class variables can have values re-defined;  class methods will not be 'lost', but can be over-written
+
+- [ ] are inheritances available to all levels of sub classes?  i.e., multiple levels down
+- [x] when string variables are passed into object constructors and assigned to instance variables, is it the VALUE that is assigned, or is it the actual OBJECT that is assigned?
+  - A:  it is the actual OBJECT that is assigned.  Use of a mutating / destructive method on it will change the actual value referenced by other local variables pointing to the same object.
+  ```ruby
+  class Person
+    attr_reader :name
+
+    def initialize(name)
+      @name = name
+    end
+
+    def to_s
+      "My name is #{name.upcase!}."
+    end
+  end
+
+  a = 'Bob'
+  puts a.object_id
+
+  bob = Person.new(a)
+  puts bob.name
+  puts bob
+  puts bob.name
+
+  puts a
+  puts bob.name.object_id
+  ```
+
+- [x] Are class methods inherited?
+  - A:  YES.  The 'reference' is automatically applicable to the names of sub-classes.  e.g., `Shape` defines the class method, but it can be called on the subclass `Triangle`
+  ```ruby
+  class Shape
+    @@sides = nil
+
+    def self.sides
+      @@sides
+    end
+
+    def sides
+      @@sides
+    end
+  end
+
+  class Triangle < Shape
+    def initialize
+      @@sides = 3
+    end
+  end
+
+  class Quadrilateral < Shape
+    def initialize
+      @@sides = 4
+    end
+  end
+
+  p Triangle.sides
+  p Triangle.new.sides
+  ```
+
+- [ ] Practice Problems: Question 19 - why not use getters and setters all the time?
+- [ ] Practice Problems: Question 20 - difference between state and behaviours
+  - [x] What happens if the same (e.g.) string object is used to instantiate multiple custom objects? Then the state would be dependent on the value of that object
+    - A:  yes.
+    ```ruby
+    class Person
+      attr_reader :name
+
+      def initialize(name)
+        @name = name
+      end
+    end
+
+    a = "Bob"
+
+    thing1 = Person.new(a)
+    thing2 = Person.new(a)
+
+    p thing1.name
+    p thing2.name
+
+    a.upcase!
+
+    p thing1.name
+    p thing2.name
+    ```
+
+- [ ] Practice Problems:  Question 26 - instance variable scope - w/ inheritance and mixins :  can modules access instance variables?
+  - [ ] what is the right language to use for this - how to talk about it?
+
+- [ ] in the default representation of custom class object (format #<[ClassName]:[string]>), what does [string] represent?
+- [ ] "private", "public", "protected" :  are these 'keywords'?  LS notes refer to them as "access modifiers"
+- [ ] can subclass invoke private methods?  Is this access inherited (how many levels?)
+- [ ] review definitions of encapsulation, inheritance

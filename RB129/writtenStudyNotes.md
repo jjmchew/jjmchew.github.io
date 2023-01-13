@@ -111,7 +111,7 @@
     - can be accessed by class methods as long as the class variable has been initialized prior to being called
   - class variables are accessible to sub-classes [source](https://launchschool.com/lessons/d2f05460/assignments/b8928e96)
     - NOTE:  sub-classes can re-define class variables and this will affect all instances of the class / super-class
-    - e.g., 
+    - e.g., are available to the class 'hierarchy-level' - not just available to the same class; available to all sub classes
       ```ruby
       
       ```
