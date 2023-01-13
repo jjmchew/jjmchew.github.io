@@ -1,6 +1,7 @@
 ### [RB129 practice problems (spot wiki)](https://docs.google.com/document/d/10JvX-ArkfF8fIWQu8wPaYt7JJHrv_5E0gM0I2uPirwI/edit)
 
-1. What is the output and why? What does this demonstrate about instance variables that differentiates them from local variables?
+1. 
+What is the output and why? What does this demonstrate about instance variables that differentiates them from local variables?
 
 ```ruby
 class Person
@@ -18,7 +19,8 @@ p bob.name
 
 ---
 
-2.  What is output and why? What does this demonstrate about instance variables?
+2.  
+What is output and why? What does this demonstrate about instance variables?
 
 ```ruby
 module Swimmable
@@ -43,7 +45,8 @@ p teddy.swim
 
 ---
 
-3. What is output and why? What does this demonstrate about constant scope? What does `self` refer to in each of the 3 methods above?
+3. 
+What is output and why? What does this demonstrate about constant scope? What does `self` refer to in each of the 3 methods above?
 
 ```ruby
 module Describable
@@ -80,7 +83,8 @@ p Square.new.describe_shape
 
 ---
 
-4. What is output? Is this what we would expect when using `AnimalClass#+`? If not, how could we adjust the implementation of `AnimalClass#+` to be more in line with what we'd expect the method to return?
+4. 
+What is output? Is this what we would expect when using `AnimalClass#+`? If not, how could we adjust the implementation of `AnimalClass#+` to be more in line with what we'd expect the method to return?
 
 ```ruby
 class AnimalClass
@@ -138,7 +142,8 @@ A new object of `AnimalClass` is created, and using the setter method for the in
 
 ---
 
-5. We expect the code above to output `”Spartacus weighs 45 lbs and is 24 inches tall.”` Why does our `change_info` method not work as expected?
+5. 
+We expect the code above to output `”Spartacus weighs 45 lbs and is 24 inches tall.”` Why does our `change_info` method not work as expected?
 
 ```ruby
 class GoodDog
