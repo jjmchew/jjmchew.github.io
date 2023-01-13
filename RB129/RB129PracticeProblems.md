@@ -177,7 +177,8 @@ puts sparky.info
 
 ---
 
-6. In the code above, we hope to output `'BOB'` on `line 16`. Instead, we raise an error. Why? How could we adjust this code to output `'BOB'`? 
+6. 
+In the code above, we hope to output `'BOB'` on `line 16`. Instead, we raise an error. Why? How could we adjust this code to output `'BOB'`? 
 
 ```ruby
 class Person
@@ -203,7 +204,8 @@ p bob.name
 
 ---
 
-7. What does the code above output, and why? What does this demonstrate about class variables, and why we should avoid using class variables when working with inheritance?
+7. 
+What does the code above output, and why? What does this demonstrate about class variables, and why we should avoid using class variables when working with inheritance?
 
 ```ruby
 class Vehicle
@@ -246,7 +248,8 @@ p Car.wheels
 
 ---
 
-8. What is output and why? What does this demonstrate about `super`?
+8. 
+What is output and why? What does this demonstrate about `super`?
 
 ```ruby
 class Animal
@@ -272,7 +275,8 @@ p bruno
 
 ---
 
-9. What is output and why? What does this demonstrate about `super`?
+9. 
+What is output and why? What does this demonstrate about `super`?
 
 ```ruby
 class Animal
@@ -294,7 +298,8 @@ bear = Bear.new("black")
 
 ---
 
-10. What is the method lookup path used when invoking `#walk` on `good_dog`?
+10. 
+What is the method lookup path used when invoking `#walk` on `good_dog`?
 
 ```ruby
 module Walkable
@@ -350,7 +355,8 @@ p good_dog.walk
 
 ---
 
-11. What is output and why? How does this code demonstrate polymorphism?
+11. 
+What is output and why? How does this code demonstrate polymorphism?
 
 ```ruby
 class Animal
@@ -385,7 +391,8 @@ end
 
 ---
 
-12. We raise an error in the code above. Why? What do `kitty` and `bud` represent in relation to our `Person` object? 
+12. 
+We raise an error in the code above. Why? What do `kitty` and `bud` represent in relation to our `Person` object? 
 
 ```ruby
 class Person
@@ -423,7 +430,8 @@ bob.pets.jump
 
 ---
 
-13. What is output and why?
+13. 
+What is output and why?
 
 ```ruby
 class Animal
@@ -449,7 +457,8 @@ puts teddy.dog_name
 ---
 
 
-14. In the code above, we want to compare whether the two objects have the same name. `Line 11` currently returns `false`. How could we return `true` on `line 11`? 
+14. 
+In the code above, we want to compare whether the two objects have the same name. `Line 11` currently returns `false`. How could we return `true` on `line 11`? 
 - Further, since `al.name == alex.name` returns `true`, does this mean the `String` objects referenced by `al` and `alex`'s `@name` instance variables are the same object? How could we prove our case?
 
 ```ruby
@@ -482,7 +491,8 @@ p al.name.object_id == alex.name.object_id
 
 ---
 
-15. What is output on `lines 14, 15, and 16` and why?
+15. 
+What is output on `lines 14, 15, and 16` and why?
 
 ```ruby
 class Person
@@ -518,7 +528,9 @@ BOB
 
 ---
 
-16. Why is it generally safer to invoke a setter method (if available) vs. referencing the instance variable directly when trying to set an instance variable within the class? Give an example.
+16. 
+Why is it generally safer to invoke a setter method (if available) vs. referencing the instance variable directly when trying to set an instance variable within the class? Give an example.
+
 - It is generally safer to invoke a setter method (if available) since by consistently doing so, you create a single access point to the value of the instance variable which can incorporate any data validation or 'guardrails' that may be required.  This also supports effective encapsulation of data within the object or class and prevents accidental changes to the value of instance variables.
 - For example, for a custom `Customer` class, we may want to ensure that all phone numbers are represented by 10 digits, which can be consistently enforced through a setter method, but not by accessing the instance variable directly:
 
@@ -543,7 +555,8 @@ p jay.phone_number
 
 ---
 
-17. Give an example of when it would make sense to manually write a custom getter method vs. using `attr_reader`.
+17. 
+Give an example of when it would make sense to manually write a custom getter method vs. using `attr_reader`.
 - It would make sense to manually write a custom getter method if the value returned always needed to be manipulated in some way prior to being returned.  An example of this might be returning sensitive information like a bank-account number.  A public getter method can be defined to return only the last 4 digits of the bank-account number rather than the whole number.
 
 ```ruby
@@ -567,7 +580,8 @@ p account2.number
 
 ---
 
-18. What can executing `Triangle.sides` return? What can executing `Triangle.new.sides` return? What does this demonstrate about class variables?
+18. 
+What can executing `Triangle.sides` return? What can executing `Triangle.new.sides` return? What does this demonstrate about class variables?
 
 ```ruby
 class Shape
@@ -602,7 +616,8 @@ end
 
 ---
 
-19. What is the `attr_accessor` method, and why wouldn’t we want to just add `attr_accessor` methods for every instance variable in our class? Give an example.
+19. 
+What is the `attr_accessor` method, and why wouldn’t we want to just add `attr_accessor` methods for every instance variable in our class? Give an example.
 - The `attr_accessor` method takes symbols as arguments and returns getter and setter methods in the class for instance variables of the same name with a `@` prefix.  For example, invoking `attr_accessor :full_name` will return a getter method `full_name` and a setter method `full_name=`.  Use of `attr_accessor` is convenient to quickly define getter and setter methods.
 - Generally though, it's best to consider whether each instance variable requires both a getter and a setter to best implement appropriate encapsulation of object data to prevent undesired changes or access to object data.  Use of method access control to make these getters and setters private or protected can help, but it's still best to consider whether those getters or setters are required in the first place.
 - An example might be for confidential information - we may want to be able to set confidential information like a password and thus need a setter method, but not let that information be accessible to any other part of the code and thus not want the getter method.
@@ -612,7 +627,8 @@ end
 
 ---
 
-20. What is the difference between states and behaviors?
+20. 
+What is the difference between states and behaviors?
 - State refers collectively to the data stored in all of the instance variables of an object.  This state is generally unique to each object and is not inherited.
 - 'Behaviours' refers to the instance methods of an object, which are defined by the class and thus inheritable to sub-classes.
 
@@ -621,15 +637,14 @@ end
 
 ---
 
-21. What is the difference between instance methods and class methods?
+21. 
+What is the difference between instance methods and class methods?
 - Instance methods need to be called on a specific instance (a object) of a class. Class methods are called on the class itself and do not require any object to be instantiated.
-
-```ruby
-```
 
 ---
 
-22. What are collaborator objects, and what is the purpose of using them in OOP? Give an example of how we would work with one.
+22. 
+What are collaborator objects, and what is the purpose of using them in OOP? Give an example of how we would work with one.
 - Collaborator objects are objects that are stored as part of the state of another object.  Generally, custom objects are of the most interest, although objects like Strings and Arrays are techically also collaborator objects.
 - Collaborator objects are used in OOP to help model the relationships between different object types when creating programs.
 - For example we could define a `Library` custom class and a `Book` custom class.  The `Book` class may manage a variety of information such as `@title`, `@author`, etc.  Instances of the `Book` class - individual books - might then be stored within an object of the `Library` class.  Objects of `Book`class are thus collaborator objects of objects of the `Library` class.  Books might be added or removed, as appropriate, from (for example) an instance variable `@shelf` defined within the `Library` class.
@@ -639,7 +654,8 @@ end
 
 ---
 
-23. How and why would we implement a fake operator in a custom class? Give an example.
+23. 
+How and why would we implement a fake operator in a custom class? Give an example.
 - Fake operators are defined like any other instance method in a custom class.  Defining the operator within the custom class using the same name will override any existing definitions which may exist within ancestors to this class (e.g., `Object`, `Kernel`, `BasicObject`).
 - We may want to (re-)implement a fake operator in a custom class to define appropriate outcomes for the use of that operator.
 - A common example is the `==` 'operator' - considered a fake operator since it's actually an inherited method.  We may want to define the `==` operator to compare values stored within an instance variable, rather than the default behaviour of looking at the whether or not the objects themselves are the same.
@@ -666,7 +682,8 @@ p bob1.equal? bob2 # checks if the actual objects themselves are the same; mimic
 
 ---
 
-24. What are the use cases for `self` in Ruby, and how does `self` change based on the scope it is used in? Provide examples.
+24. 
+What are the use cases for `self` in Ruby, and how does `self` change based on the scope it is used in? Provide examples.
 - Depending on how `self` is used, it can indicate class methods, refer to the object itself, refer to the class itself, and also to refer to available setter methods within a class.
 
 ```ruby
@@ -724,7 +741,8 @@ p obj.what_am_i
 
 ---
 
-25. What does the above code demonstrate about how instance variables are scoped?
+25. 
+What does the above code demonstrate about how instance variables are scoped?
 
 ```ruby
 class Person
@@ -750,7 +768,8 @@ p bob.get_name # => "bob"
 
 ---
 
-26. How do class inheritance and mixing in modules affect instance variable scope? Give an example.
+26. 
+How do class inheritance and mixing in modules affect instance variable scope? Give an example.
 - Instance variables defined by a super class are also available to sub classes.
 - When modules are included within a class (or super class), the methods within that module will also be able to access the instance variables of that class.
 
@@ -784,7 +803,8 @@ puts james.up_name
 - To demonstrate that instance variables are also available within included modules, the `Displayable` module includes a method `up_name` which takes the instance variable `@name` and converts the letters (non-destructively) to uppercase. Invoking this method `up_name` on the `Adult` object `james` and passing the returned value as an argument to the `puts` method outputs `JAMES` to the screen and demonstrates how the instance variable is accessible to methods in the module.
 ---
 
-27. How does encapsulation relate to the public interface of a class?
+27. 
+How does encapsulation relate to the public interface of a class?
 - Encapsulation is the ability to segregate or separate code within a class from the rest of the code in a program.  Part of encapsulation is limiting access to the methods or data within a class object.
 - The public interface of a class refers to the public methods of a class that are available for the rest of the code outside of an object to use.  This interface determines whether or not and how data and methods within an object can be accessed or manipulated.
 
@@ -793,7 +813,8 @@ puts james.up_name
 
 ---
 
-28. What is output and why? How could we output a message of our choice instead?
+28. 
+What is output and why? How could we output a message of our choice instead?
 
 ```ruby
 class GoodDog
@@ -835,7 +856,8 @@ p sparky
 
 ---
 
-29. When does accidental method overriding occur, and why? Give an example.
+29. 
+When does accidental method overriding occur, and why? Give an example.
 - Accidental method overriding occurs when we define an instance method in a custom class which has the same name as a method defined within an ancestor. It occurs because of the method lookup path that Ruby uses when a method is invoked.  Ruby first searches the class of the object on which the method was invoked for the method definition.  If it finds that method definition then it will stop searching and methods with the same name farther along the method lookup chain are ignored. These are method names that are typically defined within ancestor classes like `Object`, `Kernel`, or `BasicObject`.  
 - Examples might include methods `send`, `inspect`, `display`, `trust`, `method`, `methods` (defined within `Object`).  
 
@@ -844,7 +866,8 @@ p sparky
 
 ---
 
-30. How is Method Access Control implemented in Ruby? Provide examples of when we would use public, protected, and private access modifiers.
+30. 
+How is Method Access Control implemented in Ruby? Provide examples of when we would use public, protected, and private access modifiers.
 - Method Access Control is implemented in Ruby using the access modifiers "public", "private" or "protected".
 - Public methods are methods that can be accessed by any object or code invoked within the program outside of the current object and class.
 - Private methods can only be invoked by other methods within the same object.
@@ -902,7 +925,8 @@ p john.secret
 
 ---
 
-31. Describe the distinction between modules and classes.
+31. 
+Describe the distinction between modules and classes.
 - Modules are used to group methods for mixin, or to create a namespace for other classes and methods. In contrast, classes define the behaviours and attributes of instantiated objects.  Modules cannot be used to instantiate an object, whereas classes are intended to be used to instantiate other objects.
 - Classes can also be used to create a hierarchy, but modules are either included or not included within classes.
 
@@ -911,7 +935,8 @@ p john.secret
 
 ---
 
-32. What is polymorphism and how can we implement polymorphism in Ruby? Provide examples.
+32. 
+What is polymorphism and how can we implement polymorphism in Ruby? Provide examples.
 - Polymorphism is the ability to invoke a method with the same name on different object types.
 - Polymorphism can be implemented through inheritance, use of modules or duck-typing.
 
@@ -973,7 +998,8 @@ p Ball.new.move
 
 ---
 
-33. What is encapsulation, and why is it important in Ruby? Give an example.
+33. 
+What is encapsulation, and why is it important in Ruby? Give an example.
 - Encapsulation is segregating and hiding some of the functionality of the code from the rest of the code-base.  Encapsulation is one of the basic benefits of object-oriented programming and one of the key features of an object-oriented programming language like Ruby.
 - An example might be the creation of a `Machine` class which can complete very complex tasks automatically, however the key actions (or interfaces) for a user might primarily involve `switch_on`, `switch_off`, `check`. Using objects allows the inner functioning of that `Machine` to be hidden from the rest of the code base and only the 'switch' and 'check' made available to interact with.  In the code below, `operation` can be implemented in many different ways, however, the public interface of `switch_on`, `switch_off` and `check` can remain consistent
 
@@ -1011,7 +1037,8 @@ p device.check
 
 ---
 
-34. What is returned/output in the code? Why did it make more sense to use a module as a mixin vs. defining a parent class and using class inheritance?
+34. 
+What is returned/output in the code? Why did it make more sense to use a module as a mixin vs. defining a parent class and using class inheritance?
 
 ```ruby
 module Walkable
@@ -1068,16 +1095,17 @@ Kitty saunters forward
 - It makes sense to use a mixin module here since the method is exactly the same for both class `Cat` and class `Person`.  Use of the module minimizes repetition of code and is generally used when the method represents a "has-a" relationship with the class.  In this example, both `Cat` and `Person` would "have-a" walk.  Class inheritance is generally used with a "is-a" relationship.  In our current example, '`Cat` is-a walk' would not make sense, hence inheritance is not the best choice of code structure.
 ---
 
-35. What is Object Oriented Programming, and why was it created? What are the benefits of OOP, and examples of problems it solves?
+35. 
+What is Object Oriented Programming, and why was it created? What are the benefits of OOP, and examples of problems it solves?
 
-```ruby
-```
+- Object Oriented Programming is a programming paradigm which uses programming 'objects', defined through 'classes' to help encapsulate (segregate) pieces of code to help organize and structure code, reduce dependencies and code conflicts, and increase reusability of code snippets.  Especially in larger codebases where there is an increased likelihood of variables or functions having the same name and creating errors, the ability to separate various parts of the code and ensure they do not conflict becomes important.  Also, with larger distributed teams, the need to define clear 'interfaces' for different parts of the code ensured that dependencies between different areas of code could be more clearly tracked and reduced.
 
 ---
 
-36. What is the relationship between classes and objects in Ruby?
-```ruby
-```
+36. 
+What is the relationship between classes and objects in Ruby?
+
+- Classes 
 
 ---
 
