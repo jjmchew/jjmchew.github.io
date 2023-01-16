@@ -188,7 +188,24 @@
     - defined by adding 'self.' to the method definition
     - e.g., `def self.what_am_i`
     - used for functionality that doesn't pertain to individual objects (i.e., doesn't deal with state)
+- [source](https://launchschool.com/lessons/d2f05460/assignments/b4f9e5b7)
+  - can refer to class methods as (e.g.,) `Person::greetings`
+    ```ruby
+    class Person
+      GREETINGS = ['Hello', 'Hi', 'Hey']
 
+      def self.greetings
+        GREETINGS.join(', ')
+      end
+
+      def greet
+        GREETINGS.sample
+      end
+    end
+
+    puts Person.greetings          # => "Hello, Hi, Hey"
+    puts Person.new.greet          # => "Hi" (output may vary)
+    ```
 </details>
 
 ---

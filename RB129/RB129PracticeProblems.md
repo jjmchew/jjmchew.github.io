@@ -389,6 +389,8 @@ end
 
 - Polymorphism is when different data types can respond to the same interface (public method calls), often in different ways.  This code demonstrates polymorphism since each of the different classes `Animal`, `Fish` and `Dog` all respond to the same method invocation of `.eat`, but have different behaviours (i.e., the `puts` method invocation and different associated string arguments).  For example, the `eat` method of class `Animal` outputs `I eat.` to the screen, whereas the `eat` method of class `Fish` outputs `I eat plankton.` to the screen.
 
+- This code demonstrates polymorphism through inheritance. `Fish` and `Dog` are both subclasses to `Animal` and inherit (though also override) the `eat` instance method. Thus, both `Fish` and `Dog` objects can invoke and respond (with different string return values) to the invocation of the `eat` instance method.
+
 ---
 
 12
@@ -579,7 +581,7 @@ p account2.number
 
 ---
 
-18
+**18**
 What can executing `Triangle.sides` return? What can executing `Triangle.new.sides` return? What does this demonstrate about class variables?
 
 ```ruby
@@ -610,8 +612,13 @@ end
 
 - Executing `Triangle.sides` will return `nil`.  
 - Executing `Triangle.new.sides` will return `4`.
+
 - This illustrates how class variables are assigned their values based on how the Ruby interpreter parses code from top to bottom.  As the code is read from the top, the class variable `@@sides` is initially assigned the value of `nil` and none of the other re-assignments to `@@sides` in the `initialize` methods of class `Triangle` or class `Rectangle` are evaluated until those methods are explicitly called.  Once a new `Triangle` object is instantiated, the `initialize` method defined in class `Triangle` is evaluated and the value of `@@sides` is re-assigned to the integer `3`.  The value of `@@sides` is dependent on the order in which the code is written and executed.
 - This also illustrates how a sub-class (in this case the class `Triangle`) can re-assign the value of a class variable, `@@sides` defined within the super-class `Shape`.
+
+#### Updated part of answer:
+- Executing `Triangle.sides` will return either `nil`, `3` or `4` depending on when `Triangle.sides` is invoked, relative to the order in which other code within the main scope is entered and executed.  Since the `initialize` methods of both the `Triangle` and `Quadrilateral` class re-assign the value of the class variable `@@sides`, the execution of those `initialize` methods will affect the return value from the inherited `::sides` and `sides` methods of the `Shape` class.
+- Executing `Triangle.new.sides` will always return `3`, since the value of `@@sides` is assigned to an integer object with value `3` every time a new `Triangle` object is initialized.
 
 ---
 
@@ -633,6 +640,10 @@ What is the difference between states and behaviors?
 21
 What is the difference between instance methods and class methods?
 - Instance methods need to be called on a specific instance (a object) of a class. Class methods are called on the class itself and do not require any object to be instantiated.
+
+#### Updated details
+- Instance methods have access to both instance variables and class variables.
+- Class methods do not have access to data referenced by instance variables, but do have access to class variables.  Class method are defined by using the keyword '`self.`' prepended to the method name within the class definition.
 
 ---
 
@@ -672,6 +683,10 @@ bob2 = Person.new("Bob")
 p bob1 == bob2
 p bob1.equal? bob2 # checks if the actual objects themselves are the same; mimics the default behaviour of `==` for custom classes
 ```
+
+#### Additions
+- Fake operators are commonly used elements of expressions typically used for math, logical comparisons, or indexed assignment that are actually invocable methods.  These 'fake operators' may not appear to be methods, but this is because of Ruby's syntactical sugar, which allows methods to be invoked without parentheses.  Common example are `+`, `-`, `==`, `>`, `<=`, `[]`, `[]=` but there are many more.
+
 
 ---
 
@@ -759,6 +774,9 @@ p bob.get_name # => "bob"
 
 - Instance variables are scoped at the object (instance) level.  All methods defined within the same class will have access to the value of that instance variable and the values of those instance variables are generally unique between instances.
 
+#### Additions:
+- Instance variables exist as long as the object instance that contains them exists. Instance variables can be accessed by instance methods even those variables are not initialized or explicitly passed to instance methods.
+
 ---
 
 ##### 26
@@ -801,6 +819,9 @@ puts james.up_name
 How does encapsulation relate to the public interface of a class?
 - Encapsulation is the ability to segregate or separate code within a class from the rest of the code in a program.  Part of encapsulation is limiting access to the methods or data within a class object.
 - The public interface of a class refers to the public methods of a class that are available for the rest of the code outside of an object to use.  This interface determines whether or not and how data and methods within an object can be accessed or manipulated.
+
+#### Additions:
+- The use of the access modifiers 'Public', 'Private' and 'Protected' are one of the primary ways to achieve encapsulation in Ruby - defining what instance methods of the object are exposed for the rest of the code base to access.
 
 ---
 
@@ -857,8 +878,8 @@ When does accidental method overriding occur, and why? Give an example.
 ##### 30
 How is Method Access Control implemented in Ruby? Provide examples of when we would use public, protected, and private access modifiers.
 - Method Access Control is implemented in Ruby using the access modifiers "public", "private" or "protected".
-- Public methods are methods that can be accessed by any object or code invoked within the program outside of the current object and class.
-- Private methods can only be invoked by other methods within the same object.
+- Public methods are methods that can be accessed by any object or code invoked within the program outside of the current object and class.  **addition** Public methods are inherited.
+- Private methods can only be invoked by other methods within the same object. **addition** Private methods are inherited by subclasses.
 - Protected methods can be invoked by other methods within the same object, or other objects of the same class (and sub-class).
 
 ```ruby
@@ -918,6 +939,8 @@ Describe the distinction between modules and classes.
 - Modules are used to group methods for mixin, or to create a namespace for other classes and methods. In contrast, classes define the behaviours and attributes of instantiated objects.  Modules cannot be used to instantiate an object, whereas classes are intended to be used to instantiate other objects.
 - Classes can also be used to create a hierarchy, but modules are either included or not included within classes.
 
+#### Additions
+- Classes can only inherit from 1 class.  However, modules can be included into an unlimited number of classes, and an unlimited number of modules can be included into each class.
 
 ---
 
@@ -981,6 +1004,9 @@ p Ball.new.move
 - In the code above, the classes `Fish` and `Dog` both inherit the ability to move from `Animal`, although the `move` method is overridden in both `Fish` and `Dog` to represent behaviour specific to those classes respectively. This is an example of polymorphism through inheritance.
 - The classes `Sailboat` and `Kite` can also invoke the `move` method, however, this is accomplished through the `WindPowered` module which is included in both of these classes which share a common behaviour.  
 - An example of duck-typing is found in the `Truck` and `Ball` classes.  These classes can also invoke the `move` method, however, these methods were defined manually in each class and share very limited characteristics in their movement behaviour.
+
+#### Additions:
+- Duck-typing is an informal way of ascribing type to an object.  In duck-typing, we don't worry about the type or class of an object, only whether or not that object has a particular behaviour (i.e., a method of the same name can be invoked on objects of different types in the same way).
 
 ---
 
@@ -1354,6 +1380,10 @@ Gallant is speaking.
   end
 ```
 
+#### Addition (need to explain 'why')
+- The first line of output is from the invocation of the `Knight#name` method.  This method returns a string which is the concatenation of `"Sir "` and the return from `Character#name` getter method provided by the `attr_accessor` method of the `Character` class. The `Character#name` method returns the value of the `@name` instance variable of the `Knight` object, hence the output of the first line is `Sir Gallant`.
+- the second line of output is from the invocation of the `speak` method.  Since there is no definition of `speak` within the `Knight` class, Ruby will look at the superclass `Character` and execute the `speak` method found there.  This method uses string interpolation to return a string which contains the string value of the `@name` instance variable of the the `Knight` object referenced by the local variable `sir_gallant`.  Thus, the string passed into the `p` method invocation is `"Gallant is speaking."` which is output to the screen.
+
 ---
 
 47
@@ -1464,6 +1494,8 @@ end
 - The class variable `@@total_people` has class and 'class-hierarchy' scope.
 - the instance variables `@name` and `@age` have object scope.
 
+#### Additions
+- Constants have **lexical scope**, but are also available within the inheritance hierarchy of the structure that accesses the constant
 ---
 
 ##### 51

@@ -300,6 +300,28 @@ daisy.speak
   - can use inheritance / override
   - can use modules (interface inheritance) - include modules on different objects and have access to same methods
 
+
+### TA question
+
+```ruby
+class Dog
+  def initialize(name)
+    @name = name
+  end
+end
+
+puppy = Dog.new('Benji')
+another_puppy = Dog.new('Benji')
+
+# What will this output? Why?
+
+p puppy == another_puppy
+
+```
+
+
+
+
 ### Questions to answer:
 - [x] what is the attr_* thing called?  Is it a method?  or something else?
   - A:  `attr_accessor` is a method, `attr_reader` is a method, `attr_writer` is a method
@@ -523,9 +545,13 @@ p Vehicle.wheels
 - [ ] "private", "public", "protected" :  are these 'keywords'?  LS notes refer to them as "access modifiers"
 - [ ] can subclass invoke private methods?  Is this access inherited (how many levels?)
 - [ ] review definitions of encapsulation, inheritance
+    - A:  encapsulation :  about intentionality - to prevent inadvertent changes
 - [ ] review - Why OOP?
-- [ ] is 'super' a 'keyword'?  or a method?  What is it?
+- [x] is 'super' a 'keyword'?  or a method?  What is it?
+  - A : super is a **keyword**
 - [ ] practice problems Q44 : instance 1 of `self` - what does it refer to?  Does it do anything?  Is it useful?
 - [ ] practice problems q47 : beware of nested inheritance!  Need to check each 'super'
-- [ ] practice problems q49 : double check methods - 'Integer', 'Array', 'Range'?
+- [X] practice problems q49 : double check methods - 'Integer', 'Array', 'Range'?
+  - A: def use `===` operator ('three-quel' operator), the specific `===` uses will depend on the data type being compared to
+    - the 2nd one `10, 20, 30` is NOT an array!  
 - [ ] practice problems q50 : double check scope of various variable types (constant, class, instance)
