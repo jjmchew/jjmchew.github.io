@@ -391,6 +391,15 @@ end
 
 - This code demonstrates polymorphism through inheritance. `Fish` and `Dog` are both subclasses to `Animal` and inherit (though also override) the `eat` instance method. Thus, both `Fish` and `Dog` objects can invoke and respond (with different string return values) to the invocation of the `eat` instance method.
 
+#### Additions
+- The output is:
+
+```ruby
+I eat
+I eat plankton
+I eat kibble
+```
+
 ---
 
 12
@@ -866,6 +875,9 @@ sparky = GoodDog.new("Sparky", 4)
 p sparky
 ```
 
+#### Additions:
+- The default `to_s` method is inherited from class `Object` and returns a string representation of the object with the structure described (#<[class name]:[id encoding]>)
+
 ---
 
 ##### 29
@@ -1113,6 +1125,11 @@ What is Object Oriented Programming, and why was it created? What are the benefi
 
 - Object Oriented Programming is a programming paradigm which uses programming 'objects', defined through 'classes' to help encapsulate (segregate) pieces of code to help organize and structure code, reduce dependencies and code conflicts, and increase reusability of code snippets.  Especially in larger codebases where there is an increased likelihood of variables or functions having the same name and creating errors, the ability to separate various parts of the code and ensure they do not conflict becomes important.  Also, with larger distributed teams, the need to define clear 'interfaces' for different parts of the code ensured that dependencies between different areas of code could be more clearly tracked and reduced.
 
+#### Additions:
+- OOP is a programming paradigm created to help manage complexity of large software systems by creating programs as an interaction of small parts (objects), rather than a big 'blob' of dependency.
+- As complexity grows, software becomes harder to maintain because of dependencies in the code base - even small changes could ripple throughout the program creating errors.
+- OOP uses encapsulation, polymorphism, and inheritance to help make code more flexible and reusuable
+
 ---
 
 ##### 36
@@ -1144,6 +1161,8 @@ paws = Cat.new
 - If we use the `==` method to compare individual `Cat` objects in the code above, the return value will be `false`.  This is because when custom class objects are compared using the `==` method, by default the method will compare the actual objects themselves are the same (i.e., have the same object id).  Since each new instance of the `Cat` class will create a new object with a distinct object id, the `==` method will return `false` when comparing these objects with each other.
 - This demonstrates that although objects may share a common class, each object is unique (and assigned a different location in memory).
 
+#### Additions:
+- `==` is inherited from 'BasicObject' class
 ---
 
 39
