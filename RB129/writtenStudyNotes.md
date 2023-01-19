@@ -347,6 +347,8 @@
 - can be determined by calling `ancestors` on the *class*
 - standard parts of the lookup chain (at the end) are :  `Object`, `Kernel`, `BasicObject`
 
+- [additional source q 4](https://launchschool.com/lessons/dfff5f6b/assignments/69729798)
+
 - [source](https://launchschool.com/books/oo_ruby/read/inheritance#methodlookup)
   - current class first
   - then included modules (from last defined to first defined)

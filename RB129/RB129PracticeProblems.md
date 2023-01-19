@@ -81,6 +81,9 @@ p Square.new.describe_shape
 - The first line of output will be `4`, the second line of output will be `4`, and the last line of output will be an error.  The error will be raised since the module `Describable` does not define a constant `SIDES` and ==the lookup path from `Describable` will be `Object`, `Kernel`, `BasicObject`==.  The lookup path will not contain any definitions for `SIDES`, so an error will be raised.  This demonstrates that constant scope is limited to the lexical scope, and then the lookup path.  Constant scope also includes the main (top-level) scope, however there is no definition for `SIDES` within this scope, either.
 - The first `self` in the method `describe_shape` references the calling object.  The second `self` within the class `Shape` and definition of instance method `self.sides` refers to the class (`Shape`).  Within the `self.sides` method, `self` refers to the class of the calling object (ultimately `Square` as invoked in the given code).  Within the `sides` instance method, `self` refers to the calling object (also, ultimately `Square` as invoked in the given code).
 
+#### Additions
+- The use of `::` to define specific classes to resolve constants is called 'explicit namespacing'
+
 ---
 
 4
@@ -1485,7 +1488,7 @@ when 40..49     then 'third'
 end
 ```
 
-- The `case` statement will use the `Integer#===` method to evaluate the 'first' case branch, the `Array#===` to evaluate the 'second' branch, and the `Range#===` to evaluate the 'third' branch.
+- The `case` statement will use the `===` method to evaluate each branch.  The specific `===` used will depend on the object type being compared:  e.g., in the 'first' case branch the `Integer#===` method will be used, and in the 'third' case branch, the `Range#===` will be used.
 
 
 ---

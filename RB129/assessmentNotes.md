@@ -325,7 +325,8 @@ p puppy == another_puppy
 ### Questions to answer:
 - [x] what is the attr_* thing called?  Is it a method?  or something else?
   - A:  `attr_accessor` is a method, `attr_reader` is a method, `attr_writer` is a method
-- [ ] constant resolution operator and namespace resolution operator : same? 
+- [x] constant resolution operator and namespace resolution operator : same? 
+  - A:  yes - name varies depending on the usage
 - [x] is `.new` a method?
   - A:  YES.  .new is definitely a method.
 - [x] can CONSTANTS be defined in methods?
@@ -335,9 +336,11 @@ p puppy == another_puppy
 - [x] what does `===` do?
   - A:  if argument1 is a group, would argument2 belong in that group
 
-- [ ] Quiz 5, question 7:  Why wouldn't answer C work - theoretically, the `burger`, `side`, and `drink` getter methods could query the OPTIONS hash and return the appropriate value
+- [x] Quiz 5, question 7:  Why wouldn't answer C work - theoretically, the `burger`, `side`, and `drink` getter methods could query the OPTIONS hash and return the appropriate value
+  - A:  could work;  might still need to create a `cost` method for `MenuItem`
+  - [ ] could be best to just try it.  ;)
 
-- [ ] review:  Object, Kernel, BasicObject - IN THAT ORDER!
+- [x] review:  Object, Kernel, BasicObject - IN THAT ORDER!
 - [ ] confirm practice problems question #3 : what is the lookup path from Describable?
   - A:  from modules, the lookup path will NOT include the class that included the module, it stops at the module and doesn't go further up (if namespace resolution operator isn't used)
   - lookup path for instance methods always starts with the calling object / class (i.e., will start at the bottom again)
@@ -541,15 +544,20 @@ p Vehicle.wheels
 - [ ] Practice Problems:  Question 26 - instance variable scope - w/ inheritance and mixins :  can modules access instance variables?
   - [ ] what is the right language to use for this - how to talk about it?
 
-- [ ] in the default representation of custom class object (format #<[ClassName]:[string]>), what does [string] represent?
+- [x] in the default representation of custom class object (format #<[ClassName]:[string]>), what does [string] represent?
+  - A: "object's class and an encoding of the object id" [answer to q6](https://launchschool.com/lessons/f1c58be0/assignments/a5cfd2ae)
 - [ ] "private", "public", "protected" :  are these 'keywords'?  LS notes refer to them as "access modifiers"
-- [ ] can subclass invoke private methods?  Is this access inherited (how many levels?)
+- [x] can subclass invoke private methods?  Is this access inherited (how many levels?)
+  - A:  yes - tested
 - [ ] review definitions of encapsulation, inheritance
     - A:  encapsulation :  about intentionality - to prevent inadvertent changes
 - [ ] review - Why OOP?
+  - A:  also check [q10](https://launchschool.com/lessons/f1c58be0/assignments/25448951)
 - [x] is 'super' a 'keyword'?  or a method?  What is it?
   - A : super is a **keyword**
-- [ ] practice problems Q44 : instance 1 of `self` - what does it refer to?  Does it do anything?  Is it useful?
+  - A : super is also a method that can be invoked [source](https://launchschool.com/exercises/6a35145d)
+- [x] practice problems Q44 : instance 1 of `self` - what does it refer to?  Does it do anything?  Is it useful?
+  - A : code in that spot will be executed anytime the class is 'interacted' with (e.g., instantiate an object, etc.).  However, that `self` is not particularly useful
 - [ ] practice problems q47 : beware of nested inheritance!  Need to check each 'super'
 - [X] practice problems q49 : double check methods - 'Integer', 'Array', 'Range'?
   - A: def use `===` operator ('three-quel' operator), the specific `===` uses will depend on the data type being compared to
