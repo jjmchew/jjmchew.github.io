@@ -320,6 +320,118 @@ p puppy == another_puppy
 ```
 
 
+### Notes from Jan 19, 2023 RB129 TA-led study session
+- assessment: around 20 questions / 3 hrs
+  - with 129 - both parts (written and interview) are similar - scope and structure is similar;  this is different from 109 assessment
+  - 129 - can prepare for both parts in a similar way, since focus and scope are similar
+  - competencies and skills LS is assessing for in written and interview are the same
+  - code example:  we should be familiar with the code from 109:
+  ```ruby
+  num = 1;
+
+  loop do
+    num = 2
+    break
+  end
+
+  puts num # 2
+  ```
+  - code example for 129:  there are more abstractions - need to have better mental models;  know what a class is, what the difference between a class and an object;  need to understand instance variables, understand the accessor and a getter method;  need to understand what's hidden away - be able to build mental models around abstract concepts (inheritance, encapsulation, etc.)
+  - abstraction will come up a lot as we go through the program - need to think abstractly and work with abstractions
+  - frameworks are another layer of abstraction over code 'underneath'
+  - need to be able to explain concepts clearly and then create examples
+  - need to be able to read code and understand the concepts and how they're working in the background
+  - more like a conversation and use code examples to explain
+  - it's less problem-solving in a PEDAC way
+  - explain / update code and explain with your mental models
+  ```ruby
+  class Person
+    attr_accessor :name
+
+    def introduce
+      puts "Hi, my name is #{name}."
+    end
+  end
+
+  karl = Person.new
+  karl.name = 'Karl'
+  karl.introduce
+  ```
+
+- preparation for the written assessment: check topics of interest - concepts in course are important;  may be able to break things down a bit more - e.g., method access control : private, protected, public;  etc.  be prepared to explain concepts in isolation and get detailed;  make sure you have examples for all of them
+- be able to write explanations and use code examples that support your explanations
+- for interview, need to explain stuff out loud
+- practice using code examples to support your explanations
+- reading OOO code - is more of a code-based problem;  can be hard to prepare for;  can go back through coding assignments and break down the concepts and explain the code (e.g., is inheritance being used, is encapsulation used, etc.)
+- worth practicing for interview mindset after the written assessment.  written test is open book (can refer to notes), but can't do that for interview;  explaining concepts out loud can be a bit harder, so worth practicing that
+- ability to type code example along with explanations can be a bit harder - practice this
+- interview:  there will be a bit of 'back and forth' - not just ask and sit quietly;  they're trying to assess the strength of your mental models - make sure you really explain a concept;  the interviewer may focus on a particular part of your answer or ask for more details, etc.  it's not just us presenting.
+- a lot of the concepts might be related, so it's hard to think about how much detail to go into or where to stop.  don't be afraid to ask the interviewer if you've answered their question, etc.;  like a regular interview: "stop and check in to see how things are going"
+- test mental models in 2 broad ways :  'theoretical' questions - explain a concept and use code to explain;     code-based questions:  they give code and ask you to modify or explain code
+
+- what is the output and why?  How to update to make the `==` return true
+```ruby
+class Dog
+  attr_reader :name
+  
+  def initialize(name)
+    @name = name
+  end
+
+  def ==(other)
+    @name == other.name
+  end
+end
+
+puppy = Dog.new('Benji')
+another_puppy = Dog.new('Benji')
+
+# What will this output? Why?
+
+p puppy == another_puppy # true
+
+```
+`==` is a 'fake operator' - in other languages it might be an operator;  so could make things clear - talk about fake operators:  puppy.==(another_puppy)
+- initially there is a `BasicObject` version, then we override it to create a Dog#== and then we call the String#==
+- all 'custom objects' inherit from `Object`, `Kernel`, `BasicObject` - `==` compares object_id
+
+- Another example:  "talk about method access control and provide a few examples to demonstrate different levels of method access control"
+  - technically 'private', 'protected' 'public' : these are **methods**!  not keywords.  all the methods under the word are arguments to the method.  referring to 'private' as a keyword might lose you some marks - **be careful**
+
+  - How many questions do we have in the interview?  We need to manage time a little bit?
+    - there are 5 key topic areas:  hard to define how long these will take
+    - quickest 129 interview took 25 minutes;  most people don't go over an hour;  so don't worry too much about time;  can ask interviewer about time
+    - questions on code tend to take longer - they're more similar to problem-solving questions from 109;
+    - don't worry too much about time
+
+- what is output and why?
+  ```ruby
+  class Parent
+    def hello(subject="World")
+      puts "Hello, #{subject}"
+    end
+  end
+
+  class Child < Parent
+    def hello(subject)
+      puts "How are you today?"
+    end
+  end
+
+  child = Child.new
+  child.hello('Bob')
+  ```
+  - follow-up question:  how could we change the code to output
+  # Hello, Bob
+  # How are you today?
+  - follow-up follow-up question:  how could we change the code to output
+  # Hello, World
+  # How are you today?
+
+- there are always a few concepts at play - helpful to 'name' those concepts (e.g., inheritance);  be careful of terminology 'parameters' vs 'arguments' - you might lose a few points,  e.g., `super()` - invoking this method and passing no *arguments*, not parameters.
+- once you set context with explanations, don't need to repeat.  e.g., 'an object of the Child class' - only need to say that once
+
+
 
 
 ### Questions to answer:
