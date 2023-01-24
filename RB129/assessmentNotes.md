@@ -432,6 +432,33 @@ p puppy == another_puppy # true
 - once you set context with explanations, don't need to repeat.  e.g., 'an object of the Child class' - only need to say that once
 
 
+### Questions from Erik Wiens
+```ruby
+module Automotive
+  TIRES = 6
+
+  class Vehicle
+    TIRES = 4
+  end
+
+  class Car < Vehicle
+    def num_of_tires
+      p Module.nesting
+      TIRES
+    end
+  end
+end
+
+car = Automotive::Car.new
+p car.num_of_tires
+```
+- scope of constants:  lexical scope - class definition doesn't get parsed (my interpretation)
+- inheritance - multiple classes required?  e.g., Cat < Animal ?
+- logical inheritance structure?
+- duck-typing : dog bark, tree bark - not a great example
+
+
+
 
 
 ### Questions to answer:
