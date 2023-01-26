@@ -623,7 +623,7 @@ end
 ```
 
 - Executing `Triangle.sides` will return `nil`.  
-- Executing `Triangle.new.sides` will return `4`.
+- Executing `Triangle.new.sides` will return `3`.
 
 - This illustrates how class variables are assigned their values based on how the Ruby interpreter parses code from top to bottom.  As the code is read from the top, the class variable `@@sides` is initially assigned the value of `nil` and none of the other re-assignments to `@@sides` in the `initialize` methods of class `Triangle` or class `Rectangle` are evaluated until those methods are explicitly called.  Once a new `Triangle` object is instantiated, the `initialize` method defined in class `Triangle` is evaluated and the value of `@@sides` is re-assigned to the integer `3`.  The value of `@@sides` is dependent on the order in which the code is written and executed.
 - This also illustrates how a sub-class (in this case the class `Triangle`) can re-assign the value of a class variable, `@@sides` defined within the super-class `Shape`.

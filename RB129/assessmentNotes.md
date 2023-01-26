@@ -458,8 +458,37 @@ p car.num_of_tires
 - duck-typing : dog bark, tree bark - not a great example
 
 
+- instance variables have to be defined - initialize isn't specifically a setter method (but may use setter methods)
+- be careful with definitions - "getter" is @name= ;  said it wrong once
+- "full form"  == manual implementation
+- "initialize and assign" - use that language for 'setter methods'
+
+### Notes from Review with Matic
+```ruby
+class Song
+  attr_reader :title, :artist
+
+  def initialize(title)
+    @title = title
+    @artist
+  end
+
+  def artist=(name)
+    @artist = name.upcase
+  end
+end
+
+p song = Song.new("Superstition")  # => ?
+p song.artist = "Stevie Wonder" # => ?
+p song.artist # => ?
+```
+
+# What will the last three lines of code print to the console? After song.artist is called, what would be returned if we inspect the song object?
+- setter method always returns the argument that was passed in, regardless of what happens to it within the method
 
 
+### Notes from practice with Matic
+- 
 
 ### Questions to answer:
 - [x] what is the attr_* thing called?  Is it a method?  or something else?
@@ -693,7 +722,7 @@ p Vehicle.wheels
 - [ ] review - Why OOP?
   - A:  also check [q10](https://launchschool.com/lessons/f1c58be0/assignments/25448951)
 - [x] is 'super' a 'keyword'?  or a method?  What is it?
-  - A : super is a **keyword**
+  - A : super is a **keyword** [source](https://ruby-doc.org/3.2.0/keywords_rdoc.html)
   - A : super is also a method that can be invoked [source](https://launchschool.com/exercises/6a35145d)
 - [x] practice problems Q44 : instance 1 of `self` - what does it refer to?  Does it do anything?  Is it useful?
   - A : code in that spot will be executed anytime the class is 'interacted' with (e.g., instantiate an object, etc.).  However, that `self` is not particularly useful
