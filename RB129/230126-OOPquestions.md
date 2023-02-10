@@ -83,6 +83,48 @@
 - Collaborator objects are used to indicate the relationship between different object types.
 
 
+# Can super be used to invoke methods more than 1 "parent" up the ancestor chain?
+- yes.
+- for example: 
+```ruby
+class Animal
+  def move
+    "I'm a moving Animal"
+  end
+end
 
+class Dog < Animal
+  def move
+    "I'm a moving Dog"
+  end
+end
 
+class Dog2 < Dog
+end
 
+class Bulldog < Dog2
+  def move
+    super + " I'm a moving Bulldog"
+  end
+end
+
+p Bulldog.new.move
+```
+
+# Accidental method overriding
+- Accidental method overriding occurs when an instance method defined for a custom class has the same name as an instance method of an ancestor class - typically from the `Object` class.  The `Object` class contains instance methods such as `display`, `send`, `inspect`, `freeze`, `extend` which all have a specific purpose and may be commonly used.  It's a good idea to avoid naming instance methods with these names to prevent accidental method overriding.
+
+# Can uninitialized class variables be referenced?
+- e.g., 
+```ruby
+class Person
+  # @@legs = 2
+
+  def self.legs
+    @@legs
+  end
+end
+
+p Person.legs
+```
+- no.  Ruby returns an error (NameError)

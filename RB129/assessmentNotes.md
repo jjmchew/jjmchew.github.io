@@ -731,3 +731,7 @@ p Vehicle.wheels
   - A: def use `===` operator ('three-quel' operator), the specific `===` uses will depend on the data type being compared to
     - the 2nd one `10, 20, 30` is NOT an array!  
 - [ ] practice problems q50 : double check scope of various variable types (constant, class, instance)
+
+
+
+https://docs.google.com/document/d/1rq1_uzAfGAOkgrGl0df3d4mX6xojKzif9oUdeQHR0IY/edit
