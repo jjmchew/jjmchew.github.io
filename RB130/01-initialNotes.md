@@ -73,3 +73,16 @@
 - "Test Suite"  :  all of the tests associated with program or application
 - "Test"  :  a situation or context for tests to be run.  A test can contain multiple assertions.  e.g., test to get an error on login when using the wrong password
 - "Assertion"  :  the verification step to confirm the data returned by program is expected
+
+[source](https://launchschool.com/exercises/d69b88d6)
+- when using `assert_equal` : always maintain convention for arguments - first *expected* value, then *actual* value to be tested 
+
+Other test assertions
+- `assert_nil`  [source](https://launchschool.com/exercises/e1183a98)
+- `assert_empty` uses `#empty?` [source](https://launchschool.com/exercises/eaa85d07)
+- `assert_includes` [source](https://launchschool.com/exercises/12b78daf)
+- `assert_raises` [source](https://launchschool.com/exercises/82b73047)
+- `assert_instance_of` uses `Object#instance_of?` [source](https://launchschool.com/exercises/92e1ef71)
+- `assert_kind_of` uses `Object#kind_of?`  [source](https://launchschool.com/exercises/098fba0b)
+- `assert_same` uses `#equal?`  [source](https://launchschool.com/exercises/9eed2942)
+- `refute_includes` is opposite of `assert_includes` [source](https://launchschool.com/exercises/4ac8e502)
