@@ -86,3 +86,6 @@ Other test assertions
 - `assert_kind_of` uses `Object#kind_of?`  [source](https://launchschool.com/exercises/098fba0b)
 - `assert_same` uses `#equal?`  [source](https://launchschool.com/exercises/9eed2942)
 - `refute_includes` is opposite of `assert_includes` [source](https://launchschool.com/exercises/4ac8e502)
+
+Misc Notes
+- Always close files after you open them [source](https://launchschool.com/exercises/c618c0e4)
