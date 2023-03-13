@@ -84,8 +84,27 @@ Other test assertions
 - `assert_raises` [source](https://launchschool.com/exercises/82b73047)
 - `assert_instance_of` uses `Object#instance_of?` [source](https://launchschool.com/exercises/92e1ef71)
 - `assert_kind_of` uses `Object#kind_of?`  [source](https://launchschool.com/exercises/098fba0b)
-- `assert_same` uses `#equal?`  [source](https://launchschool.com/exercises/9eed2942)
+- `assert_same` uses `#equal?`  [source](https://launchschool.com/exercises/9eed2942) (tests to see if 2 objects are the same - i.e,. same ID)
 - `refute_includes` is opposite of `assert_includes` [source](https://launchschool.com/exercises/4ac8e502)
+- `assert_output` [source](https://launchschool.medium.com/assert-yourself-a-detailed-minitest-tutorial-f186acf50960)
 
 Misc Notes
 - Always close files after you open them [source](https://launchschool.com/exercises/c618c0e4)
+- `$stdin` (Standard Input Stream) is a global variable used to represent default source of input (usually keyboard) [source](https://launchschool.com/exercises/64799839)
+  - can use `StringIO` object to simulate keyboard input
+- `$stdout` (Standard Output [screen]) [source](https://launchschool.com/exercises/e2b66911)
+- using files [source](https://launchschool.com/exercises/c618c0e4):
+  ```ruby
+  f = File.open('filename.txt', 'r')
+  f.read # read file contents;  can be assigned to a variable
+  f.close
+  f.closed? # returns true if file is closed
+  ```
+- test approach:  SEAT [source](https://launchschool.com/lessons/dd2ae827/assignments/5c80633e)
+  - Setup
+  - Execute (code for testing)
+  - Assert (that executed code did the right thing)
+  - Teardown
+
+## Ruby Tools
+- 
