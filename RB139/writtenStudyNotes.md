@@ -154,6 +154,8 @@
   call_me(name, 34)
   ```
 
+- explicit blocks are named, but are **not** required parameters (i.e., not passing in a block will not raise an ArgumentError) [from experiments]
+
 </details>
 
 ---
@@ -233,6 +235,18 @@
 
 ---
 
+<details>
+<summary>Lambdas (extra)</summary>
+
+- lambdas are a type of proc with strict arity (i.e,. # of arguments required is stricly enforced ) [12]
+- **cannot** call `Lambda.new` to create a new lambda, can only use:
+  - `my_lambda = lambda { |var| puts var }` OR 
+  - `my_lambda = -> (thing) { puts thing }`
+
+</details>
+
+---
+
 # Testing with MiniTest
 
 <details>
@@ -255,6 +269,46 @@
 
 <details>
 <summary>Assertions</summary>
+</details>
+
+---
+
+<details>
+<summary>Other</summary>
+
+- Automating user input for testing [9]
+  - in method definition:  e.g. `def prompt_for_payment(input: $stdin)`
+  - in method (getting actual user input):  e.g., `answer = input.gets.chomp.to_f`
+  - for testing:  e.g.,
+    ```ruby
+    input = StringIO.new("30.4\n")
+    prompt_for_payment(input: input)
+    ```
+
+- Consuming output to terminal (as part of testing - if NOT using `assert_output`) [10]
+  - in method definition:  e.g., `def prompt_for_payment(output: $stdout)`
+  - in method (modifying `puts`):  e.g., `output.puts "You owe ${item_cost}."`
+  - for testing:  e.g.,
+    ```ruby
+    output_var = StringIO.new
+    prompt_for_payment(output: output_var)
+    ```
+
+- multi-line strings (e.g., for defining output for testing using `assert_output`) [11]
+  - can use interpolation the same way as regular strings (i.e., `"add #{var_name} here"`)
+  ```ruby
+  output = <<-OUTPUT.chomp.gsub /^\s+/, ""  # this removes the leading spaces for each line
+  Desired output here
+  formatted correctly
+  OUTPUT
+  ```
+  OR
+  ```ruby
+  output = <<~OUTPUT.chomp # `~` removes leading spaces; `chomp` removes the trailing newline
+  Multiline output here
+  OUTPUT
+  ```
+
 </details>
 
 ---
@@ -288,6 +342,7 @@
     end
   end
   ```
+- can seed random numbers (to make them less random) for testing purposes using `Kernel.srand 3948`, where `3948` is the desired seed;  use `rand(1..5)` to get a random number in desired range [13]
 
 # References
 [1](https://launchschool.com/lessons/c0400a9c/assignments/0a7a9177)
@@ -298,3 +353,14 @@
 [6](https://launchschool.com/lessons/c0400a9c/assignments/fd86ea2e)
 [7](https://launchschool.com/lessons/c0400a9c/assignments/26d715d8)
 [8](https://launchschool.com/exercises/48ffdb7b)
+[9](https://launchschool.com/exercises/64799839)
+[10](https://launchschool.com/exercises/e2b66911)
+[11](https://launchschool.com/lessons/dd2ae827/assignments/cf0f8d58)
+[12](https://launchschool.com/exercises/753d0323)
+[13](https://launchschool.com/exercises/9302dd42)
+
+
+# Follow-up Questions
+
+- [ ] When might I want to return a proc or a block from a method?
+  - [ ] Can 'blocks' be returned from code, or only procs?  i.e., procs are a WAY of returning a block (code to be executed as a closure)
