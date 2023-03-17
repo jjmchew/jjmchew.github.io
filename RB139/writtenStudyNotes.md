@@ -220,6 +220,22 @@
   my_method(&a_proc)              # convert Proc into block, then pass block in. Returns "2"
   ```
 
+- ```ruby
+  def any?(arr)
+    arr.each do |ele|
+      return true if yield(ele)
+    end
+    false
+  end
+
+  def none?(arr, &chunk)
+    !any?(arr, &chunk) # use `&` to convert proc back to block and pass into #any?
+  end
+
+  p any?([1, 3, 5]) { |ele| ele.odd? }
+  p none?([2, 2, 4]) { |ele| ele.odd? }
+  ```
+  
 </details>
 
 ---
@@ -309,6 +325,8 @@
   OUTPUT
   ```
 
+- `assert_match`
+
 </details>
 
 ---
@@ -343,6 +361,27 @@
   end
   ```
 - can seed random numbers (to make them less random) for testing purposes using `Kernel.srand 3948`, where `3948` is the desired seed;  use `rand(1..5)` to get a random number in desired range [13]
+- closures / binding are the way in which local variables declared in an outer scope are accessible to an inner scope.  Note that methods are different than local variables (`my_method` can be defined after block, but is still accessible - Ruby interpreter deals with methods differently)
+  ```ruby
+  def for_each_in(arr)
+    arr.each { |element| yield element }
+  end
+
+  arr = [*1..5]
+  results = [0]
+
+  for_each_in(arr) do |number|
+    total = results[-1] + number + my_method # closure (binding) allows this block to access `results`
+    # my_method is available in this block
+    results.push(total)
+  end
+
+  def my_method
+    3
+  end
+
+  p results
+  ```
 
 # References
 [1](https://launchschool.com/lessons/c0400a9c/assignments/0a7a9177)
@@ -363,4 +402,27 @@
 # Follow-up Questions
 
 - [ ] When might I want to return a proc or a block from a method?
-  - [ ] Can 'blocks' be returned from code, or only procs?  i.e., procs are a WAY of returning a block (code to be executed as a closure)
+  - [x] Can 'blocks' be returned from code, or only procs?  i.e., procs are a WAY of returning a block (code to be executed as a closure)
+  - [x] Blocks can only be used at method invocation (i.e., not a named object)
+  - [x] Explicit blocks aren't actually blocks; they are converted to procs by unary `&`
+- [X] How do we convert a proc to a block
+    - A: use `&` to convert a proc back to a block
+- [ ] Review the posts and discussion at the start of the lesson
+
+- [ ] the car test class - the "test suite" - what if you have multiple test files?
+
+
+
+- [ ] https://launchschool.com/posts/281eea2f
+- [ ] https://launchschool.com/posts/08e14621
+- [ ] https://launchschool.com/posts/a744f590
+- [ ] https://launchschool.slack.com/archives/C48A338P3/p1674832095088829
+- [ ] https://github.com/gcpinckert/rb130_139
+- [ ] https://github.com/W-Sho-Sugihara/RB139
+
+
+
+
+
+
+
