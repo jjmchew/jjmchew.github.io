@@ -16,7 +16,11 @@
     end
     ```
 
+---
+
 2. How do `procs` and `blocks` differ?  Provide a code example of each being used.
+
+---
 
 3. Create a test file to test the output of the following code:
     ```ruby
@@ -29,7 +33,11 @@
     complicated_output("Chris", "Pat", "Tyler")
     ```
 
+---
+
 4. What are the various uses of `&`?
+
+---
 
 5. What does the following code output, and why?  What 1 line can be changed to create the (assumed) desired output?
     ```ruby
@@ -42,6 +50,8 @@
     p var.call
     ```
 
+---
+
 6. What does the following code output, and why?
     ```ruby
     def make_greeting(name, &phrase)
@@ -51,6 +61,20 @@
     p make_greeting("Joe")
     ```
 
+---
+
 7. What is "unit testing" and why is it useful?
 
-8. 
+---
+
+8. What is a Gemfile used for?  What information is included in a Gemfile?
+
+---
+
+9. What are some common tasks you can automate with Rake?
+
+---
+
+10. What are the typical steps required to create a new Rubygem?
+
+---
