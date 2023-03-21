@@ -1,80 +1,94 @@
 # RB139 practice problems
 
-1. Modify the following method definition and create a (Minitest) test file to automate the testing of both valid and invalid user input.
-    ```ruby
-    class SimpleGame
-      def get_guess
-        guess = nil
-        loop do
-          puts "Guess a number between 1 and 200 inclusive."
-          guess = gets.chomp.to_i
-          break if (1..200).cover?(guess)
-          puts "Invalid guess.  Try again."
-        end
-        guess
-      end
+1
+Modify the following method definition and create a (Minitest) test file to automate the testing of both valid and invalid user input.
+
+```ruby
+class SimpleGame
+  def get_guess
+    guess = nil
+    loop do
+      puts "Guess a number between 1 and 200 inclusive."
+      guess = gets.chomp.to_i
+      break if (1..200).cover?(guess)
+      puts "Invalid guess.  Try again."
     end
-    ```
+    guess
+  end
+end
+```
 
 ---
 
-2. How do `procs` and `blocks` differ?  Provide a code example of each being used.
+2
+How do `procs` and `blocks` differ?  Provide a code example of each being used.
 
 ---
 
-3. Create a test file to test the output of the following code:
-    ```ruby
-    def complicated_output(*array)
-      puts "Let me introduce:"
-      array.each_with_index { |element, idx| puts " #{idx} >> #{element} << " }
-      puts "========="
-    end
+3
+Create a test file to test the output of the following code:
 
-    complicated_output("Chris", "Pat", "Tyler")
-    ```
+```ruby
+def complicated_output(*array)
+  puts "Let me introduce:"
+  array.each_with_index { |element, idx| puts " #{idx} >> #{element} << " }
+  puts "========="
+end
 
----
-
-4. What are the various uses of `&`?
+complicated_output("Chris", "Pat", "Tyler")
+```
 
 ---
 
-5. What does the following code output, and why?  What 1 line can be changed to create the (assumed) desired output?
-    ```ruby
-    def my_method(string, &chunk)
-      proc { "you said #{string} and >#{chunk}<" }
-    end
-
-    var = my_method("hello") { "goodbye" }
-
-    p var.call
-    ```
+4
+What are the various uses of `&`?
 
 ---
 
-6. What does the following code output, and why?
-    ```ruby
-    def make_greeting(name, &phrase)
-      "#{name}, #{phrase}"
-    end
+5
+What does the following code output, and why?  What 1 line can be changed to create the (assumed) desired output?
 
-    p make_greeting("Joe")
-    ```
+```ruby
+def my_method(string, &chunk)
+  proc { "you said #{string} and >#{chunk}<" }
+end
 
----
+var = my_method("hello") { "goodbye" }
 
-7. What is "unit testing" and why is it useful?
-
----
-
-8. What is a Gemfile used for?  What information is included in a Gemfile?
+p var.call
+```
 
 ---
 
-9. What are some common tasks you can automate with Rake?
+6
+What does the following code output, and why?
+
+```ruby
+def make_greeting(name, &phrase)
+  "#{name}, #{phrase}"
+end
+
+p make_greeting("Joe")
+```
 
 ---
 
-10. What are the typical steps required to create a new Rubygem?
+7
+What is "unit testing" and why is it useful?
+
+---
+
+8
+What is a Gemfile used for?  What information is included in a Gemfile?
+
+---
+
+9
+What are some common tasks you can automate with Rake?
+
+---
+
+10
+What are the typical steps required to create a new Rubygem?
 
 ---
