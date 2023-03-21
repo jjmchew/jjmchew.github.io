@@ -1,4 +1,4 @@
-# RB139 personal practice problems
+# RB139 practice problems
 
 1. Modify the following method definition and create a (Minitest) test file to automate the testing of both valid and invalid user input.
     ```ruby
