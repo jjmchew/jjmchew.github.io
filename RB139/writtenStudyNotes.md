@@ -235,7 +235,7 @@
   p any?([1, 3, 5]) { |ele| ele.odd? }
   p none?([2, 2, 4]) { |ele| ele.odd? }
   ```
-  
+
 </details>
 
 ---
@@ -267,24 +267,106 @@
 
 <details>
 <summary>Testing terminology</summary>
+
+- regression: 'breaking' something when we make changes in our code [14]
+- as beginners:  write tests so that we don't need to manually verify our code still works when we make changes (call it "unit testing" for this lesson)  [14]
+
+- Test Suite:  *all* of the tests for a project (entire set of tests that accompanies the program / application) [15]
+  - can span an entire class, a subset of a class, a combo of classes, or the complete application.  May be in 1 or multiple files [17]
+  - typically filenames contain "_test" at the end (e.g., `to_do_test.rb`) but no universal convention [17]
+  - typically test files are stored in a `/test` directory;  actual code is stored in a `/lib` directory [17]
+- Test: a situation or context in which a test is run (e.g., get an error for entering the wrong password).  A test can contain multiple assertions. [15]
+  - also called "Test Case": combines any required actions (e.g., reation of a to-do object, method calls, etc) and the actual assertion.  Some devs like having only 1 test step per test case [17]
+  - Minitest requires all test methods to begin with `test_` [17]
+- Assertion:  the actual verification step to confirm the expected value returned by program is actually returned.  A test will contain 1 or more assertions. [15]
+  - Also called 'test step' - most basic level of testing [17]
+
+- Seed: in Minitest - used to generate the "random" order in which tests are run.  Can be used to replicate the order in which tests are run if there are tricky bugs for specific situations. [15]
+  - use command `--seed ####` (e.g., `ruby test/tests.rb --seed 51859`) [17]
+- Failure (of a test):  when an expected assertion does not pass (i.e., expected value is not match the actual value) [15]
+- Test Sequence: the order in which multiple tests are run (typically in a random order) [17]
+
+- Test Driven Development (TDD) : ideally tests are written before writing any code [17]
+  - "Red-Green-Refactor" [17]:
+  - 1. create a test that fails
+  - 2. write just enough code to implement change or new feature
+  - 3. refactor and improve things, repeat tests
+
+
 </details>
 
 ---
 
 <details>
 <summary>Minitest vs RSpec</summary>
+
+- Minitest is Ruby's default testing library, part of Ruby's standard library (a bundled gem - shipped with default Ruby installation, but maintained outside of Ruby core team) [15]
+- Minitest can do everything RSpec can, syntax is different (can use a DSL or plain Ruby - a matter of 'style') [15]
+  - alternate syntax is called "expectation" or "spec-style" syntax [15]
+  ```ruby
+  describe 'Car#wheels' do
+    it 'has 4 wheels' do
+      car = Car.new
+      _(car.wheels).must_equal 4           # this is the expectation
+    end
+  end
+  ```
+- RSpec uses "Domain Specific Language" (DSL) - reads like English [15]
+- 
+
 </details>
 
 ---
 
 <details>
 <summary>SEAT approach</summary>
+
+- S : Setup necessary objects [18]
+- E : Execute code against testing objects [18]
+- A : Assert code did the right thing [18]
+- T : Teardown lingering artifacts [18]
+
+- for Setup / Teardown:  Setup / Teardown is run for each test case [17]
+  ```ruby
+  class DatabaseTest < Minitest::Test
+    def setup  # setup items here
+    end
+
+    def test_something # actual test case here
+    end
+
+    def teardown # clean-up items here
+    end
+  end
+  ```
 </details>
 
 ---
 
 <details>
 <summary>Assertions</summary>
+
+- `assert_equal(exp, act)` fails unless `exp == act` (i.e., passes if...) [15][16]
+  - may need to override `==` for custom class to be able to use `assert_equal` (otherwise, will default to looking at whether or not the object is exactly the same) [19]
+- `assert(test)` fails unless `test` is truthy [16]
+- `assert_nil(obj)` fails unless `obj` is `nil` [16]
+- `assert_raises(*exp) { ... }` fails unless block raises one of `*exp` [16]
+- `assert_instance_of(class, obj)` fails unless `obj` is an instance of `cls` [16]
+- `assert_includes(collection, obj)` fails unless `obj` is a part of `collection` [16]
+
+- `assert_in_delta(exp, actual, delta)` [17]
+- `assert_same(exp, obj)` fails unless `exp.equal?(obj)` (are the exact same object) (be wary of potentially overwritten `BasicObject#equal?` methods) [17]
+- `assert_empty(collection)` fails unless `collection` is empty [17]
+- generally there is a `refute` assertion for each `assert` : will be the opposite of the `assert` (e.g., passes if 'falsy' or if not equal to, etc.) [16]
+- `assert_match(/regex/, msg)` fails if regex does not match in `msg` [17]
+- `assert_silent {block}` fails if output goes to `stdout` or `stderr` [17]
+- `assert_output(stdout, stderr) { block }` fails if when block runs, standard output doesn't match `str` or standard error doesn't match `err` [17]
+- `assert_kind_of(class, obj)` fails if `obj` is not class or subclass of `class` [17]
+- `assert_respond_to(object, method)` fails if `object` cannot call `method` (e.g., `assert_respond_to(object, :empty?)` [17]
+
+
+
+
 </details>
 
 ---
@@ -325,10 +407,28 @@
   OUTPUT
   ```
 
-- `assert_match`
+- for colour in minitest output [15]:
+  ```ruby
+  # before using
+  gem install minitest-reporters
 
+  # to use:
+  require 'minitest/autorun'
+  require 'minitest/reporters'
+  Minitest::Reporters.use!
+
+  # ...
+  ```
+
+
+- don't create tests that must be run in a specific order - this is bad practice [17]
 </details>
 
+- code coverage:  use 'simplecov' [20]
+  - `gem instal simplecov`
+  - in ruby file, add:  `require 'simplecov'` (must be very first line)
+  - also add: `SimpleCov.start`
+  - will create a folder called 'coverage' with `index.html` file with report
 ---
 
 # Core Tools / Packaging Code
@@ -397,22 +497,30 @@
 [11](https://launchschool.com/lessons/dd2ae827/assignments/cf0f8d58)
 [12](https://launchschool.com/exercises/753d0323)
 [13](https://launchschool.com/exercises/9302dd42)
+[14](https://launchschool.com/lessons/dd2ae827/assignments/554f5ac5)
+[15](https://launchschool.com/lessons/dd2ae827/assignments/3a8a5aa5)
+[16](https://launchschool.com/lessons/dd2ae827/assignments/fe2ff54a)
+[17](https://launchschool.medium.com/assert-yourself-a-detailed-minitest-tutorial-f186acf50960)
+[18](https://launchschool.com/lessons/dd2ae827/assignments/5c80633e)
+[19](https://launchschool.com/lessons/dd2ae827/assignments/bcce2222)
+[20](https://launchschool.com/lessons/dd2ae827/assignments/9f7c1f7c)
+
 
 
 # Follow-up Questions
 
 - [ ] When might I want to return a proc or a block from a method?
+  - Procs are definitely a kind of 'encapsulation' - why not just use a new class / object (e.g., sequence example from notes)
   - [x] Can 'blocks' be returned from code, or only procs?  i.e., procs are a WAY of returning a block (code to be executed as a closure)
   - [x] Blocks can only be used at method invocation (i.e., not a named object)
   - [x] Explicit blocks aren't actually blocks; they are converted to procs by unary `&`
 - [X] How do we convert a proc to a block
     - A: use `&` to convert a proc back to a block
 - [ ] Review the posts and discussion at the start of the lesson
-
 - [ ] the car test class - the "test suite" - what if you have multiple test files?
 
 
-
+To review:
 - [ ] https://launchschool.com/posts/281eea2f
 - [ ] https://launchschool.com/posts/08e14621
 - [ ] https://launchschool.com/posts/a744f590
