@@ -11,6 +11,8 @@
   2. using lambdas
   3. using blocks
 
+- "a closure retains knowledge of the lexical environment at the time it was defined" [from Joseph]
+
 ### Binding
 - Binding refers to the references a closure (chunk of code) makes to its surrounding artifacts [1]
 - Binding is the awareness a `Proc` has of the surrounding environment / context [6]
@@ -514,10 +516,13 @@
   - [x] Can 'blocks' be returned from code, or only procs?  i.e., procs are a WAY of returning a block (code to be executed as a closure)
   - [x] Blocks can only be used at method invocation (i.e., not a named object)
   - [x] Explicit blocks aren't actually blocks; they are converted to procs by unary `&`
+- [ ] is `&` a method?
 - [X] How do we convert a proc to a block
     - A: use `&` to convert a proc back to a block
 - [ ] Review the posts and discussion at the start of the lesson
 - [ ] the car test class - the "test suite" - what if you have multiple test files?
+- [ ] play around with binding for constants
+- [ ] definition of methods and ability to run methods defined afterwards (in closures - it works, in normal 'procedural' code it doesn't)
 
 
 To review:
