@@ -109,6 +109,11 @@ Misc Notes
 ## Ruby Tools
 - 
 
+```ruby
+chmod +x calorie_program/today_cals.rb
+add `#! /usr/bin/env ruby` to line 1 of today_cals.rb
+```
+
 ## Misc problems
 ```ruby
 =begin

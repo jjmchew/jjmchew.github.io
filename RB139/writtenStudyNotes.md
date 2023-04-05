@@ -437,6 +437,53 @@
 
 <details>
 <summary>Purpose of core tools</summary>
+
+#### Ruby
+- Ruby may be pre-installed with your system OS [21]
+- use `which ruby` to check where it is installed [21]
+  - `/usr/bin/ruby` is the system ruby
+  - a directory tree with `/.rvm/` will be managed by RVM
+  - a directory tree with `/rbenv/` or `/shims/` will be managed by rbenv
+- use `ruby -v` to check what version is currently being used [21]
+- a default Ruby installation includes: [21]
+  - core library (always available code library)
+  - standard library (additional code library - needs include)
+  - `irb` (REPL - Read Evaluate Print Loop)
+  - `rake` (utility tool for automation)
+  - `gem` (manage RubyGems)
+  - `rdoc` and `ri` (documentation tools)
+
+
+#### Rubygems
+- also called 'Gems' [22]
+- Gems are packages of code you can download, install and use in Ruby program or command line using `gem` command [22]
+- `gem` is a 'package manager' for Ruby [from running `gem` command]
+  - each version of Ruby installed on your system will have it's own version of `gem`
+- Gem examples: [22]
+  - `rubocop`
+  - `pry`
+  - `sequel`
+  - `rails`
+- to use [22]
+  1. find Gems on RubyGems website:  https://rubygems.org/
+  2. run `gem install [gem name here]` e.g., `gem install pry`
+- to check gems on local environment, run `gem env` [22]
+- to debug loaded gems: [22]
+  - within ruby code, add `puts $LOADED_FEATURES.grep(/freewill\.rb/)` (replace freewill with the name of the gem you want to query)
+  - command will search the `$LOADED_FEATURES` array for entries that match the regex
+
+#### RVM / Rbenv
+- generically referred to as "Ruby Version Managers" [22]
+- Ruby Version Managers let you install, manage and use multiple versions of Ruby [23]
+  - some programs / projects may require a specific version of Ruby
+- rbenv may work better on a Mac [23]
+- RVM uses a 'shell function' named `rvm` to modify your environment (e.g., change `PATH` variable to load correct ver of ruby) (a disk-based command cannot do this) [23]
+
+#### Bundler
+
+#### Rake
+
+
 </details>
 
 ---
@@ -506,6 +553,9 @@
 [18](https://launchschool.com/lessons/dd2ae827/assignments/5c80633e)
 [19](https://launchschool.com/lessons/dd2ae827/assignments/bcce2222)
 [20](https://launchschool.com/lessons/dd2ae827/assignments/9f7c1f7c)
+[21](https://launchschool.com/books/core_ruby_tools/read/your_ruby_installation)
+[22](https://launchschool.com/books/core_ruby_tools/read/gems)
+[23](https://launchschool.com/books/core_ruby_tools/read/ruby_version_managers)
 
 
 
