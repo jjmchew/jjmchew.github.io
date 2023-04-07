@@ -438,7 +438,11 @@
 <details>
 <summary>Purpose of core tools</summary>
 
-#### Ruby
+<details>
+<summary>
+<strong>Ruby</strong>
+</summary>
+
 - Ruby may be pre-installed with your system OS [21]
 - use `which ruby` to check where it is installed [21]
   - `/usr/bin/ruby` is the system ruby
@@ -453,35 +457,118 @@
   - `gem` (manage RubyGems)
   - `rdoc` and `ri` (documentation tools)
 
+</details>
 
-#### Rubygems
+<details>
+<summary>
+<strong>Rubygems</strong>
+</summary>
+
 - also called 'Gems' [22]
 - Gems are packages of code you can download, install and use in Ruby program or command line using `gem` command [22]
-- `gem` is a 'package manager' for Ruby [from running `gem` command]
+- `gem` is a *package manager* for Ruby [from running `gem` command]
   - each version of Ruby installed on your system will have it's own version of `gem`
 - Gem examples: [22]
   - `rubocop`
   - `pry`
   - `sequel`
   - `rails`
-- to use [22]
+- to use: [22]
   1. find Gems on RubyGems website:  https://rubygems.org/
   2. run `gem install [gem name here]` e.g., `gem install pry`
 - to check gems on local environment, run `gem env` [22]
+  - can also use `gem list` (output may vary depending on version of ruby used, e.g., w/ RVM) [23]
 - to debug loaded gems: [22]
   - within ruby code, add `puts $LOADED_FEATURES.grep(/freewill\.rb/)` (replace freewill with the name of the gem you want to query)
   - command will search the `$LOADED_FEATURES` array for entries that match the regex
 
-#### RVM / Rbenv
+</details>
+
+<details>
+<summary>
+<strong>Ruby Version Managers</strong>
+</summary>
+
 - generically referred to as "Ruby Version Managers" [22]
 - Ruby Version Managers let you install, manage and use multiple versions of Ruby [23]
   - some programs / projects may require a specific version of Ruby
 - rbenv may work better on a Mac [23]
+- utilities like `irb` are specific to each version of ruby [23]
+
+##### RVM
 - RVM uses a 'shell function' named `rvm` to modify your environment (e.g., change `PATH` variable to load correct ver of ruby) (a disk-based command cannot do this) [23]
+  - `rvm install 2.7.5` : installs ruby 2.7.5 [23]
+  - `rvm use 2.7.5` : switches ruby versions [23]
+  - `rvm use 2.7.5 --default` : sets the default version of ruby [23]
+  - `rvm use default` : use the default version of ruby [23]
+  - `rvm --ruby-version use 2.2.2` : creates a `.ruby-version` file in the directory which automatically sets ruby versions (modifies the `cd` shell command); this takes precedence over setting ruby versions in Gemfiles
+- troubleshooting w/ RVM:  [23]
+  - make sure there are no spaces in directory names (not supported)
+  - make sure `cd` and `rvm` are functions:  `type cd | head -1 ; type rvm | head -1`
+  - make sure RVM paths are listed before other similar paths (e.g., system ruby paths):  `echo $PATH`
+  - check RVM environment:  `rvm info`  (similar to `gem env`)
+  - check active ver of ruby `rvm current`
+  - fix permissions:  `rvm fix-permissions`
+  - repair files:  `rvm repair all`
 
-#### Bundler
+##### Rbenv
+- works by creating a `shims` directory which runs scripts called 'shims'; these execute `rbenv exec PROGRAM` to execute the correct version of ruby desired [23]
+- easiest to install additional ruby versions usinig `ruby-build` (an rbenv plugin) [23]
+  - once `ruby-build` is installed, can install rubies with `rbenv install 2.2.2`
+- other commands: [23]
+  - `rbenv global 2.3.1` : sets default version of ruby to 2.3.1
+  - `rbenv local 2.0.0` : sets local version (i.e., version for the current directory) to 2.0.0
+    - (this creates and uses the SAME `.ruby-version` file that RVM would use)
+  - `rbenv root` : identifies the 'root' folder for all rbenv installations
+  - `rbenv version` : display current version
+  - `rbenv which COMMAND` : identify disk location for COMMAND (e.g., `irb`, `ruby`, `rubocop`)
+  - `rbenv rehash` : rebuild `shim` directory
+  - `rbenv shims` : display list of current `shims`
 
-#### Rake
+</details>
+
+<details>
+<summary>
+<strong>Bundler</strong>
+</summary>
+
+- Bundler is a *dependency manager* (and also a Gem for Ruby) [24]
+  - it is installed automatically in Ruby 2.5 and higher
+  - if necessary: `gem install bundler`
+- create `Gemfile`, then run `bundle install` (produces `Gemfile.lock`) [24]
+- in ruby program, before requiring other Gems, add:  `require bundler/setup` [24]
+  - bundler will manually add paths for required gems to $LOAD_PATH
+- `bundle exec` command: [24]
+  - runs commands in an environment defined according to `Gemfile.lock`
+  - e.g., can run `bundle exec env` vs `env` : the environments will be different
+  - typically used to run commands from installed gems (e.g., rake, pry, rackup)
+  - often used to resolve version errors in commands (e.g., rake)
+    - i.e., if you run rake from command line, it will run the default version
+    - if the program needs a different version of rake, you'll get an error
+- `binstubs` directory: [24]
+  - alternative feature to `bundle exec` (i.e., used instead of `bundle exec`)
+  - can create a directory called `bin` (or something else if you use `bin`) which contains ruby script (wrappers) with same names as executables installed by gems
+  - troubleshooting: [24]
+    - "in require: cannot load such file -- ... " : add gem to `Gemfile`, run `bundle install` again
+    - make sure you're using the version of Bundler that corresponds to the Ruby version
+    - generate a new `Gemfile.lock`:  delete `Gemfile.lock` and re-run `bundle install`
+    - remove `.bundle` directory and re-run `bundle install`
+    - re-install Bundler:  `gem uninstall bundler` then `gem install bundler`
+    - make sure `rubygems-bundler` and `open_gem` are **not** installed
+    - `rm Gemfile.lock ; DEBUG_RESOLVER=1 bundle install`  (runs `bundle install` after removing the existing Gemfile.lock with additional debug information)
+
+
+</details>
+
+<details>
+<summary>
+<strong>Rake</strong>
+</summary>
+
+- Rake is a rubygem [25]
+
+
+</details>
 
 
 </details>
@@ -490,6 +577,52 @@
 
 <details>
 <summary>Gemfiles</summary>
+
+- `Gemfile` : a text file using a DSL (domain specific language) to define Ruby versions and gems [24]
+  - need to create this file
+  - then run `bundle install` to install gems / dependencies and produce `Gemfile.lock`
+- sample Gemfile: [24]
+  ```
+  source 'https://rubygems.org'
+  ruby '2.3.1'
+  gem 'sinatra'
+  gem 'erubis'
+  gem 'rack'
+  gem 'rake'
+  ```
+
+- corresponding `Gemfile.lock` (lists 'specs', platforms, dependencies, 'bundled with') [24]
+  ```
+  GEM
+    remote: https://RubyGems.org/
+    specs:
+      erubis (2.7.0)
+      rack (1.6.4)
+      rack-protection (1.5.3)
+        rack
+      rake (10.4.2)
+      sinatra (1.4.7)
+        rack (~> 1.5)
+        rack-protection (~> 1.4)
+        tilt (>= 1.3, < 3)
+      tilt (2.0.5)
+
+  PLATFORMS
+    ruby
+
+  DEPENDENCIES
+    erubis
+    rack
+    rake
+    sinatra
+
+  RUBY VERSION
+    ruby 2.3.1p112
+
+  BUNDLED WITH
+    1.13.6
+  ```
+
 </details>
 
 ---
@@ -556,6 +689,8 @@
 [21](https://launchschool.com/books/core_ruby_tools/read/your_ruby_installation)
 [22](https://launchschool.com/books/core_ruby_tools/read/gems)
 [23](https://launchschool.com/books/core_ruby_tools/read/ruby_version_managers)
+[24](https://launchschool.com/books/core_ruby_tools/read/bundler)
+[25](https://launchschool.com/books/core_ruby_tools/read/rake)
 
 
 
