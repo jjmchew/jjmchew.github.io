@@ -203,8 +203,8 @@
     yield(name)
   end
 
-  a_block = { |name| "My name is #{name}" }
-  p my_method('Joe', &a_block)
+  a_proc = { |name| "My name is #{name}" }
+  p my_method('Joe', &a_proc)
   ```
 - this `&` indicates that Ruby will try and convert an object to a block [7]
   - automatically will first call `Symbol#to_proc` if the symbol is not already a 'Proc';  then Ruby automatically converts the `Proc` to a block [7]
@@ -482,6 +482,28 @@
   - within ruby code, add `puts $LOADED_FEATURES.grep(/freewill\.rb/)` (replace freewill with the name of the gem you want to query)
   - command will search the `$LOADED_FEATURES` array for entries that match the regex
 
+- to create a Rubygem: [28]
+  - prepare `README.md`
+  - write documentation, if necessary
+  - need to create a `.gemspec` file
+  - add `gemspec` to the `Gemfile`
+  - update `Rakefile` to include standard Rubygem tasks (`require "bundler/gem_tasks"`)
+    - adds `rake build`, `rake install`, `rake release` for prepping and distributing your own Rubygem
+
+- sample `.gemspec` file (`todolist_project.gemspec`): [28]
+```ruby
+Gem::Specification.new do |s|
+  s.name        = 'todolist_project'
+  s.version     = '1.0.0'
+  s.summary     = 'Todo List Manager!'
+  s.description = 'This is a simple todo list manager!'
+  s.authors     = ['Pete Williams']
+  s.email       = 'pw@example.com'
+  s.homepage    = 'http://example.com/todolist_project'
+  s.files       = ['lib/todolist_project.rb', 'test/todolist_project_test.rb']
+end
+```
+
 </details>
 
 <details>
@@ -536,8 +558,9 @@
   - it is installed automatically in Ruby 2.5 and higher
   - if necessary: `gem install bundler`
 - create `Gemfile`, then run `bundle install` (produces `Gemfile.lock`) [24]
-- in ruby program, before requiring other Gems, add:  `require bundler/setup` [24]
-  - bundler will manually add paths for required gems to $LOAD_PATH
+- ** in ruby program, before requiring other Gems, add:  `require bundler/setup` [24]
+  - this also prevents Gems that aren't listed in the Gemfile from being included [26]
+  - bundler will manually add paths for required gems to $LOAD_PATH [24]
 - `bundle exec` command: [24]
   - runs commands in an environment defined according to `Gemfile.lock`
   - e.g., can run `bundle exec env` vs `env` : the environments will be different
@@ -556,6 +579,7 @@
     - re-install Bundler:  `gem uninstall bundler` then `gem install bundler`
     - make sure `rubygems-bundler` and `open_gem` are **not** installed
     - `rm Gemfile.lock ; DEBUG_RESOLVER=1 bundle install`  (runs `bundle install` after removing the existing Gemfile.lock with additional debug information)
+- make sure all gems used (including rake, etc.) are added to `Gemfile` [27]
 
 
 </details>
@@ -565,8 +589,44 @@
 <strong>Rake</strong>
 </summary>
 
-- Rake is a rubygem [25]
+- Rake is a Rubygem that automates common functions to build, test, package, install programs [25]
+  - included in Ruby
+- can automate: [25]
+  - creating directories / files
+  - setting up databases
+  - run tests
+  - package app and files for distribution
+  - install apps
+  - perform common git tasks
+  - rebuild files / directories based on changes to other files / directories
+- example:  could create a Rakefile to: [25]
+  - run all tests associated with the program
+  - increment the version number
+  - create release notes
+  - make a complete backup of local repo
+- create a Rakefile in project directory (a ruby program) [25]
+  - `desc` and `task` are method calls in a rake DSL
 
+##### Commands
+- run `bundle exec rake -T` : lists tasks (bundle exec uses the `Gemfile.lock` environment)
+
+##### Rakefiles
+- `sh` method : runs commands [27]
+- e.g.
+```ruby
+desc 'Say hello'
+task :hello do
+  puts "Hello there.  task 1"
+end
+
+desc 'Say goodbye'
+task :bye do
+  puts "bye.  task 2"
+end
+
+desc 'do everything'
+task :default => [:hello, :bye]
+```
 
 </details>
 
@@ -581,6 +641,7 @@
 - `Gemfile` : a text file using a DSL (domain specific language) to define Ruby versions and gems [24]
   - need to create this file
   - then run `bundle install` to install gems / dependencies and produce `Gemfile.lock`
+  - add 'gemspec' if there is a `.gemspec` file (e.g., `todolist_project.gemspec`) [26]
 - sample Gemfile: [24]
   ```
   source 'https://rubygems.org'
@@ -589,7 +650,10 @@
   gem 'erubis'
   gem 'rack'
   gem 'rake'
+  gem 'minitest', '~> 5.10'
   ```
+- `'~> 5.10'` : indicates to Bundler that we want *at least* version 5.10 of minitest, but NOT v6.0 or higher
+
 
 - corresponding `Gemfile.lock` (lists 'specs', platforms, dependencies, 'bundled with') [24]
   ```
@@ -691,7 +755,9 @@
 [23](https://launchschool.com/books/core_ruby_tools/read/ruby_version_managers)
 [24](https://launchschool.com/books/core_ruby_tools/read/bundler)
 [25](https://launchschool.com/books/core_ruby_tools/read/rake)
-
+[26](https://launchschool.com/lessons/2fdb1ef0/assignments/61b773fd)
+[27](https://launchschool.com/lessons/2fdb1ef0/assignments/f0ffb4db)
+[28](https://launchschool.com/lessons/2fdb1ef0/assignments/918536a2)
 
 
 # Follow-up Questions
@@ -708,6 +774,8 @@
 - [ ] the car test class - the "test suite" - what if you have multiple test files?
 - [ ] play around with binding for constants
 - [ ] definition of methods and ability to run methods defined afterwards (in closures - it works, in normal 'procedural' code it doesn't)
+- [ ] when an explicit block is defined in a method, why does it not adhere to strict arity rules?  i.e., why is it not necessary to pass a block in as an argument? (e.g., practiceProblems #6)
+- [ ] should 'explicit blocks' be called 'procs' instead?  Since they're technically converted via the `&`
 
 
 To review:
