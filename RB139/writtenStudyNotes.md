@@ -641,7 +641,7 @@ task :default => [:hello, :bye]
 - `Gemfile` : a text file using a DSL (domain specific language) to define Ruby versions and gems [24]
   - need to create this file
   - then run `bundle install` to install gems / dependencies and produce `Gemfile.lock`
-  - add 'gemspec' if there is a `.gemspec` file (e.g., `todolist_project.gemspec`) [26]
+  - add 'gemspec' if there is a `.gemspec` file (e.g., `todolist_project.gemspec`) [26] [28]
 - sample Gemfile: [24]
   ```
   source 'https://rubygems.org'
@@ -762,20 +762,29 @@ task :default => [:hello, :bye]
 
 # Follow-up Questions
 
-- [ ] When might I want to return a proc or a block from a method?
+- [X] When might I want to return a proc or a block from a method?
   - Procs are definitely a kind of 'encapsulation' - why not just use a new class / object (e.g., sequence example from notes)
+  - A (from discussions):  not really sure, may not be that important to RB139 written assessment; may be more important in functional programming vs OOP programming (i.e., can encapsulate without creating a new object / class)
   - [x] Can 'blocks' be returned from code, or only procs?  i.e., procs are a WAY of returning a block (code to be executed as a closure)
   - [x] Blocks can only be used at method invocation (i.e., not a named object)
   - [x] Explicit blocks aren't actually blocks; they are converted to procs by unary `&`
-- [ ] is `&` a method?
+- [X] is `&` a method?
+    - A:  **not** a method;  it's an **operator** 
 - [X] How do we convert a proc to a block
     - A: use `&` to convert a proc back to a block
+- [X] the car test class - the "test suite" - what if you have multiple test files?
+    - A:  test suite can be in multiple files
+- [X] play around with binding for constants
+    - A:  should obey the same scoping rules for methods / blocks (i.e., for blocks, inner scope can access things defined in outer-scope;  methods create their own scope and cannot access things in outer-scope)
+- [X] definition of methods and ability to run methods defined afterwards (in closures - it works, in normal 'procedural' code it doesn't)
+    - A:  for purposes of closures, definitely a different behaviour - just know that it is specific to closures;  don't need to know why
+- [X] when an explicit block is defined in a method, why does it not adhere to strict arity rules?  i.e., why is it not necessary to pass a block in as an argument? (e.g., practiceProblems #6)
+    - A:  it's NOT "method arity";  blocks aren't strictly referred to as an 'argument' in LS
+- [X] should 'explicit blocks' be called 'procs' instead?  Since they're technically converted via the `&`
+    - A:  know that the block AND the proc are BOTH available within the method - i.e., could do a `.call` OR a `yield` as desired;  hence they are still 'explicit blocks' (since the block still exists)
 - [ ] Review the posts and discussion at the start of the lesson
-- [ ] the car test class - the "test suite" - what if you have multiple test files?
-- [ ] play around with binding for constants
-- [ ] definition of methods and ability to run methods defined afterwards (in closures - it works, in normal 'procedural' code it doesn't)
-- [ ] when an explicit block is defined in a method, why does it not adhere to strict arity rules?  i.e., why is it not necessary to pass a block in as an argument? (e.g., practiceProblems #6)
-- [ ] should 'explicit blocks' be called 'procs' instead?  Since they're technically converted via the `&`
+- [ ] need to run rubocop! on the challenge problem solutions
+- [ ] review terminology of code coverage (i.e., what is it, why, etc.)
 
 
 To review:
@@ -787,8 +796,26 @@ To review:
 - [ ] https://github.com/W-Sho-Sugihara/RB139
 
 
+### Sample questions from Spot session w/ Sherece
+```ruby
+def a_method(&expecting_a_block)
+  expecting_a_block.call    #can call the proc
+  yield                     #can yield to the block
+end
 
+p a_method {puts "I'm a block" }
+```
 
+```ruby
 
+# why does this code raise an error? What are some ways you can fix it?
+def a_method(pro)
+  pro.call
+end
 
+a = 'friend' 
+a_method(&a)
 
+# ruby automatically searches for a ___#to_proc method, but there is no String#to_proc method;  but there is a Symbol#to_proc
+
+```

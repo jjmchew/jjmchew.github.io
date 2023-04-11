@@ -176,3 +176,50 @@ p make_greeting("Joe")
 
 
 ---
+
+7
+What is "unit testing" and why is it useful?
+
+- "Unit testing", as defined within the LS curriculum, is testing for the purposes of preventing 'regression' in our code.  i.e., unit testing is conducted to ensure that when changes or updates are made to our code, something that was previously working doesn't stop working.
+- This testing is not done manually, but is instead defined within test files which are run, similar to ruby program files, to conduct the defined tests and produce an output which identifies the number of tests conducted and whether or not they passed.
+- Since unit tests can be defined within test files and do not need to be run manually, it greatly speeds the process of ensuring that the code developed is still functional and meets requirements.  As requirements are added, tests can also be added or updated and thus the code being developed can continuously and quickly be verified against objective measures.
+
+---
+
+8
+What is a Gemfile used for?  What information is included in a Gemfile?
+
+- A Gemfile is used to track the dependencies a particular Ruby program may have.  These dependencies include specific versions of Ruby that may be required and gems used and their versions.
+- This Gemfile is used by bundler (a dependency manager) to ensure that the correct version of all required gems (and their respective dependencies) are installed and available within the development environment.  Bundler generates the `Gemfile.lock` file from the `Gemfile`.
+- Information required in the `Gemfile` includes:  the source of gems (typically https://rubygems.org, but may also be proprietary databases or folders), the version of Ruby the application was developed in, specific gems that are required by the application (and specific versions of the gems that may be required).
+
+---
+
+9
+What are some common tasks you can automate with Rake?
+
+- Common tasks that can be automated with Rake include:
+  - Creating directories
+  - Running tests (and test files)
+  - Installing apps / gems
+  - Initializing databases
+  - Listing files within a directory
+  - Executing shell commands (e.g., github commands)
+  - Output messages to screen
+
+---
+
+10
+What are the typical steps required to create a new Rubygem?
+
+- To create a new Rubygem you must:
+  - prepare a 'README.md' file
+  - write documentation, if necessary
+  - create the `Gemfile` (with `gemspec` included)
+  - create the `.gemspec` file (gem specifications file)
+  - add `require "bundler/gem_tasks"` in `Rakefile`
+  - use `rake build` (to create the `.gem` file for distribution)
+  - use `rake install` (to test the packaged gem by installing it in your project directory)
+  - use `rake release` (to send the `.gem` file to Rubygem library and publish the Rubygem)
+
+---
