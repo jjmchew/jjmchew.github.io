@@ -785,6 +785,12 @@ task :default => [:hello, :bye]
 - [ ] Review the posts and discussion at the start of the lesson
 - [ ] need to run rubocop! on the challenge problem solutions
 - [ ] review terminology of code coverage (i.e., what is it, why, etc.)
+- [ ] is `yield` a keyword?
+- [ ] is it `Proc#call`?  confirm if `call` is a method
+- [ ] is `block_given?` a method?
+- [ ] are 'blocks', 'procs', 'methods', 'lambdas' OBJECTS?  what do we refer to these things as?
+- [ ] review syntax for creating lambdas
+- [ ] follow-up on return from lambda's vs procs (spot ques #34)
 
 
 To review:
