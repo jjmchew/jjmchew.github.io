@@ -12,6 +12,11 @@
   3. using blocks
 
 - "a closure retains knowledge of the lexical environment at the time it was defined" [from Joseph]
+- a closure retains access to variables, constants, and methods that were in scope at the time and location you created the closure.  It binds some code with the in-scope items. [29 q2]
+- closures are created by: [29 q3]
+  - passing a block to a method (i.e., using a block)
+  - creating a `Proc` object
+  - creating a lambda
 
 ### Binding
 - Binding refers to the references a closure (chunk of code) makes to its surrounding artifacts [1]
@@ -30,7 +35,7 @@
   call_me(chunk_of_code)
   ```
   - if `name` initialization and assignment is removed, then code will return a NameError - the `Proc` has no knowledge of the `name` local variable used in the block [6]
-
+  - artifacts that are in-scope at the time the closure is created (e.g., a Proc is instantiated) are part of the binding [29 q12, q15]
 
 ### Scope ==???==
 
@@ -45,6 +50,9 @@
 - Blocks are identified by `do`... `end` or `{`...`}` [2]
 - Blocks are often passed in as arguments to a method call (e.g., `Array#each`) [2]
 - blocks are used to add flexibility to what a method does when invoked [3]
+  - i.e., defer code from implementation to invocation
+- blocks can be thought of as anonymous or unnamed methods [31]
+- the return value of a block is determined by its last expression [31]
 
 ### When to use blocks
 - to defer some implementation code to method invocation decision [3]
@@ -261,6 +269,33 @@
   - `my_lambda = lambda { |var| puts var }` OR 
   - `my_lambda = -> (thing) { puts thing }`
 
+```ruby
+def my_to_s(num)
+  num.to_s
+end
+
+lambda1 = -> (num) { num.to_s }
+lambda2 = method(:my_to_s).to_proc
+lambda3 = method(:to_s).to_proc
+lambda4 = lambda { |num| my_to_s(num) }
+
+p "1: #{lambda1}" # "1: #<Proc:0x0000558b30f8f730 test.rb:106 (lambda)>" 
+p "2: #{lambda2}" # "2: #<Proc:0x0000558b30f8eee8 (lambda)>" 
+p "3: #{lambda3}" # "3: #<Proc:0x0000558b30f8eab0 (lambda)>"
+p "4: #{lambda4}" # "4: #<Proc:0x00005643266fa0d0 test.rb:109 (lambda)>" 
+
+puts "1: #{[1, 2, 3].map(&lambda1)}" # 1: ["1", "2", "3"]
+puts "2: #{[1, 2, 3].map(&lambda2)}" # 2: ["1", "2", "3"]
+# puts "3: #{[1, 2, 3].map(&lambda3)}" # raises an ArgumentError
+puts "4: #{[1, 2, 3].map(&lambda4)}" # 4: ["1", "2", "3"]
+puts "&:to_s: #{[1, 2, 3].map(&:to_s)}" # &:to_s: ["1", "2", "3"]
+
+# lambda3.call(3) # raises an ArgumentError
+```
+- Conclusions:  cannot use `method()` to convert an instance method that is CALLED ON an argument - it can only be used to create a proc/lambda from a method that takes an argument
+- also note that `lambda1` and `lambda4` are referenced differently by Ruby (includes 'test.rb:[line reference]')
+
+
 </details>
 
 ---
@@ -424,13 +459,26 @@
 
 
 - don't create tests that must be run in a specific order - this is bad practice [17]
-</details>
+
+
+##### Code Coverage
+- code coverage is how much of our actual program code (public and private) is tested by a test suite [20]
+  - e.g., test all public methods and private methods
+  - 100% (in simplecov) means that all public and private methods have are tested in the testing suite [30]
+  - 100% code coverage does not mean that all edge cases are considered or that program is working properly - only that we have a test in place for every method
+  - more sophisticated methods of estimating code coverage may look at branching logic to ensure all branches are tested
+- "code coverage is one metric you can use to gauge code quality" [20]
+- it's not necessary to get to 100% code coverage - percentage will depend on the type of project you work on
+- the more "fault tolerant" code needs to be, the higher the test coverage should be [20]
 
 - code coverage:  use 'simplecov' [20]
   - `gem instal simplecov`
   - in ruby file, add:  `require 'simplecov'` (must be very first line)
   - also add: `SimpleCov.start`
   - will create a folder called 'coverage' with `index.html` file with report
+
+</details>
+
 ---
 
 # Core Tools / Packaging Code
@@ -558,7 +606,7 @@ end
   - it is installed automatically in Ruby 2.5 and higher
   - if necessary: `gem install bundler`
 - create `Gemfile`, then run `bundle install` (produces `Gemfile.lock`) [24]
-- ** in ruby program, before requiring other Gems, add:  `require bundler/setup` [24]
+- **in ruby program, before requiring other Gems, add:  `require bundler/setup`** [24]
   - this also prevents Gems that aren't listed in the Gemfile from being included [26]
   - bundler will manually add paths for required gems to $LOAD_PATH [24]
 - `bundle exec` command: [24]
@@ -758,10 +806,14 @@ task :default => [:hello, :bye]
 [26](https://launchschool.com/lessons/2fdb1ef0/assignments/61b773fd)
 [27](https://launchschool.com/lessons/2fdb1ef0/assignments/f0ffb4db)
 [28](https://launchschool.com/lessons/2fdb1ef0/assignments/918536a2)
+[29](https://launchschool.com/quizzes/45555a67)
+[30](https://github.com/gcpinckert/rb130_139/blob/main/study_guide/testing_terms.md)
+[31](https://github.com/W-Sho-Sugihara/RB139/blob/main/Study_guide.md)
 
 
 # Follow-up Questions
 
+##### Completed
 - [X] When might I want to return a proc or a block from a method?
   - Procs are definitely a kind of 'encapsulation' - why not just use a new class / object (e.g., sequence example from notes)
   - A (from discussions):  not really sure, may not be that important to RB139 written assessment; may be more important in functional programming vs OOP programming (i.e., can encapsulate without creating a new object / class)
@@ -782,35 +834,56 @@ task :default => [:hello, :bye]
     - A:  it's NOT "method arity";  blocks aren't strictly referred to as an 'argument' in LS
 - [X] should 'explicit blocks' be called 'procs' instead?  Since they're technically converted via the `&`
     - A:  know that the block AND the proc are BOTH available within the method - i.e., could do a `.call` OR a `yield` as desired;  hence they are still 'explicit blocks' (since the block still exists)
+- [X] is `yield` a keyword?
+    - A:  yield is a keyword
+- [X] is it `Proc#call`?  confirm if `call` is a method
+    - A:  yes - `call` is a method
+- [X] is `block_given?` a method?
+    - A:  Kernel#block_given?
+- [X] are 'blocks', 'procs', 'methods', 'lambdas' OBJECTS?  what do we refer to these things as?
+    - A: lambda's are a type of Procs;  Proc class
+      - blocks are definitely NOT objects
+      - methods are NOT objects;  but there may be a method class
+- [X] review syntax for creating lambdas
+    - A:  can use `new_lambda = lambda { |new| puts new }`
+        - OR:  `new_lambda2 = -> (new) { puts new }`
+- [X] follow-up on return from lambda's vs procs (spot ques #34)
+
+##### Outstanding
+- [ ] quiz questions to re-do:
+      - quiz 1 https://launchschool.com/quizzes/45555a67 q3, q12
 - [ ] Review the posts and discussion at the start of the lesson
 - [ ] need to run rubocop! on the challenge problem solutions
-- [ ] review terminology of code coverage (i.e., what is it, why, etc.)
-- [ ] is `yield` a keyword?
-- [ ] is it `Proc#call`?  confirm if `call` is a method
-- [ ] is `block_given?` a method?
-- [ ] are 'blocks', 'procs', 'methods', 'lambdas' OBJECTS?  what do we refer to these things as?
-- [ ] review syntax for creating lambdas
-- [ ] follow-up on return from lambda's vs procs (spot ques #34)
+- [X] review terminology of code coverage (i.e., what is it, why, etc.), make notes on it
+- [X] follow-ups for other people / spot sessions:
+    - [ ] ==3 how does binding affect the scope of closures?==
+    - [ ] 4 how do blocks work?
+    - [ ] ==12 Why is it important to know that methods and blocs can return closures?==
+
 
 
 To review:
-- [ ] https://launchschool.com/posts/281eea2f
-- [ ] https://launchschool.com/posts/08e14621
-- [ ] https://launchschool.com/posts/a744f590
-- [ ] https://launchschool.slack.com/archives/C48A338P3/p1674832095088829
-- [ ] https://github.com/gcpinckert/rb130_139
-- [ ] https://github.com/W-Sho-Sugihara/RB139
+- [X] https://launchschool.com/posts/281eea2f : addresses how closures react to methods differently than local variables
+- [X] https://launchschool.com/posts/08e14621 : `&` in method invocation vs method definition / implementation
+- [X] https://launchschool.com/posts/a744f590 : use of `method()`
+- [X] https://launchschool.slack.com/archives/C48A338P3/p1674832095088829 : on methods in closures (binding to objects passed in vs not passed in)
+- [X] https://github.com/gcpinckert/rb130_139 : study notes from Ginni
+- [X] https://github.com/W-Sho-Sugihara/RB139 : study notes from Sho
 
 
-### Sample questions from Spot session w/ Sherece
+# Additional sample questions / code from study sessions
+
+#### From Sherece
 ```ruby
 def a_method(&expecting_a_block)
   expecting_a_block.call    #can call the proc
-  yield                     #can yield to the block
+  yield                     #can ALSO yield to the block
 end
 
 p a_method {puts "I'm a block" }
 ```
+
+---
 
 ```ruby
 
@@ -825,3 +898,75 @@ a_method(&a)
 # ruby automatically searches for a ___#to_proc method, but there is no String#to_proc method;  but there is a Symbol#to_proc
 
 ```
+
+#### From Erik
+```ruby
+def my_method(block)
+  block.call if block_given? # this will return an error since a block is given, but the local method var `block` is NOT callable
+end
+
+my_method(3) { puts "hello" }
+```
+
+---
+
+```ruby
+def my_method(&block)
+  block.call if block_given?
+  yield
+end
+
+my_proc = method(:my_method).to_proc
+
+p my_proc # this is actually a lambda since it was created from a method (strict arity - a block parameter is required)
+
+my_proc.call { puts "a block!" }
+```
+
+---
+
+```ruby
+def test_return
+  new_lambda = lambda do
+    puts "I'm in new_lambda"
+    return "a lambda return string"
+  end
+
+  new_proc = proc do
+    puts "I'm in new_proc"
+    return "a return string"
+  end
+
+  puts "Before call."
+  new_proc.call  # changing this to new_lambda.call creates different behaviour
+  puts "After call."
+end
+
+p "#{test_return} return value" #=> "Before call."
+              #=> "After call." (if new_lambda is called)
+```
+- using `return` in a lambda will continue execution of method after the lambda call;  using `return` in a proc will end execution of the method after proc call
+- in general:  cannot `return` from `main` scope, hence block cannot use return when passed in on method invocation in main scope
+  - However, `return` in a block in the method will return **to** main scope from method:
+  ```ruby
+  def lambda_return
+    new_proc = proc do
+      puts "I'm in new_proc"
+      return "a return string"
+    end
+
+    loop do
+      puts "in loop"
+      return # this will end execution of the `lambda_return` method
+    end
+
+    puts "Before lambda call."
+    new_proc.call 
+    puts "After lambda call."
+  end
+
+  p lambda_return
+  ```
+
+  ---
+

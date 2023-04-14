@@ -3,30 +3,55 @@ https://github.com/W-Sho-Sugihara/RB139/blob/154a5266422be74bb45d3f07805f8a4614f
 
 ## Blocks
 1
-==What are closures?==
+What are closures?
 
 - Closures are a programming concept where a 'chunk' of code can be stored for later execution.  In Ruby, this chunk of code can be assigned to a local variable ('named') and passed around within the code (e.g., passed in as arguments to methods or returned from methods).
+
+##### Additions
+- Closures are created by using a block (e.g., passing a block to a method)
+- Creating a `proc`
+- Creating a `lambda`
+- Closures create a binding to artifacts (e.g., local variables, method references, constants, etc.) in-scope at the time the closure is created
 
 ---
 
 2
-==What is binding?==
+What is binding?
 
 - Binding is the mechanism by which a closure (a 'chunk of code') maintains awareness of the various artifacts of the code environment in which it was created.  This might include references to local variables, other methods, constants are anything else required for the code to be effectively executed later.
+
+##### Additions
+- Binding is created to all artifacts necessary for execution of the closure that are in-scope at the time the closure was created.
+- For example, a binding is created to the local variable `name` and when the closure is executed, the output from `my_closure` will reflect the current referenced value of `name`:
+```ruby
+name = "John"
+my_closure = lambda { puts "hello #{name}" }
+my_closure.call # "hello John" is output
+
+name = "Bob"
+my_closure.call # "hello Bob" is output
+```
 
 ---
 
 3
 ==How does binding affect the scope of closures?==
 
-- The scope of the closure will be related to the scope of the various artifacts in the ocde environment in which it was created.  For example, if a `proc` is created from a block, local variables in a scope outside of the block can be included within the scope of the `proc` and will be bound accordingly.
+- The scope of the closure will be related to the scope of the various artifacts in the code environment in which it was created.  For example, if a `proc` is created from a block, local variables in a scope outside of the block can be included within the scope of the `proc` and will be bound accordingly.
+
+##### Additions
+from https://github.com/W-Sho-Sugihara/RB139/blob/main/study_answers.md
+- Binding allows the scope of the closure to be dependent upon when the closure was defined, NOT when it is called.  The closure may be able to access variables, methods, constants, etc. that are outside of it's scope at the time it is called
 
 ---
 
 4
-==How do blocks work?==
+How do blocks work?
 
 - Blocks are indicated through the use of `{ }` or `do end` where the code within the block is placed within the parentheses or between the `do` and `end`.  Blocks are only used as part of method invocation or in the instantiation of new `proc`s or `lambda`s along with the appropriate syntax (e.g., `Proc.new`). Blocks can access local variables and methods declared in an outer-scope, but not local variables of nested inner scopes. Block variables declared with the same name as outer-scope local variables will 'shadow' (prevent access to) those outer-scope variables.
+
+##### Additions
+- Blocks create a new inner scope within which local variables which have been declared in this new inner scope are not accessible from the outer scope.
 
 ---
 
@@ -55,7 +80,7 @@ Describe the two reasons we use blocks, use examples.
 ---
 
 7
-When can you pass a block to a method? ==Why?==
+When can you pass a block to a method? Why?
 
 - In Ruby, you can always pass a block to a method - all methods can implicitly receive a block on invocation whether it has been explicitly defined within the method definition or not. Although all methods can receive a block, not all methods have been defined to utilize that block, so the code within the block may be entirely ignored by the method.
 
@@ -65,7 +90,7 @@ When can you pass a block to a method? ==Why?==
 How do we make a block argument mandatory?
 
 - Methods can be defined in such a way as to raise an error if the block is not provided. The use of `yield` within the method without a guard clause (e.g., `yield if block_given?`) will raise a 'JumpError' if the method is invoked without a block.
-- Prepending a method parameter with `&` in the method definition also makes the use of the block within the method more explicit.  For example, `def some_method(&block)` : `&block` indicates that a block passed in when invoking `some_method` will be converted to a `proc` named `block`. In the body of the method, `block.call` or `yield` can be used to execute the code that was passed in through the block.  Note that in this situation, if block is *not* passed in, no 'ArgumentError' will be raised, however if the code does not leverage a guard clause (e.g., `block.call if block_given?`) and no block is passed in, then a 'JumpError' will be raised, similar to the first situation.
+- Prepending a method parameter with `&` in the method definition also makes the use of the block within the method more explicit.  For example, `def some_method(&block)` : `&block` indicates that a block passed in when invoking `some_method` will be converted to a `proc` named `block`. In the body of the method, `block.call` or `yield` can be used to execute the code that was passed in through the block.  Note that in this situation, if block is *not* passed in, no 'ArgumentError' will be raised, however if the code does not leverage a guard clause (e.g., `block.call if block_given?`) and no block is passed in, then a ~~'JumpError'~~ ==NoMethodError== will be raised, ~~similar to the first situation~~ since the `call` method is not available on `nil`.
 
 ---
 
@@ -81,6 +106,9 @@ What is yield in Ruby and how does it work?
 
 - In Ruby methods, `yield` is used to indicate that the code within a block should be executed. Arguments can be passed to the block for execution through the use of parentheses.  For example `yield(3)` will pass a single integer object `3` to the block on execution.  Additional arguments can be passed when separated by `,` (e.g., `yield(3, 10, 11)`).
 
+##### Additions
+- `yield` is a keyword
+
 ---
 
 11
@@ -88,12 +116,19 @@ How do we check if a block is passed into a method?
 
 - We can check if a block is passed into a method using the method `block_given?`. This method will return `true` if a block has been passed in, or `false` if a block has not been passed in.
 
+##### Additions
+- `Kernel#block_given?`
+
 ---
 
 12
 ==Why is it important to know that methods and blocks can return closures?==
 
 - Closures can be used to help encapsulate and create reusable chunks of code. They are helpful and may be more common in functional programming.
+
+##### Additions
+from https://github.com/W-Sho-Sugihara/RB139/blob/main/study_answers.md
+- Closures can allow us to access / alter data that would otherwise be out-of-scope and pass along functionality to maintain DRY / flexible code
 
 ---
 
@@ -114,10 +149,26 @@ Describe the arity differences of blocks, procs, methods and lambdas.
 ---
 
 15
-==What other differences are there between lambdas and procs? (might not be assessed on this, but good to know)==
+What other differences are there between lambdas and procs? (might not be assessed on this, but good to know)
 
-- Lambdas can only be created using `lambda`; `Lambda.new` will not work.  However, lambdas can also be created using the `->` syntax.  Lambdas are a specific type of proc.
+- Lambdas can only be created using `lambda`; `Lambda.new` will not work.  However, lambdas can also be created using the `-> (var)` syntax.  Lambdas are a specific type of proc.
 - Procs can be created using `proc` or `Proc.new`.
+
+##### Additions
+- Lambdas are part of the `Proc` class, but are distinct from `Procs`
+- have strict arity
+- will allow code in methods following a `return` call in a lambda to continue executing (unlike `Procs` - if there is a `return` in a `Proc` call, then method invocation will stop)
+  - i.e., a lambda will return control to the calling method when return is explicitly called, but a proc will end the calling method when a return is explicitly called
+  ```ruby
+  def a_method
+    puts "before"
+    lambda {return}.call # using this will output "after"
+    # proc {return}.call # using this will not output "after"
+    puts "after"
+  end
+
+  a_method
+  ```
 
 ---
 
@@ -142,14 +193,14 @@ method(&var)
 ---
 
 18
-==What is happening in the code below?==
+What is happening in the code below?
 ```ruby
 arr = [1, 2, 3, 4, 5]
 
 p arr.map(&:to_s) # specifically `&:to_s`
 ```
 
-- The `&` operator is being used to convert `:to_s` to a block to be passed in to the invocation of `Array#map`.  The symbol `:to_s` references a method (`Integer#to_s` in this case, since the array elements are integers).  The `&` operator converts that method to a proc (similar to `proc { |num| num.to_s }`) and then a block to be passed in to `Array#map`.
+- The `&` operator is being used to convert `:to_s` to a block to be passed in to the invocation of `Array#map`.  The symbol `:to_s` references a method (`Integer#to_s` in this case, since the array elements are integers).  The `&` operator converts that method to a proc (similar to `proc { |num| num.to_s }`) and then converts that proc a block to be passed in to `Array#map`.
 - As a result, the output from the invocation of the `p` method will be:  `["1", "2", "3", "4", "5"]`.
 
 ---
@@ -173,6 +224,10 @@ to_s = proc { |num| num.to_i } # OR   to_s = :to_i.to_proc
 to_i = proc { |num| num.to_s } # OR   to_i = :to_s.to_proc
 ```
 
+##### Additions
+- can shorten code even further since passing the method, `to_proc` will automatically be called.  e.g.:
+  - `to_s = :to_i`
+  - `to_i = :to_s`
 ---
 
 20
@@ -372,7 +427,7 @@ p some_method(&bloc)
 ---
 
 31
-==How does `Kernel#block_given?` work?==
+How does `Kernel#block_given?` work?
 
 - The method `block_given?` will return `true` when a block has been passed in to a method or `false` when no block has been pased in to a method.
 
@@ -432,7 +487,7 @@ new_lam = Lambda.new { p "hi, lambda!" } # => NameError: uninitialized constant 
 ---
 
 34
-==What does the following code tell us about explicitly returning from proc's and lambda's? (once again probably not assessed on this, but good to know ;)==
+What does the following code tell us about explicitly returning from proc's and lambda's? (once again probably not assessed on this, but good to know ;)
 ```ruby
 def lambda_return
   puts "Before lambda call."
@@ -486,19 +541,28 @@ What is a test suite?
 
 - A test suite is the complete set of tests which accompany a program.  The test suite may be in 1 or multiple test files and will contain a number of different tests (each which will contain 1 or more assertions).
 
+##### Additions
+- A test suite is a group or set of situations or contexts within which verification checks are made. [quiz 2 q2]
+
 ---
 
 37
-==What is a test?==
+What is a test?
 
 - A test is one specific aspect of a program which requires validation to ensure it is functioning appropriately.  A test will be comprised of 1 or more assertions.
 
-- CHECK:  https://launchschool.com/lessons/dd2ae827/assignments/b6169bec
+##### Additions
+- A test is a situation or context in which verification checks are made.  E.g., making sure you get an error message after trying to log in with the wrong password.  May require multiple steps. [quiz 2 q2]
+
+---
 
 38
 What is an assertion?
 
 - An assertion is a specific comparison or verification step that helps to verify if a test has passed or not.  Typically assertions provide an explicit expectation which is compared to actual program output to determine if the assertion passes.
+
+##### Additions
+- An assertion is a verification step to confirm that the results returned by a program or application match the expected results. [quiz 2 q2]
 
 ---
 
@@ -506,6 +570,13 @@ What is an assertion?
 What do testing framworks provide?
 
 - Testing frameworks provide the structure and language to help conduct testing on programs.  This includes: defining tests, setting-up code and related objects, executing tests, asserting validations and then tearing-down (cleaning-up) artifacts created during testing.
+
+##### Additions
+(from https://github.com/W-Sho-Sugihara/RB139/blob/main/Study_guide.md)
+- Testing frameworks provide:
+  - a way to describe what kind of test you want
+  - a way to execute those tests
+  - a way to report the results of the tests
 
 ---
 
@@ -525,10 +596,13 @@ What is Domain Specific Language (DSL)?
 ---
 
 42
-==What is the difference of assertion vs refutation methods?==
+What is the difference of assertion vs refutation methods?
 
 - Assertion methods pass when the returned value is `true`.  Whereas, refutation methods pass when the returned value is `false'.
-- For example, `assert_equal(exp, act)` passes when `exp` == `act` returns `true` (i.e., the expected value is equal to the actual value).  Howevr, `refute_equal(exp, act)` passes when `exp` == `act` returns `false` (i.e., when the expected value does *not* equal the actual value).
+- For example, `assert_equal(exp, act)` passes when `exp` == `act` returns `true` (i.e., the expected value is equal to the actual value).  However, `refute_equal(exp, act)` passes when `exp` == `act` returns `false` (i.e., when the expected value does *not* equal the actual value).
+
+##### Additions
+- Refutations are the opposite of assertions.  e.g., `assert` passes if the object you pass to it is truthy;  `refute` passes if the object you pass to it is falsy. Generally, for each assertion, there is a corresponding refutation (e.g., `assert_equal` and `refute_equal`) [16]
 
 ---
 
@@ -547,7 +621,14 @@ What is the SEAT approach and what are its benefits?
   - E : execute tests
   - A : assert validations
   - T : tear-down testing objects
+
 - The benefit to this approach is that it is systematic, can minimize unnecessary repetition in test code (e.g., the use of set-up), and minimizes system resources (e.g., the use of tear-down).  Structure and organized tests (i.e., structured according to Execution of tests on a specific aspect of the program with its corresponding assertions) can make debugging and fixing code easier to understand, as well.
+
+##### Additions
+- Setup step: "Instantiate any objects that will be used in the tests." [quiz 2 q4]
+- Execute step: "Run code against the object being tested." [quiz 2 q5]
+- Assert step:  "Affirm the results of code execution" [quiz 2 q4]
+- Teardown step: "Clean up any lingering artifacts" [quiz 2 q5]
 
 ---
 
@@ -561,7 +642,13 @@ When does setup and tear down happen when testing?
 46
 What is code coverage?
 
-- Code coverage is a concept which describes how much of the program has corresponding tests defined within the test suite.  Generally, the higher the level (e.g., percentage) of code coverage, the higher to confidence a developer can have that the code is functioning as expected. If all aspects of the program have tests defined, then there is a high-level of code coverage which can correspond to a high level of confidence in the code.  Note that the quality of tests defined may still vary and thus code coverage is not the only contributor to code confidence.
+- Code coverage is a concept which describes how much of the program has corresponding tests defined within the test suite.  Generally, the higher the level (e.g., percentage) of code coverage, the higher level of confidence a developer can have that the code is functioning as expected. If all aspects of the program have tests defined, then there is a high-level of code coverage which can correspond to a high level of confidence in the code.  Note that the quality of tests defined may still vary and thus code coverage is not the only contributor to code confidence.
+
+##### Additions
+- Code that requires higher fault tolerance should have a higher degree of test coverage
+- High code coverage in testing doesn't imply that all edge cases have been considered
+- more sophisticated methods of estimated code coverage may looking branching logic
+- It's not necessary to achieve 100% code coverage - the desired percentage will depend on the project and the desired fault tolerance of the project
 
 ---
 
@@ -569,6 +656,10 @@ What is code coverage?
 What is regression testing?
 
 - Regression testing is testing for the purposes of ensuring that updates to the code do not create errors or bugs. If automated tests defining the expected behaviour of code are defined, then as code is updated, tests can be run to confirm that no errors have been introduced.
+
+##### Addition
+- Regression tests check for bugs that occur in formerly working code after changes are made somewhere in the codebase. [quiz 2 q1]
+- The use of tests to identify bugs means that code doesn't have to be verified manually to ensure everything works after making changes. [quiz 2 q1]
 
 ---
 
@@ -591,12 +682,18 @@ What are RubyGems and why are they useful?
 
 - RubyGems are packaged libraries of Ruby code that can be downloaded and incorporated into Ruby programs. The most common source of RubyGems is from https://rubygems.org. Other developers create these RubyGems to help simplify or automate various coding tasks.  Common examples are `pry` for debugging or `minitest` for testing.  Other examples might include specific libraries which simplify the display of dates (like 'stamp') or add colour to screen output.
 
+##### Additions
+- RubyGems are packages of code that you can download, install, and use in your Ruby programs or from the command line. [quiz 3 q4]
+
 ---
 
 50
 What are Version Managers and why are they useful?
 
 - Version Managers (like RVM or Rbenv) allow multiple versions of Ruby to be installed on your system. This is useful since different projects may require different versions of Ruby in order to run smoothly (since commands, syntax, etc. within the language are evolving and changing).  Version managers allow the version of Ruby being used to be easily changed and corresponding gems and their versions to also be managed separately.
+
+##### Additions
+- Version Managers let you install, manage, and use multiple versions of Ruby. [quiz 3 q3]
 
 ---
 
@@ -605,12 +702,20 @@ What is Bundler and why is it useful?
 
 - Bundler is a dependency manager for Ruby programs - it helps to track the dependencies associated with your Ruby program.  For example, your program may require a specific version of Ruby, specific RubyGems or specific versions of RubyGems.  Each RubyGem that you use may also have specific dependencies.  Bundler will scan the dependencies associated with each of your program dependencies and document and install all of the associated versions to ensure that your program can be easily installed and run on different systems.
 
+##### Additions
+- Bundler lets you manage the various dependencies in a Ruby project. [quiz 3 q1]
+- Bundler uses `Gemfile` to determine which version of Ruby and what RubyGems your application needs. [quiz 3 q9]
+- Bundler creates a `Gemfile.lock` file that contains your application's dependency information. [quiz 3 q9]
+
 ---
 
 52
 What is Rake and why is it useful?
 
 - Rake is an automation tool for Ruby programs.  It uses the Ruby language to define common tasks which can be executed from the command line.  Tasks such as preparing files, creating or editing documentation, running tests, executing shell commands (like git commands), or packaging code are all tasks that Rake can help automate. Pre-defining these tasks makes it easier to maintain consistency, reduce human error, and reduce overall effort in completing tasks in a specific way and in an specific order.  Use of a `Rakefile` can be especially helpful when collaborating with a distributed team.
+
+##### Additions
+- Rake automates common tasks required to build, test, package, and install programs. [quiz 3 q2]
 
 ---
 
@@ -624,3 +729,10 @@ What is Rake and why is it useful?
   - a `Rakefile` to automate common tasks associated with the development or distribution process
   - a `README.md` file and/or other documentation
   - a `.gemspec` file (if the project is anticipated to be distributed as a RubyGem)
+
+##### Additions
+from (https://github.com/gcpinckert/rb130_139/blob/main/study_guide/packaging_code.md)
+- A project is any collection of files that is used to develop, test, build, or distribute software.  Software can be an executable program, a library module, or some combination.  Projects may be a few to thousands of files.
+
+(from https://github.com/W-Sho-Sugihara/RB139/blob/main/Study_guide.md)
+- A Ruby project is a program or library whose dominant coding language is Ruby

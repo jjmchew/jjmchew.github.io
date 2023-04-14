@@ -80,7 +80,7 @@ How do `procs` and `blocks` differ?  Provide a code example of each being used.
 
 ### `blocks`
 1. cannot be assigned to local variables (unless converted to procs) and executed later
-2. only used on invocation of methods (or when instantiating procs / lambdas)
+2. only used on invocation of methods (or when instantiating procs / lambdas), cannot be passed on
 3. use `yield` to execute a block (when passed into a method)
 4. can test using `block_given?` (i.e., `yield if block_given?`)
 

@@ -3,7 +3,7 @@
 ### Quiz 1 (https://launchschool.com/lessons/c0400a9c/assignments/69992016)
 - Q1:  B D
 - Q2:  C
-- Q3:  C D
+- Q3: X  ==C D==
 - Q4:  A C
 - Q5:  D
 - Q6:  B F
@@ -12,7 +12,7 @@
 - Q9:  B
 - Q10: B E
 - Q11: A C
-- Q12: D
+- Q12:X ==D==
 - Q13: C
 - Q14: D
 - Q15: A B E
