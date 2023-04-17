@@ -84,6 +84,7 @@ end
 Using the provided test cases for the Medium challenge Simple Linked List (https://launchschool.com/exercises/35a331cd), add your own tests for hypothetical methods `SimpleLinkedList#each`, `SimpleLinkedList#map`, and `SimpleLinkedList#select`. Design your tests so that they ensure that the hypothetical custom methods behave similarly to the built-in `Array#each`, `Array#map`, and `Array#select`.
 
 - The updated tests for the desired hypothetical methods are shown below:
+
 ```ruby
 require 'minitest/autorun'
 
@@ -115,8 +116,8 @@ class LinkedListTest < Minitest::Test
 
   # other tests provided are omitted
 end
-
 ```
+
 
 ---
 
