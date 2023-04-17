@@ -23,6 +23,7 @@ What is binding?
 ##### Additions
 - Binding is created to all artifacts necessary for execution of the closure that are in-scope at the time the closure was created.
 - For example, a binding is created to the local variable `name` and when the closure is executed, the output from `my_closure` will reflect the current referenced value of `name`:
+
 ```ruby
 name = "John"
 my_closure = lambda { puts "hello #{name}" }
@@ -66,15 +67,19 @@ When do we use blocks? (List the two reasons)
 Describe the two reasons we use blocks, use examples.
 
 - 1) Passing additional code to a method during invocation:
+
   ```ruby
   [1, 2, 3].map { |num| num + 10 }
   ```
+
   - The block `{ |num| num + 10 }` indicates how each element of the array `[1, 2, 3]` should be modified when creating a new array using the `Array#map` method.
 
 - 2) Instantiating a new `proc`:
+
   ```ruby
   new_proc = Proc.new { |num| num + 10 }
   ```
+
   - The block `{ |num| num + 10 }` indicates that when `new_proc` is called and a number argument is passed in, `10` will be added to that argument and returned.
 
 ---
@@ -159,6 +164,7 @@ What other differences are there between lambdas and procs? (might not be assess
 - have strict arity
 - will allow code in methods following a `return` call in a lambda to continue executing (unlike `Procs` - if there is a `return` in a `Proc` call, then method invocation will stop)
   - i.e., a lambda will return control to the calling method when return is explicitly called, but a proc will end the calling method when a return is explicitly called
+
   ```ruby
   def a_method
     puts "before"
@@ -174,6 +180,7 @@ What other differences are there between lambdas and procs? (might not be assess
 
 16
 What does `&` do when in a method parameter?
+
 ```ruby
 def method(&var); end
 ```
@@ -184,6 +191,7 @@ def method(&var); end
 
 17
 What does & do when in a method invocation argument?
+
 ```ruby
 method(&var)
 ```
@@ -194,6 +202,7 @@ method(&var)
 
 18
 What is happening in the code below?
+
 ```ruby
 arr = [1, 2, 3, 4, 5]
 
@@ -207,6 +216,7 @@ p arr.map(&:to_s) # specifically `&:to_s`
 
 19
 How do we get the desired output without altering the method or the method invocations?
+
 ```ruby
 def call_this
   yield(2)
@@ -228,6 +238,7 @@ to_i = proc { |num| num.to_s } # OR   to_i = :to_s.to_proc
 - can shorten code even further since passing the method, `to_proc` will automatically be called.  e.g.:
   - `to_s = :to_i`
   - `to_i = :to_s`
+  
 ---
 
 20
@@ -235,6 +246,7 @@ How do we invoke an explicit block passed into a method using &? Provide example
 
 - Explicit blocks passed into a method are invoked using `call`.
 - For example:
+
 ```ruby
 def a_method(&chunk)
   chunk.call
@@ -242,12 +254,14 @@ end
 
 a_method { puts "You got me!" }
 ```
+
 - The block `{ puts "You got me!" }` is passed into `a_method`, converted to a `proc` and assigned to the local method variable `chunk`.  `chunk.call` then executes that `proc` which invokes the `put` method with the string `"You got me!"` passed in.  This outputs `You got me!` to the screen.
 
 ---
 
 21
 What concept does the following code demonstrate?
+
 ```ruby
 def time_it
   time_before = Time.now
@@ -263,6 +277,7 @@ end
 
 22
 What will be outputted from the method invocation `block_method('turtle')` below? Why does/doesn't it raise an error?
+
 ```ruby
 def block_method(animal)
   yield(animal)
@@ -275,11 +290,13 @@ end
 
 - The output on screen will be `This is a turtle and a .`
 - The code does not raise an error since blocks have lenient arity.  The block is represented by
+
 ```ruby
 do |turtle, seal|
   puts "This is a #{turtle} and a #{seal}."
 end
 ```
+
 - This block defines 2 block parameters `turtle` and `seal`.  However, since blocks in Ruby have lenient arity, execution of the block does not require both arguments to be passed in.
 - When `block_method` is invoked, only 1 argument `'turtle'` is passed in and then passed to the block. Thus, the block parameter `turtle` is assigned to the string object with value `'turtle'` and the block parameter `seal` is assigned to the object `nil`. When the block is executed the `nil` object is output through string interpolation as nothing.
 
@@ -287,6 +304,7 @@ end
 
 23
 What will be outputted if we add the follow code to the code above? Why?
+
 ```ruby
 block_method('turtle') { puts "This is a #{animal}."}
 ```
@@ -297,6 +315,7 @@ block_method('turtle') { puts "This is a #{animal}."}
 
 24
 What will the method call `call_me` output? Why?
+
 ```ruby
 def call_me(some_code)
   some_code.call
@@ -315,6 +334,7 @@ call_me(chunk_of_code)
 
 25
 What happens when we change the code as such:
+
 ```ruby
 def call_me(some_code)
   some_code.call
@@ -332,6 +352,7 @@ call_me(chunk_of_code)
 
 26
 What will the method call `call_me` output? Why?
+
 ```ruby
 def call_me(some_code)
   some_code.call
@@ -355,6 +376,7 @@ call_me(chunk_of_code)
 
 27
 Why does the following raise an error?
+
 ```ruby
 def a_method(pro)
   pro.call
@@ -370,6 +392,7 @@ a_method(&a)
 
 28
 Why does the following code raise an error?
+
 ```ruby
 def some_method(block)
   block_given?
@@ -386,6 +409,7 @@ p some_method(bl)
 
 29
 Why does the following code output false?
+
 ```ruby
 def some_method(block)
   block_given?
@@ -402,6 +426,7 @@ p some_method(bloc)
 
 30
 How do we fix the following code so the output is true? Explain
+
 ```ruby
 def some_method(block)
   block_given? # we want this to return `true`
@@ -414,6 +439,7 @@ p some_method(bloc)
 
 - The desired output can be obtained by prepending `bloc` with `&` when `some_method` is invoked (to convert the proc `bloc` into a block). Additionally, once `bloc` is converted to a block, the method definition for `some_method` also needs to be updated to remove the required parameter `block` (which will not be passed in when `bloc` is converted to a block). This can be done by removing `block` from the method definition entirely, OR prepending `block` with `&` to indicate the use of an explicit block.
 - The updated code could be:
+
 ```ruby
 def some_method  # OR  def some_method(&block)
   block_given?
@@ -435,6 +461,7 @@ How does `Kernel#block_given?` work?
 
 32
 Why do we get a LocalJumpError when executing the below code? & How do we fix it so the output is hi? (2 possible ways)
+
 ```ruby
 def some(block)
   yield
@@ -447,6 +474,7 @@ some(bloc)
 
 - The LocalJumpError occurs since the method `some` uses `yield` to execute code passed in with a block.  However, when `some` is invoked, no block is passed in - only a proc `bloc`.  With no block passed in, the use of `yield` raises the LocalJumpError.
 - To fix the code and generate the desired output the proc can be converted to a block by updating the code with the use of `&` as follows:
+
 ```ruby
 def some(&block) # updated to indicate an explicit block
   yield
@@ -456,7 +484,9 @@ bloc = proc { p "hi" } # do not alter
 
 some(&bloc) # updated to convert proc `bloc` to a block
 ```
+
 - OR the method can be updated to executed the proc `block` as follows:
+
 ```ruby
 def some(block)
   block.call # updated to call the proc `block`
@@ -471,6 +501,7 @@ some(bloc)
 
 33
 What does the following code tell us about lambda's? (probably not assessed on this but good to know)
+
 ```ruby
 bloc = lambda { p "hi" }
 
@@ -488,6 +519,7 @@ new_lam = Lambda.new { p "hi, lambda!" } # => NameError: uninitialized constant 
 
 34
 What does the following code tell us about explicitly returning from proc's and lambda's? (once again probably not assessed on this, but good to know ;)
+
 ```ruby
 def lambda_return
   puts "Before lambda call."
@@ -513,6 +545,7 @@ proc_return #=> "Before proc call."
 
 35
 What will `#p` output below? Why is this the case and what is this code demonstrating?
+
 ```ruby
 def retained_array
   arr = []
