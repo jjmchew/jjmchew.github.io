@@ -46,3 +46,21 @@
 - Q9:  B D
 - Q10: B
 - Q11: C
+
+
+### Quiz 1 re-do (https://launchschool.com/lessons/c0400a9c/assignments/69992016)
+- q1:  B D
+- q2:  C
+- q3:  A C D
+- q4:  A C
+- q5:  D
+- q6:  B F
+- q7:  C
+- q8:  B C
+- q9:  B
+- q10: B E
+- q11: A C
+- q12: B D
+- q13: C
+- q14: D
+- q15: A B E

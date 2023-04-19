@@ -6,6 +6,7 @@
 ### Closures
 - A closure is a general programming concept involving saving a "chunk of code" to be executed later [1]
   - can be thought of as a method you can pass around and execute, but that is not defined with an explicit name
+  - note:  methods are NOT closures (as per quiz 1)
 - In Ruby, 3 main ways to work with closures: [1]
   1. instantiating an object from the `Proc` class
   2. using lambdas
@@ -37,7 +38,28 @@
   - if `name` initialization and assignment is removed, then code will return a NameError - the `Proc` has no knowledge of the `name` local variable used in the block [6]
   - artifacts that are in-scope at the time the closure is created (e.g., a Proc is instantiated) are part of the binding [29 q12, q15]
 
-### Scope ==???==
+### Scope
+- closures / binding are the way in which local variables declared in an outer scope are accessible to an inner scope.  Note that methods are different than local variables (`my_method` can be defined after block, but is still accessible - Ruby interpreter deals with methods differently)
+  ```ruby
+  def for_each_in(arr)
+    arr.each { |element| yield element }
+  end
+
+  arr = [*1..5]
+  results = [0]
+
+  for_each_in(arr) do |number|
+    total = results[-1] + number + my_method # closure (binding) allows this block to access `results`
+    # my_method is available in this block
+    results.push(total)
+  end
+
+  def my_method
+    3
+  end
+
+  p results
+  ```
 
 </details>
 
@@ -89,7 +111,7 @@
   p results # => [0, 1, 3, 6, 10, 15]
   ```
 - blocks create new scope for local variables (inner and outer): only outer local variables are accessible to inner blocks (also applies to nested blocks) [6]
--  
+
 </details>
 
 ---
@@ -104,6 +126,8 @@
 - blocks pass in additional code for method invocation (i.e., code additional to method implementation) [3]
 
 - e.g., implement the following methods:  'times', 'each', 'select', 'reduce', 
+- `yield` is a keyword
+
 </details>
 
 ---
@@ -193,17 +217,19 @@
 <details>
 <summary>`&:symbol`</summary>
 
+- `&` called unary `and` - is an *operator* (not a method)
 - e.g. `[1, 2, 3, 4, 5].map(&:to_s) # => ["1", "2", "3", "4", "5"]` [7]
 - `&` must be followed by a symbol that corresponds to a method name that can be invoked on each element *and* that doesn't take arguments [7]
 - this is **not** an explicit block - different use of only `&` [7]
+  - applying the `&` to an object (possibly referenced by a variable) - Ruby tries to convert the object to a block
   - e.g., 
   ```ruby
-  def my_method(name, &proc)
+  def my_method(name, &proc) # this `&` is an explicit block
     proc.call(name)
   end
 
   a_proc = Proc.new { |name| "My name is #{name}" }
-  p my_method('Joe', &a_proc)
+  p my_method('Joe', &a_proc) # converts proc to a block (not an explicit block) 
   ```
   OR
   ```ruby
@@ -212,7 +238,7 @@
   end
 
   a_proc = { |name| "My name is #{name}" }
-  p my_method('Joe', &a_proc)
+  p my_method('Joe', &a_proc) # converts proc to a block
   ```
 - this `&` indicates that Ruby will try and convert an object to a block [7]
   - automatically will first call `Symbol#to_proc` if the symbol is not already a 'Proc';  then Ruby automatically converts the `Proc` to a block [7]
@@ -472,7 +498,7 @@ puts "&:to_s: #{[1, 2, 3].map(&:to_s)}" # &:to_s: ["1", "2", "3"]
 - the more "fault tolerant" code needs to be, the higher the test coverage should be [20]
 
 - code coverage:  use 'simplecov' [20]
-  - `gem instal simplecov`
+  - `gem install simplecov`
   - in ruby file, add:  `require 'simplecov'` (must be very first line)
   - also add: `SimpleCov.start`
   - will create a folder called 'coverage' with `index.html` file with report
@@ -660,6 +686,7 @@ end
 
 ##### Rakefiles
 - `sh` method : runs commands [27]
+  - e.g., `sh 'ruby ./test/todolist_project_test.rb'`
 - e.g.
 ```ruby
 desc 'Say hello'
@@ -755,27 +782,7 @@ task :default => [:hello, :bye]
   end
   ```
 - can seed random numbers (to make them less random) for testing purposes using `Kernel.srand 3948`, where `3948` is the desired seed;  use `rand(1..5)` to get a random number in desired range [13]
-- closures / binding are the way in which local variables declared in an outer scope are accessible to an inner scope.  Note that methods are different than local variables (`my_method` can be defined after block, but is still accessible - Ruby interpreter deals with methods differently)
-  ```ruby
-  def for_each_in(arr)
-    arr.each { |element| yield element }
-  end
 
-  arr = [*1..5]
-  results = [0]
-
-  for_each_in(arr) do |number|
-    total = results[-1] + number + my_method # closure (binding) allows this block to access `results`
-    # my_method is available in this block
-    results.push(total)
-  end
-
-  def my_method
-    3
-  end
-
-  p results
-  ```
 
 # References
 [1](https://launchschool.com/lessons/c0400a9c/assignments/0a7a9177)
@@ -850,17 +857,15 @@ task :default => [:hello, :bye]
 - [X] follow-up on return from lambda's vs procs (spot ques #34)
 
 ##### Outstanding
-- [ ] quiz questions to re-do:
+- [X] quiz questions to re-do:
       - quiz 1 https://launchschool.com/quizzes/45555a67 q3, q12
-- [ ] Review the posts and discussion at the start of the lesson
-- [ ] need to run rubocop! on the challenge problem solutions
+- [X] Review the posts and discussion at the start of the lesson
+- [X] need to run rubocop! on the challenge problem solutions
 - [X] review terminology of code coverage (i.e., what is it, why, etc.), make notes on it
 - [X] follow-ups for other people / spot sessions:
-    - [ ] ==3 how does binding affect the scope of closures?==
-    - [ ] 4 how do blocks work?
-    - [ ] ==12 Why is it important to know that methods and blocs can return closures?==
-
-
+    - [X] ==3 how does binding affect the scope of closures?==
+    - [X] 4 how do blocks work?
+    - [X] ==12 Why is it important to know that methods and blocs can return closures?==
 
 To review:
 - [X] https://launchschool.com/posts/281eea2f : addresses how closures react to methods differently than local variables
@@ -918,9 +923,9 @@ end
 
 my_proc = method(:my_method).to_proc
 
-p my_proc # this is actually a lambda since it was created from a method (strict arity - a block parameter is required)
+p my_proc # this is actually a lambda since it was created from a method (has strict arity, but no parameters are defined)
 
-my_proc.call { puts "a block!" }
+my_proc.call { puts "a block!" } # note the block is required for `my_method` only because the `yield` has no guard clause
 ```
 
 ---
