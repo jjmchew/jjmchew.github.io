@@ -2,19 +2,42 @@
 
 ### Definitions
 
+<details>
+<summary>A-M</summary>
+
 #### A-M
 
 - **Bandwidth** : the *amount* of data that can be sent in a particular unit of time (typically a second) [2]; a measure of *capacity* [6]
 
 - **Broadcast address** : the IP address at the END of the range assigned to a single local network (see also Network Address) [5]
 
+- **Buffer** : memory allocated according to OS configuration and physical resources available to store data awaiting processing [12]
+  - used in TCP for flow control [12]
+
 - **Byte** : a unit of digital information containing 8 bits
+
+- **Congestion avoidance** : the application of an approach and algorithm to determine the size of the initial transmission window, and how much the window should be reduced depending on network conditions (i.e., network congestion) [12]
+  - typically uses data loss and number of retransmissions to determine if the network is congested [12]
 
 - **Connectionless network communication** : a single socket object that is set to `listen()` for incoming messages (from any source) directed to its specific IP address:port [10]
 
 - **Connection-oriented network communication** : instantiating multiple socket objects to create a connection between applications;  analogous to replicating yourself to participate in 5 different concurrent conversations [10]
   - there is still a single socket object listening for incoming messages, but once a message arrives, a new socket object is instantiated to listen specifically for messages corresponding to the four-tuple (a specific source port, source IP, destination port, destination IP) [10]
   - generally, these connections are more reliable:  easier to implement rules for managing communication order of messages, responses, retransmission, etc. [10]
+
+- **Connection state** (for TCP, connection-oriented communication) : possible states which a TCP connection progresses through during its lifetime: [12]
+  - LISTEN : this state is important (on server side)
+  - SYN-SENT
+  - SYN-RECEIVED
+  - ESTABLISHED : this state is important
+  - FIN-WAIT-1
+  - FIN-WAIT-2
+  - CLOSE-WAIT
+  - CLOSING
+  - LAST-ACK
+  - TIME-WAIT
+  - CLOSED (a fictional state, since if closed, no connection exists)
+  - Listen and Established are most important since other states relate to establishing and terminating connections
 
 - **CRC** (Cyclic Redundancy Check) : see FCS below [3]
 
@@ -26,7 +49,15 @@
 
 - **FCS** (Frame Check Sequence) : the final 4 bytes (32 bits) of an Ethernet frame used for a CRC (cyclic redundancy check).  The receiving device generates it's own FCS from frame data then compares it to the FCS in the sent data. If the 2 don't match, the frame is dropped.  Ethernet does not implement retransmission functionality - this is left to higher level protocols. [3]
 
+- **Flow Control** : a mechanism to prevent the sender from overwhelming the receiver with too much data at once [12]
+  - in TCP: data awaiting processing is stored in a buffer
+  - the amount of data each side can accept is defined in the WINDOW field of the TCP header; this is a dynamic field (i.e., will change depending on how full the buffer is) [12]
+
 - **Four-tuple** : Four pieces of information defined for connection-oriented network communication:  source port, source IP, destination port, destination IP;  newly instantiated sockets listen for messages where all 4 pieces of info match [10]
+
+- **Four-way handshake** : a process used for terminating TCP connections; uses `FIN` flag of TCP headers [12]
+
+- **HOL blocking** (Head-of-Line blocking) : a general networking concept where an issue in delivering or processing 1 message in a sequence will 'block' or delay the deilvery of processing of subsequent messages [12]
 
 - **Hop** : journeys between nodes on the network (i.e., interruptions for transmission, processing, queuing) [2]
 
@@ -51,6 +82,7 @@
     - Internet [packet] (IP - from network to sub-network)
     - Link [frame] (Ethernet - from router to device)
   - lower levels (Ethernet, IP) are inherently unreliable - although checksum data is provided, if the frame or packet is corrupt, it will just be dropped [11]
+  - for reliable data transmission, a system of rules must be implemented to enable it (e.g, TCP) [13]
 
 
 - **LAN** (Local Area Network) : multiple devices (computers) connected via a network bridging device (like a hub, or more likely a switch).  If connected wirelessly, would be known as WLAN (Wireless LAN) [4]
@@ -66,13 +98,22 @@
 - **MAC Address** : a (unique) sequence of 6, two-digit hexadecimal numbers (e.g., `00:40:96:9d:68:0a`) assigned to every device with a NIC; used to direct Ethernet frames between network devices in a (W)LAN;  MAC address is "burned in" when manufactured;  in theory, should all be unique (may not be, but rarely causes problems) [3] [6] MAC addresses have a 'flat' structure [9 q7]
 
 - **Multiplexing** : transmitting multiple signals over a single channel;  opposite:  **demultiplexing** [10]
+  - multiplexing is enabled through use of network ports [13]
 
+
+</details>
+
+<details>
+<summary>N-Z</summary>
 
 #### N-Z
 
 - **Network** : 1 or more computers connected in such a way that they can communicate or exchange data [4]
 
 - **Network address** : the IP address at the START of the range assigned to a single local network (see also Broadcast Address) [5]
+
+- **Network congestion** : when there is more data being transmitted on a network than there is network capacity to transmit the data [12]
+  - If there is congestion, excess data is lost [12]
 
 - **Network edge** : the 'entry point' into a network like a home or corporate LAN [2]
 
@@ -101,7 +142,7 @@
 - **Pipelining** : similar to a Stop-and-Wait protocol, but the sender continuously sends messages in a "window" (maximum number of messages in the pipeline at any 1 time) without waiting for the acknowledgement.  If there is a time-out before an acknowledgement is received, that message will be re-sent, etc as per the Stop-and-Wait protocol [11]
   - specific implementations are "Go-back-N" and "Selective Repeat" [11]
 
-- **Port** : an identifer for a specific process running on a host (will between 0 - 65,535, some numbers are reserved) [10]
+- **Port** (network port): an identifer for a specific process running on a host (will be between 0 - 65,535, some numbers are reserved) [10]
   - 0 - 1023 : assigned to processes that provide commonly used network services
       - HTTP is port 80
       - FTP is port 20
@@ -119,31 +160,60 @@
 - **Socket** : also a *communication end-point*; conceptually, it is an endpoint used for inter-process communication [10]
   - could be a UNIX socket (mechanism for communicating between local process running on the same maching)
   - could also be an internet socket (e.g., TCP/IP socket): a mechanism for inter-process communication between networked processes (usually on different machines)
-  - the combo of an IP address and port information; this enables end-to-end communication between specific applications (often on different machines, but could be a `localhost` and a browser on the same machine) (e.g., `216.3.128.12:8080`) [10]
+  - ==the combo of an IP address and port information==; this enables end-to-end communication between specific applications (often on different machines, but could be a `localhost` and a browser on the same machine) (e.g., `216.3.128.12:8080`) [10]
   - sockets are implemented by instantiating *socket objects* (often following the Berkeley sockets API model:  `bind()`, `listen()`, `accept()`, `connect()`, etc. Ruby, Python, Node.js use this) [10]
 
 - **Stop-and-Wait protocol** : a reliable protocol, but not very efficient - a lot of waiting for acknowledgements [11]
   -  messages are sent with sequence numbers and a timeout; receiver sends an acknowledgement (w/ sequence number) once received; then sender sends next message in sequence (w/ sequence number) [11]
   - if acknowledgement goes missing, sender will re-send a message (w/ sequence number) after time-out [11]
   - if receiver gets a duplicate, it will drop it and re-send the acknowledgement [11]
-  - 
 
 - **Sub-net** : when a network range (of IP addresses) is split into smaller networks (e.g., the range 109.156.106.0 - 109.156.106.255 is split into 2 smaller segments with 2 routers: 1 responsible for 109.156.106.0 - 109.156.106.127 AND another for 109.156.106.128 - 109.156.106.255) [5]
 
 - **Switch** : a network device that directs Ethernet frames to ONLY the desired MAC address;  a MAC Address Table keeps a record of ports and MAC addresses for connected devices [3]
 
 - **TCP** (Transmission Control Protocol) : provides reliable network communication (data transfer) on top of an unreliable channel [12]
+  - ==Reliability is provided through *message acknowledgement* and *retransmission*, and *in-order delivery*== [13]
   - Key focuses are: [12]
     - data integrity
     - de-duplication
     - in-order delivery
     - retransmission of lost data
   - also provides data encapsulation and multiplexing (through TCP segments) [12]
+  - PDUs are called "Segments" [8] [12]
+  - ==TCP is a connection-oriented protocol==, it requires a connection between application processes established through a ==Three-way Handshake== (see also Three-way Handshake) [12]
+  - Key aspect to know is that when establishing a connection, a sender MUST wait a full RTT (SYN sent and SYN ACK received) before sending data: this is "a lot of overhead" to establish connections; thus important to provide efficiency and reliability for retransmission of data once a connection is established through ==Flow Control and Congestion Avoidance== (see also Flow Control and Congestion Avoidance) [12]
+  - there are variations of TCP which use different algorithms or approaches for determining the size of the initial transmission window and how to vary this based on network conditions
+  - Disadvantages of TCP: 
+    - ==HOL blocking can occur since in-order delivery of Segments is required==;  can lead to increased queuing delays; increases latency [12]
+    - ==latency overhead of establishing a connection== [13]
+
+- **Three-way Handshake** : a process used for establishing TCP connections [12]
+  - 1. Sender ==sends SYN== (sync) Segment
+  - 2. Receiver receives SYN, ==responds with SYN ACK== (acknowledge) Segment
+  - 3. Sender receives SYN ACK, responds with ==ACK==
+  - 4. Receiver receives ACK;  establishes connection
+  - see also Connection State [12]
 
 - **TTL** (Time to Live) : a value within the Packet header that defines the maximum number of network 'hops' a packet can take before being dropped; at each hop, the network router will decrement TTL by 1 [5]
 
+- **UDP** (User Datagram Protocol) : a ==simple connectionless protocol== at the Transport layer that uses one-way data flow; its simplicity allows it to be ==fast and flexible== [12] [13]
+  - Header includes only: source port, destination port, length (of data in bits), checksum (required for IPv6, but optional for IPv4)
+  - also provides multiplexing (through use of ports)
+  - PDU is "Datagram" [12]
+  - provides no guarantee of message delivery (==no reliability==), message delivery order (==no in-order delivery==), ==no congestion-avoidance or flow-control==, no connection state tracking (since it is a connectionless protocol) [12] [13]
+  - Applications using UDP can start sending data without waiting for connections to be established; actual transmission is also faster (datagrams are not re-sent); latency is less of an issue; no HOL blocking
+  - specific services (like in-order delivery [sequencing] or data retransmission) are left up to the developer to decide if they want to implement
+  - best used for voice or video calling, online gaming; streaming - occasional dropped data will lead to glitches, but are worth the speed of the protocol, especially over long distances (high latency)
+  - best practice for UDP use involves implementing congestion avoidance to prevent the network from being overwhelmed
+
 - **WLAN** (Wireless LAN) : where devices are connected wirelessly to a central device (wireess hub or switch) [4]
 
+</details>
+
+
+<details>
+<summary>Commands</summary>
 
 ### Commands
 
@@ -151,6 +221,16 @@
 
 - `netstat -ntup` : displays all of the active network connections (including local address and foreign address as sockets [IP address:port]) for active applications
 
+</details>
+
+### Summaries
+
+| OSI Layer | IPS Layer   | Protocol   | PDU                 | Scope             |
+|-----------|-------------|------------|---------------------|-------------------|
+| Application <br> Presentation <br> Session | Application | | | |
+| Transport | Transport   | TCP or UDP | Segment or Datagram | app to app        |
+| Network | Internet    | IP         | Packet              | host to host      |
+| Data Link <br> Physical | Link | Ethernet | Frame | router to device |
 
 ### References
 [1](https://launchschool.com/lessons/4af196b9/assignments/21ef33af)
@@ -165,6 +245,7 @@
 [10](https://launchschool.com/lessons/2a6c7439/assignments/41113e98)
 [11](https://launchschool.com/lessons/2a6c7439/assignments/89636ed4)
 [12](https://launchschool.com/lessons/2a6c7439/assignments/d09ddd52)
+[13](https://launchschool.com/lessons/2a6c7439/assignments/4ab0993c)
 
 
 ### Other articles
