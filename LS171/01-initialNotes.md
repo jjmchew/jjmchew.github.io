@@ -2,9 +2,6 @@
 
 ## Definitions
 
-<details>
-<summary>A-M</summary>
-
 ### A-M
 
 - **AJAX** (Asynchronous JavaScript and XML) : a feature that allows browsers to issue requests and process responses *without a full page refresh*; this prevents the very expensive overhead of re-creating an entire webpage on every interaction [22]
@@ -167,11 +164,6 @@
 - **Multiplexing** : transmitting multiple signals over a single channel;  opposite:  **demultiplexing** [10]
   - multiplexing is enabled through use of network ports [13]
 
-
-</details>
-
-<details>
-<summary>N-Z</summary>
 
 ### N-Z
 
@@ -368,11 +360,6 @@
       - e.g., replace `<p>` and `</p>` with `&lt;p&gt;` and `&lt;/p&gt;`
 
 
-</details>
-
-
-<details>
-<summary>Commands</summary>
 
 ## Commands / Tools
 
@@ -389,7 +376,6 @@
 
 - scripting in bash (executing scripts, conditionals, loops, functions) [31]
 
-</details>
 
 ## Summaries
 
