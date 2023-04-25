@@ -7,14 +7,29 @@
 
 #### A-M
 
+- **AJAX** (Asynchronous JavaScript and XML) : a feature that allows browsers to issue requests and process responses *without a full page refresh**; this prevents the very expensive overhead of re-creating an entire webpage on every interaction [22]
+  - AJAX requests: [22]
+    - are performed asynchronously (the page does NOT refresh)
+    - are similar to normal requests (same components, handled by server in same way)
+    - have their response typically handled by some client-side JavaScript code
+
+- **Application Layer** : The top-most layer of the OSI and IPS models;  provides communication services to applications themselves;  does not refer to actual applications [15]
+  - protocols in this layer are the ones which actual applications most directly interact with; provides a syntax for applications to interact [15]
+
 - **Bandwidth** : the *amount* of data that can be sent in a particular unit of time (typically a second) [2]; a measure of *capacity* [6]
 
 - **Broadcast address** : the IP address at the END of the range assigned to a single local network (see also Network Address) [5]
+
+- **Browser** (web browser) : Browsers hide much of the underlying HTTP request/response cycle: [20]
+  - e.g., if you fill out a web form, it will issue the POST request, get a response with a `Location` header, issue a request to the locationd defined in the `Location` header and then display the (HTML) response from the second request; a browser tool like CURL or Postman may not do all of that [20]
 
 - **Buffer** : memory allocated according to OS configuration and physical resources available to store data awaiting processing [12]
   - used in TCP for flow control [12]
 
 - **Byte** : a unit of digital information containing 8 bits
+
+- **Callback** : a piece of logic you pass on to some function to be executed after a certain event has happend [22]
+  - e.g., a `callback` may be triggered when a response is returned
 
 - **Congestion avoidance** : the application of an approach and algorithm to determine the size of the initial transmission window, and how much the window should be reduced depending on network conditions (i.e., network congestion) [12]
   - typically uses data loss and number of retransmissions to determine if the network is congested [12]
@@ -39,9 +54,18 @@
   - CLOSED (a fictional state, since if closed, no connection exists)
   - Listen and Established are most important since other states relate to establishing and terminating connections
 
+- **Cookie** (HTTP cookie) : small files of data (containing session information) sent from the server and stored in the client (browser) during a request/response cycle [22]
+  - session information is stored in the cookie; actual session data is stored on the server
+  - the client-side cookie is compared with server-side data on every request to identify the current session
+
+- **CORS** (Cross-Origin Resource Sharing) : a mechanism that allows interactions that would normally be restricted cross-origin to take place; adds new HTTP headers that lets servers serve resources cross-origin to specified origins [23]
+
 - **CRC** (Cyclic Redundancy Check) : see FCS below [3]
 
 - **Bandwidth bottleneck** : a point at which bandwidth changes from relatively high to relatively low [2]
+
+- **DNS** (Domain Name System) : a distributed database which translates domain names (e.g., `www.google.com`) to an IP address (e.g., `197.251.230.45`) [17]
+  - DNS databases are stored on a hierarchy of world-wide DNS servers - no one server contains the complete database; if 1 server does not contain a requested domain name, that server routes the request to another DNS server up the hierarchy [17]
 
 - **Encapsulation** : how protocols at different network layers can work together;  implemented through PDUs (i.e., the info at a higher layer is part of the data payload of a lower layer) [6]
 
@@ -57,9 +81,33 @@
 
 - **Four-way handshake** : a process used for terminating TCP connections; uses `FIN` flag of TCP headers [12]
 
+- **GET** (HTTP request) : used to retrieve a resource (most links are GETs); the response can be anything, but if it's HTML and that HTML references other resources, a browser will automatically request those referenced resources, a pure HTTP tool (like `curl`) will not [20]
+
+- **Header** (HTTP request or response header) : colon-separated name-value pairs sent in plain text; HTTP headers allow the client and server to send additional info during the HTTP response/request cycle;  [20]
+
 - **HOL blocking** (Head-of-Line blocking) : a general networking concept where an issue in delivering or processing 1 message in a sequence will 'block' or delay the deilvery of processing of subsequent messages [12]
 
 - **Hop** : journeys between nodes on the network (i.e., interruptions for transmission, processing, queuing) [2]
+
+- **HTML** (Hypertext Markup Language) : the means by whch resources on the web should be uniformly structured; one of the three technologies / concepts upon which the web was based (see also URI, HTTP) [16]
+  - e.g., `<a>` with `href` attribute to provide links to other resources
+
+- **HTTP** (Hypertext Transfer Protocol) : a stateless protocol for how clients communicate with servers [24]; the set of rules which provide uniformity to the way resources on the web are transferred between applications (a *request response protocol* between a *server* and a *client* [17]) [16]
+  - serves as a link between applications (a message format) and the transfer of hypertext documents [17]
+  - is an inherently *stateless* protocol - makes it hard to build user experiences that are stateful (e.g., know where a request came from, differentiating users, staying "logged in", etc.) [17]
+
+- **HTTP request** : can be Get or Post (see also GET and POST) [20]
+  - key components: [20]
+    - HTTP method (i.e., GET vs POST)
+    - path (resource name and any query parameters)
+    - headers
+    - message body (for POST requests)
+
+- **HTTP response** : the raw data returned by a server to an HTTP request [21]
+  - key components of a response: [21]
+    - status code (e.g., 200) (see also Status Code)
+    - headers
+    - message body (contains the raw response data)
 
 - **Hub** : a basic piece of network hardware that replicates a message and forwards it to all of the devices on the network. Devices connected to a hub that receive a message not intended for it (i.e., MAC address is different) will ignore the frame [3]
 
@@ -119,6 +167,11 @@
 
 - **NIC** (Network Interface Card) : any network-enabled device [3]
 
+- **Origin** : a combination of *scheme*, *host*, and *port* [23]
+  - scheme:  e.g., `http` vs `https`
+  - host: `mysite.com` vs `anothersite.com`
+  - port: `http://mysite.com` (port 80 by default) vs `http://mysite.com:4000`
+
 - **OSI model** (Open Systems Interconnection model): a conceptual model for general computer network communication [8] (see also Internet Protocol Suite)
   - Layers include: [8]
     - Application
@@ -130,6 +183,8 @@
     - Physical
 
 - **Packet** : a PDU within the IP Protocol;  has a header and a data payload;  data payload is generally a TCP segment or UDP datagram [5]
+
+- **Packet sniffing** : Reading HTTP request/responses being sent back and forth between a client and server; finding a session id would alow someone to pose as your client and be automatically logged in without needing your username or pw [23]
 
 - **PDU** : Protocol Data Units [1]
   - an amount or block of data transferred over a network
@@ -144,18 +199,52 @@
 
 - **Port** (network port): an identifer for a specific process running on a host (will be between 0 - 65,535, some numbers are reserved) [10]
   - 0 - 1023 : assigned to processes that provide commonly used network services
-      - HTTP is port 80
+      - HTTP is port 80 (unencrypted) or port 443 (encrypted)
       - FTP is port 20
       - SMTP is port 25
   - 1024 - 49,151 : registered ports; assigned as requested by private entities; may also be *ephemeral* (temporary) ports assigned by the operating system
   - source and destination ports are included in PDU for transport layer (exact structure varies based on specific transport protocol used) [10]
 
+- **POST** (HTTP request) : an HTTP request that allows you to send or submit data to the server; allows sending of much larger and sensitive data to the server (such as passwords, images, videos, etc.) [20]
+  - data is sent as part of the HTTP *body*; body is optional (can be blank) [20]
+
 - **Protocol** : (network protocol) a system of rules governing the exchange or transission of data; various protocols have various functions (corresponding to the various 'layers' of the network) [6]
   - there are many different protocols to address different aspects of network communication OR the same aspect, but a specific use case [7]
+
+- **Query string** (HTTP) : used to send data to the server; used *only* in HTTP GET requests [18]
+  - components include: [18]
+    - `?` : reserved character to mark the start of the query string
+    - e.g. `search=ruby` : a parameter name/value pair
+    - `&` : reserved character used when adding more parameters to the query string
+    - e.g., `results=10` : another parameter name/value pair
+  - limits: [18]
+    - have a max length (cannot send a lot of data)
+    - all name/value pairs are visible in the URL (can't send sensitive info)
+    - space and special characters can't be used (need to be URL encoded)
 
 - **Round-trip Time (RTT)** : a latency calculation often used in networking - the length of time for a signal to be sent, added to the length of time for an acknowledgement or response to be received [2]
 
 - **Router** : a network device;  responsible for a network 'segment' (i.e., a range of IP addresses for which the router keeps a record and can forward packets to);  routers also keep a routing table - record of other routers on the network and their network addresses [5]
+
+- **Same-origin policy** : a policy that permits unrestricted interaction between resources originating from the same origin, but restricts certain interactions between resources originating from different origins [23] (see also Origin)
+  - typically allowed:  requests for linking, redirects, form submissions, embedding of resources from other origins (e.g., scripts, css stylesheets, images, media, fonts, iframes)
+  - typically restricted: cross-origin requests (where resources are being accessed programmatically using APIs such as `XMLHttpRequest` or `fetch`)
+
+- **Secure HTTP (HTTPS)** : the use of TLS to encrypt the requests/responses associated with HTTP (i.e., not send them as strings, which are susceptible to *packet sniffing*) [23]
+
+- **Session Hijacking** : when a hacker obtains the session id and can access the web application as if they are an authenticated user; does not require the username/pw [23]
+  - countermeasures: [23]
+    - reset the session - render the old session id invalid and create a new one
+    - setting expiration times on sessions (limit time a hacker has to use the session id)
+    - use HTTPS
+
+- **Session Identifier** : a unique token that gets passed whenever a client makes a request to the server to allow the server to identify clients [22]
+  - when using session identifiers, for each request, the server must: [22]
+    - inspect the request for a session identifier
+    - ensure the session is still valid
+    - maintain rules on how to handle session expiration and how to store session data
+    - retrieve session data based on the session id
+    - recreate the application state (e.g., HTML for a web request) from the session data and send it back to the client as a response
 
 - **Socket** : also a *communication end-point*; conceptually, it is an endpoint used for inter-process communication [10]
   - could be a UNIX socket (mechanism for communicating between local process running on the same maching)
@@ -163,6 +252,17 @@
   - ==the combo of an IP address and port information==; this enables end-to-end communication between specific applications (often on different machines, but could be a `localhost` and a browser on the same machine) (e.g., `216.3.128.12:8080`) [10]
   - sockets are implemented by instantiating *socket objects* (often following the Berkeley sockets API model:  `bind()`, `listen()`, `accept()`, `connect()`, etc. Ruby, Python, Node.js use this) [10]
 
+- **Stateless (protocol)** : a protocol designed such that each request/response pair is completely independent of the previous one [17]
+  - use of a stateless protocol implies that servers do not need to store info (like state) between requests; i.e., there is no "clean-up" if a request breaks en route to the server [17]
+
+- **Status Code** (HTTP response) : a 3-digit number a server sends back after receiving a request; signifies the status of the request; typically returned with status text [21]
+  - |status code | status text | meaning |
+    |------------|-------------|---------|
+    |200         | OK          | request handled successfully |
+    |302         | Found       | requested resource has changed temporarily <br> usually redirects to another URL defined in `Location` response header|
+    |404         | Not Found   | requested resource cannot be found |
+    |500         | internal server error | server has encountered a generic error | 
+  
 - **Stop-and-Wait protocol** : a reliable protocol, but not very efficient - a lot of waiting for acknowledgements [11]
   -  messages are sent with sequence numbers and a timeout; receiver sends an acknowledgement (w/ sequence number) once received; then sender sends next message in sequence (w/ sequence number) [11]
   - if acknowledgement goes missing, sender will re-send a message (w/ sequence number) after time-out [11]
@@ -175,8 +275,8 @@
 - **TCP** (Transmission Control Protocol) : provides reliable network communication (data transfer) on top of an unreliable channel [12]
   - ==Reliability is provided through *message acknowledgement* and *retransmission*, and *in-order delivery*== [13]
   - Key focuses are: [12]
-    - data integrity
-    - de-duplication
+    - data integrity (error detection [14 q4])
+    - de-duplication [14 q4]
     - in-order delivery
     - retransmission of lost data
   - also provides data encapsulation and multiplexing (through TCP segments) [12]
@@ -198,7 +298,7 @@
 - **TTL** (Time to Live) : a value within the Packet header that defines the maximum number of network 'hops' a packet can take before being dropped; at each hop, the network router will decrement TTL by 1 [5]
 
 - **UDP** (User Datagram Protocol) : a ==simple connectionless protocol== at the Transport layer that uses one-way data flow; its simplicity allows it to be ==fast and flexible== [12] [13]
-  - Header includes only: source port, destination port, length (of data in bits), checksum (required for IPv6, but optional for IPv4)
+  - Header includes only: source port, destination port, length (of data in bits), checksum (required for IPv6, but optional for IPv4;  i.e., does provide error-checking [14 q5] )
   - also provides multiplexing (through use of ports)
   - PDU is "Datagram" [12]
   - provides no guarantee of message delivery (==no reliability==), message delivery order (==no in-order delivery==), ==no congestion-avoidance or flow-control==, no connection state tracking (since it is a connectionless protocol) [12] [13]
@@ -207,7 +307,31 @@
   - best used for voice or video calling, online gaming; streaming - occasional dropped data will lead to glitches, but are worth the speed of the protocol, especially over long distances (high latency)
   - best practice for UDP use involves implementing congestion avoidance to prevent the network from being overwhelmed
 
+- **URI** (Uniform Resource Identifier) : a general concept - identifiers [19]; a string of characters which identifies a particular resource; URIs mark specific points in the information space of the web [16]
+
+- **URL** (Uniform Resource Locator) : distinct from URI [16]; a type of URI [19]; (see also URI); the most frequently used part of a URI that specifies where resources are located [18]
+  - Comprised of components: [18]
+    - scheme (e.g., `http`)
+    - host (e.g., `www.example.com`)
+    - port (e.g., `:88`) : optional - only required if not using the default port (default for normal HTTP requests is port `80`)
+    - path (e.g., `/home`) optional - shows what local resource is being requested (could point to a specific file)
+    - query string (e.g., `?item=book`) optional - made up of *query parameters* to send data to the server
+  - can only use standard 128-character ASCII set (single-byte UTF-8 codes) [18]
+    - if not part of the standard set, might be misinterpreted (e.g., `%`, ` `, `'`, `"`, `#`, `<`, `>`, `[`, `]`, `~`, etc.), or reserved (e.g., `&`, `/`, `?`, `:`, `@`) then it must be encoded
+  
+
 - **WLAN** (Wireless LAN) : where devices are connected wirelessly to a central device (wireess hub or switch) [4]
+
+- **World wide web** (the "web") : a **service** that can be accessed via the internet;  an information system comprised of resources navigable using an URL [16]
+
+- **XSS** (Cross-site Scripting) : adding raw HTML and Javascript through available forms to 'inject' script onto a website which then gets interpreted and executed by the browser [23]
+  - e.g. attacker could use JavaScript to get session ids of all future visitors to the site; malicious code would bypass the same-origin policy since it lives on the site
+  - simple example: could add `<script>alert('Hello world...')</script>` to a comment section to have an alert pop-up
+  - countermeasures: [23]
+    - 'sanitize' user input - eliminate `<script>` tags or disallow HTML / JS altogether
+    - escape all user input when displaying it - so it does not get interpreted as code by the browser
+      - e.g., replace `<p>` and `</p>` with `&lt;p&gt;` and `&lt;/p&gt;`
+
 
 </details>
 
@@ -215,22 +339,39 @@
 <details>
 <summary>Commands</summary>
 
-### Commands
+### Commands / Tools
 
 - `traceroute google.com`  (`tracert` for Windows): displays the route and latency of a path across a network (e.g., my computer to Google server) [2]
 
 - `netstat -ntup` : displays all of the active network connections (including local address and foreign address as sockets [IP address:port]) for active applications
 
+- `curl www.google.com` : a command line tool used to issue HTTP requests
+
 </details>
 
 ### Summaries
 
+#### Overall
+
 | OSI Layer | IPS Layer   | Protocol   | PDU                 | Scope             |
 |-----------|-------------|------------|---------------------|-------------------|
-| Application <br> Presentation <br> Session | Application | | | |
+| Application <br> Presentation <br> Session | Application | Many (e.g., HTTP) | |
 | Transport | Transport   | TCP or UDP | Segment or Datagram | app to app        |
 | Network | Internet    | IP         | Packet              | host to host      |
 | Data Link <br> Physical | Link | Ethernet | Frame | router to device |
+
+#### TCP vs UDP
+
+|                | TCP | UDP |
+|----------------|-----|-----|
+|Connection-type |Connection-oriented|Connectionless|
+|Multiplexing <br> Demultiplexing   |  Y  |  Y  |
+|Error detection |  Y  |  Y  |
+|In-order delivery|  Y  |   |
+|De-duplication|  Y  |   |
+|Message acknowledgement and <br>retransmission|  Y  |   |
+|Advantages | reliable | - speed <br> - flexibility |
+|Disadvantages | - high latency (overhead) <br> - HOL blocking| - must implement features (e.g., congestion avoidance) <br> - less reliable |
 
 ### References
 [1](https://launchschool.com/lessons/4af196b9/assignments/21ef33af)
@@ -246,6 +387,17 @@
 [11](https://launchschool.com/lessons/2a6c7439/assignments/89636ed4)
 [12](https://launchschool.com/lessons/2a6c7439/assignments/d09ddd52)
 [13](https://launchschool.com/lessons/2a6c7439/assignments/4ab0993c)
+[14](https://launchschool.com/quizzes/6b67f575)
+[15](https://launchschool.com/lessons/cc97deb5/assignments/c604eb60)
+[16](https://launchschool.com/lessons/cc97deb5/assignments/e3d85587)
+[17](https://launchschool.com/books/http/read/background)
+[18](https://launchschool.com/books/http/read/what_is_a_url)
+[19](https://danielmiessler.com/study/difference-between-uri-url/)
+[20](https://launchschool.com/books/http/read/making_requests)
+[21](https://launchschool.com/books/http/read/processing_responses)
+[22](https://launchschool.com/books/http/read/statefulness)
+[23](https://launchschool.com/books/http/read/security)
+[24](https://launchschool.com/lessons/cc97deb5/assignments/586769d9)
 
 
 ### Other articles
