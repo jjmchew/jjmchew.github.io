@@ -101,7 +101,7 @@
   - is inherently *insecure*, but can be made more secure through use of:
     - https (see also Secure HTTP)
     - enforcing same-origin policy (see also Same-origin policy)
-    - preventing session hijacking, and cross-site scripting (see also Session Hijacking, XSS) [XSS](#xss)
+    - preventing session hijacking, and cross-site scripting (see also Session Hijacking, XSS) [XSS](#xss-cross-site-scripting)
   - in HTTP/1.1 the end of headers is indicated by an empty line [32]
   - the `Content-Length` header indicates the size of the body (if not present, then the browser will keep trying to load content) [32, personal experiments]
 
@@ -349,8 +349,7 @@
 
 - **World wide web** (the "web") : a **service** that can be accessed via the internet;  an information system comprised of resources navigable using an URL [16]
 
-##### **XSS** (Cross-site Scripting)
-
+#### **XSS** (Cross-site Scripting)
 - adding raw HTML and Javascript through available forms to 'inject' script onto a website which then gets interpreted and executed by the browser [23]
   - e.g. attacker could use JavaScript to get session ids of all future visitors to the site; malicious code would bypass the same-origin policy since it lives on the site
   - simple example: could add `\<script>alert('an example of...')\</script>` to a comment section to have an alert pop-up
