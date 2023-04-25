@@ -118,6 +118,7 @@
     - e.g., return search results; display a webpage that displays how many times it's been viewed (main content doesn't change)
   - `POST` requests involve changing values stored on server [26 q3]
     - e.g., submit form info
+  - Webservers may not support HTTP 0.9, requests may need to be submitted in certain ways (e.g., `GET / HTTP/1.1` and with `Host: launchschool.com` header included to meet HTTP 1.1 specifications) [30]
 
 - **HTTP response** : the raw data returned by a server to an HTTP request [21]
   - key components of a response: [21]
@@ -278,6 +279,7 @@
 
 - **Stateless (protocol)** : a protocol designed such that each request/response pair is completely independent of the previous one [17]
   - use of a stateless protocol implies that servers do not need to store info (like state) between requests; i.e., there is no "clean-up" if a request breaks en route to the server [17]
+  - each request should contain all the info necessary for the request to be fulfilled [28 q11]
 
 - **Status Code** (HTTP response) : a 3-digit number a server sends back after receiving a request; signifies the status of the request; typically returned with status text [21]
   - |status code | status text | meaning |
@@ -378,6 +380,13 @@
 
 - `curl www.google.com` : a command line tool used to issue HTTP requests
 
+- `telnet google.com 80` : a command line tool used to issue HTTP requests [29]
+  - need to follow-up with `GET /`
+
+- `nc -vc launchschool.com 80` : `netcat` - another command line tool (similar to telnet) [30]
+
+- scripting in bash (executing scripts, conditionals, loops, functions) [31]
+
 </details>
 
 ## Summaries
@@ -432,6 +441,10 @@
 [25](https://launchschool.com/lessons/cc97deb5/assignments/a28ccb6f)
 [26](https://launchschool.com/lessons/cc97deb5/assignments/83ae67aa)
 [27](https://launchschool.com/lessons/cc97deb5/assignments/9f4e349a)
+[28](https://launchschool.com/quizzes/5e0dcf86)
+[29](https://launchschool.com/lessons/0e67d1ce/assignments/20d4226d)
+[30](https://launchschool.com/lessons/0e67d1ce/assignments/ea90d10b)
+[31](https://launchschool.com/lessons/0e67d1ce/assignments/a0f37a79)
 
 
 ## Other articles
