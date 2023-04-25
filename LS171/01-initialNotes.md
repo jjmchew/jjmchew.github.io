@@ -290,9 +290,12 @@
 
 - **Sub-net** : when a network range (of IP addresses) is split into smaller networks (e.g., the range 109.156.106.0 - 109.156.106.255 is split into 2 smaller segments with 2 routers: 1 responsible for 109.156.106.0 - 109.156.106.127 AND another for 109.156.106.128 - 109.156.106.255) [5]
 
-- **Switch** : a network device that directs Ethernet frames to ONLY the desired MAC address;  a MAC Address Table keeps a record of ports and MAC addresses for connected devices [3]
+#### **Switch**
+- a network device that directs Ethernet frames to ONLY the desired MAC address;  a MAC Address Table keeps a record of ports and MAC addresses for connected devices [3]
 
-- **TCP** (Transmission Control Protocol) : provides reliable network communication (data transfer) on top of an unreliable channel [12]
+#### **TCP**
+- (Transmission Control Protocol)
+- provides reliable network communication (data transfer) on top of an unreliable channel [12]
   - ==Reliability is provided through *message acknowledgement* and *retransmission*, and *in-order delivery*== [13]
   - Key focuses are: [12]
     - data integrity (error detection [14 q4])
@@ -308,16 +311,21 @@
     - ==HOL blocking can occur since in-order delivery of Segments is required==;  can lead to increased queuing delays; increases latency [12]
     - ==latency overhead of establishing a connection== [13]
 
-- **Three-way Handshake** : a process used for establishing TCP connections [12]
+#### **Three-way Handshake**
+- a process used for establishing TCP connections [12]
   - 1. Sender ==sends SYN== (sync) Segment
   - 2. Receiver receives SYN, ==responds with SYN ACK== (acknowledge) Segment
   - 3. Sender receives SYN ACK, responds with ==ACK==
   - 4. Receiver receives ACK;  establishes connection
   - see also Connection State [12]
 
-- **TTL** (Time to Live) : a value within the Packet header that defines the maximum number of network 'hops' a packet can take before being dropped; at each hop, the network router will decrement TTL by 1 [5]
+#### **TTL**
+- (Time to Live)
+- a value within the Packet header that defines the maximum number of network 'hops' a packet can take before being dropped; at each hop, the network router will decrement TTL by 1 [5]
 
-- **UDP** (User Datagram Protocol) : a ==simple connectionless protocol== at the Transport layer that uses one-way data flow; its simplicity allows it to be ==fast and flexible== [12] [13]
+#### **UDP**
+- (User Datagram Protocol)
+- a ==simple connectionless protocol== at the Transport layer that uses one-way data flow; its simplicity allows it to be ==fast and flexible== [12] [13]
   - Header includes only: source port, destination port, length (of data in bits), checksum (required for IPv6, but optional for IPv4;  i.e., does provide error-checking [14 q5] )
   - also provides multiplexing (through use of ports)
   - PDU is "Datagram" [12]
@@ -327,11 +335,14 @@
   - best used for voice or video calling, online gaming; streaming - occasional dropped data will lead to glitches, but are worth the speed of the protocol, especially over long distances (high latency)
   - best practice for UDP use involves implementing congestion avoidance to prevent the network from being overwhelmed
 
-- **URI** (Uniform Resource Identifier) : an identifier for a particular resource within an information space [27];
+#### **URI**
+- (Uniform Resource Identifier)
+- an identifier for a particular resource within an information space [27];
   - a general concept - identifiers [19];
   - a string of characters which identifies a particular resource; URIs mark specific points in the information space of the web [16]
 
-- **URL** (Uniform Resource Locator) : distinct from URI [16]; a type of URI [19]; (see also URI); the most frequently used part of a URI that specifies where resources are located [18]
+#### **URL**
+- (Uniform Resource Locator) : distinct from URI [16]; a type of URI [19]; (see also [URI](#URI)); the most frequently used part of a URI that specifies where resources are located [18]
   - Comprised of components: [18]
     - scheme (e.g., `http`)
     - host (e.g., `www.example.com`)
@@ -339,15 +350,21 @@
     - path (e.g., `/home`) optional - shows what local resource is being requested (could point to a specific file)
     - query string (e.g., `?item=book`) optional - made up of *query parameters* to send data to the server
 
-- **URL encoding** : a technique where certain characters in an URL are replaced with an ASCII code [27]
+#### **URL encoding**
+- a technique where certain characters in an URL are replaced with an ASCII code [27]
   - in URLs can only use standard 128-character ASCII set (single-byte UTF-8 codes) [18]
     - if not part of the standard set, might be misinterpreted (e.g., `%`, ` `, `'`, `"`, `#`, `<`, `>`, `[`, `]`, `~`, etc.), or reserved (e.g., `&`, `/`, `?`, `:`, `@`) then it must be encoded
   
-- **Web server** : typically a server that responds to requests for static assets: files, images, css, javascript, etc. - requests that don't require any data processing [24] (see also Application Server)
+#### **Web server**
+- typically a server that responds to requests for static assets: files, images, css, javascript, etc. - requests that don't require any data processing [24] (see also Application Server)
 
-- **WLAN** (Wireless LAN) : where devices are connected wirelessly to a central device (wireless hub or switch) [4]
+#### **WLAN**
+- (Wireless LAN)
+- where devices are connected wirelessly to a central device (wireless hub or switch) [4]
 
-- **World wide web** (the "web") : a **service** that can be accessed via the internet;  an information system comprised of resources navigable using an URL [16]
+#### **World wide web**
+- (the "web")
+- a **service** that can be accessed via the internet;  an information system comprised of resources navigable using an URL [16]
 
 #### **XSS** 
 - (Cross-site Scripting)
