@@ -96,7 +96,7 @@
 - **HTML** (Hypertext Markup Language) : the means by whch resources on the web should be uniformly structured; one of the three technologies / concepts upon which the web was based (see also URI, HTTP) [16]
   - e.g., `<a>` with `href` attribute to provide links to other resources
 
-- **HTTP** (Hypertext Transfer Protocol) : a *stateless protocol* for how clients communicate with servers [24]; the set of rules which provide uniformity to the way resources on the web are transferred between applications (a *request response protocol* between a *server* and a *client* [17]) [16]
+- **HTTP** (Hypertext Transfer Protocol) : a *stateless text-based [32] protocol* for how clients communicate with servers [24]; the set of rules which provide uniformity to the way resources on the web are transferred between applications (a *request response protocol* between a *server* and a *client* [17]) [16]
   - a single HTTP message exchange consists of a request and a response between a client and a server [27]
     - client sends the request, server sends the response
   - serves as a link between applications (a message format) and the transfer of hypertext documents [17]
@@ -105,6 +105,8 @@
     - https (see also Secure HTTP)
     - enforcing same-origin policy (see also Same-origin policy)
     - preventing session hijacking, and cross-site scripting (see also Session Hijacking, XSS) [XSS](#xss)
+  - in HTTP/1.1 the end of headers is indicated by an empty line [32]
+  - the `Content-Length` header indicates the size of the body (if not present, then the browser will keep trying to load content) [32, personal experiments]
 
 - **HTTP request** : can be Get or Post (see also GET and POST) [20]
   - key components: [20]
@@ -445,6 +447,7 @@
 [29](https://launchschool.com/lessons/0e67d1ce/assignments/20d4226d)
 [30](https://launchschool.com/lessons/0e67d1ce/assignments/ea90d10b)
 [31](https://launchschool.com/lessons/0e67d1ce/assignments/a0f37a79)
+[32](https://launchschool.com/lessons/0e67d1ce/assignments/dcae7f89)
 
 
 ## Other articles
