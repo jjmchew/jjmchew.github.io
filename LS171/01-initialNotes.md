@@ -237,22 +237,29 @@
 
 - **Router** : a network device;  responsible for a network 'segment' (i.e., a range of IP addresses for which the router keeps a record and can forward packets to);  routers also keep a routing table - record of other routers on the network and their network addresses [5]
 
-- **Same-origin policy** : a policy that permits unrestricted interaction between resources originating from the same origin, but restricts certain interactions between resources originating from different origins [23] (see also Origin)
+#### **Same-origin policy**
+- a policy that permits unrestricted interaction between resources originating from the same origin, but restricts certain interactions between resources originating from different origins [23] (see also Origin)
   - typically allowed:  requests for linking, redirects, form submissions, embedding of resources from other origins (e.g., scripts, css stylesheets, images, media, fonts, iframes)
   - typically restricted: cross-origin requests (where resources are being accessed programmatically using APIs such as `XMLHttpRequest` or `fetch`)
 
-- **Scheme name** (in URI context) : a specification for assigning identifiers within that scheme; isn't related specifically to a protocol, but it identifies which protocol should be used to access the resource;  URI scheme names are found on [IANA website](https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml) [25]
+#### **Scheme name**
+- (in URI context)
+- a specification for assigning identifiers within that scheme; isn't related specifically to a protocol, but it identifies which protocol should be used to access the resource;  URI scheme names are found on [IANA website](https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml) [25]
   - generally, scheme names are in lowercase (e.g., `http`) and protocols in uppercase (e.g., `HTTP`) [25]
 
-- **Secure HTTP (HTTPS)** : the use of TLS to encrypt the requests/responses associated with HTTP (i.e., not send them as strings, which are susceptible to *packet sniffing*) [23]
+#### **Secure HTTP**
+- (HTTPS)
+- the use of TLS to encrypt the requests/responses associated with HTTP (i.e., not send them as strings, which are susceptible to *packet sniffing*) [23]
 
-- **Session Hijacking** : when a hacker obtains the session id and can access the web application as if they are an authenticated user; does not require the username/pw [23]
+#### **Session Hijacking**
+- when a hacker obtains the session id and can access the web application as if they are an authenticated user; does not require the username/pw [23]
   - countermeasures: [23]
     - reset the session - render the old session id invalid and create a new one
     - setting expiration times on sessions (limit time a hacker has to use the session id)
     - use HTTPS
 
-- **Session Identifier** : a unique token that gets passed whenever a client makes a request to the server to allow the server to identify clients [22]
+#### **Session Identifier**
+- a unique token that gets passed whenever a client makes a request to the server to allow the server to identify clients [22]
   - when using session identifiers, for each request, the server must: [22]
     - inspect the request for a session identifier
     - ensure the session is still valid
@@ -260,22 +267,27 @@
     - retrieve session data based on the session id
     - recreate the application state (e.g., HTML for a web request) from the session data and send it back to the client as a response
 
-- **Socket** : also a *communication end-point*; conceptually, it is an endpoint used for inter-process communication [10]
+#### **Socket**
+- also a *communication end-point*; conceptually, it is an endpoint used for inter-process communication [10]
   - could be a UNIX socket (mechanism for communicating between local process running on the same maching)
   - could also be an internet socket (e.g., TCP/IP socket): a mechanism for inter-process communication between networked processes (usually on different machines)
   - ==the combo of an IP address and port information==; this enables end-to-end communication between specific applications (often on different machines, but could be a `localhost` and a browser on the same machine) (e.g., `216.3.128.12:8080`) [10]
   - sockets are implemented by instantiating *socket objects* (often following the Berkeley sockets API model:  `bind()`, `listen()`, `accept()`, `connect()`, etc. Ruby, Python, Node.js use this) [10]
 
-- **Stateful (simulation)** : HTTP can simulate statefulness through techniques such as: [27]
+#### **Stateful (simulation)**
+- HTTP can simulate statefulness through techniques such as: [27]
   - using session ids (see also Session Identifier)
   - using cookies (see also Cookie)
   - using AJAX (see also AJAX)
 
-- **Stateless (protocol)** : a protocol designed such that each request/response pair is completely independent of the previous one [17]
+#### **Stateless (protocol)**
+- a protocol designed such that each request/response pair is completely independent of the previous one [17]
   - use of a stateless protocol implies that servers do not need to store info (like state) between requests; i.e., there is no "clean-up" if a request breaks en route to the server [17]
   - each request should contain all the info necessary for the request to be fulfilled [28 q11]
 
-- **Status Code** (HTTP response) : a 3-digit number a server sends back after receiving a request; signifies the status of the request; typically returned with status text [21]
+#### **Status Code**
+- (HTTP response)
+- a 3-digit number a server sends back after receiving a request; signifies the status of the request; typically returned with status text [21]
   - |status code | status text | meaning |
     |------------|-------------|---------|
     |200         | OK          | request handled successfully |
@@ -283,12 +295,14 @@
     |404         | Not Found   | requested resource cannot be found |
     |500         | internal server error | server has encountered a generic error | 
   
-- **Stop-and-Wait protocol** : a reliable protocol, but not very efficient - a lot of waiting for acknowledgements [11]
+#### **Stop-and-Wait protocol**
+- a reliable protocol, but not very efficient - a lot of waiting for acknowledgements [11]
   -  messages are sent with sequence numbers and a timeout; receiver sends an acknowledgement (w/ sequence number) once received; then sender sends next message in sequence (w/ sequence number) [11]
   - if acknowledgement goes missing, sender will re-send a message (w/ sequence number) after time-out [11]
   - if receiver gets a duplicate, it will drop it and re-send the acknowledgement [11]
 
-- **Sub-net** : when a network range (of IP addresses) is split into smaller networks (e.g., the range 109.156.106.0 - 109.156.106.255 is split into 2 smaller segments with 2 routers: 1 responsible for 109.156.106.0 - 109.156.106.127 AND another for 109.156.106.128 - 109.156.106.255) [5]
+#### **Sub-net**
+- when a network range (of IP addresses) is split into smaller networks (e.g., the range 109.156.106.0 - 109.156.106.255 is split into 2 smaller segments with 2 routers: 1 responsible for 109.156.106.0 - 109.156.106.127 AND another for 109.156.106.128 - 109.156.106.255) [5]
 
 #### **Switch**
 - a network device that directs Ethernet frames to ONLY the desired MAC address;  a MAC Address Table keeps a record of ports and MAC addresses for connected devices [3]
@@ -441,7 +455,9 @@
 [20](https://launchschool.com/books/http/read/making_requests)
 [21](https://launchschool.com/books/http/read/processing_responses)
 [22](https://launchschool.com/books/http/read/statefulness)
+
 [^23]: [23](https://launchschool.com/books/http/read/security)
+
 [24](https://launchschool.com/lessons/cc97deb5/assignments/586769d9)
 [25](https://launchschool.com/lessons/cc97deb5/assignments/a28ccb6f)
 [26](https://launchschool.com/lessons/cc97deb5/assignments/83ae67aa)
