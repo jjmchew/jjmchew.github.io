@@ -1,11 +1,11 @@
 # LS170 initial notes
 
-### Definitions
+## Definitions
 
 <details>
 <summary>A-M</summary>
 
-#### A-M
+### A-M
 
 - **AJAX** (Asynchronous JavaScript and XML) : a feature that allows browsers to issue requests and process responses *without a full page refresh**; this prevents the very expensive overhead of re-creating an entire webpage on every interaction [22]
   - AJAX requests: [22]
@@ -68,7 +68,7 @@
 
 - **Data store** : has the ability to save persistent data in some format for later retrieval and processing (e.g., relational database, simple files, key/value stores, document stores, etc.);  typically consulted by the Application Server [24] (see also Application Server)
 
-- **DNS** (Domain Name System) : a distributed database which translates domain names (e.g., `www.google.com`) to an IP address (e.g., `197.251.230.45`) [17]
+- **DNS** (Domain Name System) : a distributed database which maps domain names (e.g., `www.google.com`) to an IP address (e.g., `197.251.230.45`) [17] [27]
   - DNS databases are stored on a hierarchy of world-wide DNS servers - no one server contains the complete database; if 1 server does not contain a requested domain name, that server routes the request to another DNS server up the hierarchy [17]
 
 - **Encapsulation** : how protocols at different network layers can work together;  implemented through PDUs (i.e., the info at a higher layer is part of the data payload of a lower layer) [6]
@@ -96,22 +96,34 @@
 - **HTML** (Hypertext Markup Language) : the means by whch resources on the web should be uniformly structured; one of the three technologies / concepts upon which the web was based (see also URI, HTTP) [16]
   - e.g., `<a>` with `href` attribute to provide links to other resources
 
-- **HTTP** (Hypertext Transfer Protocol) : a stateless protocol for how clients communicate with servers [24]; the set of rules which provide uniformity to the way resources on the web are transferred between applications (a *request response protocol* between a *server* and a *client* [17]) [16]
+- **HTTP** (Hypertext Transfer Protocol) : a *stateless protocol* for how clients communicate with servers [24]; the set of rules which provide uniformity to the way resources on the web are transferred between applications (a *request response protocol* between a *server* and a *client* [17]) [16]
+  - a single HTTP message exchange consists of a request and a response between a client and a server [27]
+    - client sends the request, server sends the response
   - serves as a link between applications (a message format) and the transfer of hypertext documents [17]
   - is an inherently *stateless* protocol - makes it hard to build user experiences that are stateful (e.g., know where a request came from, differentiating users, staying "logged in", etc.) [17]
+  - is inherently *insecure*, but can be made more secure through use of:
+    - https (see also Secure HTTP)
+    - enforcing same-origin policy (see also Same-origin policy)
+    - preventing session hijacking, and cross-site scripting (see also Session Hijacking, XSS) [XSS](#xss)
 
 - **HTTP request** : can be Get or Post (see also GET and POST) [20]
   - key components: [20]
-    - HTTP method (i.e., GET vs POST)
-    - path (resource name and any query parameters)
-    - headers
-    - message body (for POST requests)
+    - request line : made up of method and peth [26 q1]
+        - HTTP method (i.e., GET vs POST) * required [26 q1]
+        - path (resource name and any query parameters) * required [26 q1]
+    - headers  (`Host` header is required since HTTP 1.1, other headers optional [26 q1])
+    - parameters (optional [26 q1])
+    - message body (for POST requests) (optional [26 q1])
+  - `GET` requests should only retrieve content from server (main webpage content doesn't change) [26 q3]
+    - e.g., return search results; display a webpage that displays how many times it's been viewed (main content doesn't change)
+  - `POST` requests involve changing values stored on server [26 q3]
+    - e.g., submit form info
 
 - **HTTP response** : the raw data returned by a server to an HTTP request [21]
   - key components of a response: [21]
-    - status code (e.g., 200) (see also Status Code)
-    - headers
-    - message body (contains the raw response data)
+    - status line : comprised of a code (e.g., 200) (see also Status Code) and short text * required [26 q2]
+    - headers (optional [26 q2])
+    - message body (contains the raw response data) (optional [26 q2])
 
 - **Hub** : a basic piece of network hardware that replicates a message and forwards it to all of the devices on the network. Devices connected to a hub that receive a message not intended for it (i.e., MAC address is different) will ignore the frame [3]
 
@@ -158,7 +170,7 @@
 <details>
 <summary>N-Z</summary>
 
-#### N-Z
+### N-Z
 
 - **Network** : 1 or more computers connected in such a way that they can communicate or exchange data [4]
 
@@ -259,6 +271,11 @@
   - ==the combo of an IP address and port information==; this enables end-to-end communication between specific applications (often on different machines, but could be a `localhost` and a browser on the same machine) (e.g., `216.3.128.12:8080`) [10]
   - sockets are implemented by instantiating *socket objects* (often following the Berkeley sockets API model:  `bind()`, `listen()`, `accept()`, `connect()`, etc. Ruby, Python, Node.js use this) [10]
 
+- **Stateful (simulation)** : HTTP can simulate statefulness through techniques such as: [27]
+  - using session ids (see also Session Identifier)
+  - using cookies (see also Cookie)
+  - using AJAX (see also AJAX)
+
 - **Stateless (protocol)** : a protocol designed such that each request/response pair is completely independent of the previous one [17]
   - use of a stateless protocol implies that servers do not need to store info (like state) between requests; i.e., there is no "clean-up" if a request breaks en route to the server [17]
 
@@ -314,7 +331,9 @@
   - best used for voice or video calling, online gaming; streaming - occasional dropped data will lead to glitches, but are worth the speed of the protocol, especially over long distances (high latency)
   - best practice for UDP use involves implementing congestion avoidance to prevent the network from being overwhelmed
 
-- **URI** (Uniform Resource Identifier) : a general concept - identifiers [19]; a string of characters which identifies a particular resource; URIs mark specific points in the information space of the web [16]
+- **URI** (Uniform Resource Identifier) : an identifier for a particular resource within an information space [27];
+  - a general concept - identifiers [19];
+  - a string of characters which identifies a particular resource; URIs mark specific points in the information space of the web [16]
 
 - **URL** (Uniform Resource Locator) : distinct from URI [16]; a type of URI [19]; (see also URI); the most frequently used part of a URI that specifies where resources are located [18]
   - Comprised of components: [18]
@@ -323,7 +342,9 @@
     - port (e.g., `:88`) : optional - only required if not using the default port (default for normal HTTP requests is port `80`)
     - path (e.g., `/home`) optional - shows what local resource is being requested (could point to a specific file)
     - query string (e.g., `?item=book`) optional - made up of *query parameters* to send data to the server
-  - can only use standard 128-character ASCII set (single-byte UTF-8 codes) [18]
+
+- **URL encoding** : a technique where certain characters in an URL are replaced with an ASCII code [27]
+  - in URLs can only use standard 128-character ASCII set (single-byte UTF-8 codes) [18]
     - if not part of the standard set, might be misinterpreted (e.g., `%`, ` `, `'`, `"`, `#`, `<`, `>`, `[`, `]`, `~`, etc.), or reserved (e.g., `&`, `/`, `?`, `:`, `@`) then it must be encoded
   
 - **Web server** : typically a server that responds to requests for static assets: files, images, css, javascript, etc. - requests that don't require any data processing [24] (see also Application Server)
@@ -332,7 +353,8 @@
 
 - **World wide web** (the "web") : a **service** that can be accessed via the internet;  an information system comprised of resources navigable using an URL [16]
 
-- **XSS** (Cross-site Scripting) : adding raw HTML and Javascript through available forms to 'inject' script onto a website which then gets interpreted and executed by the browser [23]
+#### **XSS** 
+(Cross-site Scripting) : adding raw HTML and Javascript through available forms to 'inject' script onto a website which then gets interpreted and executed by the browser [23]
   - e.g. attacker could use JavaScript to get session ids of all future visitors to the site; malicious code would bypass the same-origin policy since it lives on the site
   - simple example: could add `<script>alert('Hello world...')</script>` to a comment section to have an alert pop-up
   - countermeasures: [23]
@@ -347,7 +369,7 @@
 <details>
 <summary>Commands</summary>
 
-### Commands / Tools
+## Commands / Tools
 
 - `traceroute google.com`  (`tracert` for Windows): displays the route and latency of a path across a network (e.g., my computer to Google server) [2]
 
@@ -357,7 +379,7 @@
 
 </details>
 
-### Summaries
+## Summaries
 
 #### Overall
 
@@ -381,7 +403,7 @@
 |Advantages | reliable | - speed <br> - flexibility |
 |Disadvantages | - high latency (overhead) <br> - HOL blocking| - must implement features (e.g., congestion avoidance) <br> - less reliable |
 
-### References
+## References
 [1](https://launchschool.com/lessons/4af196b9/assignments/21ef33af)
 [2](https://launchschool.com/lessons/4af196b9/assignments/097d7577)
 [3](https://launchschool.com/lessons/4af196b9/assignments/81df3782)
@@ -407,7 +429,9 @@
 [23](https://launchschool.com/books/http/read/security)
 [24](https://launchschool.com/lessons/cc97deb5/assignments/586769d9)
 [25](https://launchschool.com/lessons/cc97deb5/assignments/a28ccb6f)
+[26](https://launchschool.com/lessons/cc97deb5/assignments/83ae67aa)
+[27](https://launchschool.com/lessons/cc97deb5/assignments/9f4e349a)
 
 
-### Other articles
+## Other articles
 - https://www.linkedin.com/pulse/how-internet-works-introduction-overview-robert-rodes/?lipi=urn%3Ali%3Apage%3Ad_flagship3_publishing_published%3BM4DGpPvCQu%2B9IEJm2vTbKA%3D%3D
