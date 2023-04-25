@@ -7,7 +7,7 @@
 
 ### A-M
 
-- **AJAX** (Asynchronous JavaScript and XML) : a feature that allows browsers to issue requests and process responses *without a full page refresh**; this prevents the very expensive overhead of re-creating an entire webpage on every interaction [22]
+- **AJAX** (Asynchronous JavaScript and XML) : a feature that allows browsers to issue requests and process responses *without a full page refresh*; this prevents the very expensive overhead of re-creating an entire webpage on every interaction [22]
   - AJAX requests: [22]
     - are performed asynchronously (the page does NOT refresh)
     - are similar to normal requests (same components, handled by server in same way)
@@ -30,7 +30,7 @@
 
 - **Byte** : a unit of digital information containing 8 bits
 
-- **Callback** : a piece of logic you pass on to some function to be executed after a certain event has happend [22]
+- **Callback** : a piece of logic you pass on to some function to be executed after a certain event has happened [22]
   - e.g., a `callback` may be triggered when a response is returned
 
 - **Congestion avoidance** : the application of an approach and algorithm to determine the size of the initial transmission window, and how much the window should be reduced depending on network conditions (i.e., network congestion) [12]
@@ -353,10 +353,11 @@
 
 - **World wide web** (the "web") : a **service** that can be accessed via the internet;  an information system comprised of resources navigable using an URL [16]
 
-##### **XSS** 
-(Cross-site Scripting) : adding raw HTML and Javascript through available forms to 'inject' script onto a website which then gets interpreted and executed by the browser [23]
+##### **XSS** (Cross-site Scripting)
+
+- adding raw HTML and Javascript through available forms to 'inject' script onto a website which then gets interpreted and executed by the browser [23]
   - e.g. attacker could use JavaScript to get session ids of all future visitors to the site; malicious code would bypass the same-origin policy since it lives on the site
-  - simple example: could add `<script>alert('an example of...')</script>` to a comment section to have an alert pop-up
+  - simple example: could add `\<script>alert('an example of...')\</script>` to a comment section to have an alert pop-up
   - countermeasures: [23]
     - 'sanitize' user input - eliminate `<script>` tags or disallow HTML / JS altogether
     - escape all user input when displaying it - so it does not get interpreted as code by the browser
