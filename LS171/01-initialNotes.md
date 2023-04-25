@@ -16,6 +16,8 @@
 - **Application Layer** : The top-most layer of the OSI and IPS models;  provides communication services to applications themselves;  does not refer to actual applications [15]
   - protocols in this layer are the ones which actual applications most directly interact with; provides a syntax for applications to interact [15]
 
+- **Application server** : typically where application or busines logic resides and where more complicated requests are handled; server-side code lives here when deployed [24] (see also Web Server, Data Store)
+
 - **Bandwidth** : the *amount* of data that can be sent in a particular unit of time (typically a second) [2]; a measure of *capacity* [6]
 
 - **Broadcast address** : the IP address at the END of the range assigned to a single local network (see also Network Address) [5]
@@ -63,6 +65,8 @@
 - **CRC** (Cyclic Redundancy Check) : see FCS below [3]
 
 - **Bandwidth bottleneck** : a point at which bandwidth changes from relatively high to relatively low [2]
+
+- **Data store** : has the ability to save persistent data in some format for later retrieval and processing (e.g., relational database, simple files, key/value stores, document stores, etc.);  typically consulted by the Application Server [24] (see also Application Server)
 
 - **DNS** (Domain Name System) : a distributed database which translates domain names (e.g., `www.google.com`) to an IP address (e.g., `197.251.230.45`) [17]
   - DNS databases are stored on a hierarchy of world-wide DNS servers - no one server contains the complete database; if 1 server does not contain a requested domain name, that server routes the request to another DNS server up the hierarchy [17]
@@ -230,6 +234,9 @@
   - typically allowed:  requests for linking, redirects, form submissions, embedding of resources from other origins (e.g., scripts, css stylesheets, images, media, fonts, iframes)
   - typically restricted: cross-origin requests (where resources are being accessed programmatically using APIs such as `XMLHttpRequest` or `fetch`)
 
+- **Scheme name** (in URI context) : a specification for assigning identifiers within that scheme; isn't related specifically to a protocol, but it identifies which protocol should be used to access the resource;  URI scheme names are found on [IANA website](https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml) [25]
+  - generally, scheme names are in lowercase (e.g., `http`) and protocols in uppercase (e.g., `HTTP`) [25]
+
 - **Secure HTTP (HTTPS)** : the use of TLS to encrypt the requests/responses associated with HTTP (i.e., not send them as strings, which are susceptible to *packet sniffing*) [23]
 
 - **Session Hijacking** : when a hacker obtains the session id and can access the web application as if they are an authenticated user; does not require the username/pw [23]
@@ -319,6 +326,7 @@
   - can only use standard 128-character ASCII set (single-byte UTF-8 codes) [18]
     - if not part of the standard set, might be misinterpreted (e.g., `%`, ` `, `'`, `"`, `#`, `<`, `>`, `[`, `]`, `~`, etc.), or reserved (e.g., `&`, `/`, `?`, `:`, `@`) then it must be encoded
   
+- **Web server** : typically a server that responds to requests for static assets: files, images, css, javascript, etc. - requests that don't require any data processing [24] (see also Application Server)
 
 - **WLAN** (Wireless LAN) : where devices are connected wirelessly to a central device (wireess hub or switch) [4]
 
@@ -398,6 +406,7 @@
 [22](https://launchschool.com/books/http/read/statefulness)
 [23](https://launchschool.com/books/http/read/security)
 [24](https://launchschool.com/lessons/cc97deb5/assignments/586769d9)
+[25](https://launchschool.com/lessons/cc97deb5/assignments/a28ccb6f)
 
 
 ### Other articles
