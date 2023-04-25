@@ -345,15 +345,16 @@
   
 - **Web server** : typically a server that responds to requests for static assets: files, images, css, javascript, etc. - requests that don't require any data processing [24] (see also Application Server)
 
-- **WLAN** (Wireless LAN) : where devices are connected wirelessly to a central device (wireess hub or switch) [4]
+- **WLAN** (Wireless LAN) : where devices are connected wirelessly to a central device (wireless hub or switch) [4]
 
 - **World wide web** (the "web") : a **service** that can be accessed via the internet;  an information system comprised of resources navigable using an URL [16]
 
-#### **XSS** (Cross-site Scripting)
-- adding raw HTML and Javascript through available forms to 'inject' script onto a website which then gets interpreted and executed by the browser [23]
+#### **XSS** 
+- (Cross-site Scripting)
+- adding raw HTML and Javascript through available forms to 'inject' script onto a website which then gets interpreted and executed by the browser [^23]
   - e.g. attacker could use JavaScript to get session ids of all future visitors to the site; malicious code would bypass the same-origin policy since it lives on the site
   - simple example: could add `\<script>alert('an example of...')\</script>` to a comment section to have an alert pop-up
-  - countermeasures: [23]
+  - countermeasures: [^23]
     - 'sanitize' user input - eliminate `<script>` tags or disallow HTML / JS altogether
     - escape all user input when displaying it - so it does not get interpreted as code by the browser
       - e.g., replace `<p>` and `</p>` with `&lt;p&gt;` and `&lt;/p&gt;`
@@ -423,7 +424,7 @@
 [20](https://launchschool.com/books/http/read/making_requests)
 [21](https://launchschool.com/books/http/read/processing_responses)
 [22](https://launchschool.com/books/http/read/statefulness)
-[23](https://launchschool.com/books/http/read/security)
+[^23]: [23](https://launchschool.com/books/http/read/security)
 [24](https://launchschool.com/lessons/cc97deb5/assignments/586769d9)
 [25](https://launchschool.com/lessons/cc97deb5/assignments/a28ccb6f)
 [26](https://launchschool.com/lessons/cc97deb5/assignments/83ae67aa)
