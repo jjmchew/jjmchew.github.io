@@ -353,10 +353,10 @@
 
 - **World wide web** (the "web") : a **service** that can be accessed via the internet;  an information system comprised of resources navigable using an URL [16]
 
-#### **XSS** 
+##### **XSS** 
 (Cross-site Scripting) : adding raw HTML and Javascript through available forms to 'inject' script onto a website which then gets interpreted and executed by the browser [23]
   - e.g. attacker could use JavaScript to get session ids of all future visitors to the site; malicious code would bypass the same-origin policy since it lives on the site
-  - simple example: could add `<script>alert('Hello world...')</script>` to a comment section to have an alert pop-up
+  - simple example: could add `<script>alert('an example of...')</script>` to a comment section to have an alert pop-up
   - countermeasures: [23]
     - 'sanitize' user input - eliminate `<script>` tags or disallow HTML / JS altogether
     - escape all user input when displaying it - so it does not get interpreted as code by the browser
