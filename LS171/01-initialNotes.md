@@ -60,7 +60,7 @@
   - e.g., a `callback` may be triggered when a response is returned
 
 #### **Certificate**
-- (TLS Certificate or SSL Certificate)
+- (also known as TLS Certificate; SSL Certificate; Digital Certificate)
 - Sent by the server as part of the TLS handshake (see also [TLS handshake](#tls-handshake))
 - contains various pieces of information: [^35]
   - public key (for exchanging symmetric key info)
@@ -68,9 +68,11 @@
   - a 'signature' : data encrypted with the server's *private key*
   - data used to create 'signature'
 - client receiving the certificate can decrypt the 'signature' using the *public key* sent and compare decrypted data to the original version;  a match indicates authenticity of certificate [^35]
+- **certificates are signed by a CA** (see also [CA](#ca))
 
 #### **Cipher suites**
 - (for TLS handshake) see also [TLS handshake](#tls-handshake)
+- the agreed set of algorithms used by the client and server during secure message exchange [^37]
 - a set of ciphers (i.e., cryptographic algorithms - steps for performing encryption, decryption, other related tasks) to be used for establishing and maintaining a secure connection [^34]
   - different ciphers are typically used for key exchange process, authentication, symmetric key encryption, checking message integrity
 
@@ -179,7 +181,7 @@
     - client sends the request, server sends the response
   - serves as a link between applications (a message format) and the transfer of hypertext documents [^17]
   - is an inherently *stateless* protocol - makes it hard to build user experiences that are stateful (e.g., know where a request came from, differentiating users, staying "logged in", etc.) [^17]
-  - is inherently *insecure*, but can be made more secure through use of:
+  - is inherently *insecure* [^37], but can be made more secure through use of:
     - https (see also [Secure HTTP](#secure-http))
     - enforcing same-origin policy (see also [Same-origin policy](#same-origin-policy))
     - preventing session hijacking, and cross-site scripting (see also [Session Hijacking](#session-hijacking), [XSS](#xss-cross-site-scripting))
@@ -253,8 +255,17 @@
     - **queuing delay** : (also buffering) the amount of time data waits in a queue to be processed [^2]
     - **last-mile latency** : delays which involve getting a network signal from ISP's network to home or office network; as data is directed down the network hierarchy to the correct sub-network there will be more frequent and shorter 'hops' [^2]
 
-#### **MAC Address**
+#### **MAC address**
+- (Media Access Control address [^36])
 - a (unique) sequence of 6, two-digit hexadecimal numbers (e.g., `00:40:96:9d:68:0a`) assigned to every device with a NIC; used to direct Ethernet frames between network devices in a (W)LAN;  MAC address is "burned in" when manufactured;  in theory, should all be unique (may not be, but rarely causes problems) [^3] [^6] MAC addresses have a 'flat' structure [^9]q7
+
+#### **MAC**
+- (Message Authentication Code field)
+- a field included in the TLS footer / trailer to provide message integrity (ensure message hasn't been altered in transit); somewhat similar to checksum fields in other PDUs[^36]
+- uses a hashing algorithm: [^36]
+  - sender creates a *digest* of data payload (a small amount of data derived from actual payload to be sent in the MAC field)
+  - digest is created using a specific hashing algorithm with a pre-agreed hash value (determined as part of TLS handshake) (see also [TLS handshake](#tls-handshake))
+  - receiver will create their own version of the digest and compare with the version sent in MAC field; if they match, integrity is confirmed
 
 #### **Multiplexing**
 - transmitting multiple signals over a single channel;  opposite:  **demultiplexing** [^10]
@@ -370,7 +381,7 @@
 
 #### **Secure HTTP**
 - (HTTPS)
-- the use of TLS to encrypt the requests/responses associated with HTTP (i.e., not send them as strings, which are susceptible to *packet sniffing*) [^23]
+- the use of TLS to encrypt the requests/responses associated with HTTP (i.e., not send them as strings, which are susceptible to *packet sniffing*) [^23] (see also [TLS](#tls))
 
 #### **Session Hijacking**
 - when a hacker obtains the session id and can access the web application as if they are an authenticated user; does not require the username/pw [^23]
@@ -462,19 +473,19 @@
 - (Transport Layer Security)
 - also called Secure Sockets Layer (SSL) which was the original name (pre-1990) [^33]
 - provides security over HTTP (an unsecure channel): [^33]
-  - encryption : encode messages for only authorized recipient
-  - authentication : process to verify identity of a party in message exchange
-  - integrity : process to detect if messages have been tampered or faked
+  - encryption : encode messages for only authorized recipient [^37]
+  - authentication : process to verify identity of a party in message exchange [^37] (see also [Certificate](#certificate))
+  - integrity : process to detect if messages have been tampered or faked in transit [^37] (see also [MAC](#mac))
 - establishes a secure connection using the TLS handshake (see also [TLS handshake](#tls-handshake))
-- primarily uses symmetric key encryption for message exchange, but uses asymmetric key encryption for initial symmetric key exchange (see also [symmetric key encryption](#symmetric-key-encryption), [asymmetric key encryption](#asymmetric-key-encryption))
+- primarily uses symmetric key encryption for message exchange, but uses asymmetric key encryption for initial symmetric key exchange [^37] (see also [symmetric key encryption](#symmetric-key-encryption), [asymmetric key encryption](#asymmetric-key-encryption))
 
 #### **TLS handshake**
 - used to setup an initial secure TLS connection; assumes TCP is being used [^34]
 - key outcomes of handshake: [^34]
   - agree on which version of TLS to use for secure connection
   - agree on what algorithms will be used in ciper suite
-  - enable exchange of symmetric keys for message encryption
-- use of TLS will impact performance : can add up to 2 rounds of latency (RTT) on top of existing single RTT for TCP handshake [^34]
+  - **enable exchange of symmetric keys for message encryption** [^37]
+- **use of TLS will impact performance** : can add up to 2 rounds of latency (RTT) on top of existing single RTT for TCP handshake [^34]
 - detailed example handshake steps: [^34]
   - takes place after the TCP handshake (i.e., after sender sends `ACK`) (see also [Three-way handshake](#three-way-handshake))
   - client sends `ClientHello` : contains max version of TLS protocol client can support and a list of cipher suites (see also [Cipher suites](#cipher-suites))
@@ -623,3 +634,5 @@
 [^33]: [https://launchschool.com/lessons/74f1325b/assignments/83bf156b](https://launchschool.com/lessons/74f1325b/assignments/83bf156b)
 [^34]: [https://launchschool.com/lessons/74f1325b/assignments/54f6defc](https://launchschool.com/lessons/74f1325b/assignments/54f6defc)
 [^35]: [https://launchschool.com/lessons/74f1325b/assignments/95e698ab](https://launchschool.com/lessons/74f1325b/assignments/95e698ab)
+[^36]: [https://launchschool.com/lessons/74f1325b/assignments/a88271cf](https://launchschool.com/lessons/74f1325b/assignments/a88271cf)
+[^37]: [https://launchschool.com/lessons/74f1325b/assignments/238ff36f](https://launchschool.com/lessons/74f1325b/assignments/238ff36f)
