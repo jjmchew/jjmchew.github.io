@@ -19,6 +19,11 @@
 #### **Application server**
 - typically where application or busines logic resides and where more complicated requests are handled; server-side code lives here when deployed [^24] (see also [Web Server](#web-server), [Data Store](#data-store))
 
+#### **Asymmetric key encryption**
+- (also known as Public key encryption [^34])
+- uses a pair of keys:  *public key* (for encryption) and *private key* (for decryption); communication is only intended to work in 1 direction [^34] (see also [Symmetric key encryption](#symmetric-key-encryption))
+  - Person A would generate both a public and private key;  the public key is made public for others to encrypt messages for Person A (to decrypt using their private key)
+
 #### **Bandwidth**
 - the *amount* of data that can be sent in a particular unit of time (typically a second) [^2]; a measure of *capacity* [^6]
 
@@ -37,9 +42,37 @@
 #### **Byte**
 - a unit of digital information containing 8 bits
 
+#### **CA**
+- (Certificate Authority)
+- a trustworthy source that issues digital certificates (see also [Certificate](#certificate)) [^35]
+  - will verify identity : e.g., by proving you own the domain
+  - digitally sign the certificate : encrypting some data with the CA's own private key as a 'signature' and including unencrypted data with certificate that can be compared
+- there are *Intermediate CAs* and also *Root CAs* [^35]
+  - an Intermediate CA is authorized by a Root CA to issue certificates on its behalf
+  - the certificate is certified by the Intermediate CA;  Intermediate CA is certified by the Root CA
+  - Root CAs can revoke their certificate to Intermediate CAs if Intermediate CAs have a trust breach; all certificates issued by the Intermediate CA would appear invalid
+  - Root CAs are a small group of organisations approved by browsers and operating system vendors
+  - Let's Encrypt in an Intermediate CA and provides free, automated certificates
+  - GlobalSign is a Root CA
+
 #### **Callback**
 - a piece of logic you pass on to some function to be executed after a certain event has happened [^22]
   - e.g., a `callback` may be triggered when a response is returned
+
+#### **Certificate**
+- (TLS Certificate or SSL Certificate)
+- Sent by the server as part of the TLS handshake (see also [TLS handshake](#tls-handshake))
+- contains various pieces of information: [^35]
+  - public key (for exchanging symmetric key info)
+  - identifies owner of certificate
+  - a 'signature' : data encrypted with the server's *private key*
+  - data used to create 'signature'
+- client receiving the certificate can decrypt the 'signature' using the *public key* sent and compare decrypted data to the original version;  a match indicates authenticity of certificate [^35]
+
+#### **Cipher suites**
+- (for TLS handshake) see also [TLS handshake](#tls-handshake)
+- a set of ciphers (i.e., cryptographic algorithms - steps for performing encryption, decryption, other related tasks) to be used for establishing and maintaining a secure connection [^34]
+  - different ciphers are typically used for key exchange process, authentication, symmetric key encryption, checking message integrity
 
 #### **Congestion avoidance**
 - the application of an approach and algorithm to determine the size of the initial transmission window, and how much the window should be reduced depending on network conditions (i.e., network congestion) [^12]
@@ -79,6 +112,11 @@
 #### **CRC**
 - (Cyclic Redundancy Check) : see [FCS](#fcs) [^3]
 
+#### **Cryptography**
+- the use of techniques for securing communication [^34]
+  - e.g., Caesar cipher (a simple substitution cipher)
+  - e.g., Vigenere cipher (use of a keyword and tabula recta) (see also [Symmetric Key Encryption](#symmetric-key-encryption))
+
 #### **Bandwidth bottleneck**
 - a point at which bandwidth changes from relatively high to relatively low [^2]
 
@@ -88,6 +126,10 @@
 #### **DNS**
 - (Domain Name System) : a distributed database which maps domain names (e.g., `www.google.com`) to an IP address (e.g., `197.251.230.45`) [^17] [^27]
   - DNS databases are stored on a hierarchy of world-wide DNS servers - no one server contains the complete database; if 1 server does not contain a requested domain name, that server routes the request to another DNS server up the hierarchy [^17]
+
+#### **DTLS**
+- (Datagram Transport Layer Security)
+- a form of TLS used with UDP (see also [TLS](#tls-handshake), [UDP](#udp))
 
 #### **Encapsulation**
 - how protocols at different network layers can work together;  implemented through PDUs (i.e., the info at a higher layer is part of the data payload of a lower layer) [^6]
@@ -386,6 +428,10 @@
 #### **Switch**
 - a network device that directs Ethernet frames to ONLY the desired MAC address;  a MAC Address Table keeps a record of ports and MAC addresses for connected devices [^3]
 
+#### **Symmetric key encryption**
+- a cryptographic system where both sender and receiver share a common encryption key, which is used to encryption or decryption [^34]
+  - challenge for use over internet is how to communicate the key securely - it can't be sent in plain text (see also [Asymmetric key encryption](#asymmetric-key-encryption))
+
 #### **TCP**
 - (Transmission Control Protocol)
 - provides reliable network communication (data transfer) on top of an unreliable channel [^12]
@@ -404,7 +450,7 @@
     - ==HOL blocking can occur since in-order delivery of Segments is required==;  can lead to increased queuing delays; increases latency [^12]
     - ==latency overhead of establishing a connection== [^13]
 
-#### **Three-way Handshake**
+#### **Three-way handshake**
 - a process used for establishing TCP connections [^12]
   - 1. Sender ==sends SYN== (sync) Segment
   - 2. Receiver receives SYN, ==responds with SYN ACK== (acknowledge) Segment
@@ -412,6 +458,31 @@
   - 4. Receiver receives ACK;  establishes connection
   - see also [Connection State](#connection-state) [^12]
 
+#### **TLS**
+- (Transport Layer Security)
+- also called Secure Sockets Layer (SSL) which was the original name (pre-1990) [^33]
+- provides security over HTTP (an unsecure channel): [^33]
+  - encryption : encode messages for only authorized recipient
+  - authentication : process to verify identity of a party in message exchange
+  - integrity : process to detect if messages have been tampered or faked
+- establishes a secure connection using the TLS handshake (see also [TLS handshake](#tls-handshake))
+- primarily uses symmetric key encryption for message exchange, but uses asymmetric key encryption for initial symmetric key exchange (see also [symmetric key encryption](#symmetric-key-encryption), [asymmetric key encryption](#asymmetric-key-encryption))
+
+#### **TLS handshake**
+- used to setup an initial secure TLS connection; assumes TCP is being used [^34]
+- key outcomes of handshake: [^34]
+  - agree on which version of TLS to use for secure connection
+  - agree on what algorithms will be used in ciper suite
+  - enable exchange of symmetric keys for message encryption
+- use of TLS will impact performance : can add up to 2 rounds of latency (RTT) on top of existing single RTT for TCP handshake [^34]
+- detailed example handshake steps: [^34]
+  - takes place after the TCP handshake (i.e., after sender sends `ACK`) (see also [Three-way handshake](#three-way-handshake))
+  - client sends `ClientHello` : contains max version of TLS protocol client can support and a list of cipher suites (see also [Cipher suites](#cipher-suites))
+  - server receives and responds with `ServerHello` : sets protocol version, cipher suite; sends certificate (see also [Certificate](#certificate)); sends `ServerHelloDone`
+  - client receives : initiates key exchange process (e.g., RSA algorithm:
+    - client sends `ClientKeyExchange` ('pre-master secret' encrypted with server public key), sends `ChangeCipherSpec` (indicates use of symmetric key in future), sends `Finished` flag (to end TLS handshake)
+    - server decrypts 'pre-master secret', uses agreed cipher suite to generate symmetric key (will be the same as client's) and sends `ChangeCipherSpec` and `Finished`
+  
 #### **TTL**
 - (Time to Live)
 - a value within the Packet header that defines the maximum number of network 'hops' a packet can take before being dropped; at each hop, the network router will decrement TTL by 1 [^5]
@@ -493,7 +564,7 @@
 
 | OSI Layer | IPS Layer   | Protocol   | PDU                 | Scope             |
 |-----------|-------------|------------|---------------------|-------------------|
-| Application <br> Presentation <br> Session | Application | Many (e.g., HTTP) | |
+| Application <br> Presentation <br> Session | Application | Many (e.g., HTTP, <br>TLS [at session level] ) | |
 | Transport | Transport   | TCP or UDP | Segment or Datagram | app to app        |
 | Network | Internet    | IP         | Packet              | host to host      |
 | Data Link <br> Physical | Link | Ethernet | Frame | router to device |
@@ -549,4 +620,6 @@
 [^30]: [https://launchschool.com/lessons/0e67d1ce/assignments/ea90d10b](https://launchschool.com/lessons/0e67d1ce/assignments/ea90d10b)
 [^31]: [https://launchschool.com/lessons/0e67d1ce/assignments/a0f37a79](https://launchschool.com/lessons/0e67d1ce/assignments/a0f37a79)
 [^32]: [https://launchschool.com/lessons/0e67d1ce/assignments/dcae7f89](https://launchschool.com/lessons/0e67d1ce/assignments/dcae7f89)
-
+[^33]: [https://launchschool.com/lessons/74f1325b/assignments/83bf156b](https://launchschool.com/lessons/74f1325b/assignments/83bf156b)
+[^34]: [https://launchschool.com/lessons/74f1325b/assignments/54f6defc](https://launchschool.com/lessons/74f1325b/assignments/54f6defc)
+[^35]: [https://launchschool.com/lessons/74f1325b/assignments/95e698ab](https://launchschool.com/lessons/74f1325b/assignments/95e698ab)
