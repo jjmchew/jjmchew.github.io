@@ -8,9 +8,10 @@
 - (Asynchronous JavaScript and XML)
 - a feature that allows browsers to issue requests and process responses *without a full page refresh*; this prevents the very expensive overhead of re-creating an entire webpage on every interaction [^22]
   - AJAX requests: [^22]
-    - are performed asynchronously (the page does NOT refresh)
+    - are performed asynchronously (the page does NOT refresh, JS can do other things while waiting for a response from the server[^39])
     - are similar to normal requests (same components, handled by server in same way)
     - have their response typically handled by some client-side JavaScript code
+- uses XHR[^39] (see also [XHR](#xhr))
 
 #### **Application Layer**
 - The top-most layer of the OSI and IPS models;  provides communication services to applications themselves;  does not refer to actual applications [^15]
@@ -58,6 +59,10 @@
 #### **Callback**
 - a piece of logic you pass on to some function to be executed after a certain event has happened [^22]
   - e.g., a `callback` may be triggered when a response is returned
+
+#### **CDN**:
+- (Content Delivery Network[^38])
+- These networks can reduce latency
 
 #### **Certificate**
 - (also known as TLS Certificate; SSL Certificate; Digital Certificate)
@@ -191,6 +196,14 @@
 #### **HTTPS**
 - (Secure HTTP)
 - the use of TLS to encrypt the requests/responses associated with HTTP (i.e., not send them as strings, which are susceptible to *packet sniffing*) [^23] (see also [TLS](#tls))
+
+#### **HTTP optimizations**
+- Basic optimizations developers can take to improve HTTP performance are: [^38]
+  - reducing resources and dependencies - limit the number of things to be fetched to what's needed for the page users are viewing
+  - compressing resources that are fetched (e.g., minifying)
+  - re-using TCP connections: fetch multiple resources with a single TCP connection (eliminate handshaking) e.g., include `Connection: Keep-Alive` header
+  - DNS optimization: reduce the number of hostnames that need to be resolved; download any external resources and host them on the same server as web app (may not be necessary with a CDN); use common libraries (may already be available on users' systems in the browser cache); use a faster DNS provider (e.g., Amazon Route 53 is faster than GoDaddy)
+  - caching (server-side): most valuable for dynamically generated content - store content that was recently accessed by a user so if it is requested again, it can be quickly served and reduces processing load on the server
 
 #### **HTTP request**
 - can be Get or Post (see also [GET](#get) and [POST](#post)) [^20]
@@ -541,6 +554,10 @@
 - (the "web")
 - a **service** that can be accessed via the internet;  an information system comprised of resources navigable using an URL [^16]
 
+#### **XHR**
+- (XMLHttpRequest)
+- [^39]
+
 #### **XSS** 
 - (Cross-site Scripting)
 - adding raw HTML and Javascript through available forms to 'inject' script onto a website which then gets interpreted and executed by the browser[^23]
@@ -636,3 +653,5 @@
 [^35]: [https://launchschool.com/lessons/74f1325b/assignments/95e698ab](https://launchschool.com/lessons/74f1325b/assignments/95e698ab)
 [^36]: [https://launchschool.com/lessons/74f1325b/assignments/a88271cf](https://launchschool.com/lessons/74f1325b/assignments/a88271cf)
 [^37]: [https://launchschool.com/lessons/74f1325b/assignments/238ff36f](https://launchschool.com/lessons/74f1325b/assignments/238ff36f)
+[^38]: [https://launchschool.com/lessons/be1304f3/assignments/98ecce1c](https://launchschool.com/lessons/be1304f3/assignments/98ecce1c)
+[^39]: [https://launchschool.com/lessons/be1304f3/assignments/2b0cef9f](https://launchschool.com/lessons/be1304f3/assignments/2b0cef9f)
