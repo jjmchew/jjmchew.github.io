@@ -33,7 +33,7 @@
 #### **Browser**
 - (web browser)
 - Browsers hide much of the underlying HTTP request/response cycle: [^20]
-  - e.g., if you fill out a web form, it will issue the POST request, get a response with a `Location` header, issue a request to the locationd defined in the `Location` header and then display the (HTML) response from the second request; a browser tool like CURL or Postman may not do all of that [^20]
+  - e.g., if you fill out a web form, it will issue the POST request, get a response with a `Location` header, issue a request to the location defined in the `Location` header and then display the (HTML) response from the second request; a browser tool like CURL or Postman may not do all of that [^20]
 
 #### **Buffer**
 - memory allocated according to OS configuration and physical resources available to store data awaiting processing [^12]
@@ -49,7 +49,7 @@
   - digitally sign the certificate : encrypting some data with the CA's own private key as a 'signature' and including unencrypted data with certificate that can be compared
 - there are *Intermediate CAs* and also *Root CAs* [^35]
   - an Intermediate CA is authorized by a Root CA to issue certificates on its behalf
-  - the certificate is certified by the Intermediate CA;  Intermediate CA is certified by the Root CA
+  - the certificate is certified by the Intermediate CA;  Intermediate CA is certified by the Root CA (known as the *Chain of Trust*)
   - Root CAs can revoke their certificate to Intermediate CAs if Intermediate CAs have a trust breach; all certificates issued by the Intermediate CA would appear invalid
   - Root CAs are a small group of organisations approved by browsers and operating system vendors
   - Let's Encrypt in an Intermediate CA and provides free, automated certificates
@@ -85,7 +85,7 @@
 
 #### **Connection-oriented network communication**
 - instantiating multiple socket objects to create a connection between applications;  analogous to replicating yourself to participate in 5 different concurrent conversations [^10]
-  - there is still a single socket object listening for incoming messages, but once a message arrives, a new socket object is instantiated to listen specifically for messages corresponding to the four-tuple (a specific source port, source IP, destination port, destination IP) [^10]
+  - there is still a single socket object listening for incoming messages, but once a message arrives, a new socket object is instantiated to listen specifically for messages corresponding to the four-tuple (see also [Four-tuple](#four-tuple)) [^10]
   - generally, these connections are more reliable:  easier to implement rules for managing communication order of messages, responses, retransmission, etc. [^10]
 
 #### **Connection state**
@@ -176,39 +176,43 @@
 
 #### **HTTP**
 - (Hypertext Transfer Protocol)
-- a *stateless text-based [^32] protocol* for how clients communicate with servers [^24]; the set of rules which provide uniformity to the way resources on the web are transferred between applications (a *request response protocol* between a *server* and a *client* [^17]) [^16]
+- a **stateless[^17], insecure[^37], text-based [^32] protocol for how clients communicate with servers** [^24]; the set of rules which provide uniformity to the way resources on the web are transferred between applications (a *request response protocol* between a *server* and a *client* [^17]) [^16]
   - a single HTTP message exchange consists of a request and a response between a client and a server [^27]
     - client sends the request, server sends the response
   - serves as a link between applications (a message format) and the transfer of hypertext documents [^17]
   - is an inherently *stateless* protocol - makes it hard to build user experiences that are stateful (e.g., know where a request came from, differentiating users, staying "logged in", etc.) [^17]
   - is inherently *insecure* [^37], but can be made more secure through use of:
-    - https (see also [Secure HTTP](#secure-http))
+    - https (see also [HTTPS](#https))
     - enforcing same-origin policy (see also [Same-origin policy](#same-origin-policy))
     - preventing session hijacking, and cross-site scripting (see also [Session Hijacking](#session-hijacking), [XSS](#xss-cross-site-scripting))
-  - in HTTP/1.1 the end of headers is indicated by an empty line [^32]
-  - the `Content-Length` header indicates the size of the body (if not present, then the browser will keep trying to load content) [32, personal experiments]
+- in HTTP/1.1 the end of headers is indicated by an empty line [^32]
+  - the `Content-Length` header indicates the size of the body (if not present, then the browser will keep trying to load content) [also noted through HTTP server assignment]
+
+#### **HTTPS**
+- (Secure HTTP)
+- the use of TLS to encrypt the requests/responses associated with HTTP (i.e., not send them as strings, which are susceptible to *packet sniffing*) [^23] (see also [TLS](#tls))
 
 #### **HTTP request**
 - can be Get or Post (see also [GET](#get) and [POST](#post)) [^20]
   - key components: [^20]
-    - request line : made up of method and peth [26 q1]
-        - HTTP method (i.e., GET vs POST) * required [26 q1]
-        - path (resource name and any query parameters) * required [26 q1]
-    - headers  (`Host` header is required since HTTP 1.1, other headers optional [26 q1])
-    - parameters (optional [26 q1])
-    - message body (for POST requests) (optional [26 q1])
-  - `GET` requests should only retrieve content from server (main webpage content doesn't change) [26 q3]
+    - request line : made up of method and path [^26]q1
+        - HTTP method (i.e., GET vs POST) * required [^26]q1
+        - path (resource name and any query parameters) * required [^26]q1
+    - headers  (`Host` header is required since HTTP 1.1, other headers optional [^26]q1)
+    - parameters (optional [^26]q1)
+    - message body (for POST requests) (optional [^26]q1)
+  - `GET` requests should only retrieve content from server (main webpage content doesn't change) [^26]q3
     - e.g., return search results; display a webpage that displays how many times it's been viewed (main content doesn't change)
-  - `POST` requests involve changing values stored on server [26 q3]
+  - `POST` requests involve changing values stored on server [^26]q3
     - e.g., submit form info
   - Webservers may not support HTTP 0.9, requests may need to be submitted in certain ways (e.g., `GET / HTTP/1.1` and with `Host: launchschool.com` header included to meet HTTP 1.1 specifications) [^30]
 
 #### **HTTP response**
 - the raw data returned by a server to an HTTP request [^21]
   - key components of a response: [^21]
-    - status line : comprised of a code (e.g., 200) (see also [Status Code](#status-code)) and short text * required [26 q2]
-    - headers (optional [26 q2])
-    - message body (contains the raw response data) (optional [26 q2])
+    - status line : comprised of a code (e.g., 200) (see also [Status Code](#status-code)) and short text * required [^26]q2
+    - headers (optional [^26]q2)
+    - message body (contains the raw response data) (optional [^26]q2)
 
 #### **Hub**
 - a basic piece of network hardware that replicates a message and forwards it to all of the devices on the network. Devices connected to a hub that receive a message not intended for it (i.e., MAC address is different) will ignore the frame [^3]
@@ -362,8 +366,8 @@
     - all name/value pairs are visible in the URL (can't send sensitive info)
     - space and special characters can't be used (need to be URL encoded)
 
-#### **Round-trip Time**
-- (RTT)
+#### **RTT**
+- (Round-Trip Time)
 - a latency calculation often used in networking - the length of time for a signal to be sent, added to the length of time for an acknowledgement or response to be received [^2]
 
 #### **Router**
@@ -379,16 +383,12 @@
 - a specification for assigning identifiers within that scheme; isn't related specifically to a protocol, but it identifies which protocol should be used to access the resource;  URI scheme names are found on [IANA website](https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml) [^25]
   - generally, scheme names are in lowercase (e.g., `http`) and protocols in uppercase (e.g., `HTTP`) [^25]
 
-#### **Secure HTTP**
-- (HTTPS)
-- the use of TLS to encrypt the requests/responses associated with HTTP (i.e., not send them as strings, which are susceptible to *packet sniffing*) [^23] (see also [TLS](#tls))
-
 #### **Session Hijacking**
 - when a hacker obtains the session id and can access the web application as if they are an authenticated user; does not require the username/pw [^23]
   - countermeasures: [^23]
     - reset the session - render the old session id invalid and create a new one
     - setting expiration times on sessions (limit time a hacker has to use the session id)
-    - use HTTPS
+    - use HTTPS (see also [HTTPS](#https))
 
 #### **Session Identifier**
 - a unique token that gets passed whenever a client makes a request to the server to allow the server to identify clients [^22]
@@ -403,7 +403,7 @@
 - also a *communication end-point*; conceptually, it is an endpoint used for inter-process communication [^10]
   - could be a UNIX socket (mechanism for communicating between local process running on the same maching)
   - could also be an internet socket (e.g., TCP/IP socket): a mechanism for inter-process communication between networked processes (usually on different machines)
-  - ==the combo of an IP address and port information==; this enables end-to-end communication between specific applications (often on different machines, but could be a `localhost` and a browser on the same machine) (e.g., `216.3.128.12:8080`) [^10]
+  - **the combo of an IP address and port information**; this enables end-to-end communication between specific applications (often on different machines, but could be a `localhost` and a browser on the same machine) (e.g., `216.3.128.12:8080`) [^10]
   - sockets are implemented by instantiating *socket objects* (often following the Berkeley sockets API model:  `bind()`, `listen()`, `accept()`, `connect()`, etc. Ruby, Python, Node.js use this) [^10]
 
 #### **Stateful (simulation)**
@@ -446,7 +446,7 @@
 #### **TCP**
 - (Transmission Control Protocol)
 - provides reliable network communication (data transfer) on top of an unreliable channel [^12]
-  - ==Reliability is provided through *message acknowledgement* and *retransmission*, and *in-order delivery*== [^13]
+  - **Reliability is provided through *message acknowledgement* and *retransmission*, and *in-order delivery*** [^13]
   - Key focuses are: [^12]
     - data integrity (error detection [^14]q4)
     - de-duplication [^14]q4
@@ -454,18 +454,18 @@
     - retransmission of lost data
   - also provides data encapsulation and multiplexing (through TCP segments) [^12]
   - PDUs are called "Segments" [^8] [^12]
-  - ==TCP is a connection-oriented protocol==, it requires a connection between application processes established through a ==Three-way Handshake== (see also [Three-way Handshake](#three-way-handshake)) [^12]
-  - Key aspect to know is that when establishing a connection, a sender MUST wait a full RTT (SYN sent and SYN ACK received) before sending data: this is "a lot of overhead" to establish connections; thus important to provide efficiency and reliability for retransmission of data once a connection is established through ==Flow Control and Congestion Avoidance== (see also [Flow Control](#flow-control) and [Congestion Avoidance](#congestion-avoidance)) [^12]
+  - **TCP is a connection-oriented protocol**, it requires a connection between application processes established through a **Three-way Handshake** (see also [Three-way Handshake](#three-way-handshake)) [^12]
+  - Key aspect to know is that when establishing a connection, a sender MUST wait a full RTT (SYN sent and SYN ACK received) before sending data: this is "a lot of overhead" to establish connections; thus important to provide efficiency and reliability for retransmission of data once a connection is established through **Flow Control and Congestion Avoidance** (see also [RTT](#rtt, [Flow Control](#flow-control), [Congestion Avoidance](#congestion-avoidance)) [^12]
   - there are variations of TCP which use different algorithms or approaches for determining the size of the initial transmission window and how to vary this based on network conditions
   - Disadvantages of TCP: 
-    - ==HOL blocking can occur since in-order delivery of Segments is required==;  can lead to increased queuing delays; increases latency [^12]
-    - ==latency overhead of establishing a connection== [^13]
+    - **HOL blocking can occur since in-order delivery of Segments is required**;  can lead to increased queuing delays; increases latency [^12]
+    - **latency overhead of establishing a connection** [^13]
 
 #### **Three-way handshake**
 - a process used for establishing TCP connections [^12]
-  - 1. Sender ==sends SYN== (sync) Segment
-  - 2. Receiver receives SYN, ==responds with SYN ACK== (acknowledge) Segment
-  - 3. Sender receives SYN ACK, responds with ==ACK==
+  - 1. Sender **sends SYN** (sync) Segment
+  - 2. Receiver receives SYN, **responds with SYN ACK** (acknowledge) Segment
+  - 3. Sender receives SYN ACK, responds with **ACK**
   - 4. Receiver receives ACK;  establishes connection
   - see also [Connection State](#connection-state) [^12]
 
@@ -473,9 +473,9 @@
 - (Transport Layer Security)
 - also called Secure Sockets Layer (SSL) which was the original name (pre-1990) [^33]
 - provides security over HTTP (an unsecure channel): [^33]
-  - encryption : encode messages for only authorized recipient [^37]
-  - authentication : process to verify identity of a party in message exchange [^37] (see also [Certificate](#certificate))
-  - integrity : process to detect if messages have been tampered or faked in transit [^37] (see also [MAC](#mac))
+  - **encryption** : encode messages for only authorized recipient [^37]
+  - **authentication** : process to verify identity of a party in message exchange [^37] (see also [Certificate](#certificate))
+  - **integrity** : process to detect if messages have been tampered or faked in transit [^37] (see also [MAC](#mac))
 - establishes a secure connection using the TLS handshake (see also [TLS handshake](#tls-handshake))
 - primarily uses symmetric key encryption for message exchange, but uses asymmetric key encryption for initial symmetric key exchange [^37] (see also [symmetric key encryption](#symmetric-key-encryption), [asymmetric key encryption](#asymmetric-key-encryption))
 
@@ -500,11 +500,11 @@
 
 #### **UDP**
 - (User Datagram Protocol)
-- a ==simple connectionless protocol== at the Transport layer that uses one-way data flow; its simplicity allows it to be ==fast and flexible== [^12] [^13]
+- a **simple connectionless protocol** at the Transport layer that uses one-way data flow; its simplicity allows it to be **fast and flexible** [^12] [^13]
   - Header includes only: source port, destination port, length (of data in bits), checksum (required for IPv6, but optional for IPv4;  i.e., does provide error-checking [^14]q5 )
   - also provides multiplexing (through use of ports)
   - PDU is "Datagram" [^12]
-  - provides no guarantee of message delivery (==no reliability==), message delivery order (==no in-order delivery==), ==no congestion-avoidance or flow-control==, no connection state tracking (since it is a connectionless protocol) [^12] [^13]
+  - provides no guarantee of message delivery (**no reliability**), message delivery order (**no in-order delivery**), **no congestion-avoidance or flow-control**, no connection state tracking (since it is a connectionless protocol) [^12] [^13]
   - Applications using UDP can start sending data without waiting for connections to be established; actual transmission is also faster (datagrams are not re-sent); latency is less of an issue; no HOL blocking
   - specific services (like in-order delivery [sequencing] or data retransmission) are left up to the developer to decide if they want to implement
   - best used for voice or video calling, online gaming; streaming - occasional dropped data will lead to glitches, but are worth the speed of the protocol, especially over long distances (high latency)
