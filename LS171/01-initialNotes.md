@@ -4,7 +4,6 @@
 
 ### A-M
 
-<details>
 
 #### **AJAX**
 - (Asynchronous JavaScript and XML)
@@ -290,12 +289,11 @@
 - transmitting multiple signals over a single channel;  opposite:  **demultiplexing** [^10]
   - multiplexing is enabled through use of network ports [^13]
 
-</details>
 
 
 ### N-Z
 
-<details>
+
 
 #### **Network**
 - 1 or more computers connected in such a way that they can communicate or exchange data [^4]
@@ -575,7 +573,6 @@
       - e.g., replace `<p>` and `</p>` with `&lt;p&gt;` and `&lt;/p&gt;`
 
 
-</details>
 
 
 ## Commands / Tools
