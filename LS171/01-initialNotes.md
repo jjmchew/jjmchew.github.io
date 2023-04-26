@@ -4,42 +4,57 @@
 
 ### A-M
 
-- **AJAX** (Asynchronous JavaScript and XML) : a feature that allows browsers to issue requests and process responses *without a full page refresh*; this prevents the very expensive overhead of re-creating an entire webpage on every interaction [22]
+#### **AJAX**
+- (Asynchronous JavaScript and XML)
+- a feature that allows browsers to issue requests and process responses *without a full page refresh*; this prevents the very expensive overhead of re-creating an entire webpage on every interaction [22]
   - AJAX requests: [22]
     - are performed asynchronously (the page does NOT refresh)
     - are similar to normal requests (same components, handled by server in same way)
     - have their response typically handled by some client-side JavaScript code
 
-- **Application Layer** : The top-most layer of the OSI and IPS models;  provides communication services to applications themselves;  does not refer to actual applications [15]
+#### **Application Layer**
+- The top-most layer of the OSI and IPS models;  provides communication services to applications themselves;  does not refer to actual applications [15]
   - protocols in this layer are the ones which actual applications most directly interact with; provides a syntax for applications to interact [15]
 
-- **Application server** : typically where application or busines logic resides and where more complicated requests are handled; server-side code lives here when deployed [24] (see also Web Server, Data Store)
+#### **Application server**
+- typically where application or busines logic resides and where more complicated requests are handled; server-side code lives here when deployed [24] (see also Web Server, Data Store)
 
-- **Bandwidth** : the *amount* of data that can be sent in a particular unit of time (typically a second) [2]; a measure of *capacity* [6]
+#### **Bandwidth**
+- the *amount* of data that can be sent in a particular unit of time (typically a second) [2]; a measure of *capacity* [6]
 
-- **Broadcast address** : the IP address at the END of the range assigned to a single local network (see also Network Address) [5]
+#### **Broadcast address**
+- the IP address at the END of the range assigned to a single local network (see also Network Address) [5]
 
-- **Browser** (web browser) : Browsers hide much of the underlying HTTP request/response cycle: [20]
+#### **Browser**
+- (web browser)
+- Browsers hide much of the underlying HTTP request/response cycle: [20]
   - e.g., if you fill out a web form, it will issue the POST request, get a response with a `Location` header, issue a request to the locationd defined in the `Location` header and then display the (HTML) response from the second request; a browser tool like CURL or Postman may not do all of that [20]
 
-- **Buffer** : memory allocated according to OS configuration and physical resources available to store data awaiting processing [12]
+#### **Buffer**
+- memory allocated according to OS configuration and physical resources available to store data awaiting processing [12]
   - used in TCP for flow control [12]
 
-- **Byte** : a unit of digital information containing 8 bits
+#### **Byte**
+- a unit of digital information containing 8 bits
 
-- **Callback** : a piece of logic you pass on to some function to be executed after a certain event has happened [22]
+#### **Callback**
+- a piece of logic you pass on to some function to be executed after a certain event has happened [22]
   - e.g., a `callback` may be triggered when a response is returned
 
-- **Congestion avoidance** : the application of an approach and algorithm to determine the size of the initial transmission window, and how much the window should be reduced depending on network conditions (i.e., network congestion) [12]
+#### **Congestion avoidance**
+- the application of an approach and algorithm to determine the size of the initial transmission window, and how much the window should be reduced depending on network conditions (i.e., network congestion) [12]
   - typically uses data loss and number of retransmissions to determine if the network is congested [12]
 
-- **Connectionless network communication** : a single socket object that is set to `listen()` for incoming messages (from any source) directed to its specific IP address:port [10]
+#### **Connectionless network communication**
+- a single socket object that is set to `listen()` for incoming messages (from any source) directed to its specific IP address:port [10]
 
-- **Connection-oriented network communication** : instantiating multiple socket objects to create a connection between applications;  analogous to replicating yourself to participate in 5 different concurrent conversations [10]
+#### **Connection-oriented network communication**
+- instantiating multiple socket objects to create a connection between applications;  analogous to replicating yourself to participate in 5 different concurrent conversations [10]
   - there is still a single socket object listening for incoming messages, but once a message arrives, a new socket object is instantiated to listen specifically for messages corresponding to the four-tuple (a specific source port, source IP, destination port, destination IP) [10]
   - generally, these connections are more reliable:  easier to implement rules for managing communication order of messages, responses, retransmission, etc. [10]
 
-- **Connection state** (for TCP, connection-oriented communication) : possible states which a TCP connection progresses through during its lifetime: [12]
+#### **Connection state**
+- (for TCP, connection-oriented communication) : possible states which a TCP connection progresses through during its lifetime: [12]
   - LISTEN : this state is important (on server side)
   - SYN-SENT
   - SYN-RECEIVED
@@ -53,47 +68,62 @@
   - CLOSED (a fictional state, since if closed, no connection exists)
   - Listen and Established are most important since other states relate to establishing and terminating connections
 
-- **Cookie** (HTTP cookie) : small files of data (containing session information) sent from the server and stored in the client (browser) during a request/response cycle [22]
+#### **Cookie**
+- (HTTP cookie) : small files of data (containing session information) sent from the server and stored in the client (browser) during a request/response cycle [22]
   - session information is stored in the cookie; actual session data is stored on the server
   - the client-side cookie is compared with server-side data on every request to identify the current session
 
-- **CORS** (Cross-Origin Resource Sharing) : a mechanism that allows interactions that would normally be restricted cross-origin to take place; adds new HTTP headers that lets servers serve resources cross-origin to specified origins [23]
+#### **CORS**
+- (Cross-Origin Resource Sharing) : a mechanism that allows interactions that would normally be restricted cross-origin to take place; adds new HTTP headers that lets servers serve resources cross-origin to specified origins [23]
 
-- **CRC** (Cyclic Redundancy Check) : see FCS below [3]
+#### **CRC**
+- (Cyclic Redundancy Check) : see FCS below [3]
 
-- **Bandwidth bottleneck** : a point at which bandwidth changes from relatively high to relatively low [2]
+#### **Bandwidth bottleneck** : a point at which bandwidth changes from relatively high to relatively low [2]
 
-- **Data store** : has the ability to save persistent data in some format for later retrieval and processing (e.g., relational database, simple files, key/value stores, document stores, etc.);  typically consulted by the Application Server [24] (see also Application Server)
+#### **Data store** : has the ability to save persistent data in some format for later retrieval and processing (e.g., relational database, simple files, key/value stores, document stores, etc.);  typically consulted by the Application Server [24] (see also Application Server)
 
-- **DNS** (Domain Name System) : a distributed database which maps domain names (e.g., `www.google.com`) to an IP address (e.g., `197.251.230.45`) [17] [27]
+#### **DNS**
+- (Domain Name System) : a distributed database which maps domain names (e.g., `www.google.com`) to an IP address (e.g., `197.251.230.45`) [17] [27]
   - DNS databases are stored on a hierarchy of world-wide DNS servers - no one server contains the complete database; if 1 server does not contain a requested domain name, that server routes the request to another DNS server up the hierarchy [17]
 
-- **Encapsulation** : how protocols at different network layers can work together;  implemented through PDUs (i.e., the info at a higher layer is part of the data payload of a lower layer) [6]
+#### **Encapsulation** : how protocols at different network layers can work together;  implemented through PDUs (i.e., the info at a higher layer is part of the data payload of a lower layer) [6]
 
-- **Frame** : an Ethernet PDU [6] i.e., structured data.  Key components to remember are Source and Destination MAC address and Data Payload. [3] Exact headers used in an Ethernet frame will vary according to different Ethernet standards [9 q6]
+#### **Frame** : an Ethernet PDU [6] i.e., structured data.  Key components to remember are Source and Destination MAC address and Data Payload. [3] Exact headers used in an Ethernet frame will vary according to different Ethernet standards [9 q6]
 
-- **FCS** (Frame Check Sequence) : the final 4 bytes (32 bits) of an Ethernet frame used for a CRC (cyclic redundancy check).  The receiving device generates it's own FCS from frame data then compares it to the FCS in the sent data. If the 2 don't match, the frame is dropped.  Ethernet does not implement retransmission functionality - this is left to higher level protocols. [3]
+#### **FCS**
+- (Frame Check Sequence) : the final 4 bytes (32 bits) of an Ethernet frame used for a CRC (cyclic redundancy check).  The receiving device generates it's own FCS from frame data then compares it to the FCS in the sent data. If the 2 don't match, the frame is dropped.  Ethernet does not implement retransmission functionality - this is left to higher level protocols. [3]
 
-- **Flow Control** : a mechanism to prevent the sender from overwhelming the receiver with too much data at once [12]
+#### **Flow Control** : a mechanism to prevent the sender from overwhelming the receiver with too much data at once [12]
   - in TCP: data awaiting processing is stored in a buffer
   - the amount of data each side can accept is defined in the WINDOW field of the TCP header; this is a dynamic field (i.e., will change depending on how full the buffer is) [12]
 
-- **Four-tuple** : Four pieces of information defined for connection-oriented network communication:  source port, source IP, destination port, destination IP;  newly instantiated sockets listen for messages where all 4 pieces of info match [10]
+#### **Four-tuple** : Four pieces of information defined for connection-oriented network communication:  source port, source IP, destination port, destination IP;  newly instantiated sockets listen for messages where all 4 pieces of info match [10]
 
-- **Four-way handshake** : a process used for terminating TCP connections; uses `FIN` flag of TCP headers [12]
+#### **Four-way handshake** : a process used for terminating TCP connections; uses `FIN` flag of TCP headers [12]
 
-- **GET** (HTTP request) : used to retrieve a resource (most links are GETs); the response can be anything, but if it's HTML and that HTML references other resources, a browser will automatically request those referenced resources, a pure HTTP tool (like `curl`) will not [20]
+#### **GET**
+- (HTTP request) : used to retrieve a resource (most links are GETs); the response can be anything, but if it's HTML and that HTML references other resources, a browser will automatically request those referenced resources, a pure HTTP tool (like `curl`) will not [20]
 
-- **Header** (HTTP request or response header) : colon-separated name-value pairs sent in plain text; HTTP headers allow the client and server to send additional info during the HTTP response/request cycle;  [20]
+#### **Header**
+- (HTTP request or response header)
+- colon-separated name-value pairs sent in plain text; HTTP headers allow the client and server to send additional info during the HTTP response/request cycle;  [20]
 
-- **HOL blocking** (Head-of-Line blocking) : a general networking concept where an issue in delivering or processing 1 message in a sequence will 'block' or delay the deilvery of processing of subsequent messages [12]
+#### **HOL blocking**
+- (Head-of-Line blocking)
+- a general networking concept where an issue in delivering or processing 1 message in a sequence will 'block' or delay the deilvery of processing of subsequent messages [12]
 
-- **Hop** : journeys between nodes on the network (i.e., interruptions for transmission, processing, queuing) [2]
+#### **Hop**
+- journeys between nodes on the network (i.e., interruptions for transmission, processing, queuing) [2]
 
-- **HTML** (Hypertext Markup Language) : the means by whch resources on the web should be uniformly structured; one of the three technologies / concepts upon which the web was based (see also URI, HTTP) [16]
+#### **HTML**
+- (Hypertext Markup Language)
+- the means by whch resources on the web should be uniformly structured; one of the three technologies / concepts upon which the web was based (see also URI, HTTP) [16]
   - e.g., `<a>` with `href` attribute to provide links to other resources
 
-- **HTTP** (Hypertext Transfer Protocol) : a *stateless text-based [32] protocol* for how clients communicate with servers [24]; the set of rules which provide uniformity to the way resources on the web are transferred between applications (a *request response protocol* between a *server* and a *client* [17]) [16]
+#### **HTTP**
+- (Hypertext Transfer Protocol)
+- a *stateless text-based [32] protocol* for how clients communicate with servers [24]; the set of rules which provide uniformity to the way resources on the web are transferred between applications (a *request response protocol* between a *server* and a *client* [17]) [16]
   - a single HTTP message exchange consists of a request and a response between a client and a server [27]
     - client sends the request, server sends the response
   - serves as a link between applications (a message format) and the transfer of hypertext documents [17]
@@ -105,7 +135,8 @@
   - in HTTP/1.1 the end of headers is indicated by an empty line [32]
   - the `Content-Length` header indicates the size of the body (if not present, then the browser will keep trying to load content) [32, personal experiments]
 
-- **HTTP request** : can be Get or Post (see also GET and POST) [20]
+#### **HTTP request**
+- can be Get or Post (see also GET and POST) [20]
   - key components: [20]
     - request line : made up of method and peth [26 q1]
         - HTTP method (i.e., GET vs POST) * required [26 q1]
@@ -119,27 +150,36 @@
     - e.g., submit form info
   - Webservers may not support HTTP 0.9, requests may need to be submitted in certain ways (e.g., `GET / HTTP/1.1` and with `Host: launchschool.com` header included to meet HTTP 1.1 specifications) [30]
 
-- **HTTP response** : the raw data returned by a server to an HTTP request [21]
+#### **HTTP response**
+- the raw data returned by a server to an HTTP request [21]
   - key components of a response: [21]
     - status line : comprised of a code (e.g., 200) (see also Status Code) and short text * required [26 q2]
     - headers (optional [26 q2])
     - message body (contains the raw response data) (optional [26 q2])
 
-- **Hub** : a basic piece of network hardware that replicates a message and forwards it to all of the devices on the network. Devices connected to a hub that receive a message not intended for it (i.e., MAC address is different) will ignore the frame [3]
+#### **Hub**
+- a basic piece of network hardware that replicates a message and forwards it to all of the devices on the network. Devices connected to a hub that receive a message not intended for it (i.e., MAC address is different) will ignore the frame [3]
 
-- **Interframe Gap** : a brief pause in transmission between each Ethernet frame; allows the receiver to prepare to receive the next frame; contributes to Transmission Delay. For 100Mbps Ethernet the gap is 0.96 microseconds. [3]
+#### **Interframe Gap**
+- a brief pause in transmission between each Ethernet frame; allows the receiver to prepare to receive the next frame; contributes to Transmission Delay. For 100Mbps Ethernet the gap is 0.96 microseconds. [3]
 
-- **Internet** : A network of networks;  comprised of *network infrastructure* (physical devices: routers, switches, physical network, cables, etc.) and *protocols* (which allow infrastructure to function) [6]
+#### **Internet**
+- A network of networks;  comprised of *network infrastructure* (physical devices: routers, switches, physical network, cables, etc.) and *protocols* (which allow infrastructure to function) [6]
 
-- **Internet Layer** : Also called Network Layer (OSI model).  Generally uses Internet Protocol (IP) at this layer; primary purpose is to facilitate communication between hosts (e.g., computers) on different networks [5]
+#### **Internet Layer**
+- Also called Network Layer (OSI model).  Generally uses Internet Protocol (IP) at this layer; primary purpose is to facilitate communication between hosts (e.g., computers) on different networks [5]
 
-- **IP** : Internet Protocol [1]; IPv4 and IPv6 are currently in use; primary functions are: routing data between one device and another (i.e., between hosts) [10] across networks via IP addressing, encapsulation of data into packets [5]; the predominant protocol for *inter-network communication* [6]  (see also Packet)
+#### **IP**
+- Internet Protocol [1]; IPv4 and IPv6 are currently in use; primary functions are: routing data between one device and another (i.e., between hosts) [10] across networks via IP addressing, encapsulation of data into packets [5]; the predominant protocol for *inter-network communication* [6]  (see also Packet)
 
-- **IP Address** : logical address (unlike MAC addresses) - can be assigned as required to devices as they join a network;  must be assigned within  a range of addresses available to the LAN they join.[5]
+#### **IP Address**
+- logical address (unlike MAC addresses) - can be assigned as required to devices as they join a network;  must be assigned within  a range of addresses available to the LAN they join.[5]
   - IPv4 address: 32-bit length; set of 4 numbers of 8 bits each; decimal numbers between `0` and `255` (e.g., `109.156.106.57`); maximum possible unique addresses is ~4.3 billion [5]
   - IPv6 address: 128-bit length; 8 x 16 bit blocks (e.g., 8 sets of hexadecimal characters); max possible addresses is 340 undecillion [5] The first 4 sets are used to locate a specific network, the last 4 sets to identify a particular interface or device within that network [9 q9]
 
-- **Internet Protocol Suite** : (also called TCP/IP model or DoD model) a framework for organizing the set of communication protocols used in the internet [8]
+#### **Internet Protocol Suite**
+- (also called TCP/IP model or DoD model)
+- a framework for organizing the set of communication protocols used in the internet [8]
   - Layers include [corresponding PDU name]: [8]
     - Application
     - Transport [segment (TCP) or datagram (UDP)]
@@ -149,9 +189,12 @@
   - for reliable data transmission, a system of rules must be implemented to enable it (e.g, TCP) [13]
 
 
-- **LAN** (Local Area Network) : multiple devices (computers) connected via a network bridging device (like a hub, or more likely a switch).  If connected wirelessly, would be known as WLAN (Wireless LAN) [4]
+#### **LAN**
+- (Local Area Network)
+- multiple devices (computers) connected via a network bridging device (like a hub, or more likely a switch).  If connected wirelessly, would be known as WLAN (Wireless LAN) [4]
 
-- **Latency** : a measure of the *time* (or delay [6]) it takes for data to get from 1 point in a network to another [2]
+#### **Latency**
+- a measure of the *time* (or delay [6]) it takes for data to get from 1 point in a network to another [2]
   - consists of:
     - **propogation delay** : the time it takes for a message to travel from sender to receiver; ratio between distance and speed [2]
     - **transmission delay** : the time it takes to push data onto each "link" in it's journey from 1 point to another (e.g., between switches, routers, other network devices) [2]
@@ -159,31 +202,42 @@
     - **queuing delay** : (also buffering) the amount of time data waits in a queue to be processed [2]
     - **last-mile latency** : delays which involve getting a network signal from ISP's network to home or office network; as data is directed down the network hierarchy to the correct sub-network there will be more frequent and shorter 'hops' [2]
 
-- **MAC Address** : a (unique) sequence of 6, two-digit hexadecimal numbers (e.g., `00:40:96:9d:68:0a`) assigned to every device with a NIC; used to direct Ethernet frames between network devices in a (W)LAN;  MAC address is "burned in" when manufactured;  in theory, should all be unique (may not be, but rarely causes problems) [3] [6] MAC addresses have a 'flat' structure [9 q7]
+#### **MAC Address**
+- a (unique) sequence of 6, two-digit hexadecimal numbers (e.g., `00:40:96:9d:68:0a`) assigned to every device with a NIC; used to direct Ethernet frames between network devices in a (W)LAN;  MAC address is "burned in" when manufactured;  in theory, should all be unique (may not be, but rarely causes problems) [3] [6] MAC addresses have a 'flat' structure [9 q7]
 
-- **Multiplexing** : transmitting multiple signals over a single channel;  opposite:  **demultiplexing** [10]
+#### **Multiplexing**
+- transmitting multiple signals over a single channel;  opposite:  **demultiplexing** [10]
   - multiplexing is enabled through use of network ports [13]
 
 
 ### N-Z
 
-- **Network** : 1 or more computers connected in such a way that they can communicate or exchange data [4]
+#### **Network**
+- 1 or more computers connected in such a way that they can communicate or exchange data [4]
 
-- **Network address** : the IP address at the START of the range assigned to a single local network (see also Broadcast Address) [5]
+#### **Network address**
+- the IP address at the START of the range assigned to a single local network (see also Broadcast Address) [5]
 
-- **Network congestion** : when there is more data being transmitted on a network than there is network capacity to transmit the data [12]
+#### **Network congestion**
+- when there is more data being transmitted on a network than there is network capacity to transmit the data [12]
   - If there is congestion, excess data is lost [12]
 
-- **Network edge** : the 'entry point' into a network like a home or corporate LAN [2]
+#### **Network edge**
+- the 'entry point' into a network like a home or corporate LAN [2]
 
-- **NIC** (Network Interface Card) : any network-enabled device [3]
+#### **NIC**
+- (Network Interface Card)
+- any network-enabled device [3]
 
-- **Origin** : a combination of *scheme*, *host*, and *port* [23]
+#### **Origin**
+- a combination of *scheme*, *host*, and *port* [23]
   - scheme:  e.g., `http` vs `https`
   - host: `mysite.com` vs `anothersite.com`
   - port: `http://mysite.com` (port 80 by default) vs `http://mysite.com:4000`
 
-- **OSI model** (Open Systems Interconnection model): a conceptual model for general computer network communication [8] (see also Internet Protocol Suite)
+#### **OSI model**
+- (Open Systems Interconnection model)
+- a conceptual model for general computer network communication [8] (see also Internet Protocol Suite)
   - Layers include: [8]
     - Application
     - Presentation
@@ -193,22 +247,29 @@
     - Data Link
     - Physical
 
-- **Packet** : a PDU within the IP Protocol;  has a header and a data payload;  data payload is generally a TCP segment or UDP datagram [5]
+#### **Packet**
+- a PDU within the IP Protocol;  has a header and a data payload;  data payload is generally a TCP segment or UDP datagram [5]
 
-- **Packet sniffing** : Reading HTTP request/responses being sent back and forth between a client and server; finding a session id would alow someone to pose as your client and be automatically logged in without needing your username or pw [23]
+#### **Packet sniffing**
+- Reading HTTP request/responses being sent back and forth between a client and server; finding a session id would alow someone to pose as your client and be automatically logged in without needing your username or pw [23]
 
-- **PDU** : Protocol Data Units [1]
+#### **PDU**
+- Protocol Data Units [1]
   - an amount or block of data transferred over a network
   - may have diffrent names within different protocols or protocol layers
   - consists of a header, data payload, trailer (or footer)
   - e.g., Ethernet Frames are a PDU that encapsulate data from the Internet/Network layer above [3]
 
-- **Physical network** : the tangible infrastructure that transmits electrical signals, light, radio waves which carry network communications [6]
+#### **Physical network**
+- the tangible infrastructure that transmits electrical signals, light, radio waves which carry network communications [6]
 
-- **Pipelining** : similar to a Stop-and-Wait protocol, but the sender continuously sends messages in a "window" (maximum number of messages in the pipeline at any 1 time) without waiting for the acknowledgement.  If there is a time-out before an acknowledgement is received, that message will be re-sent, etc as per the Stop-and-Wait protocol [11]
+#### **Pipelining**
+- similar to a Stop-and-Wait protocol, but the sender continuously sends messages in a "window" (maximum number of messages in the pipeline at any 1 time) without waiting for the acknowledgement.  If there is a time-out before an acknowledgement is received, that message will be re-sent, etc as per the Stop-and-Wait protocol [11]
   - specific implementations are "Go-back-N" and "Selective Repeat" [11]
 
-- **Port** (network port): an identifer for a specific process running on a host (will be between 0 - 65,535, some numbers are reserved) [10]
+#### **Port**
+- (network port)
+- an identifer for a specific process running on a host (will be between 0 - 65,535, some numbers are reserved) [10]
   - 0 - 1023 : assigned to processes that provide commonly used network services
       - HTTP is port 80 (unencrypted) or port 443 (encrypted)
       - FTP is port 20
@@ -216,13 +277,19 @@
   - 1024 - 49,151 : registered ports; assigned as requested by private entities; may also be *ephemeral* (temporary) ports assigned by the operating system
   - source and destination ports are included in PDU for transport layer (exact structure varies based on specific transport protocol used) [10]
 
-- **POST** (HTTP request) : an HTTP request that allows you to send or submit data to the server; allows sending of much larger and sensitive data to the server (such as passwords, images, videos, etc.) [20]
+#### **POST**
+- (HTTP request)
+- an HTTP request that allows you to send or submit data to the server; allows sending of much larger and sensitive data to the server (such as passwords, images, videos, etc.) [20]
   - data is sent as part of the HTTP *body*; body is optional (can be blank) [20]
 
-- **Protocol** : (network protocol) a system of rules governing the exchange or transission of data; various protocols have various functions (corresponding to the various 'layers' of the network) [6]
+#### **Protocol**
+- (network protocol)
+- a system of rules governing the exchange or transission of data; various protocols have various functions (corresponding to the various 'layers' of the network) [6]
   - there are many different protocols to address different aspects of network communication OR the same aspect, but a specific use case [7]
 
-- **Query string** (HTTP) : used to send data to the server; used *only* in HTTP GET requests [18]
+#### **Query string**
+- (HTTP)
+- used to send data to the server; used *only* in HTTP GET requests [18]
   - components include: [18]
     - `?` : reserved character to mark the start of the query string
     - e.g. `search=ruby` : a parameter name/value pair
@@ -233,9 +300,12 @@
     - all name/value pairs are visible in the URL (can't send sensitive info)
     - space and special characters can't be used (need to be URL encoded)
 
-- **Round-trip Time (RTT)** : a latency calculation often used in networking - the length of time for a signal to be sent, added to the length of time for an acknowledgement or response to be received [2]
+#### **Round-trip Time**
+- (RTT)
+- a latency calculation often used in networking - the length of time for a signal to be sent, added to the length of time for an acknowledgement or response to be received [2]
 
-- **Router** : a network device;  responsible for a network 'segment' (i.e., a range of IP addresses for which the router keeps a record and can forward packets to);  routers also keep a routing table - record of other routers on the network and their network addresses [5]
+#### **Router**
+- a network device;  responsible for a network 'segment' (i.e., a range of IP addresses for which the router keeps a record and can forward packets to);  routers also keep a routing table - record of other routers on the network and their network addresses [5]
 
 #### **Same-origin policy**
 - a policy that permits unrestricted interaction between resources originating from the same origin, but restricts certain interactions between resources originating from different origins [23] (see also Origin)
