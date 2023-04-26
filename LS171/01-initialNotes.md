@@ -74,10 +74,10 @@
   - the client-side cookie is compared with server-side data on every request to identify the current session
 
 #### **CORS**
-- (Cross-Origin Resource Sharing) : a mechanism that allows interactions that would normally be restricted cross-origin to take place; adds new HTTP headers that lets servers serve resources cross-origin to specified origins [23]
+- (Cross-Origin Resource Sharing) : a mechanism that allows interactions that would normally be restricted cross-origin to take place; adds new HTTP headers that lets servers serve resources cross-origin to specified origins [^23]
 
 #### **CRC**
-- (Cyclic Redundancy Check) : see FCS below [^3]
+- (Cyclic Redundancy Check) : see [FCS](#fcs) [^3]
 
 #### **Bandwidth bottleneck**
 - a point at which bandwidth changes from relatively high to relatively low [^2]
@@ -239,7 +239,7 @@
 - any network-enabled device [^3]
 
 #### **Origin**
-- a combination of *scheme*, *host*, and *port* [23]
+- a combination of *scheme*, *host*, and *port* [^23]
   - scheme:  e.g., `http` vs `https`
   - host: `mysite.com` vs `anothersite.com`
   - port: `http://mysite.com` (port 80 by default) vs `http://mysite.com:4000`
@@ -260,7 +260,7 @@
 - a PDU within the IP Protocol;  has a header and a data payload;  data payload is generally a TCP segment or UDP datagram [^5]
 
 #### **Packet sniffing**
-- Reading HTTP request/responses being sent back and forth between a client and server; finding a session id would alow someone to pose as your client and be automatically logged in without needing your username or pw [23]
+- Reading HTTP request/responses being sent back and forth between a client and server; finding a session id would alow someone to pose as your client and be automatically logged in without needing your username or pw [^23]
 
 #### **PDU**
 - Protocol Data Units [^1]
@@ -317,7 +317,7 @@
 - a network device;  responsible for a network 'segment' (i.e., a range of IP addresses for which the router keeps a record and can forward packets to);  routers also keep a routing table - record of other routers on the network and their network addresses [^5]
 
 #### **Same-origin policy**
-- a policy that permits unrestricted interaction between resources originating from the same origin, but restricts certain interactions between resources originating from different origins [23] (see also [Origin](#origin))
+- a policy that permits unrestricted interaction between resources originating from the same origin, but restricts certain interactions between resources originating from different origins [^23] (see also [Origin](#origin))
   - typically allowed:  requests for linking, redirects, form submissions, embedding of resources from other origins (e.g., scripts, css stylesheets, images, media, fonts, iframes)
   - typically restricted: cross-origin requests (where resources are being accessed programmatically using APIs such as `XMLHttpRequest` or `fetch`)
 
@@ -328,11 +328,11 @@
 
 #### **Secure HTTP**
 - (HTTPS)
-- the use of TLS to encrypt the requests/responses associated with HTTP (i.e., not send them as strings, which are susceptible to *packet sniffing*) [23]
+- the use of TLS to encrypt the requests/responses associated with HTTP (i.e., not send them as strings, which are susceptible to *packet sniffing*) [^23]
 
 #### **Session Hijacking**
-- when a hacker obtains the session id and can access the web application as if they are an authenticated user; does not require the username/pw [23]
-  - countermeasures: [23]
+- when a hacker obtains the session id and can access the web application as if they are an authenticated user; does not require the username/pw [^23]
+  - countermeasures: [^23]
     - reset the session - render the old session id invalid and create a new one
     - setting expiration times on sessions (limit time a hacker has to use the session id)
     - use HTTPS
@@ -511,40 +511,42 @@
 |Advantages | reliable | - speed <br> - flexibility |
 |Disadvantages | - high latency (overhead) <br> - HOL blocking| - must implement features (e.g., congestion avoidance) <br> - less reliable |
 
-## References
-[^1]: https://launchschool.com/lessons/4af196b9/assignments/21ef33af
-[^2]: https://launchschool.com/lessons/4af196b9/assignments/097d7577
-[^3]: https://launchschool.com/lessons/4af196b9/assignments/81df3782
-[^4]: https://launchschool.com/lessons/4af196b9/assignments/268243e5
-[^5]: https://launchschool.com/lessons/4af196b9/assignments/b222ecfb
-[^6]: https://launchschool.com/lessons/4af196b9/assignments/6b7df8fb
-[^7]: https://launchschool.com/lessons/4af196b9/assignments/a53e65ce
-[^8]: https://launchschool.com/lessons/4af196b9/assignments/21ef33af
-[^9]: https://launchschool.com/quizzes/18c3a173
-[^10]: https://launchschool.com/lessons/2a6c7439/assignments/41113e98
-[^11]: https://launchschool.com/lessons/2a6c7439/assignments/89636ed4
-[^12]: https://launchschool.com/lessons/2a6c7439/assignments/d09ddd52
-[^13]: https://launchschool.com/lessons/2a6c7439/assignments/4ab0993c
-[^14]: https://launchschool.com/quizzes/6b67f575
-[^15]: https://launchschool.com/lessons/cc97deb5/assignments/c604eb60
-[^16]: https://launchschool.com/lessons/cc97deb5/assignments/e3d85587
-[^17]: https://launchschool.com/books/http/read/background
-[^18]: https://launchschool.com/books/http/read/what_is_a_url
-[^19]: https://danielmiessler.com/study/difference-between-uri-url/
-[^20]: https://launchschool.com/books/http/read/making_requests
-[^21]: https://launchschool.com/books/http/read/processing_responses
-[^22]: https://launchschool.com/books/http/read/statefulness
-[^23]: https://launchschool.com/books/http/read/security
-[^24]: https://launchschool.com/lessons/cc97deb5/assignments/586769d9
-[^25]: https://launchschool.com/lessons/cc97deb5/assignments/a28ccb6f
-[^26]: https://launchschool.com/lessons/cc97deb5/assignments/83ae67aa
-[^27]: https://launchschool.com/lessons/cc97deb5/assignments/9f4e349a
-[^28]: https://launchschool.com/quizzes/5e0dcf86
-[^29]: https://launchschool.com/lessons/0e67d1ce/assignments/20d4226d
-[^30]: https://launchschool.com/lessons/0e67d1ce/assignments/ea90d10b
-[^31]: https://launchschool.com/lessons/0e67d1ce/assignments/a0f37a79
-[^32]: https://launchschool.com/lessons/0e67d1ce/assignments/dcae7f89
-
 
 ## Other articles
 - https://www.linkedin.com/pulse/how-internet-works-introduction-overview-robert-rodes/?lipi=urn%3Ali%3Apage%3Ad_flagship3_publishing_published%3BM4DGpPvCQu%2B9IEJm2vTbKA%3D%3D
+
+
+## References
+[^1]: [https://launchschool.com/lessons/4af196b9/assignments/21ef33af](https://launchschool.com/lessons/4af196b9/assignments/21ef33af)
+[^2]: [https://launchschool.com/lessons/4af196b9/assignments/097d7577](https://launchschool.com/lessons/4af196b9/assignments/097d7577)
+[^3]: [https://launchschool.com/lessons/4af196b9/assignments/81df3782](https://launchschool.com/lessons/4af196b9/assignments/81df3782)
+[^4]: [https://launchschool.com/lessons/4af196b9/assignments/268243e5](https://launchschool.com/lessons/4af196b9/assignments/268243e5)
+[^5]: [https://launchschool.com/lessons/4af196b9/assignments/b222ecfb](https://launchschool.com/lessons/4af196b9/assignments/b222ecfb)
+[^6]: [https://launchschool.com/lessons/4af196b9/assignments/6b7df8fb](https://launchschool.com/lessons/4af196b9/assignments/6b7df8fb)
+[^7]: [https://launchschool.com/lessons/4af196b9/assignments/a53e65ce](https://launchschool.com/lessons/4af196b9/assignments/a53e65ce)
+[^8]: [https://launchschool.com/lessons/4af196b9/assignments/21ef33af](https://launchschool.com/lessons/4af196b9/assignments/21ef33af)
+[^9]: [https://launchschool.com/quizzes/18c3a173](https://launchschool.com/quizzes/18c3a173)
+[^10]: [https://launchschool.com/lessons/2a6c7439/assignments/41113e98](https://launchschool.com/lessons/2a6c7439/assignments/41113e98)
+[^11]: [https://launchschool.com/lessons/2a6c7439/assignments/89636ed4](https://launchschool.com/lessons/2a6c7439/assignments/89636ed4)
+[^12]: [https://launchschool.com/lessons/2a6c7439/assignments/d09ddd52](https://launchschool.com/lessons/2a6c7439/assignments/d09ddd52)
+[^13]: [https://launchschool.com/lessons/2a6c7439/assignments/4ab0993c](https://launchschool.com/lessons/2a6c7439/assignments/4ab0993c)
+[^14]: [https://launchschool.com/quizzes/6b67f575](https://launchschool.com/quizzes/6b67f575)
+[^15]: [https://launchschool.com/lessons/cc97deb5/assignments/c604eb60](https://launchschool.com/lessons/cc97deb5/assignments/c604eb60)
+[^16]: [https://launchschool.com/lessons/cc97deb5/assignments/e3d85587](https://launchschool.com/lessons/cc97deb5/assignments/e3d85587)
+[^17]: [https://launchschool.com/books/http/read/background](https://launchschool.com/books/http/read/background)
+[^18]: [https://launchschool.com/books/http/read/what_is_a_url](https://launchschool.com/books/http/read/what_is_a_url)
+[^19]: [https://danielmiessler.com/study/difference-between-uri-url/](https://danielmiessler.com/study/difference-between-uri-url/)
+[^20]: [https://launchschool.com/books/http/read/making_requests](https://launchschool.com/books/http/read/making_requests)
+[^21]: [https://launchschool.com/books/http/read/processing_responses](https://launchschool.com/books/http/read/processing_responses)
+[^22]: [https://launchschool.com/books/http/read/statefulness](https://launchschool.com/books/http/read/statefulness)
+[^23]: [https://launchschool.com/books/http/read/security](https://launchschool.com/books/http/read/security)
+[^24]: [https://launchschool.com/lessons/cc97deb5/assignments/586769d9](https://launchschool.com/lessons/cc97deb5/assignments/586769d9)
+[^25]: [https://launchschool.com/lessons/cc97deb5/assignments/a28ccb6f](https://launchschool.com/lessons/cc97deb5/assignments/a28ccb6f)
+[^26]: [https://launchschool.com/lessons/cc97deb5/assignments/83ae67aa](https://launchschool.com/lessons/cc97deb5/assignments/83ae67aa)
+[^27]: [https://launchschool.com/lessons/cc97deb5/assignments/9f4e349a](https://launchschool.com/lessons/cc97deb5/assignments/9f4e349a)
+[^28]: [https://launchschool.com/quizzes/5e0dcf86](https://launchschool.com/quizzes/5e0dcf86)
+[^29]: [https://launchschool.com/lessons/0e67d1ce/assignments/20d4226d](https://launchschool.com/lessons/0e67d1ce/assignments/20d4226d)
+[^30]: [https://launchschool.com/lessons/0e67d1ce/assignments/ea90d10b](https://launchschool.com/lessons/0e67d1ce/assignments/ea90d10b)
+[^31]: [https://launchschool.com/lessons/0e67d1ce/assignments/a0f37a79](https://launchschool.com/lessons/0e67d1ce/assignments/a0f37a79)
+[^32]: [https://launchschool.com/lessons/0e67d1ce/assignments/dcae7f89](https://launchschool.com/lessons/0e67d1ce/assignments/dcae7f89)
+
