@@ -17,13 +17,13 @@
   - protocols in this layer are the ones which actual applications most directly interact with; provides a syntax for applications to interact [15]
 
 #### **Application server**
-- typically where application or busines logic resides and where more complicated requests are handled; server-side code lives here when deployed [24] (see also Web Server, Data Store)
+- typically where application or busines logic resides and where more complicated requests are handled; server-side code lives here when deployed [24] (see also [Web Server](#web-server), [Data Store](#data-store))
 
 #### **Bandwidth**
 - the *amount* of data that can be sent in a particular unit of time (typically a second) [2]; a measure of *capacity* [6]
 
 #### **Broadcast address**
-- the IP address at the END of the range assigned to a single local network (see also Network Address) [5]
+- the IP address at the END of the range assigned to a single local network (see also [Network Address](#network-address)) [5]
 
 #### **Browser**
 - (web browser)
@@ -79,31 +79,40 @@
 #### **CRC**
 - (Cyclic Redundancy Check) : see FCS below [3]
 
-#### **Bandwidth bottleneck** : a point at which bandwidth changes from relatively high to relatively low [2]
+#### **Bandwidth bottleneck**
+- a point at which bandwidth changes from relatively high to relatively low [2]
 
-#### **Data store** : has the ability to save persistent data in some format for later retrieval and processing (e.g., relational database, simple files, key/value stores, document stores, etc.);  typically consulted by the Application Server [24] (see also Application Server)
+#### **Data store**
+- has the ability to save persistent data in some format for later retrieval and processing (e.g., relational database, simple files, key/value stores, document stores, etc.);  typically consulted by the Application Server [24] (see also [Application Server](#application-server))
 
 #### **DNS**
 - (Domain Name System) : a distributed database which maps domain names (e.g., `www.google.com`) to an IP address (e.g., `197.251.230.45`) [17] [27]
   - DNS databases are stored on a hierarchy of world-wide DNS servers - no one server contains the complete database; if 1 server does not contain a requested domain name, that server routes the request to another DNS server up the hierarchy [17]
 
-#### **Encapsulation** : how protocols at different network layers can work together;  implemented through PDUs (i.e., the info at a higher layer is part of the data payload of a lower layer) [6]
+#### **Encapsulation**
+- how protocols at different network layers can work together;  implemented through PDUs (i.e., the info at a higher layer is part of the data payload of a lower layer) [6]
 
-#### **Frame** : an Ethernet PDU [6] i.e., structured data.  Key components to remember are Source and Destination MAC address and Data Payload. [3] Exact headers used in an Ethernet frame will vary according to different Ethernet standards [9 q6]
+#### **Frame**
+- an Ethernet PDU [6] i.e., structured data.  Key components to remember are Source and Destination MAC address and Data Payload. [3] Exact headers used in an Ethernet frame will vary according to different Ethernet standards [9 q6]
 
 #### **FCS**
-- (Frame Check Sequence) : the final 4 bytes (32 bits) of an Ethernet frame used for a CRC (cyclic redundancy check).  The receiving device generates it's own FCS from frame data then compares it to the FCS in the sent data. If the 2 don't match, the frame is dropped.  Ethernet does not implement retransmission functionality - this is left to higher level protocols. [3]
+- (Frame Check Sequence)
+- the final 4 bytes (32 bits) of an Ethernet frame used for a CRC (cyclic redundancy check).  The receiving device generates it's own FCS from frame data then compares it to the FCS in the sent data. If the 2 don't match, the frame is dropped.  Ethernet does not implement retransmission functionality - this is left to higher level protocols. [3]
 
-#### **Flow Control** : a mechanism to prevent the sender from overwhelming the receiver with too much data at once [12]
+#### **Flow Control**
+- a mechanism to prevent the sender from overwhelming the receiver with too much data at once [12]
   - in TCP: data awaiting processing is stored in a buffer
   - the amount of data each side can accept is defined in the WINDOW field of the TCP header; this is a dynamic field (i.e., will change depending on how full the buffer is) [12]
 
-#### **Four-tuple** : Four pieces of information defined for connection-oriented network communication:  source port, source IP, destination port, destination IP;  newly instantiated sockets listen for messages where all 4 pieces of info match [10]
+#### **Four-tuple**
+- Four pieces of information defined for connection-oriented network communication:  source port, source IP, destination port, destination IP;  newly instantiated sockets listen for messages where all 4 pieces of info match [10]
 
-#### **Four-way handshake** : a process used for terminating TCP connections; uses `FIN` flag of TCP headers [12]
+#### **Four-way handshake**
+- a process used for terminating TCP connections; uses `FIN` flag of TCP headers [12]
 
 #### **GET**
-- (HTTP request) : used to retrieve a resource (most links are GETs); the response can be anything, but if it's HTML and that HTML references other resources, a browser will automatically request those referenced resources, a pure HTTP tool (like `curl`) will not [20]
+- (HTTP request)
+- used to retrieve a resource (most links are GETs); the response can be anything, but if it's HTML and that HTML references other resources, a browser will automatically request those referenced resources, a pure HTTP tool (like `curl`) will not [20]
 
 #### **Header**
 - (HTTP request or response header)
@@ -118,7 +127,7 @@
 
 #### **HTML**
 - (Hypertext Markup Language)
-- the means by whch resources on the web should be uniformly structured; one of the three technologies / concepts upon which the web was based (see also URI, HTTP) [16]
+- the means by whch resources on the web should be uniformly structured; one of the three technologies / concepts upon which the web was based (see also [URI](#uri), [HTTP](#http)) [16]
   - e.g., `<a>` with `href` attribute to provide links to other resources
 
 #### **HTTP**
@@ -129,14 +138,14 @@
   - serves as a link between applications (a message format) and the transfer of hypertext documents [17]
   - is an inherently *stateless* protocol - makes it hard to build user experiences that are stateful (e.g., know where a request came from, differentiating users, staying "logged in", etc.) [17]
   - is inherently *insecure*, but can be made more secure through use of:
-    - https (see also Secure HTTP)
-    - enforcing same-origin policy (see also Same-origin policy)
-    - preventing session hijacking, and cross-site scripting (see also Session Hijacking, XSS) [XSS](#xss-cross-site-scripting)
+    - https (see also [Secure HTTP](#secure-http))
+    - enforcing same-origin policy (see also [Same-origin policy](#same-origin-policy))
+    - preventing session hijacking, and cross-site scripting (see also [Session Hijacking](#session-hijacking), [XSS](#xss-cross-site-scripting))
   - in HTTP/1.1 the end of headers is indicated by an empty line [32]
   - the `Content-Length` header indicates the size of the body (if not present, then the browser will keep trying to load content) [32, personal experiments]
 
 #### **HTTP request**
-- can be Get or Post (see also GET and POST) [20]
+- can be Get or Post (see also [GET](#get) and [POST](#post)) [20]
   - key components: [20]
     - request line : made up of method and peth [26 q1]
         - HTTP method (i.e., GET vs POST) * required [26 q1]
@@ -153,7 +162,7 @@
 #### **HTTP response**
 - the raw data returned by a server to an HTTP request [21]
   - key components of a response: [21]
-    - status line : comprised of a code (e.g., 200) (see also Status Code) and short text * required [26 q2]
+    - status line : comprised of a code (e.g., 200) (see also [Status Code](#status-code)) and short text * required [26 q2]
     - headers (optional [26 q2])
     - message body (contains the raw response data) (optional [26 q2])
 
@@ -170,7 +179,7 @@
 - Also called Network Layer (OSI model).  Generally uses Internet Protocol (IP) at this layer; primary purpose is to facilitate communication between hosts (e.g., computers) on different networks [5]
 
 #### **IP**
-- Internet Protocol [1]; IPv4 and IPv6 are currently in use; primary functions are: routing data between one device and another (i.e., between hosts) [10] across networks via IP addressing, encapsulation of data into packets [5]; the predominant protocol for *inter-network communication* [6]  (see also Packet)
+- Internet Protocol [1]; IPv4 and IPv6 are currently in use; primary functions are: routing data between one device and another (i.e., between hosts) [10] across networks via IP addressing, encapsulation of data into packets [5]; the predominant protocol for *inter-network communication* [6]  (see also [Packet](#packet))
 
 #### **IP Address**
 - logical address (unlike MAC addresses) - can be assigned as required to devices as they join a network;  must be assigned within  a range of addresses available to the LAN they join.[5]
@@ -216,7 +225,7 @@
 - 1 or more computers connected in such a way that they can communicate or exchange data [4]
 
 #### **Network address**
-- the IP address at the START of the range assigned to a single local network (see also Broadcast Address) [5]
+- the IP address at the START of the range assigned to a single local network (see also [Broadcast Address](#broadcast-address)) [5]
 
 #### **Network congestion**
 - when there is more data being transmitted on a network than there is network capacity to transmit the data [12]
@@ -237,7 +246,7 @@
 
 #### **OSI model**
 - (Open Systems Interconnection model)
-- a conceptual model for general computer network communication [8] (see also Internet Protocol Suite)
+- a conceptual model for general computer network communication [8] (see also [Internet Protocol Suite](#internet-protocol-suite))
   - Layers include: [8]
     - Application
     - Presentation
@@ -308,7 +317,7 @@
 - a network device;  responsible for a network 'segment' (i.e., a range of IP addresses for which the router keeps a record and can forward packets to);  routers also keep a routing table - record of other routers on the network and their network addresses [5]
 
 #### **Same-origin policy**
-- a policy that permits unrestricted interaction between resources originating from the same origin, but restricts certain interactions between resources originating from different origins [23] (see also Origin)
+- a policy that permits unrestricted interaction between resources originating from the same origin, but restricts certain interactions between resources originating from different origins [23] (see also [Origin](#origin))
   - typically allowed:  requests for linking, redirects, form submissions, embedding of resources from other origins (e.g., scripts, css stylesheets, images, media, fonts, iframes)
   - typically restricted: cross-origin requests (where resources are being accessed programmatically using APIs such as `XMLHttpRequest` or `fetch`)
 
@@ -346,9 +355,9 @@
 
 #### **Stateful (simulation)**
 - HTTP can simulate statefulness through techniques such as: [27]
-  - using session ids (see also Session Identifier)
-  - using cookies (see also Cookie)
-  - using AJAX (see also AJAX)
+  - using session ids (see also [Session Identifier](#session-identifier))
+  - using cookies (see also [Cookie](#cookie))
+  - using AJAX (see also [AJAX](#ajax))
 
 #### **Stateless (protocol)**
 - a protocol designed such that each request/response pair is completely independent of the previous one [17]
@@ -388,8 +397,8 @@
     - retransmission of lost data
   - also provides data encapsulation and multiplexing (through TCP segments) [12]
   - PDUs are called "Segments" [8] [12]
-  - ==TCP is a connection-oriented protocol==, it requires a connection between application processes established through a ==Three-way Handshake== (see also Three-way Handshake) [12]
-  - Key aspect to know is that when establishing a connection, a sender MUST wait a full RTT (SYN sent and SYN ACK received) before sending data: this is "a lot of overhead" to establish connections; thus important to provide efficiency and reliability for retransmission of data once a connection is established through ==Flow Control and Congestion Avoidance== (see also Flow Control and Congestion Avoidance) [12]
+  - ==TCP is a connection-oriented protocol==, it requires a connection between application processes established through a ==Three-way Handshake== (see also [Three-way Handshake](#three-way-handshake)) [12]
+  - Key aspect to know is that when establishing a connection, a sender MUST wait a full RTT (SYN sent and SYN ACK received) before sending data: this is "a lot of overhead" to establish connections; thus important to provide efficiency and reliability for retransmission of data once a connection is established through ==Flow Control and Congestion Avoidance== (see also [Flow Control](#flow-control) and [Congestion Avoidance](#congestion-avoidance)) [12]
   - there are variations of TCP which use different algorithms or approaches for determining the size of the initial transmission window and how to vary this based on network conditions
   - Disadvantages of TCP: 
     - ==HOL blocking can occur since in-order delivery of Segments is required==;  can lead to increased queuing delays; increases latency [12]
@@ -401,7 +410,7 @@
   - 2. Receiver receives SYN, ==responds with SYN ACK== (acknowledge) Segment
   - 3. Sender receives SYN ACK, responds with ==ACK==
   - 4. Receiver receives ACK;  establishes connection
-  - see also Connection State [12]
+  - see also [Connection State](#connection-state) [12]
 
 #### **TTL**
 - (Time to Live)
@@ -440,7 +449,7 @@
     - if not part of the standard set, might be misinterpreted (e.g., `%`, ` `, `'`, `"`, `#`, `<`, `>`, `[`, `]`, `~`, etc.), or reserved (e.g., `&`, `/`, `?`, `:`, `@`) then it must be encoded
   
 #### **Web server**
-- typically a server that responds to requests for static assets: files, images, css, javascript, etc. - requests that don't require any data processing [24] (see also Application Server)
+- typically a server that responds to requests for static assets: files, images, css, javascript, etc. - requests that don't require any data processing [24] (see also [Application Server](#application-server))
 
 #### **WLAN**
 - (Wireless LAN)
