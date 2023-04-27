@@ -273,6 +273,9 @@
     - **queuing delay** : (also buffering) the amount of time data waits in a queue to be processed [^2]
     - **last-mile latency** : delays which involve getting a network signal from ISP's network to home or office network; as data is directed down the network hierarchy to the correct sub-network there will be more frequent and shorter 'hops' [^2]
 
+#### **Long-polling**
+- where a client issues a request to the server, but the server doesn't return an empty or negative response, but instead holds the request until an update is available and then sends it; enabled through XHR [^39] (see also [XHR](#xhr), [Polling](#polling))
+
 #### **MAC address**
 - (Media Access Control address [^36])
 - a (unique) sequence of 6, two-digit hexadecimal numbers (e.g., `00:40:96:9d:68:0a`) assigned to every device with a NIC; used to direct Ethernet frames between network devices in a (W)LAN;  MAC address is "burned in" when manufactured;  in theory, should all be unique (may not be, but rarely causes problems) [^3] [^6] MAC addresses have a 'flat' structure [^9]q7
@@ -350,6 +353,9 @@
 - similar to a Stop-and-Wait protocol, but the sender continuously sends messages in a "window" (maximum number of messages in the pipeline at any 1 time) without waiting for the acknowledgement.  If there is a time-out before an acknowledgement is received, that message will be re-sent, etc as per the Stop-and-Wait protocol [^11]
   - specific implementations are "Go-back-N" and "Selective Repeat" [^11]
 
+#### **Polling**
+- where a client issues a request to the server at a fixed frequency (e.g., every 60s) to mimic 'real-time' notification activity; enabled through XHR [^39] (see also [XHR](#xhr), [Long-polling](#long-polling))
+
 #### **Port**
 - (network port)
 - an identifer for a specific process running on a host (will be between 0 - 65,535, some numbers are reserved) [^10]
@@ -422,6 +428,15 @@
   - could also be an internet socket (e.g., TCP/IP socket): a mechanism for inter-process communication between networked processes (usually on different machines)
   - **the combo of an IP address and port information**; this enables end-to-end communication between specific applications (often on different machines, but could be a `localhost` and a browser on the same machine) (e.g., `216.3.128.12:8080`) [^10]
   - sockets are implemented by instantiating *socket objects* (often following the Berkeley sockets API model:  `bind()`, `listen()`, `accept()`, `connect()`, etc. Ruby, Python, Node.js use this) [^10]
+
+#### **SSE**
+- (Server-Sent Events)
+- a networking API that enables efficient server-to-client streaming of text-based event data (it does not require the client to request updates after the initial connection request)[^39]
+  - uses a single, long-lived TCP connection (leaves the initial TCP connection open) to push messages to the client once they are available (this connection will only work from server to client)
+  - generally low-latency
+  - only works with a client-server model
+  - does not allow for request streaming (e.g., streaming a large upload to the server)
+  - specifically designed for UTF-8 data, binary streaming is inefficient
 
 #### **Stateful (simulation)**
 - HTTP can simulate statefulness through techniques such as: [^27]
@@ -550,6 +565,14 @@
 #### **Web server**
 - typically a server that responds to requests for static assets: files, images, css, javascript, etc. - requests that don't require any data processing [^24] (see also [Application Server](#application-server))
 
+#### **WebSocket API**
+- an API which creates a bidirectional TCP connection (allows either side to independently send messages to the other without requiring a request)[^39]
+  - can send messages and application code that doesn't require buffering, parsing, reconstructing received data
+  - provides low latency of text and binary application data
+  - good for custom application protocols in the browser
+  - not meant to replace HTTP, XHR, or SSE (see also [HTTP](#http), [XHR](#xhr), [SSE](#sse))
+  - tradeoffs:  will not allow application to leverage browser functions like state management, compression, caching, etc.
+
 #### **WLAN**
 - (Wireless LAN)
 - where devices are connected wirelessly to a central device (wireless hub or switch) [^4]
@@ -560,7 +583,7 @@
 
 #### **XHR**
 - (XMLHttpRequest)
-- [^39]
+- supports AJAX (asynchronous JS) and real-time notification functionality (see also [Polling](#polling), [Long-polling](#long-polling)); doesn't support one-side streaming to the other (see also [SSE](#sse), [Websocket API](#websocket-api)[^39]
 
 #### **XSS** 
 - (Cross-site Scripting)
