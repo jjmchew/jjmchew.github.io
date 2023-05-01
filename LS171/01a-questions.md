@@ -4,3 +4,5 @@
     - If I encrypt using a private key, can I also decrypt with that private key OR do I have to use the public key?
     - If I encrypt using the public key, can I also decrypt with that public key?
       - if so, couldn't I just fake the 'private' key encryption?
+
+    - 

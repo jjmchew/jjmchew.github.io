@@ -131,6 +131,11 @@
 #### **Data store**
 - has the ability to save persistent data in some format for later retrieval and processing (e.g., relational database, simple files, key/value stores, document stores, etc.);  typically consulted by the Application Server [^24] (see also [Application Server](#application-server))
 
+#### **DHT**
+- (Distributed Hash Table)
+- a table of key-value pairs used for P2P networks [^40]
+  - e.g., for file-sharing apps, the key could be a particular filename, value could be id of the network node with the file;  the table is split into parts that logically map to the underlying structure of nodes within the network;  responsibility for maintaining parts of the table is distributed among different nodes
+
 #### **DNS**
 - (Domain Name System) : a distributed database which maps domain names (e.g., `www.google.com`) to an IP address (e.g., `197.251.230.45`) [^17] [^27]
   - DNS databases are stored on a hierarchy of world-wide DNS servers - no one server contains the complete database; if 1 server does not contain a requested domain name, that server routes the request to another DNS server up the hierarchy [^17]
@@ -148,6 +153,10 @@
 #### **FCS**
 - (Frame Check Sequence)
 - the final 4 bytes (32 bits) of an Ethernet frame used for a CRC (cyclic redundancy check).  The receiving device generates it's own FCS from frame data then compares it to the FCS in the sent data. If the 2 don't match, the frame is dropped.  Ethernet does not implement retransmission functionality - this is left to higher level protocols. [^3]
+
+#### **Flooding**
+- a P2P approach where messages sent to the network are forwarded by each node until a specified number of network 'hops' have elapsed (see also [P2P](#p2p)) [^40]
+  - this approach was popular in early file-sharing systems (e.g., "who has this file?"); any node which had the file could respond and a connection to that node could be established to retrieve the file
 
 #### **Flow Control**
 - a mechanism to prevent the sender from overwhelming the receiver with too much data at once [^12]
@@ -332,6 +341,18 @@
     - Network
     - Data Link
     - Physical
+
+#### **P2P**
+- (Peer-to-peer; network or model)
+- a network communication model where each computer within the network (a "node") is capable of performing the functions that both a client AND a server would in the "client-server" network model [^40]
+  - networks typically use the same underlying infrastructure as client-server models (e.g., TCP or UDP at Transport layer); but devices will interact with each other differently
+  - Benefits:
+    - no central server : network can be more resilient (each node can perform the same functionality, e.g., file-sharing apps); can reduce latency (e.g., for voice/video calling)
+    - can be good for real-time communications (see also [WebRTC]())
+  - Trade-offs:
+    - Added complexity:  connection negotiation and establishment, security, performance, scaling
+    - Discovery (finding other notes on the network) can be difficult (i.e., no fixed availability for IP address / DNS / etc.); notes may change IP address or be offline at certain times
+      - Can mitigate through *flooding* or use *Distributed Hash Table* (DHT); can also use a hybrid model (central server for node discovery, then P2P to connect to nodes) (see also [flooding](#flooding), [DHT](#dht))
 
 #### **Packet**
 - a PDU within the IP Protocol;  has a header and a data payload;  data payload is generally a TCP segment or UDP datagram [^5]
@@ -561,7 +582,16 @@
 - a technique where certain characters in an URL are replaced with an ASCII code [^27]
   - in URLs can only use standard 128-character ASCII set (single-byte UTF-8 codes) [^18]
     - if not part of the standard set, might be misinterpreted (e.g., `%`, ` `, `'`, `"`, `#`, `<`, `>`, `[`, `]`, `~`, etc.), or reserved (e.g., `&`, `/`, `?`, `:`, `@`) then it must be encoded
-  
+
+#### **WebRTC**
+- (Web Real-time Communications)
+- a collection of standards, protocols, and APIs available in most modern web browsers to facilitate the creation of real-time communication functionality within the browser (allows browser to act as a node within a P2P communication network) [^40]
+  - uses UDP at the Transport layer
+  - adds protocols to improve reliability, security, congestion and flow control
+    - session establishment and maintenance (STUN, TURN, ICE)
+    - security (DTLS)
+    - reliability (SRTP, SCTP)
+
 #### **Web server**
 - typically a server that responds to requests for static assets: files, images, css, javascript, etc. - requests that don't require any data processing [^24] (see also [Application Server](#application-server))
 
@@ -620,10 +650,10 @@
 
 | OSI Layer | IPS Layer   | Protocol   | PDU                 | Scope             |
 |-----------|-------------|------------|---------------------|-------------------|
-| Application <br> Presentation <br> Session | Application | Many (e.g., HTTP, <br>TLS [at session level] ) | |
-| Transport | Transport   | TCP or UDP | Segment or Datagram | app to app        |
-| Network | Internet    | IP         | Packet              | host to host      |
-| Data Link <br> Physical | Link | Ethernet | Frame | router to device |
+| Application <br> Presentation <br> Session | Application | Many (e.g., HTTP, <br>TLS [at session level] ) | "message" or "data" [^41] | process to process[^41] |
+| Transport | Transport   | TCP or UDP | Segment or Datagram | app to app<br>(port to port; socket to socket[^41])        |
+| Network | Internet    | IP         | Packet              | host to host<br>(network to network[^41]) |
+| Data Link <br> Physical | Link | Ethernet | Frame | router to device <br>(node to node[^41]) |
 
 #### TCP vs UDP
 
@@ -641,6 +671,9 @@
 
 ## Other articles
 - https://www.linkedin.com/pulse/how-internet-works-introduction-overview-robert-rodes/?lipi=urn%3Ali%3Apage%3Ad_flagship3_publishing_published%3BM4DGpPvCQu%2B9IEJm2vTbKA%3D%3D
+- https://vahid.blog/post/2020-12-21-how-the-internet-works-part-ii-layers/
+- https://excalidraw.com/#room=d8204afd60d7af214753,OTrgFPuc_gNZNkIzRKHbvg
+- Description of public-private key : https://layr-team.github.io/layr-project/
 
 
 ## References
@@ -683,3 +716,5 @@
 [^37]: [https://launchschool.com/lessons/74f1325b/assignments/238ff36f](https://launchschool.com/lessons/74f1325b/assignments/238ff36f)
 [^38]: [https://launchschool.com/lessons/be1304f3/assignments/98ecce1c](https://launchschool.com/lessons/be1304f3/assignments/98ecce1c)
 [^39]: [https://launchschool.com/lessons/be1304f3/assignments/2b0cef9f](https://launchschool.com/lessons/be1304f3/assignments/2b0cef9f)
+[^40]: [https://launchschool.com/lessons/be1304f3/assignments/5a9cbadb](https://launchschool.com/lessons/be1304f3/assignments/5a9cbadb)
+[^41]: [https://vahid.blog/post/2020-12-21-how-the-internet-works-part-ii-layers/](https://vahid.blog/post/2020-12-21-how-the-internet-works-part-ii-layers/)
