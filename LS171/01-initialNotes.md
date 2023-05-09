@@ -83,8 +83,8 @@
   - different ciphers are typically used for key exchange process, authentication, symmetric key encryption, checking message integrity
 
 #### **Congestion avoidance**
-- the application of an approach and algorithm to determine the size of the initial transmission window, and how much the window should be reduced depending on network conditions (i.e., network congestion) [^12]
-  - typically uses data loss and number of retransmissions to determine if the network is congested [^12]
+- the application of an approach and algorithm to determine the size of the initial transmission window, and how much the window should be reduced depending on network conditions (i.e., see also [Network congestion](#network-congestion)) [^12]
+  - typically uses data loss / number of retransmissions to determine if the network is congested [^12]
 
 #### **Connectionless network communication**
 - a single socket object that is set to `listen()` for incoming messages (from any source) directed to its specific IP address:port [^10]
@@ -172,6 +172,7 @@
 #### **GET**
 - (HTTP request)
 - used to retrieve a resource (most links are GETs); the response can be anything, but if it's HTML and that HTML references other resources, a browser will automatically request those referenced resources, a pure HTTP tool (like `curl`) will not [^20]
+- query strings are only used in HTTP GET requests [^18]
 
 #### **Header**
 - (HTTP request or response header)
@@ -298,9 +299,9 @@
   - receiver will create their own version of the digest and compare with the version sent in MAC field; if they match, integrity is confirmed
 
 #### **Multiplexing**
-- transmitting multiple signals over a single channel;  opposite:  **demultiplexing** [^10]
+- a concept of transmitting multiple signals over a single channel;  opposite:  **demultiplexing** [^10]
+  - can occur at physical level: e.g., optical fibres carrying multiple light signals at different angles of refraction;  e.g., radio waves carrying signals at different frequencies;  e.g., at transport layer using different ports [^10]
   - multiplexing is enabled through use of network ports [^13]
-
 
 
 ### N-Z
@@ -511,7 +512,7 @@
   - Key aspect to know is that when establishing a connection, a sender MUST wait a full RTT (SYN sent and SYN ACK received) before sending data: this is "a lot of overhead" to establish connections; thus important to provide efficiency and reliability for retransmission of data once a connection is established through **Flow Control and Congestion Avoidance** (see also [RTT](#rtt, [Flow Control](#flow-control), [Congestion Avoidance](#congestion-avoidance)) [^12]
   - there are variations of TCP which use different algorithms or approaches for determining the size of the initial transmission window and how to vary this based on network conditions
   - Disadvantages of TCP: 
-    - **HOL blocking can occur since in-order delivery of Segments is required**;  can lead to increased queuing delays; increases latency [^12]
+    - **HOL blocking can occur since in-order delivery of Segments is required**;  can lead to increased queuing delays; increases latency [^12] (see also [HOL blocking](#hol-blocking))
     - **latency overhead of establishing a connection** [^13]
 
 #### **Three-way handshake**
@@ -648,12 +649,12 @@
 
 #### Overall
 
-| OSI Layer | IPS Layer   | Protocol   | PDU                 | Scope             |
-|-----------|-------------|------------|---------------------|-------------------|
-| Application <br> Presentation <br> Session | Application | Many (e.g., HTTP, <br>TLS [at session level] ) | "message" or "data" [^41] | process to process[^41] |
-| Transport | Transport   | TCP or UDP | Segment or Datagram | app to app<br>(port to port; socket to socket[^41])        |
-| Network | Internet    | IP         | Packet              | host to host<br>(network to network[^41]) |
-| Data Link <br> Physical | Link | Ethernet | Frame | router to device <br>(node to node[^41]) |
+| OSI Layer | IPS Layer   | Protocol   | PDU             |  Header contains | Scope             |
+|-----------|-------------|------------|-----------------|----------|-------------------|
+| Application <br> Presentation <br> Session | Application | Many (e.g., HTTP, <br>TLS [at session level] ) | "message" or "data" [^41] |  | process to process[^41] |
+| (Session)<br>Transport | Transport   | TCP or UDP | Segment or Datagram | - source port<br>- destination port | app to app<br>(port to port; socket to socket[^41])        |
+| Network | Internet    | IP         | Packet              | - source IP address<br>- destination IP address<br>- TTL, protocol, checksum | host to host<br>(network to network[^41]) |
+| Data Link <br> Physical | Link<br> _ | Ethernet | Frame | - Destination MAC address <br>- source MAC address | router to device <br>(node to node[^41]) |
 
 #### TCP vs UDP
 

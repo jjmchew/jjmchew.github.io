@@ -13,7 +13,7 @@ What is a network?
 2
 What is the Internet?
 
-- The internet is a network of networks.  In includes all of the physical devices (e.g., cables, routers, servers, computers, etc.) and the protocols which enable the sharing of information between computers.
+- The internet is a network of networks.  It includes all of the physical devices (e.g., cables, routers, servers, computers, etc.) and the protocols which enable the sharing of information between computers.
 
 ---
 
@@ -141,10 +141,11 @@ Why do we need encapsulation?
 ==What is Latency?==
 
 - Latency is the amount of time (delay) it takes a single unit of data to go from 1 location to another. It is comprised of a few different elements:
-  - Transmission delay : the amount of time it takes a signal to travel along the physical media (e.g., cable or through the air)
-  - Processing delay : the amount of time it takes a signal to be "pushed" from 1 physical device to another (e.g., cable to a router)
+  - ~~Transmission delay~~ Propogation delay : the amount of time it takes a signal to travel along the physical media (e.g., cable or through the air)
+  - ~~Processing delay~~ Transmission delay : the amount of time it takes a signal to be "pushed" from 1 physical device to another (e.g., cable to a router)
+  - Processing delay : the amount of time it takes a device to actually process information prior as part of transmission (and before / after propogation)
   - Queuing delay : the amount of time a signal may wait in a buffer before it is processed
-- Latency can be thought of as the speed of a car on a road - how fast that car travels is a measure of the latency similar to how a packet of data may travel through a cable.
+- Latency can be thought of as a car on a road - ~~how fast that car travels~~ the length of time it takes that car to get from 1 point to another is a measure of the latency similar to the length of time between a packet of data travelling from 1 point to another through a network.
 
 ---
 
@@ -160,6 +161,8 @@ What is Bandwidth?
 ==What are Network 'Hops'?==
 
 - A 'hop' refers to the interconnection between 1 physical device and another on a network. At each 'hop' a frame of data will move from 1 physical device to another (e.g., from a cable to a router, or from a router to wireless signal).
+- a 'hop' is a 'journey between nodes' (e.g., routers) on the network
+
 ---
 
 23
@@ -173,6 +176,7 @@ What is the relationship between network 'Hops' and latency?
 What is a switch and what is it used for?
 
 - A switch is a physical device used to connect computers together in a network. The switch will maintain a record of the MAC address for each device which is connected to it (and the port that it is connected to) and send only information that is intended for each device. This is in contrast to a hub (see next question).
+
 ---
 
 25
@@ -193,6 +197,7 @@ What is a hub and what is it used for?
 ==What is a router and what is it used for?==
 
 - A router is a physical device used to direct information it receives in a network to the appropriate place - either to another router (i.e., for a different network / sub-network) or to a switch within a network. Routers are typically assigned a consecutive series of IP addresses for which they are responsible for receiving incoming data.
+- Routers are network devices that can route network traffic to other networks.  Within a LAN, they act as gateways into and out of the network.
 
 ---
 
@@ -251,6 +256,7 @@ What is IP?
 What is IP address? 
 
 - An IP address is a unique logical address assigned to each device connected to the internet. (see above)
+
 ---
 
 36
@@ -430,52 +436,91 @@ What are multiplexing and demultiplexing?
 ---
 
 59
-What is network congestion?
+**==What is network congestion?==**
+
+- When there is significant network congestion, the latency when transmitting data increases
 
 ---
 
 60
 How do transport layer protocols enable communication between processes?
 
+- There are 2 main transport layer protocols:  UDP ==(User Datagram Protocol)== and TCP ==(Transport Connection Protocol)==
+- The names of the PDUs are Datagram and Segment, respectively.
+- These protocols enable communication between processes by embedding requests and other data from the Application layer within the data payload of the PDUs.
+- ==check the header of the transport layer PDUs!!==
+
 ---
 
 61
 Compare UDP and TCP. What are similarities, what are differences? What are pros and cons of using each one? 
+
+- Similarities between UDP and TCP:
+  - Both are transport layer protocols and enable the transfer of information from port to port (i.e., from server port to client port, in collaboration with the Internet and Link layers below)
+
+- Differences:
+  - UDP:  Connection-less protocol, offers no additional functionality for reliability, de-duplication, integrity-/error-checking, PDU sequence, no handshake on connection, so enables very quick sharing of data
+  - TCP:  Connection-oriented protocol, offers functionality for reliability, de-duplication, integrity-/error-checking, PDU sequence, uses three-way handshake to establish connection; uses something similar to close a connection; requires 1RTT to establish connection as part of three-way handshake; very stable and contains many features to ensure data is transmitted / received properly
 
 ---
 
 62
 What does it mean that network reliability is engineered?
 
+- Use of TCP (or implementing similar functions for receipt confirmation for data sent, de-duplication, integrity-checking, PDU sequencing, etc.) creates reliability for sharing of data over inherently unreliable physical networks and packet transmission
+
 ---
 
 63
 Give an overview of the Application Layer.
+
+- The Application layer is the highest layer in the TCP/IP model and encompasses the ==[look up corresponding OSI layers]== layers of the OSI model.
+- This layer allows various actual internet services like the web, email, ftp, etc. to operate by providing the structure for these various process to operate
 
 ---
 
 64
 What is HTML?
 
+- HTML is HyperText Markup Language and is the specific syntax used to share information request and provided via the HTTP protocol (which is used for the world wide web service).
+- HTML syntax is characterized by the use of opening and closing "tags" indicated by the use of "< >" and "</>" (e.g., "<p>Paragraph content here</p>")
+
 ---
 
 65
 What is a URL and what components does it have?
+
+- A URL is a ==Uniform== Resource Location, a specific type of URI (Uniform Resource Identifier) and is a string of text which provides the means and location of a resource.
+- Key components of the URL are:
+  - scheme (e.g., `http`)
+  - `://`
+  - host (e.g., `www.example.com`)
+  - optional port (e.g., `:200`)
+  - path (e.g., `/info/index.html`)
+  - optional query parameters (e.g., `?id=1234&field=name`)
 
 ---
 
 66
 What is a Query string? What it is used for?
 
+- A query string is used to provide additional information to the server as part of an HTTP request. This information is passed to the server as part of the URL used to place the request.
+- The query string is indicated by the use of the `?` character following the 'path' in the URL and a series of key-value pairs identified using the syntax 'key=value' and separated by `&`.
+
 ---
 
 67
-What URL encoding is and when it might be used for?
+==What URL encoding is and when it might be used for?==
+
+- URL encoding is used when when unsupported or special characters are included as part of the URL (typically in the path or query parameters).
+
 
 ---
 
 68
 Which characters have to be encoded in the URL? Why?
+
+- Characters such as " ", "?", "&", "=", or non-UTF-8 characters must be encoded to be able to be transmitted to and interpreted correctly by the server.
 
 ---
 
@@ -517,234 +562,390 @@ What is HTTP?
 74
 Explain the client-server model of web interactions, and the role of HTTP as a protocol within that model
 
+- Web interactions involve a request (sent by the client) and a response (sent by the web server). HTTP is the protocol used to structre those requests and responses.
+
 ---
 
 75
 What are HTTP requests and responses? What are the components of each?
+
+- HTTP requests and responses are both HTTP messages. Requests are typically sent by the client to the server and responses are sent by the server back to the client. HTTP messages are text-based.
+- An HTTP request will contain:
+  - method, path, protocol (HTTP) version (for HTTP version ==1.0+==)
+  - headers (key-value pairs of additional related information)
+  - optional body containing further info associated with the request
+- An HTTP response will contain:
+  - status code and line
+  - optional headers
+  - optional body containing associated info
 
 ---
 
 76
 Describe the HTTP request/response cycle.
 
+- A connection is formed (via TCP) between the client and a web server
+- A (text-based) HTTP request is sent
+- Once received, the web server processes that request and sends a (text-baesd) HTTP response
+==- By default, the connection is closed afterwards==
+
 ---
 
 77
 What is a state in the context of the 'web'?
+
+- State is any information stored about a particular (HTTP) request (e.g., or a user who makes that request).
 
 ---
 
 78
 What is statelessness?
 
+- Statelessness means that no information is stored about any particular request: once the server has responded to a particular request, it is complete. This also implies that all of the information required to satisfy each request is sent with that request - thus no additional information needs to be stored to satisfy each request.
+
 ---
 
 79
 What is a stateful Web Application?
+
+- A stateful web application is a web application (one that communicates wiht a server via HTTP) that mimics a stateful application through the use of various techniques. 
 
 ---
 
 80
 How can we mimic a stateful application?
 
+- Since HTTP is an inherently stateless protocol, session identifiers or cookies are typically used to provide additional information along with each HTTP request to identify users and thus allow web applications to react as if persistent information (like a shopping cart, login, user profile, etc.) is being stored.
+
 ---
 
 81
 What is the difference between stateful and stateless applications?
 
+- A stateful application is one in which information can persist (i.e., be saved) throughout multiple user interactions.
+- In contrast, a stateless application is one in which no information from a prior interaction is saved (i.e., no information is saved from the current user interaction).
+
 ---
 
 82
-What does it mean that HTTP is a 'stateless protocol? 
+What does it mean that HTTP is a 'stateless protocol'? 
+
+- No information about prior request/response interactions are required or saved for each request/response interaction between client and server.
 
 ---
 
 83
 Why HTTP makes it difficult to build a stateful application?
 
+- Since HTTP is inherently stateless, each response/request is independent and the server will not be able to store information about users without the use of additional techniques to mimic a stateful application.
+
 ---
 
 84
 How the idea that HTTP is a stateless protocol makes the web difficult to secure? 
+
+- Since HTTP is a stateless protocol, and HTTP requests are sent in as text, any identifying information about a user which needs to be submitted can be intercepted by a malicious user and can be used for session hijacking (i.e., a malicious user pretending to be an authorized user in a web application).
 
 ---
 
 85
 What is a `GET` request and how does it work? 
 
+- A 'GET' request is used to request information from a web server, which is returned as HTML information in the HTTP response.
+
 ---
 
 86
-How is `GET` request initiated?
+==How is `GET` request initiated?==
+
+- A 'GET' request is encapsulated within the data payload of an IP packet which is transmitted when a client and server are connected via a TCP connection.
+- The request will be text, which includes the method ('GET') a path indicating what information to retrieve (e.g., /index.html) and an HTTP protocol version (typically =='HTTP1.1'==)
+- In addition, a number of headers (key-value pairs) related to the request may also be included which are used by the server.
 
 ---
 
 87
 What is the HTTP response body and what do we use it for?
 
+- The HTTP response body is ==where the returned HTML information will be stored.==
+
 ---
 
 88
-What are the obligatory components of HTTP requests? 
+==What are the obligatory components of HTTP requests?==
+
+- Required components of an HTTP request are:
+  - request method
+  - path
+  - HTTP version (from version ==1.0== onwards)
 
 ---
 
 89
-What are the obligatory components of HTTP response?
+==What are the obligatory components of HTTP response?==
+
+- Required components of an HTTP response are:
+  - a status line
 
 ---
 
 90
 Which HTTP method would you use to send sensitive information to a server? Why?
 
+- `POST` is the right method to use since sensitive information can be encrypted and included within the body of the request rather than sent as plain text (e.g., as a query parameter).
+
 ---
 
 91
-Compare `GET` and `POST` methods.
+==Compare `GET` and `POST` methods.==
+
+- GET:
+  - used to retrieve information from a web server
+  - some information can be sent through query parameters, but there is an overall length restriction on info sent this way
+  - information sent as query parameters is easily read as text
+
+- POST:
+  - used to change information on a web server
+  - does not have a length limitation (within the body of the POST request)
 
 ---
 
 92
-Describe how would you send a `GET` request to a server and what would happen at each stage.
+==Describe how would you send a `GET` request to a server and what would happen at each stage.==
+
+- Need to "form" the request: i.e., create the text associated with the request (method, path, protocol version, associated headers)
+- Need to encapsulate that request as part of data payload of IP packet
+- that packet needs to be sent across the internet to the correct socket (IP:port) and received
+- 
 
 ---
 
 93
-Describe how would you send `POST` requests to a server and what is happening at each stage.
+==Describe how would you send `POST` requests to a server and what is happening at each stage.==
+
+- Very similar to GET request (above), but information to be sent to the server is encoded within the 'body' of the request
 
 ---
 
 94
 What is a status code? What are some of the status codes types? What is the purpose of status codes? 
 
+- Status codes are a required part of an HTTP response. These codes indicate whether or not a request can be fulfilled by the server, and if not, what the potential reason might be for the error.
+- Status codes typically include a numeric code and then a short string of some identifying text.
+- ==Common status codes are: 200 OK, 302 Redirect, 404 Not Found, 500 Server Error==
+
 ---
 
 95
 Imagine you are using an HTTP tool and you received a status code `302`. What does this status code mean and what happens if you receive a status code like that? 
+
+- The code 302 means that the information requested has been moved to another location. Typically that new location (URL) is contained within the `Location` header and browsers will automatically re-direct to the indicated location.
 
 ---
 
 96
 How do modern web applications 'remember' state for each client?
 
+- Modern web applications typically apply 1 or more workarounds to 'remember' state for each client:
+  - cookies can be used to store information that pertains to a user
+  - a session identifier can be used by the server to track history associated with a series of interactions
+  - ==??==
+
 ---
 
 97
 What role does AJAX play in displaying dynamic content in web applications?
+
+- AJAX is ==Asynchronous Javascript And XML== which allows the browser to use Javascript to respond to web applications interactions, rather than having to send all interactions as HTTP requests to the server (and refresh the screen every time). Since every screen refresh requires re-drawing the screen, and possibly receiving content from the server (subject to network latency), this process would great slow down every interaction and prevent a fluid, application-like experience for users.
+- By letting the response to user interactions occur asynchronously (i.e., responses can occur in the background) and letting Javascript, rather than HTML, handle the responses the user experience can be more specifically controlled and dynamic content can appear more fluid than pure HTTP interactions would allow.
 
 ---
 
 98
 Describe some of the security threats and what can be done to minimize them?
 
+- Session hijacking: when a malicious user obtains the session information from an active user and can thus appear to be that user in interactions with a web server. This would allow a malicious user to use their own system to pretend to be another user without that other user being involved or even aware their account was being used.
+- Packet sniffing: when a malicious user intercepts IP packets being sent through the internet and can retrieve sensitive information (such as session ids, bank account numbers, etc.)
+  - Both of these threats can be minimized through the use of encrypted data payloads for transmission (e.g., using TLS - Transport Layer Security)
+- Malicious users can setup fake servers / domains and pretend to be a trusted entity
+  - Use of TLS requires a server to send a digital certificate which has been issued by a Certificate Authority (CA). These CAs validate the identity of domain owners (i.e., they are who they say they are). Certificates from CAs are digitally-signed through the use of a private key to validate each certificate.
+
 ---
 
 99
 What is the Same Origin Policy? How it is used to mitigate certain security threats?  
+
+- An "origin" is comprised of a scheme, host, and port. The Same Origin Policy would allow or restrict various requests or actions depending on whether the request was received from the same origin or a different origin ("Cross-Origin")
 
 ---
 
 100
 What determines whether a request should use `GET` or `POST` as its HTTP method?
 
+- The desired intent of the request: a 'GET' request is used to retrieve information from the webserver (information remains unchanged); a 'POST' request is used to change information on a webserver.
+
 ---
 
 101
 What is the relationship between a scheme and a protocol in the context of a URL?
+
+- A scheme is the IANA-assigned name which corresponds to a particular Application-layer protocol. Typically (but not always), the scheme name is the same as the protocol name and is provided in lowercase and the corresponding protocol in uppercase (e.g., `http` is the scheme and `HTTP` is the protocol).
 
 ---
 
 102
 In what ways can we pass information to the application server via the URL?
 
+- Information can be passed to the application via the (optional) query parameters of the URL.
+- These parameters are separated from the URL path by `?` and take the form of a series of key-value pairs separated by `&`
+- e.g., `id=19283&location=us&colour=blue`
+
 ---
 
 103
 How insecure HTTP message transfer looks like?
 
+- Insecure HTTP messages are transmitted in plain text.
+- The inclusion of sensitive information (e.g., usernames and passwords) being passed via the URL is also very insecure (e.g., `http://www.myaccount.com/login.html?username=James&pw=password`)
+- Generally speaking, the use of the HTTP protocol is insecure. Malicious users can use packet sniffing and session hacking to compromise sensitive user information.
+
 ---
 
 104
-What services does HTTP provide and what are the particular problems each of them aims to address?
+==What services does HTTP provide and what are the particular problems each of them aims to address?==
 
 ---
 
 105
 What is TLS Handshake?
 
+- TLS handshake is used to establish a secure connection when using TLS for HTTPS. The handshake is used to determine the cipher suites which will be used and to establish a unique key used to encrypt communications between client and server. Initially, assymmetric key encryption is used to establish a symmetric key to encrypt further communications. Symmetric key encryption is then used for subsequent transmissions between server and client.
+- ==The steps are:==
+  - Client sends version(s) of TLS supported (which helps to establish cipher suites)
+  - Server confirms cipher suites and sends certificate, public key for encryption, encrypted symmetric key
+  - Client sends confirmation of secure connection using symmetric key 
+
 ---
 
 106
-What is symmetric key encryption? What is it used for?
+==What is symmetric key encryption? What is it used for?==
+
+- Symmetric key encryption is when a single key is used for both encrypting and decrypting messages.  Both the sender and the receiver would use the same key to code / decode messages.
 
 ---
 
 107
-What is asymmetric key encryption? What is it used for?
+==What is asymmetric key encryption? What is it used for?==
+
+- Asymmetric key encryption involves the use of 2 keys - typically 1 for the sender and 1 for the receiver
+- Message encryption with these keys only works in a single direction: i.e., messages encoded with key1 (e.g., a private key) can only be decoded by the corresponding key2 (e.g., a public key) and messages encoded by the key2 can only be decoded by the corresponding key1.
+- Asymmetric key encryption can be used to help verify the identity of a Certificate Authority (CA):  Certificates issued by the CA will contain both the unencrypted signature, as well as a version that is encrypted via the CA's private key. By using the public key to decrypt the encrypted signature and compare it to the unencrypted version 3rd parties can confirm that the private key was used to encrypt the signature and thus the CA is who they say they are (the assumption is that only the real CA would know the private key associated with their signature).
+- Assymmetric key encryption is also used in the TLS handshake. 
 
 ---
 
 108
-Describe SSL/TLS encryption process.
+==Describe SSL/TLS encryption process.==
+
+- The TLS encryption process starts with the TLS handshake which help to establish the cipher suites that will be used in the handshake and subsequent transmissions, as well as establishing the encryption keys that will be used.
+- Asymmetric key encryption is used to establish a symmetric key. The symmetric key is used for encrypted HTTP message transmissions.
 
 ---
 
 109
 Describe the pros and cons of TLS Handshake
 
+- Pros: secure, encrypted transmissions (asymmetric key encryption) are used to establish a secure, encrypted transmission channel (symmetric key encryption)
+
+- Cons: can be slow; requires an additional ==1 RTT== after the initial TCP three-way handshake has been established (1 RTT).
+
 ---
 
 110
 Why do we need digital TLS/SSL certificates? 
+
+- Digital TLS/SSL certificates are sent by the server as part of the initial TLS handshake and are used by the client to verify that a CA has verified the web server.
 
 ---
 
 111
 What is it CA hierarchy and what is its role in providing secure message transfer?
 
+- The CA hierarchy refers to various levels of Certificate Authorities - parties that issue digital certificates - which form a chain of trust which verifies the identities of domains on the internet.
+- The highest-level of trust is given to a small group of Root Authorities (RA) which are internet entities that are endorsed by software and infrastructure companies as being the most trust-worthy. RAs guard their private keys (for their digital signatures) very carefully and provide sign-off on digital certificates for general Certificate Authorities (CA) which issue digital certificates on their behalf to trusted domains.
+- CAs issue digital certificates, which include the digital sign-off by their RAs, to domains, whose identity they verify through various processes. The sign-off by CAs and RAs form the CA hierarchy, also called the "chain of trust" which help to validate domains are registered to legitimate businesses.
+- If the domain, or even a CA is compromised, then the party which certified it can revoke their digital signature, which will raise a red flag during the TLS handshake and alert users that the domain may be compromised.
+
 ---
 
 112
 What is Cipher Suites and what do we need it for?
+
+- Cipher Suites are a set of encryption algorithms defined jointly by the client and server, based upon the highest versions of TLS supported, which will be used throughout the TLS handshake process and secure message transmission process. The Suites include the encryption algorithms that will be used in asymmetric key encryption, symmetric key encryption, and ==digital certificate verification==.
 
 ---
 
 113
 How does TLS add a security layer to HTTP?
 
+- TLS is an additional protocol that encrypts the data payloads from the HTTP / Application layer prior to encapsulating them in the Transport layer.  TLS can be thought of as part of the "session" layer of the OSI model (still within the Application layer of the TCP/IP model).
+
 ---
 
 114
 Compare HTTP and HTTPS.
+
+- HTTP is inherently insecure - messages are transmitted in unencrypted text through IP packets that can be easily intercepted and read
+- HTTPS is an additional layer of encryption (using TLS) which is added to HTTP data payloads and prevents the easily intercepted IP packets from being read by malicious users. 
 
 ---
 
 115
 Does HTTPS use other protocols? 
 
+- HTTPS uses the TLS protocol to encrypt data payloads being transmitted via TCP.
+
 ---
 
 116
 How do you know a website uses HTTPS?
 
+- The URL scheme name will be `https`, which indicates the use of the HTTPS protocol scheme.
+
 ---
 
 117
-Give examples of some protocols that would be used when a user interacts with a banking website. What would be the role of 
+Give examples of some protocols that would be used when a user interacts with a banking website. What would be the role of those protocols? 
+
+- HTTPS and TLS will be used to establish a secure, encrypted message exchange protocol; these protocols use both asymmetric key encryption (to establish a symmetric key) and symmetric key encryption in message transmission
+- HTTP is the protocol used to define what information is requested by the client and responded to by the server
+- TCP is the protocol used to establish a connection between the client host and server host on the internet (e.g., for IP packets to travel from client computer to source server and vice versa)
+- The Ethernet protocol would be used to transmit IP packets within Ethernet frames within the sub-networks which connect the client to the internet and also the server to the internet.
 
 ---
-those protocols? 
+
 118
 What is server-side infrastructure? What are its basic components?
+
+- A server can be thought of as having a few basic components (each of which could be comprised of many physical or virtual machines):
+  - web server: used to respond to requests for static assets like images, information or other components of web information
+  - application server: used to contain the server-side code and business logic that are part of a web application
+  - data storage: databases, text files, or other means by which information associated with the web application can be stored and persist so that it can be retrieved, as required, by the web application
 
 ---
 
 119
-What is a server? What is its role? 
+What is a server? ==What is its role?==
+
+- A server is any computer (or node) that can respond to requests that are issued to it. These requests may be relate to specific protocols such as HTTP for web servers, FTP for file servers, SMTP for email servers, etc.
 
 ---
 
 120
-What are optimizations that developers can do in order to improve performance and minimize latency?
+==What are optimizations that developers can do in order to improve performance and minimize latency?==
+
+- Using AJAX and client-side code can greatly improve the user experience of web applications by reducing page refreshes (which require new connections and handshaking, creating delays).
+- Using a CDN (Content Delivery Network) to store and deliver static web assets can reduce latency. CDNs are a network of servers that are strategically located to be geographically closer to users and thus reduce the transmission delays which contribute to latency.
+- Developers can also use long-lived TCP connections, which once established can be re-used and thus eliminate the 1 RTT handshake delay when opening a new connection.
 
 ---
