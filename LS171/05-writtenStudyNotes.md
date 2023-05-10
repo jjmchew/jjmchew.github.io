@@ -15,8 +15,8 @@
   - e.g., related to the time it takes 1 car to travel from point A to point B
   - comprised of:
     - propogation delay : ratio between distance and speed
-    - transmission delay : delay in going from 1 network device to another
-    - processing delay : delay in actual processing of information at each network device
+    - transmission delay : delay in going from 1 network device to another (e.g., mod/demod)
+    - processing delay : time required for actual processing of information at each network device (e.g., build 'frames', ARP requests, etc.)
     - queuing delay : delay from data waiting in buffers at each network device
   - last-mile latency : increased delays at the network 'edge' (i.e., in getting the network signal from the ISPs network to the home or office network) as a result of more 'hops' (a journey between nodes on the network)
 
@@ -69,6 +69,7 @@
   - a set of rules for the transfer of files (including. hypertext documents, CSS documents, scripts, images, videos) [^11]
 
 - clients make HTTP requests, server process and sends an HTTP response [^16]
+  - client is separate from the server (although more than 1 client may connect to the server) (in contrast to peer-to-peer networking: each node can be client and server for another node [^28])
 
 - server could be made up of [^16]:
   - web server : responds to requests for static assets (files, images, css, javascript, etc.) (no data processing)
@@ -79,6 +80,7 @@
 
 - HTTP (usually) relies on a TCP connection; TCP ensures request/response cycle gets completed [^16]
 - HTTP is the syntax and structure of messages exchanged between applications [^20]
+- HTTP responses / requests are transferred in plain text - are essentially insecure [^26]
 
 ---
 
@@ -172,6 +174,7 @@
 ### Be able to explain what HTTP requests and responses are, and identify the components of each
 
 - HTTP headers : colon-separated name-value pairs sent in plain-text [^13]
+  - `Connection: Keep-Alive` [^27]
 
 - HTTP request contains [^13] [^18]:
   - **HTTP method** (e.g., `GET`)
@@ -249,17 +252,26 @@
 
 - **cross-site scripting (XSS)** : adding (malicious) javascript code to a webpage through forms, comments, etc. which is interpreted and executed as javascript code [^16]
   - Mitigations:
-    - always sanitize user input (e.g., removing <script> tags, disallowing HTML and JS altogether)
+    - always sanitize user input (e.g., removing \<script> tags, disallowing HTML and JS altogether)
     - escape all user input to display it (i.e., don't let browser interpret entered text as code)
-      - e.g., use HTML entities:  replace "<" with "&lt;"; replace ">" with "&gt;"
+      - e.g., use HTML entities:  replace "<" with "\&lt;"; replace ">" with "\&gt;"
 
 ### Be aware of the different services that TLS can provide, and have a broad understanding of each of those services
 
 - TLS is a cryptographic protocol that encrypts every HTTP request / response sent over the internet [^16]
+- TLS handshake [^26]:
+  - establishes cipher suites (agreed set of algorithms for encryption, authentication, integrity)
+  - server sends certificate (for TLS authentication, server's public key sent for encryption)
+
 - TLS offers secure message exchange over an unsecure channel (HTTP) by providing: [^22]
-  - encryption : encoding messages so only authorized recipients can decode
-  - authentication : verify the identity of a party in message exchange
-  - integrity : verify message has not be tampered with (MAC)
+  - **encryption** : encoding messages so only authorized recipients can decode
+    - uses TLS handshake to establish asymmetric/symmetric keys for message exchange; requires additional 2 RTT after TCP 3-way handshake [^23]
+  - **authentication** : verify the identity of a party in message exchange [^24]
+    - server issues a digital certificates; certificates issued by Certificate Authorities (CA) are safest, are digitally signed by CAs 
+    - "Chain of Trust" : server certificates are issued by Intermediate CA, which is certified by Root CAs (small group of highly trusted CAs)
+  - **integrity** : verify message has not be tampered with in transit
+    - MAC - Message Authentication Code [^25]
+    - TLS also uses a header, includes MAC field : acts like a checksum (contains "digest" of data payload created based on agreed cipher suite);  receiver will create and compare their own version of the "digest" to confirm data payload was not tampered with [^25]
 
 
 ---
@@ -287,3 +299,9 @@
 [^20]: [What to Focus On (Working with HTTP)](https://launchschool.com/lessons/0e67d1ce/assignments/b9609f49)
 [^21]: [Speaking the Same Language](https://launchschool.com/lessons/0e67d1ce/assignments/ea90d10b)
 [^22]: [The Transport Layer Security (TLS) Protocol](https://launchschool.com/lessons/74f1325b/assignments/83bf156b)
+[^23]: [TLS Encryption](https://launchschool.com/lessons/74f1325b/assignments/54f6defc)
+[^24]: [TLS Authentication](https://launchschool.com/lessons/74f1325b/assignments/95e698ab)
+[^25]: [TLS Integrity](https://launchschool.com/lessons/74f1325b/assignments/a88271cf)
+[^26]: [Transport Layer Security (TLS) Summary](https://launchschool.com/lessons/74f1325b/assignments/238ff36f)
+[^27]: [Web Performance and HTTP Optimizations](https://launchschool.com/lessons/be1304f3/assignments/98ecce1c)
+[^28]: [Peer to Peer Networking](https://launchschool.com/lessons/be1304f3/assignments/5a9cbadb)

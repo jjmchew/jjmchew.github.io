@@ -42,10 +42,12 @@
 
 - [ ] how does the browser respond so quickly to "no domain name" found?  (e.g., when entering junk URLs)
 
-
+- [ ] why wouldn't changes in bandwidth improve performance?
+  - Does "bandwidth" refer to physical media or entire chain (including devices, etc.)? i.e., is processing delay part of "bandwidth"?
+  - A: since individual packet (limited by latency) still takes just as long
 
 # Assessment prep checklist
-- [ ] create written study notes (based on study guide)
+- [X] create written study notes (based on study guide)
 - [ ] read all pinned posts
 - [ ] 2nd pass spot questions
 - [ ] things to draw / memorize:
