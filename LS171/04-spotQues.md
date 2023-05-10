@@ -732,14 +732,14 @@ What is a status code? What are some of the status codes types? What is the purp
 
 - Status codes are a required part of an HTTP response. These codes indicate whether or not a request can be fulfilled by the server, and if not, what the potential reason might be for the error.
 - Status codes typically include a numeric code and then a short string of some identifying text.
-- ==Common status codes are: 200 OK, 302 Redirect, 404 Not Found, 500 Server Error==
+- ==Common status codes are: 200 OK, 302 Found, 404 Not Found, 500 Server Error==
 
 ---
 
 95
 Imagine you are using an HTTP tool and you received a status code `302`. What does this status code mean and what happens if you receive a status code like that? 
 
-- The code 302 means that the information requested has been moved to another location. Typically that new location (URL) is contained within the `Location` header and browsers will automatically re-direct to the indicated location.
+- The code 302 means that the information requested has been moved to another location, but was found. Typically that new location (URL) is contained within the `Location` header and browsers will automatically re-direct to the indicated location.
 
 ---
 

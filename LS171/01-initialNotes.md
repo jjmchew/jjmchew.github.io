@@ -542,9 +542,9 @@
 - **use of TLS will impact performance** : can add up to 2 rounds of latency (RTT) on top of existing single RTT for TCP handshake [^34]
 - detailed example handshake steps: [^34]
   - takes place after the TCP handshake (i.e., after sender sends `ACK`) (see also [Three-way handshake](#three-way-handshake))
-  - client sends `ClientHello` : contains max version of TLS protocol client can support and a list of cipher suites (see also [Cipher suites](#cipher-suites))
-  - server receives and responds with `ServerHello` : sets protocol version, cipher suite; sends certificate (see also [Certificate](#certificate)); sends `ServerHelloDone`
-  - client receives : initiates key exchange process (e.g., RSA algorithm:
+  - **client** sends `ClientHello` : contains max version of TLS protocol client can support and a list of cipher suites (see also [Cipher suites](#cipher-suites))
+  - **server** receives and responds with `ServerHello` : sets protocol version, cipher suite; sends certificate (see also [Certificate](#certificate)); sends `ServerHelloDone`
+  - **client** receives, then : initiates key exchange process (e.g., RSA algorithm:
     - client sends `ClientKeyExchange` ('pre-master secret' encrypted with server public key), sends `ChangeCipherSpec` (indicates use of symmetric key in future), sends `Finished` flag (to end TLS handshake)
     - server decrypts 'pre-master secret', uses agreed cipher suite to generate symmetric key (will be the same as client's) and sends `ChangeCipherSpec` and `Finished`
   

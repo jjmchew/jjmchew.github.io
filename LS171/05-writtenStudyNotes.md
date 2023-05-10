@@ -58,14 +58,27 @@
 
 ### Have an understanding of how DNS works
 
-- DNS is the Domain Name System [^11] : a distributed database that translates domain names to IP addresses; the database is stored on DNS servers
+- DNS is the Domain Name System [^11] : a distributed database that translates/maps [^19] domain names to IP addresses; the database is stored on DNS servers
   - DNS servers are hierarchically organized and connected in a global network
   - no single DNS server contains the entire database
   - if a single DNS server does not have the required domain name mapping, the request is forwarded to another DNS server until the required IP address is found
 
 ### Understand the client-server model of web interactions, and the role of HTTP as a protocol within that model
 
-- HTTP is a *request response protocol* - a set of rules for the transfer of files (including. hypertext documents, CSS documents, scripts, images, videos) [^11]
+- HTTP is a stateless *request response protocol* for how clients communicate with servers [^16]
+  - a set of rules for the transfer of files (including. hypertext documents, CSS documents, scripts, images, videos) [^11]
+
+- clients make HTTP requests, server process and sends an HTTP response [^16]
+
+- server could be made up of [^16]:
+  - web server : responds to requests for static assets (files, images, css, javascript, etc.) (no data processing)
+  - application server : where application or business logic reside (more complicated requests)
+  - data store : where persistent data lives for retrieval and processing (simple files, key/value stores, document stores, etc.)
+
+- "persistent data" - data that doesn't go away after each request/response cycle [^16]
+
+- HTTP (usually) relies on a TCP connection; TCP ensures request/response cycle gets completed [^16]
+- HTTP is the syntax and structure of messages exchanged between applications [^20]
 
 ---
 
@@ -142,6 +155,8 @@
   - path : optional: identifies what resource is being requested, e.g., `/home` or `/home/index.html`
   - query string : optional: sends data to servers, e.g., `?item=book&results=10`
 
+- URL is a subset (type of) URI [^19]
+
 ### Have an understanding of what URL encoding is and when it might be used
 
 - URL encoding is replacing characters within URL strings that are: [^12]
@@ -158,21 +173,47 @@
 
 - HTTP headers : colon-separated name-value pairs sent in plain-text [^13]
 
-- HTTP request must contain [^13]:
-  - HTTP method
-  - path (resource name and query parameters)
-  - headers
+- HTTP request contains [^13] [^18]:
+  - **HTTP method** (e.g., `GET`)
+  - **path** (e.g., `/tasks`)
+  - optional query string / query parameters (e.g., `?due=today&age=3`)
+  - **headers** [^19] (e.g., `Host: www.host.com` required in HTTP 1.1)
   - optional message body (if using a POST request)
+
+- HTTP method and path together form the "start-line" or "request-line" [^18]
+
+- HTTP response contains [^14] [^18]:
+  - **status (line)** (code w/ text) (e.g., `200 OK`)
+  - headers (e.g., `Content-Type: text/html`, `Content-Length: 837`)
+  - optional message body (contains raw response data)
 
 ### Be able to describe the HTTP request/response cycle
 
+- clients issue requests to servers, server processes that request, server sends a response [^16]
+
 ### Be able to explain what status codes are, and provide examples of different status code types
+
+- the HTTP 'status code' is a 3 digit number;  'status text' is a short description of the code [^14]
+- common status codes are: [^14]
+  - 200 OK
+  - 302 Found : (will redirect to URL in `Location` response header)
+  - 400 Bad Request : (HTTP request was formed incorrectly [^21])
+  - 404 Not Found : (could be for any 'resource': file, CSS, scripts, images, videos, etc.)
+  - 500 Internal Server Error : (for a variety of server-side errors, e.g., configuration, etc.)
+
 
 ### Understand what is meant by 'state' in the context of the web, and be able to explain some techniques that are used to simulate state
 
 - a protocol is 'stateless' when it's designed such that each request/response pair is completed independent of the previous one [^11]
   - the server does not need to hang on to information or state between requests
   - when requests (or responses) break en route to the server, there is no clean-up
+  - each request contains all info necessary the request to be fulfilled
+
+- 3 techniques to simulate state in web applications: [^15]
+  1. sessions (session identifier) : each request is inspected for a (valid) session ID and used as a key to retrieve required data by the server
+  2. cookies : can be used to store session information
+  3. AJAX (Asynchronous JavaScript and XML) : allows browsers to issue requests without a full page refresh; responses are processed by a callback function
+  - (sending stateful data as query parameters: was used, but generally insecure and rarely used now)
 
 ### Explain the difference between GET and POST, and know when to choose each
 
@@ -181,10 +222,13 @@
   - the default behaviour of links is to issue a GET request to a URL [^13]
   - query strings are ONLY used in HTTP GET requests [^12]
   - the response from a GET can be anything, but if it's HTML and that HTML references other resources, the browser will automatically request those referenced resources (a pure HTTP tool like CURL will not) [^13]
+  - should only retrieve content from the server (e.g,. retrieving search results) [^18]
+    - majority of the content on the page should not change (e.g., a page view counter doesn't count as changing content)
 
 - POST:
   - used to send data to the server (e.g., from a form) or initiate some action on the server [^13]
   - the optional body will contain data being transmitted in the HTTP message to be sent to the server; can contain HTML, images, audio, etc. [^13]
+  - involves changing values that are stored on the server (e.g., submitting an info form) [^18]
 
 
 ---
@@ -193,7 +237,30 @@
 
 ### Have an understanding of various security risks that can affect HTTP, and be able to outline measures that can be used to mitigate against these risks
 
+- **origin**: a combination of scheme, host, port [^16]
+- cross-origin requests can be a security hazard : mitigated with **"same-origin policy"** [^16]
+
+- **session hijacking** : when a malicious user obtains another user's session id information and can access that user's session (typically without the user knowing) [^16]
+  - Mitigations:
+    - reset sessions (e.g., when entering sensitive information like credit cards, deleting accounts)
+    - setting an expiration time on sessions (limit exposure of compromised sessions)
+    - use HTTPS (to minimize ability to obtain session info)
+    - use "same-origin policy"
+
+- **cross-site scripting (XSS)** : adding (malicious) javascript code to a webpage through forms, comments, etc. which is interpreted and executed as javascript code [^16]
+  - Mitigations:
+    - always sanitize user input (e.g., removing <script> tags, disallowing HTML and JS altogether)
+    - escape all user input to display it (i.e., don't let browser interpret entered text as code)
+      - e.g., use HTML entities:  replace "<" with "&lt;"; replace ">" with "&gt;"
+
 ### Be aware of the different services that TLS can provide, and have a broad understanding of each of those services
+
+- TLS is a cryptographic protocol that encrypts every HTTP request / response sent over the internet [^16]
+- TLS offers secure message exchange over an unsecure channel (HTTP) by providing: [^22]
+  - encryption : encoding messages so only authorized recipients can decode
+  - authentication : verify the identity of a party in message exchange
+  - integrity : verify message has not be tampered with (MAC)
+
 
 ---
 
@@ -212,3 +279,11 @@
 [^12]: [What is a URL?](https://launchschool.com/books/http/read/what_is_a_url)
 [^13]: [Making HTTP Requests](https://launchschool.com/books/http/read/making_requests)
 [^14]: [Processing Responses](https://launchschool.com/books/http/read/processing_responses)
+[^15]: [Stateful Web Applications](https://launchschool.com/books/http/read/statefulness)
+[^16]: [ Security](https://launchschool.com/books/http/read/security)
+[^17]: [Some Background and Diagrams](https://launchschool.com/lessons/cc97deb5/assignments/586769d9)
+[^18]: [The Request Response Cycle](https://launchschool.com/lessons/cc97deb5/assignments/83ae67aa)
+[^19]: [Intro to HTTP Summary](https://launchschool.com/lessons/cc97deb5/assignments/9f4e349a)
+[^20]: [What to Focus On (Working with HTTP)](https://launchschool.com/lessons/0e67d1ce/assignments/b9609f49)
+[^21]: [Speaking the Same Language](https://launchschool.com/lessons/0e67d1ce/assignments/ea90d10b)
+[^22]: [The Transport Layer Security (TLS) Protocol](https://launchschool.com/lessons/74f1325b/assignments/83bf156b)
