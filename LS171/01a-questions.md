@@ -28,6 +28,11 @@
 - [X] is MAC (TLS) hashing algorithm a part of the cipher suites for TLS?
   - A: likely yes: algos in cipher suites includes algos for "checking message integrity" (https://launchschool.com/lessons/74f1325b/assignments/54f6defc)
 
+- [X] why wouldn't changes in bandwidth improve performance?
+  - Does "bandwidth" refer to physical media or entire chain (including devices, etc.)? i.e., is processing delay part of "bandwidth"?
+  - A: since individual packet (limited by latency) still takes just as long
+  - more bandwidth feels 'faster' since you can download faster (i.e., more Mbps), but it's about getting more in the same latency, and not necessarily getting sequential requests / responses any faster
+
 ### Unsure
 - [?] HTTP responses - what is the "body" called?  A key-value pair?  A payload?
   - A:  unsure
@@ -35,16 +40,19 @@
 - [?] are symmetric / asymmetric key encryption considered "protocols"?
   - A: possibly not a protocol in the same sense as TCP or HTTP
 
+- [?] Application layer:  what does the PDU look like?  is the PDU different for each internet service (e.g., FTP, email, HTTP, etc.) OR is there a common PDU for this layer?
+  - A:  Not really a PDU per-se;  blog post refers to an "application layer" PDU as a "message" (https://vahid.blog/post/2020-12-21-how-the-internet-works-part-ii-layers/)
+
+- [?] Confirm - when we enter URL in a browser window, it's JUST a URL, correct?  The *browser* automatically takes that URL and 'converts' it into an actual HTTP request?
+  - A:  agreed - the browser needs to form the request
+  - Also VERY likely that the request isn't actually formed and sent out until after the TCP / TLS handshake has taken place (since browsers make requests using the HTTP version that servers like - e.g., HTTP/2 or HTTP/3)
+
+- [?] how does the browser respond so quickly to "no domain name" found?  (e.g., when entering junk URLs)
+  - A:  suspect it's because DNS servers are extremely quick
+
 ### Open
-- [ ] Application layer:  what does the PDU look like?  is the PDU different for each internet service (e.g., FTP, email, HTTP, etc.) OR is there a common PDU for this layer?
 
-- [ ] Confirm - when we enter URL in a browser window, it's JUST a URL, correct?  The *browser* automatically takes that URL and 'converts' it into an actual HTTP request?
 
-- [ ] how does the browser respond so quickly to "no domain name" found?  (e.g., when entering junk URLs)
-
-- [ ] why wouldn't changes in bandwidth improve performance?
-  - Does "bandwidth" refer to physical media or entire chain (including devices, etc.)? i.e., is processing delay part of "bandwidth"?
-  - A: since individual packet (limited by latency) still takes just as long
 
 # Assessment prep checklist
 - [X] create written study notes (based on study guide)
