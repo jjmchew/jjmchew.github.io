@@ -651,7 +651,7 @@
 
 | OSI Layer | IPS Layer   | Protocol   | PDU             |  Header contains | Scope             |
 |-----------|-------------|------------|-----------------|----------|-------------------|
-| Application <br> Presentation <br> Session | Application | Many (e.g., HTTP, <br>TLS [at session level] ) | "message" or "data" [^41] |  | process to process[^41] |
+| Application <br> Presentation <br> Session | Application | Many (e.g., HTTP, <br>TLS [at session level] ) | "message" or "data" [^41]<br>"TLS Record" [at session level] |  | process to process[^41] |
 | (Session)<br>Transport | Transport   | TCP or UDP | Segment or Datagram | - source port<br>- destination port | app to app<br>(port to port; socket to socket[^41])        |
 | Network | Internet    | IP         | Packet              | - source IP address<br>- destination IP address<br>- TTL, protocol, checksum | host to host<br>(network to network[^41]) |
 | Data Link <br> Physical | Link<br> _ | Ethernet | Frame | - Destination MAC address <br>- source MAC address | router to device <br>(node to node[^41]) |

@@ -42,6 +42,7 @@
 
 - [?] Application layer:  what does the PDU look like?  is the PDU different for each internet service (e.g., FTP, email, HTTP, etc.) OR is there a common PDU for this layer?
   - A:  Not really a PDU per-se;  blog post refers to an "application layer" PDU as a "message" (https://vahid.blog/post/2020-12-21-how-the-internet-works-part-ii-layers/)
+  - A: an HTTP message is a kind of PDU - has an agreed structure so that it can be understood when transmitting info between computers
 
 - [?] Confirm - when we enter URL in a browser window, it's JUST a URL, correct?  The *browser* automatically takes that URL and 'converts' it into an actual HTTP request?
   - A:  agreed - the browser needs to form the request
