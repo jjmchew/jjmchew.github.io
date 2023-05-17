@@ -67,6 +67,7 @@
 # Quiz answers (2nd time)
 
 ## Quiz1 https://launchschool.com/quizzes/18c3a173
+### answers
 - q1: A, B, C, D
 - q2: A, B, E
 - q3: A, B
@@ -78,6 +79,7 @@
 - q9: A, B, D
 
 ## Quiz2 https://launchschool.com/quizzes/6b67f575
+### answers
 - q1: B
 - q2: B, D, E
 - q3: A, B, C, D
@@ -88,6 +90,7 @@
 - q8: A
 
 ## Quiz3 https://launchschool.com/quizzes/5e0dcf86
+### answers
 - q1: C
 - q2: C
 - q3: A
@@ -101,8 +104,10 @@
 - q11: A, B, C
 - q12: A, B, C
 - q13: B, C, D
+### review q9
 
 ## Quiz4 https://launchschool.com/quizzes/0ff9564e
+### answers
 - q1: A, E, F
 - q2: C
 - q3: A, C, D
@@ -110,3 +115,4 @@
 - q5: A, C
 - X q6: A, ==~~B~~==, D
 - q7: C
+### review q6

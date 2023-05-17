@@ -183,7 +183,7 @@
 - a general networking concept where an issue in delivering or processing 1 message in a sequence will 'block' or delay the deilvery of processing of subsequent messages [^12]
 
 #### **Hop**
-- journeys between nodes on the network (i.e., interruptions for transmission, processing, queuing) [^2]
+- journeys between nodes (e.g., routers) on the network (i.e., interruptions for transmission, processing, queuing) [^2]
 
 #### **HTML**
 - (Hypertext Markup Language)
@@ -300,7 +300,7 @@
 
 #### **Multiplexing**
 - a concept of transmitting multiple signals over a single channel;  opposite:  **demultiplexing** [^10]
-  - can occur at physical level: e.g., optical fibres carrying multiple light signals at different angles of refraction;  e.g., radio waves carrying signals at different frequencies;  e.g., at transport layer using different ports [^10]
+  - can occur at physical level: e.g., optical fibres carrying multiple light signals at different frequencies;  e.g., radio waves carrying signals at different frequencies;  e.g., at transport layer using different ports [^10]
   - multiplexing is enabled through use of network ports [^13]
 
 
@@ -478,6 +478,7 @@
     |------------|-------------|---------|
     |200         | OK          | request handled successfully |
     |302         | Found       | requested resource has changed temporarily <br> usually redirects to another URL defined in `Location` response header|
+    |400         | Bad Request| request was formed incorrectly |
     |404         | Not Found   | requested resource cannot be found |
     |500         | internal server error | server has encountered a generic error | 
   
@@ -582,7 +583,7 @@
 #### **URL encoding**
 - a technique where certain characters in an URL are replaced with an ASCII code [^27]
   - in URLs can only use standard 128-character ASCII set (single-byte UTF-8 codes) [^18]
-    - if not part of the standard set, might be misinterpreted (e.g., `%`, ` `, `'`, `"`, `#`, `<>`, `[]`, `{}`, `~`, etc.), or reserved (e.g., `&`, `/`, `?`, `:`, `@`) then it must be encoded
+    - if not part of the standard set, might be misinterpreted (e.g., `%`, space, `'`, `"`, `#`, `<>`, `[]`, `{}`, `~`, etc.), or reserved (e.g., `&`, `/`, `?`, `:`, `@`) then it must be encoded
 
 #### **WebRTC**
 - (Web Real-time Communications)
@@ -614,7 +615,7 @@
 
 #### **XHR**
 - (XMLHttpRequest)
-- supports AJAX (asynchronous JS) and real-time notification functionality (see also [Polling](#polling), [Long-polling](#long-polling)); doesn't support one-side streaming to the other (see also [SSE](#sse), [Websocket API](#websocket-api)[^39]
+- supports AJAX (asynchronous JS) and real-time notification functionality (see also [Polling](#polling), [Long-polling](#long-polling)); doesn't support one-side streaming to the other (see also [SSE](#sse), [Websocket API](#websocket-api) )[^39]
 
 #### **XSS** 
 - (Cross-site Scripting)
@@ -653,7 +654,7 @@
 |-----------|-------------|------------|-----------------|----------|-------------------|
 | Application <br> Presentation <br> Session | Application | Many (e.g., HTTP, <br>TLS [at session level] ) | "message" or "data" [^41]<br>"TLS Record" [at session level] |  | process to process[^41] |
 | (Session)<br>Transport | Transport   | TCP or UDP | Segment or Datagram | - source port<br>- destination port | app to app<br>(port to port; socket to socket[^41])        |
-| Network | Internet    | IP         | Packet              | - source IP address<br>- destination IP address<br>- TTL, protocol, checksum | host to host<br>(network to network[^41]) |
+| Network | Internet    | IP         | Packet              | - source IP address<br>- destination IP address<br>- TTL, protocol, checksum | host to host<br>(network to network[^41] or "inter-network") |
 | Data Link <br> Physical | Link<br> _ | Ethernet | Frame | - Destination MAC address <br>- source MAC address | router to device <br>(node to node[^41]) |
 
 #### TCP vs UDP

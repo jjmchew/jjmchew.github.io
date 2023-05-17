@@ -11,7 +11,7 @@
 
 - *physical network* is tangible infrastructure that transmits electrical signals, light, radio waves which carry network communications [^5]
 
-- **Latency** : a meausre of the *time* it takes data to get from 1 point in a network to another [^2]
+- **Latency** : a measure of the *time* it takes data to get from 1 point in a network to another [^2]
   - e.g., related to the time it takes 1 car to travel from point A to point B
   - comprised of:
     - propogation delay : ratio between distance and speed
@@ -20,7 +20,7 @@
     - queuing delay : delay from data waiting in buffers at each network device
   - last-mile latency : increased delays at the network 'edge' (i.e., in getting the network signal from the ISPs network to the home or office network) as a result of more 'hops' (a journey between nodes on the network)
 
-- **Bandwidth** : a measure of the *amount* of ata that can be sent in a particular unit of time (typically a second) [^2]
+- **Bandwidth** : a measure of the *amount* of data that can be sent in a particular unit of time (typically a second) [^2]
   - e.g., the number of lanes in that road (all cars travelling at the same speed) 
   
 - increasing bandwidth doesn't necessary improve performance of network [^2]
@@ -138,7 +138,7 @@
 
 ### Have a broad understanding of the three-way handshake and its purpose
   
-  - threeway handshake is used to establish a TCP connection, steps are: [^8]
+  - three-way handshake is used to establish a TCP connection, steps are: [^8]
     - Sender sends SYN
     - Receiver sends SYN ACK
     - Sender sends ACK
@@ -176,7 +176,7 @@
 
 - URL encoding is replacing characters within URL strings that are: [^12]
   1. reserved (if not being used for their reserved purpose)
-  2. not part of the standard ASCII character set
+  2. not part of the standard 128-bit ASCII character set
   3. may be mis-interpreted by other systems (e.g., " ", "#", "<>", "[]", "{}", "~")
 - e.g., " " is replaced with "%20"; "$" is replaced with "%24" [^12]
 
@@ -187,7 +187,7 @@
 ### Be able to explain what HTTP requests and responses are, and identify the components of each
 
 - HTTP headers : colon-separated name-value pairs sent in plain-text [^13]
-  - `Connection: Keep-Alive` [^27]
+  - e.g., `Connection: Keep-Alive` [^27]
 
 - HTTP request contains [^13] [^18]:
   - **HTTP method** (e.g., `GET`)
@@ -230,7 +230,7 @@
 - a protocol is 'stateless' when it's designed such that each request/response pair is completed independent of the previous one [^11]
   - the server does not need to hang on to information or state between requests
   - when requests (or responses) break en route to the server, there is no clean-up
-  - each request contains all info necessary the request to be fulfilled
+  - each request contains all info necessary for the request to be fulfilled
 
 - 3 techniques to simulate state in web applications: [^15]
   1. sessions (session identifier) : each request is inspected for a (valid) session ID and used as a key to retrieve required data by the server
@@ -291,7 +291,7 @@
 
 - TLS offers secure message exchange over an unsecure channel (HTTP) by providing: [^22]
   - **encryption** : encoding messages so only authorized recipients can decode
-    - uses TLS handshake to establish asymmetric/symmetric keys for message exchange; requires additional 2 RTT after TCP 3-way handshake [^23]
+    - uses TLS handshake to establish asymmetric/symmetric keys for message exchange; requires additional 2 RTT (depending on version) after TCP 3-way handshake [^23]
   - **authentication** : verify the identity of a party in message exchange [^24]
     - server issues a digital certificates; certificates issued by Certificate Authorities (CA) are safest, are digitally signed by CAs 
     - "Chain of Trust" : server certificates are issued by Intermediate CA, which is certified by Root CAs (small group of highly trusted CAs)
