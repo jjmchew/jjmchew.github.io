@@ -582,7 +582,7 @@
 #### **URL encoding**
 - a technique where certain characters in an URL are replaced with an ASCII code [^27]
   - in URLs can only use standard 128-character ASCII set (single-byte UTF-8 codes) [^18]
-    - if not part of the standard set, might be misinterpreted (e.g., `%`, ` `, `'`, `"`, `#`, `<`, `>`, `[`, `]`, `~`, etc.), or reserved (e.g., `&`, `/`, `?`, `:`, `@`) then it must be encoded
+    - if not part of the standard set, might be misinterpreted (e.g., `%`, ` `, `'`, `"`, `#`, `<>`, `[]`, `{}`, `~`, etc.), or reserved (e.g., `&`, `/`, `?`, `:`, `@`) then it must be encoded
 
 #### **WebRTC**
 - (Web Real-time Communications)

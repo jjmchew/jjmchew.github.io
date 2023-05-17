@@ -529,7 +529,9 @@ What is a Query string? What is it used for?
 67
 ==What URL encoding is and when it might be used for?==
 
-- URL encoding is used when when unsupported or special characters are included as part of the URL (typically in the path or query parameters).
+- URL encoding is a technique where certain characters in a URL are replaced with an ASCII code (e.g., `%20` replaces a ` `). Only standard (not extended) 128-bit ASCII characters can be used in a URL and certain characters are reserved (e.g., `?`, `&`, `:`, etc.) and others may be mis-interpreted by other back-end systems (e.g., ` `, `'`, `"`, `#`, `<>`, `[]`, `{}`, `~`).
+- URL encoding is used when when unsupported, reserved, or special characters are included as part of the URL (typically in the path or query parameters).
+
 
 
 ---
@@ -538,6 +540,7 @@ What is a Query string? What is it used for?
 Which characters have to be encoded in the URL? Why?
 
 - Characters such as " ", "?", "&", "=", or non-UTF-8 characters must be encoded to be able to be transmitted to and interpreted correctly by the server.
+- Any characters in the extended 128-bit ASCII character set, reserved characters (e.g., `/`, `?`, `:`, `&`, `@`), and 'unsafe' characters (those that could be misinterpreted or modified by some systems, e.g., `%`, ` `, `'`, `"`, `#`, `[]`, `<>`, `{}`)
 
 ---
 
@@ -551,7 +554,7 @@ What is www in the URL?
 70
 ==What is URI?==
 
-- A URI is a Universal Record Identifier : a generic term referring to identifiers within a network that includes more specific identifiers like a URL (Uniform Resource Locator) or a URN (Uniform Resource Number).
+- A URI is a Universal Record Identifier : a generic term referring to a string of characters that identifies a particular resource within an information space (e.g., for a resource within a web, or a book within a library) that includes more specific identifiers like a URL (Uniform Resource Locator) or a URN (Uniform Resource Number).
 
 ---
 
@@ -565,7 +568,9 @@ What is the difference between scheme and protocol in URL?
 72
 What is HTTP?
 
-- HTTP is HyperText Transfer Protocol, which is the protocol used by the world wide web to send and receive requests. Information that is sent via HTTP is typically encoded as HTML (HyperText Markup Language) pages.
+- HTTP is HyperText Transfer Protocol, which is the protocol used by the world wide web to send and receive requests. Typically, information that is sent via HTTP is typically encoded as HTML (HyperText Markup Language) pages, but the information retrieved can also be other documents, scripts, images, videos, etc.
+- HTTP is a stateless, text-based, response / request protocol which is inherently insecure.
+- It is used by clients to make requests and servers to return correponding responses.
 
 ---
 
@@ -579,7 +584,8 @@ What is HTTP?
 74
 Explain the client-server model of web interactions, and the role of HTTP as a protocol within that model
 
-- Web interactions involve a request (sent by the client) and a response (sent by the web server). HTTP is the protocol used to structre those requests and responses.
+- Web interactions involve a request (sent by the client) and a response (sent by a separate server). HTTP is the protocol used to structre those requests and responses.
+- Typically, 1 server will respond to requests from many clients.
 
 ---
 
@@ -588,12 +594,12 @@ What are HTTP requests and responses? What are the components of each?
 
 - HTTP requests and responses are both HTTP messages. Requests are typically sent by the client to the server and responses are sent by the server back to the client. HTTP messages are text-based.
 - An HTTP request will contain:
-  - method, path, protocol (HTTP) version (for HTTP version ==1.0+==)
+  - method + path ("request line"), protocol (HTTP) version (for HTTP version ==1.0+==)
   - headers (key-value pairs of additional related information)
-  - optional body containing further info associated with the request
+  - optional body containing further info associated with the request (e.g., for POST requests)
 - An HTTP response will contain:
-  - status code and line
-  - optional headers
+  - status line (code and text)
+  - headers (generally optional)
   - optional body containing associated info
 
 ---
@@ -604,7 +610,6 @@ Describe the HTTP request/response cycle.
 - A connection is formed (via TCP) between the client and a web server
 - A (text-based) HTTP request is sent
 - Once received, the web server processes that request and sends a (text-baesd) HTTP response
-==- By default, the connection is closed afterwards==
 
 ---
 
@@ -625,14 +630,19 @@ What is statelessness?
 79
 What is a stateful Web Application?
 
-- A stateful web application is a web application (one that communicates wiht a server via HTTP) that mimics a stateful application through the use of various techniques. 
+- A stateful web application is a web application (one that communicates with a server via HTTP) that mimics a stateful application through the use of various techniques. 
+- Those techniques include the use of:
+  - sessions and session identifiers
+  - cookies
+  - AJAX (Asynchronous Javascript and XML)
 
 ---
 
 80
 How can we mimic a stateful application?
 
-- Since HTTP is an inherently stateless protocol, session identifiers or cookies are typically used to provide additional information along with each HTTP request to identify users and thus allow web applications to react as if persistent information (like a shopping cart, login, user profile, etc.) is being stored.
+- Since HTTP is an inherently stateless protocol, session identifiers and/or cookies are typically used to provide additional information along with each HTTP request to identify users and thus allow web applications to react as if persistent information (like a shopping cart, login, user profile, etc.) is being stored.
+- Also, the use of AJAX can improve the interactivity of web applications by not requiring a full page refresh for requests made to the server. Requests can be made asynchronously (i.e,. in the background) and updates to the screen can be handled by callback functions which allow web applications to behave more like traditional software applications.
 
 ---
 
@@ -684,7 +694,7 @@ What is a `GET` request and how does it work?
 87
 What is the HTTP response body and what do we use it for?
 
-- The HTTP response body is ==where the returned HTML information will be stored.==
+- The HTTP response body is ==where the raw response data will be in an HTTP response.==
 
 ---
 
@@ -695,6 +705,7 @@ What is the HTTP response body and what do we use it for?
   - request method
   - path
   - HTTP version (from version ==1.0== onwards)
+  - Host header (required for specific HTTP versions)
 
 ---
 
@@ -766,7 +777,6 @@ How do modern web applications 'remember' state for each client?
 - Modern web applications typically apply 1 or more workarounds to 'remember' state for each client:
   - cookies can be used to store information that pertains to a user
   - a session identifier can be used by the server to track history associated with a series of interactions
-  - ==??==
 
 ---
 
@@ -781,18 +791,23 @@ What role does AJAX play in displaying dynamic content in web applications?
 98
 Describe some of the security threats and what can be done to minimize them?
 
-- Session hijacking: when a malicious user obtains the session information from an active user and can thus appear to be that user in interactions with a web server. This would allow a malicious user to use their own system to pretend to be another user without that other user being involved or even aware their account was being used.
-- Packet sniffing: when a malicious user intercepts IP packets being sent through the internet and can retrieve sensitive information (such as session ids, bank account numbers, etc.)
+- **Session hijacking**: when a malicious user obtains the session information from an active user and can thus appear to be that user in interactions with a web server. This would allow a malicious user to use their own system to pretend to be another user without that other user being involved or even aware their account was being used.
+- **Packet sniffing**: when a malicious user intercepts IP packets being sent through the internet and can retrieve sensitive information (such as session ids, bank account numbers, etc.)
   - Both of these threats can be minimized through the use of encrypted data payloads for transmission (e.g., using TLS - Transport Layer Security)
 - Malicious users can setup fake servers / domains and pretend to be a trusted entity
+- **Fake servers**: a malicious user may be able to pose as a legitimate site and fool users into entering sensitive information
   - Use of TLS requires a server to send a digital certificate which has been issued by a Certificate Authority (CA). These CAs validate the identity of domain owners (i.e., they are who they say they are). Certificates from CAs are digitally-signed through the use of a private key to validate each certificate.
+- **Cross-site Scripting** is when a users adds javascript code to a website through forms, comments, or other text-input areas which is inadvertently executed by the server.
+  - all input text should be sanitized (e.g., by removing \<script> tags or disallowing HTML and JS in user inputs)
+  - any user input that is displayed on-screen should be escaped to prevent the browser from interpreting that text as code (e.g., using HTML entities to replace characters like "<>")
 
 ---
 
 99
 What is the Same Origin Policy? How it is used to mitigate certain security threats?  
 
-- An "origin" is comprised of a scheme, host, and port. The Same Origin Policy would allow or restrict various requests or actions depending on whether the request was received from the same origin or a different origin ("Cross-Origin")
+- An "origin" is comprised of a scheme, host, and port. The Same Origin Policy would allow or restrict various requests or actions depending on whether the request was received from the same origin or a different origin ("Cross-Origin"). Generally, there are no restrictions on interactions from the same origin (i.e., the same server), but there are restrictions when a different origin tries to request resources programmatically using APIs like 'XHR' or 'fetch'.
+- This policy also helps to prevent session hijacking.
 
 ---
 
@@ -866,6 +881,19 @@ What is TLS Handshake?
 
 - The TLS encryption process starts with the TLS handshake which help to establish the cipher suites that will be used in the handshake and subsequent transmissions, as well as establishing the encryption keys that will be used.
 - Asymmetric key encryption is used to establish a symmetric key. The symmetric key is used for encrypted HTTP message transmissions.
+- TLS handshake:
+  - Client sends 'ClientHello' containing:
+    - max protocol version supported, list of cipher suites supported
+  - Server sends 'ServerHello' and:
+    - server's digital certificate w/ public key
+    - sets protocol version and cipher suites
+    - ServerHelloDone
+  - Client sends:
+    - ClientKeyExchange with 'pre-master secret' (encrypted w/ server public key), ChangeCipherSpec and Finished flag
+  - Server:
+    - decrypts 'pre-master secret' and generates symmetric key
+    - sends ChangeCipherSpec
+    - sends Finished
 
 ---
 
@@ -874,7 +902,7 @@ Describe the pros and cons of TLS Handshake
 
 - Pros: secure, encrypted transmissions (asymmetric key encryption) are used to establish a secure, encrypted transmission channel (symmetric key encryption)
 
-- Cons: can be slow; requires an additional ==1 RTT== after the initial TCP three-way handshake has been established (1 RTT).
+- Cons: can be slow; requires an additional ==2 RTT== (depending on TLS version) after the initial TCP three-way handshake has been established (1 RTT).
 
 ---
 
@@ -898,7 +926,7 @@ What is it CA hierarchy and what is its role in providing secure message transfe
 112
 What is Cipher Suites and what do we need it for?
 
-- Cipher Suites are a set of encryption algorithms defined jointly by the client and server, based upon the highest versions of TLS supported, which will be used throughout the TLS handshake process and secure message transmission process. The Suites include the encryption algorithms that will be used in asymmetric key encryption, symmetric key encryption, and ==digital certificate verification==.
+- Cipher Suites are a set of encryption algorithms defined jointly by the client and server, based upon the highest versions of TLS supported, which will be used throughout the TLS handshake process and secure message transmission process. The Suites include the encryption algorithms that will be used in asymmetric key encryption, symmetric key encryption, digital certificate verification, and data transfer integrity checking.
 
 ---
 
@@ -920,7 +948,7 @@ Compare HTTP and HTTPS.
 115
 Does HTTPS use other protocols? 
 
-- HTTPS uses the TLS protocol to encrypt data payloads being transmitted via TCP.
+- HTTPS uses the TLS protocol to encrypt data payloads being transmitted via TCP. Otherwise, it is similar to HTTP (same message structures) and also uses TCP, IP, Ethernet to package, route, and transmit data from the client to and from a server across the internet.
 
 ---
 
@@ -928,6 +956,7 @@ Does HTTPS use other protocols?
 How do you know a website uses HTTPS?
 
 - The URL scheme name will be `https`, which indicates the use of the HTTPS protocol scheme.
+- Typically, browsers will also display a padlock icon near the URL indicating the user of a secure, encrypted connection.
 
 ---
 

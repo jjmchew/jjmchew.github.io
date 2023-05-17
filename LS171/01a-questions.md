@@ -58,55 +58,55 @@
 # Assessment prep checklist
 - [X] create written study notes (based on study guide)
 - [X] read all pinned posts
-- [ ] 2nd pass spot questions
+- [X] 2nd pass spot questions
 - [X] things to draw / memorize:
     - [X] OSI vs TCP/IP layers [https://launchschool.com/lessons/4af196b9/assignments/21ef33af]
-- [ ] do quizzes again
+- [X] do quizzes again
 
 
 # Quiz answers (2nd time)
 
 ## Quiz1 https://launchschool.com/quizzes/18c3a173
-- q1: 
-- q2: 
-- q3: 
-- q4: 
-- q5: 
-- q6: 
-- q7: 
-- q8: 
-- q9: 
+- q1: A, B, C, D
+- q2: A, B, E
+- q3: A, B
+- q4: B
+- q5: A
+- q6: A, C, D
+- q7: A, C
+- q8: A, D
+- q9: A, B, D
 
 ## Quiz2 https://launchschool.com/quizzes/6b67f575
-- q1: 
-- q2: 
-- q3: 
-- q4: 
-- q5: 
-- q6: 
-- q7: 
-- q8: 
+- q1: B
+- q2: B, D, E
+- q3: A, B, C, D
+- q4: A, C, D, E, F, G
+- q5: B, C, G
+- q6: E
+- q7: B
+- q8: A
 
 ## Quiz3 https://launchschool.com/quizzes/5e0dcf86
-- q1: 
-- q2: 
-- q3: 
-- q4: 
-- q5: 
-- q6: 
-- q7: 
-- q8: 
-- q9: 
-- q10: 
-- q11: 
-- q12: 
-- q13: 
+- q1: C
+- q2: C
+- q3: A
+- q4: B
+- q5: C
+- q6: B
+- q7: B, D
+- q8: A
+- ==X q9: B==
+- q10: A, C, D
+- q11: A, B, C
+- q12: A, B, C
+- q13: B, C, D
 
 ## Quiz4 https://launchschool.com/quizzes/0ff9564e
-- q1: 
-- q2: 
-- q3: 
-- q4: 
-- q5: 
-- q6: 
-- q7: 
+- q1: A, E, F
+- q2: C
+- q3: A, C, D
+- q4: C
+- q5: A, C
+- X q6: A, ==~~B~~==, D
+- q7: C

@@ -78,7 +78,7 @@
 ### Understand the client-server model of web interactions, and the role of HTTP as a protocol within that model
 
 - HTTP is a stateless *request response protocol* for how clients communicate with servers [^16]
-  - a set of rules for the transfer of files (including. hypertext documents, CSS documents, scripts, images, videos) [^11]
+  - a set of rules for the transfer of files (including hypertext documents, CSS documents, scripts, images, videos) [^11]
 
 - clients make HTTP requests, server process and sends an HTTP response [^16]
   - client is separate from the server (although more than 1 client may connect to the server) (in contrast to peer-to-peer networking: each node can be client and server for another node [^28])
