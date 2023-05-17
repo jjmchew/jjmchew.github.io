@@ -26,12 +26,21 @@
 - increasing bandwidth doesn't necessary improve performance of network [^2]
 - **bandwidth bottleneck** : a point within a network at which the bandwidth changes from relatively high to relatively low [^2]
 
+- latency is most relevant in "smaller" tasks (online gaming, instant messaging, light website browsing);  bandwidth affects "large" tasks (downloading large files, streaming videos, viewing complex, interactive websites) [^31]
+
 ### Have a basic understanding of how lower level protocols operate
 
 - **Link layer**: Ethernet protocol, sends "frames" from switch to device (i.e., communication in a LAN[^5]), PDU header contains destination and source MAC address (Media Access Control) [^3]
 
 - **Internet layer**: IP protocol, sends "packets" from host (network) to host (network) (essentially router to router, inter-network[^5]), PDU header (IPv4) contains source and destination IP addresses, TTL, Protocol (UDP vs TCP), checksum [^4]
   - 2 versions of IP in use:  IPv4, IPv6
+
+- summary of layers: [^29]
+  - Application: *end-to-end* communication between applications
+  - Transport: *end-to-end* communication between devices
+  - Internet: logical *point-to-point* communication
+  - Link: physical *point-to-point* communication
+
 
 ### Know what an IP address is and what a port number is
 - a logical, hierarchical address used to identify the unique 'location' of a device within the network it is connected to [^4]
@@ -62,6 +71,9 @@
   - DNS servers are hierarchically organized and connected in a global network
   - no single DNS server contains the entire database
   - if a single DNS server does not have the required domain name mapping, the request is forwarded to another DNS server until the required IP address is found
+
+- DNS operates at the Transport layer and is initiated by software (e.g., a browser) [^30]
+  - DNS may be cached locally, as well, so a DNS query isn't always required
 
 ### Understand the client-server model of web interactions, and the role of HTTP as a protocol within that model
 
@@ -137,6 +149,7 @@
 
 - **Flow control**: reducing the amount of data sent so that the receiver does not lose data
   - each side uses the "WINDOW" field of TCP header to let the other side know how much data it is willing to receive;  once buffer starts to get full, WINDOW size is reduced [^8]
+  - flow control (and pipelining) work by modifying the "WINDOW" field of the TCP header to adjust the amount of data that is sent to the receiver [^32]
 
 - **Network congestion**: when the underlying network is overwhelmed with data - more data is being transmitted on the network than there is capacity to process and transmit that data; excess data (that overflows a buffer) is lost [^8]
 
@@ -193,6 +206,13 @@
 ### Be able to describe the HTTP request/response cycle
 
 - clients issue requests to servers, server processes that request, server sends a response [^16]
+
+- high-level overview of HTTP request / response [^34]
+  - HTTP defines the format for the request / response by the web / application servers (application end-to-end)
+  - Transport defines the specific process (application) on source and destination computers to process that request (process end-to-end)
+  - Internet layer defines the logical address to navigate from a computer on a sub-network through the internet (network of networks connected by routers) to the destination network (router); at each stop, there will be a new source IP address defined (i.e., this layer is point-to-point)
+  - Ethernet layer defines the physical address (MAC address) of each device source/destination at each stop along the way from request source computer to destination server computer
+
 
 ### Be able to explain what status codes are, and provide examples of different status code types
 
@@ -262,6 +282,12 @@
 - TLS handshake [^26]:
   - establishes cipher suites (agreed set of algorithms for encryption, authentication, integrity)
   - server sends certificate (for TLS authentication, server's public key sent for encryption)
+  - handshake (TLS v1.2) (2 RTT) [^35]
+    - client starts with ClientHello (define protocol versions, cipher suite)
+    - then ServerHello (w/ server certificate, ServerKeyExchange, digital signature, ServerHelloDone)
+    - then ClientKeyExchange, ChangeCipherSpec, Finished (ensure integrity)
+    - server sends ChangeCipherSpec, Finished (ensure integrity)
+
 
 - TLS offers secure message exchange over an unsecure channel (HTTP) by providing: [^22]
   - **encryption** : encoding messages so only authorized recipients can decode
@@ -273,6 +299,7 @@
     - MAC - Message Authentication Code [^25]
     - TLS also uses a header, includes MAC field : acts like a checksum (contains "digest" of data payload created based on agreed cipher suite);  receiver will create and compare their own version of the "digest" to confirm data payload was not tampered with [^25]
 
+- any time information is encrypted using the public key provided in a digital certificate, we do so knowing that if the certificate was copied illicitly, that the server would NOT be able to decrypt the messages that we sent since a server imposter would NOT have the private key to decrypt messages with - hence it will not be possible to establish a secure TLS connection [^33]
 
 ---
 
@@ -305,3 +332,10 @@
 [^26]: [Transport Layer Security (TLS) Summary](https://launchschool.com/lessons/74f1325b/assignments/238ff36f)
 [^27]: [Web Performance and HTTP Optimizations](https://launchschool.com/lessons/be1304f3/assignments/98ecce1c)
 [^28]: [Peer to Peer Networking](https://launchschool.com/lessons/be1304f3/assignments/5a9cbadb)
+[^29]: [ Discussion (layers)](https://launchschool.com/posts/bd0e3b06)
+[^30]: [ Discussion (DNS)](https://launchschool.com/posts/97644af7)
+[^31]: [ Discussion (latency vs bandwidth)](https://launchschool.com/posts/75869b56)
+[^32]: [ Discussion (flow control)](https://launchschool.com/posts/a852ecad)
+[^33]: [IBM TLS](https://www.ibm.com/docs/en/informix-servers/14.10?topic=tls-handshake-certificates-public-private-key-pairs)
+[^34]: [Ethan Weiner HTTP request / response videos](https://youtu.be/ky9Qy0ZSx24)
+[^35]: [ TLS handshake (computerphile)](https://youtu.be/86cQJ0MMses)

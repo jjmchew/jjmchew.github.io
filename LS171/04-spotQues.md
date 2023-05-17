@@ -20,7 +20,7 @@ What is the Internet?
 3
 Is the Internet the same thing as a network? 
 
-- Not quite. The internet is similar to a network, but because it's the interconnection of many different networks, it's much larger and more complex than any specific network might be.  At the smallest scale, a network could be a LAN (Local Area Network) where 2 computers are connected by a single cable to share information.  The internet is comprised of many (more complicated) LANs all interconnected and supported by a series of protocols that allow all of the computers to connect and share information.
+- Not quite. The internet is similar to a network, but because it's the interconnection of many different networks, it's much larger and more complex than any specific network might be.  At the smallest scale, a network could be a LAN (Local Area Network) where 2 computers are connected by a single cable to share information.  The internet is comprised of many (more complicated) LANs all interconnected by what can be thought of as a network of routers and supported by a series of protocols that allow all of the computers to connect and share information.
 
 ---
 
@@ -34,14 +34,14 @@ Is the Internet the same thing as a network?
 5
 What is the difference between network, Internet, and WEB?
 
-- A network is the most basic "unit" - the interconnection of 1 or more computers to share information.  The Internet is a connection of multiple networks to be able to share information.  The Web is a service (an agreed upon standard way to share information on the Internet) which uses the physical interconnection and protocols of the Intenet to share information.
+- A network is the most basic "unit" - the interconnection of 1 or more computers to share information.  The Internet is a connection of multiple networks to be able to share information.  The Web is a service (an agreed upon standard way to access and share information on the Internet) which uses the physical interconnection and protocols of the Intenet to share information.
 
 ---
 
 6
 ==What are LAN and WLAN?==
 
-- A LAN is a Local Area Network. This is the most basic form of network where 1 or more computers are connected together to share information. Typically, all of the computers in the LAN are connected via cables to a hub or a switch. Information is shared between the computers through an ethernet cable.  A WLAN (Wireless Local Area Network) is similar to a LAN, but the computers are connected to a wireless switch via radio waves rather than physical cables.
+- A LAN is a Local Area Network. This is the most basic form of network where 1 or more computers are connected together and configured to share information. Typically, all of the computers in the LAN are connected via cables to a hub or a switch. Information is shared between the computers through an ethernet cable.  A WLAN (Wireless Local Area Network) is similar to a LAN, but the computers are connected to a wireless switch via radio waves rather than physical cables.
 
 ---
 
@@ -49,6 +49,7 @@ What is the difference between network, Internet, and WEB?
 What is a protocol?
 
 - A protocol is an (agreed) set of rules that govern the sharing of information.
+- A protocol is a system of rules governing the exchange or transmission of data.  Different protocols may have different functions (and in the case of the TCP/IP model, will correspond to different layers of the TCP/IP model).
 
 ---
 
@@ -62,7 +63,7 @@ What is the role of protocols?
 9
 Why there are many different types of protocols?
 
-- Protocols may govern different aspects or forms of communication. For example, in everyday communication defining a common language (and the structure and rules of that language) may be 1 protocol. Whether or not we speak those words or write them down in a message (and how that message might be structured) is another protocol. How the physical transmission of that message from 1 party to another, whether it's through the air or through the mail, might require another protocol.
+- Protocols may govern different aspects or forms of communication. For example, in everyday communication defining a common language (and the structure and rules of that language) may be 1 protocol. Whether or not we speak those words or write them down in a message (and how that message might be structured) is another protocol. The physical transmission of that message from 1 party to another, whether it's through the air or through the mail, might require another protocol.
 
 ---
 
@@ -105,7 +106,10 @@ What is the relationship between PDU and Data Payload?
 15
 ==Explain how lower-level protocols work in general?==
 
-- The levels referred to here are the layers of the OSI or TCP/IP model. The levels or layers at the bottom of these models relate more to the transmission of information over physical infrastructure such as the wires, cables, or radio waves. Protocols at these levels define how binary information will actually be sent and received. At the lowest level (physical) common protocols might be 802.11 for wifi communication or standards for coaxial and fibre optic cable. The sending and receiving of information via that physical infrastructure will be governed by link protocols such as Ethernet which includes a header with source and destination address information along with additional data payload information.
+- The levels referred to here are the layers of the OSI or TCP/IP model. The levels or layers at the bottom of these models relate more to the transmission of information over physical infrastructure such as the wires, cables, or radio waves. Protocols at these levels define how binary information will actually be sent and received. At the lowest levels (data link, physical or link) common protocols might be 802.11 for wifi communication, Ethernet standards, or other standards for coaxial and fibre optic cable. These protocols govern the sending and receiving of information via that physical infrastructure. The Ethernet standard defines a Frame (a unit of information sent via Ethernet) which includes a header with source and destination MAC address information along with additional data payload information.
+
+- The layer "above" the data link / physical or link layer is the network or internet layer. The protocol at this layer, the "Internet Protocol" (IP) is concerned with routing Packets (the name of the PDU for this protocol) of information across the internet from 1 router to another, ultimately helping data to traverse from 1 network to another. Packets are labelled with a source IP address and a destination IP address.  The IP address is a logical address, assigned dynamically to computers that connect to the internet, which is hierarchical in nature and thus supports routers in progressively routing packets towards the correct router managing the destination network.
+
 
 ---
 
@@ -128,12 +132,17 @@ Why do we need encapsulation?
 
 - A physical network is used to transmit binary data from one physical location to another. It must be able to clearly distinguish an "on" signal from an "off" signal and differentiate between successive "on"s or "off"s reliably. The key characteristics of a physical network are bandwidth and latency. When a number of different physical networks are connected together, the number of 'hops' (interconnections from 1 physical device to another) may also be relevant.
 
+- Latency is a measure of how much time it takes a packet of data to travel from source to destination. It is typically measured in milliseconds (ms). If a packet of data is thought of as a car, the latency is the time the car would take to drive from point A to point B.
+
+- Bandwidth is a measure of how much data can travel between 2 points of a network in a single unit of time (Usually 1 sec). Bandwidth is typically measured in bps (bits per second). To use the car analogy, increasing bandwidth would be analogous to increasing the number of lanes (and thus cars) that could concurrently travel from point A to point B.
+
 ---
 
 19
 ==How can we as developers deal with the limitations of physical network?==
 
 - Developers are always working within the limitations of physical networks (bandwidth, latency, hops). Being aware of these limitations and consciously choosing what protocols to use and what information to send over the physical network can help to optimize performance for the end-user. For example, where latency is a significant concern (and reliability is not), the use of UDP may be a more appropriate Transport protocol than TCP: TCP requires initial handshaking which takes a single round-trip time to establish a connection, whereas UDP does not and can send data immediately.
+- The use of content delivery servers which are located closer to end-users can also decrease latency, by reducing the physical distance (and thus the number of hops) data needs to travel to reach the user.
 
 ---
 
@@ -142,7 +151,7 @@ Why do we need encapsulation?
 
 - Latency is the amount of time (delay) it takes a single unit of data to go from 1 location to another. It is comprised of a few different elements:
   - ~~Transmission delay~~ Propogation delay : the amount of time it takes a signal to travel along the physical media (e.g., cable or through the air)
-  - ~~Processing delay~~ Transmission delay : the amount of time it takes a signal to be "pushed" from 1 physical device to another (e.g., cable to a router)
+  - ~~Processing delay~~ Transmission delay : the amount of time it takes a signal to be "pushed" from 1 physical device to another (e.g., cable to a router); this is roughly a measure of the amount of time it takes to modulate / demodulate a signal from it's physical form to/from (e.g., a light wave) to it's 'digital' form (i.e., stored as binary 1's or 0's).
   - Processing delay : the amount of time it takes a device to actually process information prior as part of transmission (and before / after propogation)
   - Queuing delay : the amount of time a signal may wait in a buffer before it is processed
 - Latency can be thought of as a car on a road - ~~how fast that car travels~~ the length of time it takes that car to get from 1 point to another is a measure of the latency similar to the length of time between a packet of data travelling from 1 point to another through a network.
@@ -160,7 +169,7 @@ What is Bandwidth?
 22
 ==What are Network 'Hops'?==
 
-- A 'hop' refers to the interconnection between 1 physical device and another on a network. At each 'hop' a frame of data will move from 1 physical device to another (e.g., from a cable to a router, or from a router to wireless signal).
+- A 'hop' refers to the interconnection between 1 node on a network and another. At each 'hop' a frame of data will move ~~from 1 physical device to another (e.g., from a cable to a router, or from a router to wireless signal)~~ through a router.
 - a 'hop' is a 'journey between nodes' (e.g., routers) on the network
 
 ---
@@ -169,6 +178,7 @@ What is Bandwidth?
 What is the relationship between network 'Hops' and latency? 
 
 - The more hops that a unit of data has to undergo, the higher the overall latency will be (i.e., the higher the delay will be for that unit of data to reach its destination). This is the result of additional processing and possibly queuing delays which may occur at each 'hop'.
+- "Last-mile latency" refers to the increased latency near the "edges" of the network - i.e., closest to the destination where data must pass through more devices that are relatively close together.
 
 ---
 
@@ -182,7 +192,7 @@ What is a switch and what is it used for?
 25
 What is a hub and what is it used for?
 
-- A hub is a physical device used to connect computers together in a network. The hub will broadcast messages it receives to all devices that are connected to it. It works well for simple networks with few devices, however, it does not work well for large networks since it broadcasts messages to all connected devices and thus creates unnecessary network traffic which can ==lead to increased latency.==
+- A hub is a physical device used to connect computers together in a network. The hub will broadcast messages it receives to all devices that are connected to it. It works well for simple networks with few devices, however, it does not work well for large networks since it broadcasts messages to all connected devices and thus creates unnecessary network traffic which can impede or delay messages being transmitted across the network.
 
 ---
 
@@ -190,6 +200,7 @@ What is a hub and what is it used for?
 ==What is a modem and what it is used for?==
 
 - A modem (modulate/demodulate) is a physical device used to convert data (i.e., binary information) to a signal suitable for the physical media it is travelling over (e.g., a modem could convert binary data to sounds to transmit over phone lines).
+- Typically a modem is used to convert digital signals for transmission over analog medium. (https://networkengineering.stackexchange.com/questions/11202/do-network-cards-work-as-modems-too)
 
 ---
 
@@ -204,7 +215,7 @@ What is a hub and what is it used for?
 28
 ==What is the difference between a switch, hub, modem, and router?==
 
-- Switches and hubs are used to connect computers together into a LAN. Switches are more efficient devices to use since they only send messages that are intended to each device; hubs send all messages to all devices connected. Modems are used to send information across non-ethernet media or cables (such as phone lines, coaxial cable, or fibre-optic cable). Routers are used to connect networks together.
+- Switches and hubs are used to connect computers together into a LAN. Switches are more efficient devices to use since they only send messages that are intended to each device; hubs send all messages to all devices connected. Modems are used to send information across non-ethernet media or cables (such as phone lines, or coaxial cable ~~or fibre-optic cable~~). Routers are used to connect networks together and contain information for what IP addresses a particular router is responsible for and how best to route packets of data to reach those routers.
 
 ---
 
@@ -212,14 +223,15 @@ What is a hub and what is it used for?
 ==How does the Internet work?==
 
 - The internet is a complex system comprised of computers being physically connected together and communicating through a set of standard protocols.
-- Computers are connected together using Ethernet cables or wireless wifi networks into Local Area Networks (LANs) via hubs or switches. The Ethernet protocol helps to send information along these cables between computers. LANs are to other networks through modems and routers. The Router acts as a 'gateway' for each LAN to the other networks connected together, and the modem is used to transmit the data between routers from 1 network to another (sometimes over great distances like under the ocean from 1 continent to another). The information sent between computers is structured in specific ways to contain some Application information (like an HTTP request), some Transport information related to reliability/integrity/etc information, some Internet information like a network address (IP), and some Link information like a MAC address for a device. This information allows a request from a single computer to travel out across a network of networks and to its final destination (e.g., an HTTP server that can respond to the request).
+- Computers are connected together using Ethernet cables or wireless wifi networks into Local Area Networks (LANs) via hubs or switches. The Ethernet protocol helps to send information along these cables between computers. LANs are to other networks through modems and routers. The Router acts as a 'gateway' for each LAN to the other networks connected together, and data is transmitted between routers from 1 network to another (sometimes over great distances like under the ocean from 1 continent to another). The information sent between computers is structured in specific ways to contain some Application information (like an HTTP request), some Transport information related to reliability/integrity/etc information, some Internet information like a network address (IP), and some Link information like a MAC address for a device. This information allows a request from a single computer to travel out across a network of networks and to its final destination (e.g., an HTTP server that can respond to the request).
 
 ---
 
 30
 ==What is a MAC address and what is its role in network communication?==
 
-- A MAC address is (theoretically) a unique identifier assigned to every physical device that can connect to a network (i.e., that has a Network Interface Card [NIC]). MAC addresses are comprised of several digits where the first section of digits are assigned to each device manufacturer by the IANA.
+- MAC stands for Media Access Control.
+- A MAC address is (theoretically) a unique identifier assigned to every physical device that can connect to a network (i.e., any device that has a Network Interface Card [NIC]). MAC addresses are comprised of 6 groups of 2 hexadecimal digits, where the first section of digits are assigned to each device manufacturer by the IANA. Generally speaking, MAC addresses are 'flat' as opposed to hierarchical (like IP addresses) and so are only used in point-to-point communication in networks (e.g., from 1 device to a switch or that switch to a router).
 - The MAC address is used to identify a particular device within a LAN so that information sent in Frames within a network can be sent to specific, desired devices.
 
 ---
@@ -227,7 +239,7 @@ What is a hub and what is it used for?
 31
 Give an overview of the Link/Data Layer
 
-- The Link/Data layer is the layer that references the physical media like cables that data travels over. The primary protocol we are concerned with at this layer is Ethernet which defines a PDU called a Frame which includes the MAC address of the source and destination computers. Frames which travel along Ethernet cables are separated by an "inter-frame gap" which for 100 Mbps ethernet is typically around ==0.96 ms==.
+- The Link/Data layer is the layer that references the physical media like cables that data travels over. The primary protocol we are concerned with at this layer is Ethernet which defines a PDU called a Frame which includes the MAC address of the source and destination device. Frames which travel along Ethernet cables are separated by an "inter-frame gap" which for 100 Mbps ethernet is typically around 0.96 **micro**seconds.
 
 ---
 
@@ -241,14 +253,14 @@ What is included in an Ethernet frame?
 33
 Give an overview of the Internet/Network Layer and it's role.
 
-- The Internet/Network layer is the layer that references various hosts (routers) on the internet and facilitates the travel of information across the many networks which make up the internet. Every router is responsible for a series of IP addresses which may be defined according the IPv4 or IPv6 protocol. These protocols use a series of digits to assign a unique logical address to every device connected to the internet. The digits which make up the IP address are assigned in a hierarchical fashion: the left-most digits correspond to high-level regions, and as you right, digits correspond to successively smaller sub-networks.
+- The Internet/Network layer is the layer that references various hosts (routers) on the internet and facilitates the travel of information across the many networks which make up the internet. Every router is responsible for a series of IP addresses which may be defined according the IPv4 or IPv6 protocol. These protocols use a series of digits to assign a unique logical address to every device connected to the internet. The digits which make up the IP address are assigned in a hierarchical fashion: the left-most digits correspond to high-level regions, and as you move to the right, digits correspond to successively smaller sub-networks.
 
 ---
 
 34
 What is IP?
 
-- IP refers to the "Internet Protocol" which is the protocol at the Internet/Network Layer. This protocol relates to the assignment and use of logical IP addresses to devices connected to the internet. There are 2 specific versions of IP currently in use: IPv4 and IPv6. IPv6 is an updated version of the protocol that allows for significantly more unique IP addresses to be assigned (340 undecillion unique addresses in IPv6 vs only 4.3 billion unique addresses in IPv4).
+- IP refers to the "Internet Protocol" which is the protocol at the Internet/Network Layer. This protocol relates to the assignment and use of logical IP addresses to route data to devices connected to the internet. There are 2 specific versions of IP currently in use: IPv4 and IPv6. IPv6 is an updated version of the protocol that allows for significantly more unique IP addresses to be assigned (340 undecillion unique addresses in IPv6 vs only 4.3 billion unique addresses in IPv4).
 
 ---
 
@@ -262,21 +274,21 @@ What is IP address?
 36
 ==What are the components of IP addresses?==
 
-- IP addresses are represented by a series of digits. IPv4 address are represented by a 4 sets of decimal numbers from 0 to 255.  IPv6 address are represented by ==8 sets of 128 bit numbers (typically shown as 4 digit decimal numbers)==.
+- IP addresses are represented by a series of digits. IPv4 address are represented by a 4 sets of decimal numbers from 0 to 255.  IPv6 address are represented by **8 sets of 16 bit numbers (typically shown as 8 sets of 4 hexadecimal characters)**.
 
 ---
 
 37
 What is a packet in computer networking?
 
-- A packet is the name given to an Ethernet PDU at the Data/Link layer. This PDU contains header information with the source and destination MAC address along with a data payload and an ==FCS footer==.
+- A packet is the name given to ~~an Ethernet PDU at the Data/Link layer. This PDU contains header information with the source and destination MAC address along with a data payload and an ==FCS footer==.~~ a PDU for the Internet Protocol. It contains a header which includes the source and destination IP address and a data payload, which is often a TCP Segment or UDP Datagram.
 
 ---
 
 38
 Why do we need both MAC addresses and IP addresses? 
 
-- MAC addresses are "burned in" (unchanging) identifiers used to identify specific devices in a LAN. IP addresses are a logical address that is assigned in a hierarchical way to help identify the regions, networks and sub-networks a particular device is associated with so that information travelling across the internet can be directed to the right place. An analogy for a MAC address might be someone's full name - it's an identifier (although not necessarily unique) which is required to send mail to someone, but it works best along with a full address (house number, street, city, province, country) to ensure that the mail can be routed effectively from 1 location in the world to another.
+- MAC addresses are "burned in" (unchanging) identifiers used to identify specific devices in a LAN. IP addresses are a logical address that is assigned in a hierarchical way to help identify the regions, networks and sub-networks a particular device is associated with so that information travelling across the internet can be directed to the right place. An analogy for a MAC address might be someone's full name - it's an identifier which is required to send mail to someone, but it works best along with a full address (house number, street, city, province, country) to ensure that the mail can be routed effectively from 1 location in the world to another.
 
 ---
 
@@ -305,6 +317,8 @@ What is a checksum and what is it used for? How is it used?
 42
 ==Give an overview of the Transport Layer.==
 
+- The Transport layer is responsible for end-to-end communication between devices or processes. PDUs at this layer have headers which contain a source port and a destination port which will identify how to access specific processes in the source computer and the destination server. This layer allows a computer which may have many applications (and associated processes) running concurrently, to all send information through a common connection to the internet. Messages from various applications are identified with a unique process number (port number) which allows the multiplexed use of common network infrastructure.
+- This layer encapsulates data from the Application layer, and is transmitted via IP and Ethernet protocols across in the internet.
 - The Transport layer has 2 common protocols, TCP and UDP, and is concerned with transmitting application (e.g., HTTP) information from port to port.
 - TCP is a connection-oriented protocol and thus uses handshaking to establish a connection prior to sending data. The corresponding PDU is the Segment.
 - UDP is a connection-less protocol and thus does not use handshaking to establish a connection prior to sending data. The PDU is the Datagram.
@@ -314,11 +328,11 @@ What is a checksum and what is it used for? How is it used?
 43
 ==What are the fundamental elements of reliable protocol?==
 
-- A reliable protocol is one that can:
-  - ensure no duplication of data transmitted
-  - ensure the integrity of data transmitted
-  - manage the order in which data is transmitted
-  - ensure the completeness of data transmitted
+- A reliable protocol (e.g., TCP) is one that can:
+  - ensure no duplication of data transmitted (i.e., each segment is assigned a sequence number)
+  - ensure the integrity of data transmitted (i.e., error detection through the use of a checksum)
+  - manage the order in which data is transmitted (i.e., each segment is assigned a sequence number)
+  - ensure the completeness of data transmitted (i.e., using the sequence number to ensure all expected data segments are received)
 
 ---
 
@@ -353,29 +367,30 @@ What is a network socket?
 48
 Is TCP connectionless? Why?
 
-- TCP is a connection-oriented Transport layer protocol. This is evident from the use of handshaking prior to sending data. The three-way handshake used in TCP establishes a connection between client and server and is a part of how the protocol provides reliable data transmission. Connectionless protocols (like UDP) do not have a handshake and allow data to be sent quite quickly, but do not inherently provide any confirmation that data has been sent properly, or is even received.
+- No - TCP is a connection-oriented Transport layer protocol. This is evident from the use of handshaking prior to sending data. The three-way handshake used in TCP establishes a connection between client and server and is a part of how the protocol provides reliable data transmission. Connectionless protocols (like UDP) do not have a handshake and allow data to be sent quite quickly, but do not inherently provide any confirmation that data has been sent properly, or is even received.
 
 ---
 
 49
 ==How do sockets on the implementation level relate to the idea of protocols being connectionless or connection-oriented?==
 
-- Sockets are used by both connectionless and connection-oriented protocols. Sockets essentially define where a message should be sent to and to not (in and of themselves) define what actually is or should be in a message. Practically speaking, sockets are an IP address:port number (e.g. `192.233.23.234:80`)
+- Sockets are used by both connectionless and connection-oriented protocols. Sockets essentially define where a message should be sent to and do not (in and of themselves) define what actually is or should be in a message. Conceptually speaking, sockets are a communication end-point made up of IP address:port number (e.g. `192.233.23.234:80`).
+- At an implementation level, sockets are objects that can be instantiated to manage the messages at a specific IP:port number.
 
 ---
 
 50
 What are sockets on implementation and on a theoretical level? 
 
-- Theoretically, sockets are a communication end-point which define where a message should be sent.
-- On an implementation level, sockets are a combination of an IP address:port number (e.g. `192.233.23.234:80`).
+- Theoretically, sockets are a communication end-point which define where a message should be sent. Conceptually, this is an abstraction for an endpoint used for inter-process communication (e.g., an IP address:port number, e.g., `192.233.23.234:80`)
+- On an implementation level, sockets are objects that can be instantiated to do specific things associated with creating connections between processes or applications. Sockets might be related to UNIX sockets which are a mechanism for communication between local processes running on the same machine, or internet sockets which are a mechanism for communication between networked processes (usually on different machines). The Berkeley sockets API model includes specific functions like `bind()`, `listen()`, `accept()`, and `connect()`.
 
 ---
 
 51
 What does it mean that the protocol is connection-oriented?
 
-- A connection-oriented protocol is one that requires a connection be established between each sender and receiver (typically a process). If multiple processes are running on a computer, a new instance of a 'receiver' is created for each process which receives only the specific messages associated with that process.
+- A connection-oriented protocol is one that requires a connection be established between each sender and receiver (typically a process). If multiple processes are running on a computer, a new instance of a 'receiver' (i.e., a new socket object) is created for each process which receives only the specific messages associated with that process (i.e., will listen for messages sent to a specific four-tuple: source port, source IP, destination port, destination IP).
 - A rough analogy for connection-oriented conversations with 5 different people at the same time would be for someone to clone themselves 5 times and assign a clone to each conversation which is taking place.
 
 ---
@@ -384,9 +399,9 @@ What does it mean that the protocol is connection-oriented?
 ==What is a three-way handshake? What is it used for?==
 
 - A three-way handshake is used as part of the TCP protocol to establish a connection between a client and a server.
-- First the server will send a "SYN" flag to the client.
-- Once the "SYN" is received, the client will send a "SYN ACK" to the server.
-- Once the "SYN ACK" is received, the server will send a =="SEND"== and then begin transmitting data
+- First the *sender* will send a "SYN" flag to the *receiver*.
+- Once the "SYN" is received, the *receiver* will send a "SYN ACK" to the *sender*.
+- Once the "SYN ACK" is received, the *sender* will send a **"ACK"** and then begin transmitting data
 
 ---
 
@@ -417,38 +432,40 @@ What are multiplexing and demultiplexing?
 ==What is flow control? How does it work and why do we need it?==
 
 - Flow control refers to the process where a sender ensures that the receiver is not overloaded with information being sent.
-- Flow control is implemented through adjusting the window and timeout settings when transmitting data.
+- Flow control is implemented through use of the window header in TCP segments which indicates to the sender how much data the receiver can receive.
 
 ---
 
 57
 ==How TCP prevents from receiver's buffer to get overloaded with data?==
 
-- TCP will reduce the window - the number of Segments that will be sent prior to a confirmation being sent by the receiver if too many segments timeout (no confirmation is received) and need to be re-sent.
+- TCP will reduce the window - the number of Segments that will be sent prior to a confirmation being sent by the receiver. As a receiver's buffer fills with data waiting to be processed, the receiver will reduce the window size in acknowledgements being returned to the sender.
 
 ---
 
 58
 ==What is congestion avoidance?==
 
-- Congestion avoidance is where a router chooses the most efficient path to send information from 1 network location to another.
+- ==Congestion avoidance is where a router chooses the most efficient path to send information from 1 network location to another.==
+- Congestion avoidance is also implemented in the TCP protocol through the use of changing transmission windows. The protocol will monitor the amount of data loss (i.e, retransmissions) in the connection and will adjust the transmission window (how much data is sent over the connection before waiting for acknowledgements from the receiver) to minimize congestion. 
 
 ---
 
 59
 **==What is network congestion?==**
 
-- When there is significant network congestion, the latency when transmitting data increases
+- Network congestion occurs when there is more data being transmitted on a network than there is capacity on the network to transmit that data. Typical consequences of network congestion are increased delays (latency), data loss, or the blocking of new connections.
 
 ---
 
 60
 How do transport layer protocols enable communication between processes?
 
-- There are 2 main transport layer protocols:  UDP ==(User Datagram Protocol)== and TCP ==(Transport Connection Protocol)==
+- There are 2 main transport layer protocols:  UDP ==(User Datagram Protocol)== and TCP ==(Transmission Control Protocol)==
 - The names of the PDUs are Datagram and Segment, respectively.
 - These protocols enable communication between processes by embedding requests and other data from the Application layer within the data payload of the PDUs.
-- ==check the header of the transport layer PDUs!!==
+- The headers of both protocol PDUs contain the source port, destination port, and checksum.
+- The Segment header will also contain flags such as SYN, ACK, FIN, window size, and sequence number.
 
 ---
 
@@ -459,8 +476,8 @@ Compare UDP and TCP. What are similarities, what are differences? What are pros 
   - Both are transport layer protocols and enable the transfer of information from port to port (i.e., from server port to client port, in collaboration with the Internet and Link layers below)
 
 - Differences:
-  - UDP:  Connection-less protocol, offers no additional functionality for reliability, de-duplication, integrity-/error-checking, PDU sequence, no handshake on connection, so enables very quick sharing of data
-  - TCP:  Connection-oriented protocol, offers functionality for reliability, de-duplication, integrity-/error-checking, PDU sequence, uses three-way handshake to establish connection; uses something similar to close a connection; requires 1RTT to establish connection as part of three-way handshake; very stable and contains many features to ensure data is transmitted / received properly
+  - UDP:  Connection-less protocol, offers no additional functionality for reliability, de-duplication, integrity-/error-checking, PDU sequence, no handshake on connection, so enables very quick sharing of data. Since this protocol offers no additional functionality, it's also very simple and "lightweight", making it flexible and adaptable for user-implemented features.
+  - TCP:  Connection-oriented protocol, offers functionality for reliability, de-duplication, integrity-/error-checking, PDU sequence, uses three-way handshake to establish connection; uses something similar to close a connection; requires 1RTT to establish connection as part of three-way handshake; very stable and contains many features to ensure data is transmitted / received properly. These features can make TCP slower (e.g., handshaking, waiting for acknowledgement of receipt of sent data) and the use of in-order delivery makes TCP susceptible to head-of-line blocking
 
 ---
 
@@ -474,8 +491,8 @@ What does it mean that network reliability is engineered?
 63
 Give an overview of the Application Layer.
 
-- The Application layer is the highest layer in the TCP/IP model and encompasses the ==[look up corresponding OSI layers]== layers of the OSI model.
-- This layer allows various actual internet services like the web, email, ftp, etc. to operate by providing the structure for these various process to operate
+- The Application layer is the highest layer in the TCP/IP model which roughly maps to the  the Application, Presentation, and Session layers of the OSI model.
+- This layer allows various actual internet services like the web, email, ftp, etc. to operate by providing the structure for these various processes to transmit messages. For example, the HTTP protocol transmits request and response messages (generally as text) composed as part of the Application layer as encapsulated data within the lower levels (Transport, Internet, Link).
 
 ---
 
@@ -483,14 +500,14 @@ Give an overview of the Application Layer.
 What is HTML?
 
 - HTML is HyperText Markup Language and is the specific syntax used to share information request and provided via the HTTP protocol (which is used for the world wide web service).
-- HTML syntax is characterized by the use of opening and closing "tags" indicated by the use of "< >" and "</>" (e.g., "<p>Paragraph content here</p>")
+- HTML syntax is characterized by the use of opening and closing "tags" indicated by the use of "< >" and "</>" (e.g., "\<p>Paragraph content here\</p>")
 
 ---
 
 65
 What is a URL and what components does it have?
 
-- A URL is a ==Uniform== Resource Location, a specific type of URI (Uniform Resource Identifier) and is a string of text which provides the means and location of a resource.
+- A URL is a **Uniform Resource Locator**, a specific type of URI (Uniform Resource Identifier) and is a string of text which provides the means and location of a resource.
 - Key components of the URL are:
   - scheme (e.g., `http`)
   - `://`
@@ -502,7 +519,7 @@ What is a URL and what components does it have?
 ---
 
 66
-What is a Query string? What it is used for?
+What is a Query string? What is it used for?
 
 - A query string is used to provide additional information to the server as part of an HTTP request. This information is passed to the server as part of the URL used to place the request.
 - The query string is indicated by the use of the `?` character following the 'path' in the URL and a series of key-value pairs identified using the syntax 'key=value' and separated by `&`.

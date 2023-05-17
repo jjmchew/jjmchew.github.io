@@ -57,9 +57,56 @@
 
 # Assessment prep checklist
 - [X] create written study notes (based on study guide)
-- [ ] read all pinned posts
+- [X] read all pinned posts
 - [ ] 2nd pass spot questions
-- [ ] things to draw / memorize:
-    - [ ] OSI vs TCP/IP layers [https://launchschool.com/lessons/4af196b9/assignments/21ef33af]
-    - [ ] 
+- [X] things to draw / memorize:
+    - [X] OSI vs TCP/IP layers [https://launchschool.com/lessons/4af196b9/assignments/21ef33af]
 - [ ] do quizzes again
+
+
+# Quiz answers (2nd time)
+
+## Quiz1 https://launchschool.com/quizzes/18c3a173
+- q1: 
+- q2: 
+- q3: 
+- q4: 
+- q5: 
+- q6: 
+- q7: 
+- q8: 
+- q9: 
+
+## Quiz2 https://launchschool.com/quizzes/6b67f575
+- q1: 
+- q2: 
+- q3: 
+- q4: 
+- q5: 
+- q6: 
+- q7: 
+- q8: 
+
+## Quiz3 https://launchschool.com/quizzes/5e0dcf86
+- q1: 
+- q2: 
+- q3: 
+- q4: 
+- q5: 
+- q6: 
+- q7: 
+- q8: 
+- q9: 
+- q10: 
+- q11: 
+- q12: 
+- q13: 
+
+## Quiz4 https://launchschool.com/quizzes/0ff9564e
+- q1: 
+- q2: 
+- q3: 
+- q4: 
+- q5: 
+- q6: 
+- q7: 

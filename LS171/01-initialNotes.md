@@ -256,7 +256,7 @@
 #### **IP Address**
 - logical address (unlike MAC addresses) - can be assigned as required to devices as they join a network;  must be assigned within  a range of addresses available to the LAN they join.[^5]
   - IPv4 address: 32-bit length; set of 4 numbers of 8 bits each; decimal numbers between `0` and `255` (e.g., `109.156.106.57`); maximum possible unique addresses is ~4.3 billion [^5]
-  - IPv6 address: 128-bit length; 8 x 16 bit blocks (e.g., 8 sets of hexadecimal characters); max possible addresses is 340 undecillion [^5] The first 4 sets are used to locate a specific network, the last 4 sets to identify a particular interface or device within that network [^9]q9
+  - IPv6 address: 128-bit length; 8 x 16 bit blocks (e.g., 8 sets of hexadecimal characters, e.g., `[2001:0:9d38:6ab8:1c48:3a1c:a95a:b1c2]`); max possible addresses is 340 undecillion [^5] The first 4 sets are used to locate a specific network, the last 4 sets to identify a particular interface or device within that network [^9]q9
 
 #### **Internet Protocol Suite**
 - (also called TCP/IP model or DoD model)
