@@ -65,6 +65,10 @@
 ## images
 - can use `outline: 1px solid red` for development / debugging [^7]q1
 
+## misc
+- `textarea` : can add css: `resize` : vertical, horizontal, both to define what axes a resize is allowed in [^8]css video
+
+
 # References
 [^1]: [CSS Practice Problem](https://launchschool.com/lessons/4495fbf7/assignments/8e39567e)
 [^2]: [The Visual Formatting Model](https://launchschool.com/lessons/f039db62/assignments/b7312e44)
@@ -73,3 +77,4 @@
 [^5]: [Practice Problems: Spacing and Dimensions](https://launchschool.com/lessons/f039db62/assignments/01231289)
 [^6]: [HTML and CSS Quiz](https://launchschool.com/quizzes/f3990794/)
 [^7]: [Guided Project: A Simple Photo Gallery](https://launchschool.com/lessons/de86d90a/assignments/69d139b4)
+[^8]: [Forms Walkthrough Project](https://launchschool.com/lessons/d4fbe0e0/assignments/222db9b7)
