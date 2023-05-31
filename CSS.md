@@ -64,9 +64,21 @@
 
 ## images
 - can use `outline: 1px solid red` for development / debugging [^7]q1
+- use `display: block` to prevent a gap under the img [^10]
+  - `<img>` default as 'inline' which aligns the bottom of the image with the baseline of fonts
+
+## position
+- `top`, `right`, `bottom`, `left` (*offset properties*) only work with *positioned* properties (i.e., not `position: static`) [^9]
+  - `static`: the default - items that are part of normal page flow; appear in the same order as markup; **cannot** use offset properties
+  - `relative`: items are positioned relative to where the browser would normally put it, but still hold a "non-offset" space that other elements respect in document flow
+  - `absolute` : moves the element to a position *within an ancenstor element that has a fixed, relative, absolute or sticky position* (a position *other than static*), or "body" if no other suitable parent exists; AND removes element from document flow
+  - `fixed` : positions an element within the *window*; also removed from normal flow of document
+- `z-index` : only works on *positioned* elements
 
 ## misc
 - `textarea` : can add css: `resize` : vertical, horizontal, both to define what axes a resize is allowed in [^8]css video
+- liquid layouts : relative sizes remain constant (e.g., use percentage widths) [^11]
+- fluid layouts : like liquid until they reach a max or min and then act fixed [^11]
 
 
 # References
@@ -78,3 +90,6 @@
 [^6]: [HTML and CSS Quiz](https://launchschool.com/quizzes/f3990794/)
 [^7]: [Guided Project: A Simple Photo Gallery](https://launchschool.com/lessons/de86d90a/assignments/69d139b4)
 [^8]: [Forms Walkthrough Project](https://launchschool.com/lessons/d4fbe0e0/assignments/222db9b7)
+[^9]: [ Positioning](https://launchschool.com/lessons/e01b7c79/assignments/9724b485)
+[^10]: [The strange <img> gap in HTML](https://dev.to/christiankaindl/the-strange-img-gap-in-html)
+[^11]: [Responsive Design](https://launchschool.com/lessons/e01b7c79/assignments/64451750)
