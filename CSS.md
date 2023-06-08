@@ -80,6 +80,7 @@
 - liquid layouts : relative sizes remain constant (e.g., use percentage widths) [^11]
 - fluid layouts : like liquid until they reach a max or min and then act fixed [^11]
 
+- LS202 todo project solution: https://github.com/6207ALS/launch-school/tree/main/courses/LS202/lesson_8/practice-project-2
 
 # References
 [^1]: [CSS Practice Problem](https://launchschool.com/lessons/4495fbf7/assignments/8e39567e)

@@ -1,6 +1,8 @@
 # RVM notes
 
 - `ruby -v` to check which version of Ruby is being used
+- `rvm install 2.6` :  install ruby version 2.6
+
 
 ### Gemsets
 See current gemset

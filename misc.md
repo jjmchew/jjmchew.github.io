@@ -84,3 +84,7 @@ Jake's A+ Checklist: https://medium.com/@jakedevar111/there-are-many-ways-to-stu
 The SPOT Wiki
 Join The SPOT Slack Channel
 Launch School Podcast with Barbara Oakley : https://podcast.launchschool.com/oakley
+
+### Versions
+- Announced on June 6, 2023:
+  - We're pleased to announce that we've updated the Ruby courses, books, and exercises for use with Ruby 3.2 and Rubocop 1.51.0. (The older recommendations were Ruby 2.7 and Rubocop 0.86.0).
