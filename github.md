@@ -53,3 +53,11 @@ Delete a branch
 - `git push`
 
 
+
+## Replicating an online repo
+- from: https://stackoverflow.com/questions/5377960/git-whats-the-best-practice-to-git-clone-into-an-existing-folder (2nd solution, doesn't use git clone)
+- create the desired directory and enter it
+- `git init` : to create a new repo in the desired directory
+- `git remote add origin [repo url]`
+- `git fetch origin`
+- `git checkout -b main --track origin/main`
