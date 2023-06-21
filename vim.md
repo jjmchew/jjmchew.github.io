@@ -16,11 +16,14 @@
   - `e` : move to end of (current or next) word (including last character)
   - `0` : move to start of a line
   - `8e` : move to 8th (next) word, end of word
-  - `/foo` : searches for 'foo'
   - `ctrl-f` : forward a page
   - `ctrl-b` : backward a page
   - `{` : beginning of current paragraph
   - `}` : end of current paragraph
+  - `[[` : first line of file
+  - `]]` : last line of file
+  - `ctrl-i` : next edit location
+  - `ctrl-o' : last edit location
 
 #### tabs
   - `:tabe file1` : open a new tab, open 'file1'
@@ -35,6 +38,8 @@
 
 
   - `ctrl-w w` : switch windows (or can use `ctrl-w h` or `l`)
+  - `ctrl-w r` : rotate windows (change position)
+  - `ctrl-w >` : make current window 1 col bigger
   - `:clo` : close tab / window
 
 ### edit
@@ -52,9 +57,13 @@
   - `de` : delete from cursot to end of word
   - `d3w` : delete next 3 words
   - `dd` : delete whole line
+    - `ddp` : 'move' a line down (delete line, then put after cursor)
+    - `ddkP` : 'move' a line up (delete line, move, then put before cursor) 
   - `2dd` : 2 x delete line (i.e., delete 2 lines)
   - `o` : insert (next) line, move to start of that line, and enter insert mode
   - `caw` : 'change a word'
+
+  - `r` then character to replace with : 'replaces' the current character with a new one
 
   - `y` : yank (copy)
     - `yy` : copy current line (w/ newline character)
@@ -68,6 +77,14 @@
   - `v` : visual mode (to select)
   - `V` : select by line
   - `ctrl-v` : visual block mode
+
+### search
+  - `/foo` : searches for 'foo'
+  - `/` : type search terms [press enter]
+  - `n` : next occurence
+  - `N` : previous occurence
+
+
 ---
 
 ## : commands

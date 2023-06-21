@@ -11,6 +11,10 @@
 
 
 ## theory:
+  - SQL (Structured Query Language) : is a 'special purpose language' - has a specific purpose for interacting with relational databases [^15]
+    - a declarative language : only details *what* to do, not *how* - 'under-the-hood' SQL may execute things differently depending on the dataset
+  - RDBMS (Relational Database Management System) : a software application that lets you issue commands and interact with a relational database (uses syntax that conforms to a set of conventions or standards) [^14]
+  - Relational Database : a database organized according to the relational model of data - defines a set of relations (or tables) and describes relationships between them [^14]
   - data vs schema: [^1]
     - data is 'contents' of the database
     - schema is 'structure' of the database
@@ -76,6 +80,7 @@
     - typically implemented using a separate table (called a *join table*) which contains foreign key columns which reference the primary keys (id's) of each entity (i.e., implement 2 separate 1-to-many relationships)
     - e.g., `CREATE TABLE checkouts (id serial, user_id int NOT NULL, book_id int NOT NULL, checkout_date timestamp, return_date timestamp, PRIMARY KEY (id), FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE, FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE);` : creates a new table 'checkouts' which references the id (primary key) of the users table and the books table
 
+- SQL style guide:  can use https://www.sqlstyle.guide/ [^17]
 
 ## setup
 
@@ -117,7 +122,8 @@
   - `\d` : describe available relations (list) [^13]
   - `\?` : list commands [^13]
   - `\h [topic]` : help; indicate topic is optional [^13]
-
+  - `\i file_name` : import SQL commands into current db [^19]
+    - e.g., `\i ~/folder/file_to_import.sql`
 
 ### from command line
   - `/usr/bin/select-editor` : changes default psql text editor for `\e` command
@@ -125,21 +131,34 @@
   - `psql -d [db name]` : connects to 'db name' database and opens psql console window
   - `createdb [db name]` : create a new db with name [db name] (same as SQL command `CREATE DATABASE`)
   - `dropdb [db name]` : delete an existing db 'db name' (same as SQL command `DROP DATABASE`)
+  - `psql -d [db name] < file_to_import.sql` : opens [db_name] in psql and executes sql commands in 'file_to_import.sql' within [db name] [^19]
 
 ---
 
 ## SQL commands
 
+### Operators
+  - search postgresql documentation online:
+    - 'string functions and operators'
+      - `||` : concatenate strings [^15]
+      - `lower()` : lowercase strings
+    - 'mathematical functions and operators' : e.g., pi(), trunc(), etc.
+
+
 ### DDL (Data Definition Language)
   - always end with `;` - statements can be written over multiple lines
   - `SELECT * FROM orders;` : retrieve all columns from orders table
   - `SELECT side FROM orders;` : retrieve only side column from orders table
+    - e.g., `SELECT id, name, age FROM birds;` : will return columns 'id', 'name', 'age' in separate columns on the scren
+    - e.g., `SELECT (id, name, age) FROM birds;` : will return all data for each column grouped into 1 column; e.g., "(3,Charlie,4)"
   - `SELECT drink, side FROM orders;` : retrieve drink and side columns from orders table
   - `SELECT * FROM orders WHERE id = 1;` : retrieve all columns from orders table with a condition for rows (id = 1)
   - `SELECT customer_name FROM orders WHERE side = 'Fries';` : retrieve customer_name column from orders table with a condition for rows (side = 'Fries')
   - `CREATE DATABASE another_db;` : creates a new database called 'another_db'
   - `DROP DATABASE [db_name];` : deletes an existing database called 'db_name'
   - `DROP TABLE table_name;` : deletes a table 'table_name'
+    - `DROP TABLE IF EXISTS table_name;` : checks for existence of table before dropping
+    - `DROP TABLE table1, table2;` : drops multiple tables
   - `CREATE TABLE table();` : creates a table - note `()` - columns need to be defined in ()
     ```
     CREATE TABLE table (
@@ -166,7 +185,7 @@
       - `RENAME TO new_name` : rename tablename to new_name
       - `RENAME COLUMN old_name TO new_name` : rename column old_name
       - `ALTER COLUMN full_name TYPE varchar(25)` : change data type of column full_name to varchar(25)
-      - `ALTER COLUMN full_name SET NOT NULL;` : adds NOT NULL constraint to column
+      - `ALTER COLUMN full_name SET NOT NULL;` : adds NOT NULL constraint to column 'full_name'
       - `ADD CONSTRAINT constraint_name constraint_type (column_name);` : add table constraints
         - e.g., `ADD CONSTRAINT unique_binomial_name UNIQUE (binomial_name)` [^4]exercise #6
       - `ADD CHECK (full_name <> '');` : example of adding a CHECK constraint to a column [^5]
@@ -182,6 +201,8 @@
   - **additional commands can be added using a `,`**
   - `ALTER TABLE old_name RENAME TO new_name` : rename a table 'old_name' to 'new_name'
   - `ALTER TABLE users ADD PRIMARY KEY (id);` : define column 'id' as primary key for table 'users' (note this column must be 'NOT NULL' and 'UNIQUE') [^10]
+
+  - `CREATE SEQUENCE seq_name;` : adds a sequence object to the database structure; is considered part of DDL [^16]
 
 - `CASCADE` : (e.g., `ON DELETE CASCADE`) : if the row being referenced is deleted, the row referencing is also deleted [^10]
 
@@ -300,21 +321,33 @@
   - `DELETE FROM table_name WHERE expression;`
     - be careful - not including the `WHERE` expression will delete ALL rows from the table
 
-  
+
+### DCL (Data Control Language)
+- `GRANT`, `REVOKE` : common SQL constructs [^15]
+ 
 
 ---
 
 ## data types
+  - search 'Chapter 8. Data Types' in SQL documentation online
+
   - serial : for ID columns - integers, auto-incrementing, cannot contain null value
     - not recommended for postgresql v10+
   - identity : for ID columns (better for production and db portability)
   - char(n) : string of up to n characters (with remaining space filled with spaces)
   - varchar(n) : string of up to n characters (remaining string length is unused)
   - boolean : true or false, sometimes t or f
-  - integer or INT : 'whole number' 
+  - integer or INT : 'whole number' ; max value is +/- 2,147,483,647 [^18]
   - decimal(precision, scale) : precision - total digits on both sides of decimal point; scale - number of digits to the right of decimal point
   - timestamp : YYYY-MM-DD HH:MM:SS format
+    - timestamptz : will store timestamp with timezone
   - date : YYYY-MM-DD format
+  - real : floating point numbers [^18]
+  - text : unlimited length of characters [^18] (note: not part of SQL standard)
+
+
+  - NULL : NULL = NULL will return *nothing* in SQL - must always use `IS NULL` or `IS NOT NULL` [^18]
+    - i.e., `SELECT NULL IS NULL` will return `t` (true)
 
 ## constraints
   - DEFAULT (not technically a constraint): sets a default value for the column (i.e., when no other value is specified)
@@ -365,3 +398,9 @@
 [^11]: [SQL Joins](https://launchschool.com/books/sql/read/joins)
 [^12]: [Reading PostgreSQL Documentation](https://launchschool.com/lessons/234afac4/assignments/5aafff3f)
 [^13]: [The PostgreSQL Command Line Interface](https://launchschool.com/lessons/234afac4/assignments/bc529bcf)
+[^14]: [Quiz 1](https://launchschool.com/quizzes/35bef4aa)
+[^15]: [The SQL Language](https://launchschool.com/lessons/a1779fd2/assignments/7673d9a9)
+[^16]: [DML/DDL/DCL Part 10](https://launchschool.com/exercises/f59e8e95)
+[^17]: [SQL Style Guide](https://launchschool.com/lessons/a1779fd2/assignments/dc780258)
+[^18]: [PostgreSQL Data Types](https://launchschool.com/lessons/a1779fd2/assignments/83481591)
+[^19]: [Loading Database Dumps](https://launchschool.com/lessons/a1779fd2/assignments/fa05a889)
