@@ -1,5 +1,15 @@
 # PostgreSQL
 
+## documentation:
+- notes from video[^12]
+- make sure to find your version (indicated when you start `psql` from command line)
+- easiest to search command (e.g., 'select')
+- e.g., https://www.postgresql.org/docs/12/sql-select.html
+  - `[]` : indicates optional elements
+  - `{}` : indicates options
+  - ***terms*** : (bold and italic) indicate more details below - scroll through the page to find
+
+
 ## theory:
   - data vs schema: [^1]
     - data is 'contents' of the database
@@ -98,13 +108,16 @@
 ### within psql console
   - `\q` : quit
   - `\conninfo` : connection info (db, user, socket, port)
-  - `\list` : list all db's created
+  - `\list` or `\l` : list all db's created; [^13]
   - `\c [db_name]` or `\connect [db_name]` : connect to db "db_name"
   - `\e` : opens text editor with last executed command to edit
   - `\dt` : list all tables in db
+  - `\ds` : list all sequences in db [^13]
   - `\d tablename` : show details of table 'tablename'
-  - 
-  
+  - `\d` : describe available relations (list) [^13]
+  - `\?` : list commands [^13]
+  - `\h [topic]` : help; indicate topic is optional [^13]
+
 
 ### from command line
   - `/usr/bin/select-editor` : changes default psql text editor for `\e` command
@@ -214,7 +227,7 @@
   - `>=`
   - `<>` or `!=`
   - `=` (used as a comparison operator in SQL and NOT assignment)
-  - `IS NULL` and `IS NOT NULL` (can**not** use `WHERE column_name = NULL`)
+  - ==`IS NULL` and `IS NOT NULL` (**cannot** use `WHERE column_name = NULL`)==
   - `BETWEEN` `NOT BETWEEN`, `IS DISTINCT FROM`, `IS NOT DISTINCT FROM`
 - logical operators: [^6]
   - `AND`, `OR`, `NOT`
@@ -224,65 +237,57 @@
   - `_` is a string wildcard - only 1 character
   - `LIKE` : is case-sensitive;  e.g., `SELECT * FROM users WHERE full_name LIKE '%Smith';` (only returns matches with 'Smith' NOT 'sMITH' or 'SMITH')
   - `ILIKE` : is case-insensitive
-
   - can also use `SIMILAR TO` and match to regex [^6]
 
-- SQL functions [^6]:
-  - `count()`
-    - e.g., `SELECT count(full_name) FROM users;` - will count the number of records returned (including duplicates)
-    - e.g., `SELECT count(DISTINCT full_name) FROM users;` - counts distinct records returned
-  - string functions:
-    - `length()` - returns length of string in column (e.g., `SELECT length(full_name) FROM users;` )
-    - `trim()` - e.g., `SELECT trim(leading ' ' from full_name) FROM users;` (trims leading space from full_name int able users)
-  - date/time functions: 
-    - `date_part()` - e.g., `SELECT full_name, date_part('year', last_login) FROM users;` (displays full_name and year of last_login from users table)
-    - `age()` - calculates time elapsed from the date passed in as argument and current time
-      - e.g., `SELECT full_name, age(last_login) FROM users;`
-  - aggregate functions:
-    - `count()`
-    - `sum()`
-    - `min()` : works with a variety of data types (e.g., numeric, date/time, string)
-    - `max()` : works with a variety of data types (e.g., numeric, date/time, string)
-    - `avg()`
-    - `string_agg(col_name, delimiter)` : concatenates string values using delimiter to produce a single string [^8]
 
-  - using JOIN: [^11]
-    - `SELECT table_nameN.col_name, ... FROM table_name1 join_type JOIN table_name2 ON join_condition;`
-      - e.g., `SELECT colors.color, shapes.shape FROM colors JOIN shapes ON colors.id = shapes.color_id` :
-        - from 2 different tables, 'colors' (contains id and color 'name') and 'shapes' (contains color_id FOREIGN KEY, shape 'name')
-        - this returns a color 'name' and the corresponding shape 'name'
+- using JOIN: [^11]
+  - `SELECT table_nameN.col_name, ... FROM table_name1 join_type JOIN table_name2 ON join_condition;`
+    - e.g., `SELECT colors.color, shapes.shape FROM colors JOIN shapes ON colors.id = shapes.color_id` :
+      - from 2 different tables, 'colors' (contains id and color 'name') and 'shapes' (contains color_id FOREIGN KEY, shape 'name')
+      - this returns a color 'name' and the corresponding shape 'name'
 
-    - join_type : 
-      - `INNER` : the default JOIN if no other type is specified; returns the common elements of both tables (i.e., the intersection where they match the join condition)
-      - `LEFT (OUTER)` : returns all rows from the LEFT table and include matching rows from RIGHT table (or indicate NULL, if no matches are available)
-      - `RIGHT (OUTER)` : returns all rows from the RIGHT table and include matching rows from LEFT table (or indicate NULL, if no matches are available)
-      - `FULL (OUTER)` : returns ALL rows from BOTH tables, indicating NULL if no matches are available
-      - `CROSS` : does NOT use an ON clause, returns all rows from first table crossed with every row from second table (a "cross product" of 2 sets)
-    
-    - multiple joins:
-      - PostreSQL creates a 'transient table' (i.e., a temporary table) that contains the required info from the first join, then ADDS to this transient table with subsequent joins
-      - e.g., 
-      ```
-      SELECT users.full_name, books.title, checkouts.checkout_date 
-        FROM users 
-        INNER JOIN checkouts 
-          ON users.id = checkouts.user_id
-        INNER JOIN books 
-          ON books.id = checkouts.book_id;
-      ```
+  - join_type : 
+    - `INNER` : the default JOIN if no other type is specified; returns the common elements of both tables (i.e., the intersection where they match the join condition)
+    - `LEFT (OUTER)` : returns all rows from the LEFT table and include matching rows from RIGHT table (or indicate NULL, if no matches are available)
+    - `RIGHT (OUTER)` : returns all rows from the RIGHT table and include matching rows from LEFT table (or indicate NULL, if no matches are available)
+    - `FULL (OUTER)` : returns ALL rows from BOTH tables, indicating NULL if no matches are available
+    - `CROSS` : does NOT use an ON clause, returns all rows from first table crossed with every row from second table (a "cross product" of 2 sets)
+  
+  - multiple joins:
+    - PostreSQL creates a 'transient table' (i.e., a temporary table) that contains the required info from the first join, then ADDS to this transient table with subsequent joins
+    - e.g., 
+    ```
+    SELECT users.full_name, books.title, checkouts.checkout_date 
+      FROM users 
+      INNER JOIN checkouts 
+        ON users.id = checkouts.user_id
+      INNER JOIN books 
+        ON books.id = checkouts.book_id;
+    ```
 
-    - aliasing: using another (shorter) name to reference tables
-      - e.g., the query above could be written:
-      ```
-      SELECT u.full_name, b.title, c.checkout_date
-        FROM users AS u
-        INNER JOIN checkouts AS c
-          ON u.id = c.user_id
-        INNER JOIN books AS b
-          ON b.id = c.book_id;
-      ```
-      - can also omit 'AS' : e.g., `SELECT u.full_name FROM users u INNER JOIN checkouts c ...`
-      - e.g., `SELECT count(id) AS "Num of Books Checked Out" FROM checkouts;` : displays the column title as "Num of Books Checked Out"
+  - aliasing: using another (shorter) name to reference tables
+    - e.g., the query above could be written:
+    ```
+    SELECT u.full_name, b.title, c.checkout_date
+      FROM users AS u
+      INNER JOIN checkouts AS c
+        ON u.id = c.user_id
+      INNER JOIN books AS b
+        ON b.id = c.book_id;
+    ```
+    - can also omit 'AS' : e.g., `SELECT u.full_name FROM users u INNER JOIN checkouts c ...`
+    - e.g., `SELECT count(id) AS "Num of Books Checked Out" FROM checkouts;` : displays the column title as "Num of Books Checked Out"
+  
+- Subqueries: [^11]
+  - using the results of 1 query in another query - "nesting" - the nested query is the 'subquery'
+  - can be an alternative to a JOIN;  generally JOINs are faster than subqueries
+  - e.g., `SELECT u.full_name FROM users u WHERE u.id NOT IN (SELECT c.user_id FROM checkouts c);` : subquery is "SELECT c.user_id FROM checkouts c"
+  - expressions to compare value to results of a subquery:
+    - `IN`
+    - `NOT IN`
+    - `ANY`
+    - `SOME`
+    - `ALL`
 
 
 - UPDATE: [^9]
@@ -322,8 +327,28 @@
   - FOREIGN KEY :  ; can be table or column constraint [^4]
   - CHECK :  ; can be table or column constraint [^4]
 
+
 ## SQL functions
-- now() : provides the current date and time when called
+- `now()` : provides the current date and time when called
+- `count()` [^6]
+  - e.g., `SELECT count(full_name) FROM users;` - will count the number of records returned (including duplicates)
+  - e.g., `SELECT count(DISTINCT full_name) FROM users;` - counts distinct records returned
+- string functions: [^6]
+  - `length()` - returns length of string in column (e.g., `SELECT length(full_name) FROM users;` )
+  - `trim()` - e.g., `SELECT trim(leading ' ' from full_name) FROM users;` (trims leading space from full_name int able users)
+- date/time functions: [^6]
+  - `date_part()` - e.g., `SELECT full_name, date_part('year', last_login) FROM users;` (displays full_name and year of last_login from users table)
+  - `age()` - calculates time elapsed from the date passed in as argument and current time
+    - e.g., `SELECT full_name, age(last_login) FROM users;`
+- aggregate functions: [^6]
+  - `count()`
+  - `sum()`
+  - `min()` : works with a variety of data types (e.g., numeric, date/time, string)
+  - `max()` : works with a variety of data types (e.g., numeric, date/time, string)
+  - `avg()`
+  - `string_agg(col_name, delimiter)` : concatenates string values using delimiter to produce a single string [^8]
+
+ 
 
 
 # References
@@ -338,3 +363,5 @@
 [^9]: [Update data in a table](https://launchschool.com/books/sql/read/update_and_delete_data)
 [^10]: [Table Relationships](https://launchschool.com/books/sql/read/table_relationships)
 [^11]: [SQL Joins](https://launchschool.com/books/sql/read/joins)
+[^12]: [Reading PostgreSQL Documentation](https://launchschool.com/lessons/234afac4/assignments/5aafff3f)
+[^13]: [The PostgreSQL Command Line Interface](https://launchschool.com/lessons/234afac4/assignments/bc529bcf)
