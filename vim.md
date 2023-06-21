@@ -36,6 +36,7 @@
   - `:vs file1` : vertical split - opens 'file1'
   - `:sp file1` : horizontal split - opens 'file1'
 
+  - `:vertical resize 120` : resize vertical width to '120'
 
   - `ctrl-w w` : switch windows (or can use `ctrl-w h` or `l`)
   - `ctrl-w r` : rotate windows (change position)
