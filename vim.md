@@ -17,7 +17,10 @@
   - `0` : move to start of a line
   - `8e` : move to 8th (next) word, end of word
   - `/foo` : searches for 'foo'
-
+  - `ctrl-f` : forward a page
+  - `ctrl-b` : backward a page
+  - `{` : beginning of current paragraph
+  - `}` : end of current paragraph
 
 #### tabs
   - `:tabe file1` : open a new tab, open 'file1'
@@ -71,4 +74,4 @@
   - `:` : type this first, then
     - `q` : quit
     - `q!` : quit without saving
-    - `wq` : write then quite
+    - `wq` : write then quit
