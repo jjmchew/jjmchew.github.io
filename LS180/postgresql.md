@@ -132,6 +132,7 @@
   - `createdb [db name]` : create a new db with name [db name] (same as SQL command `CREATE DATABASE`)
   - `dropdb [db name]` : delete an existing db 'db name' (same as SQL command `DROP DATABASE`)
   - `psql -d [db name] < file_to_import.sql` : opens [db_name] in psql and executes sql commands in 'file_to_import.sql' within [db name] [^19]
+  - `pg_dump -t my_table my_db --inserts > file.sql` : creates an sql script file of contents of 'my_table' from db 'my_db'; '--inserts' creates full `INSERT` statements to populate data [^20]q11
 
 ---
 
@@ -250,6 +251,7 @@
   - `=` (used as a comparison operator in SQL and NOT assignment)
   - ==`IS NULL` and `IS NOT NULL` (**cannot** use `WHERE column_name = NULL`)==
   - `BETWEEN` `NOT BETWEEN`, `IS DISTINCT FROM`, `IS NOT DISTINCT FROM`
+    - e.g., `SELECT * FROM temperatures WHERE date BETWEEN '2016-03-02' AND '2016-03-08';`
 - logical operators: [^6]
   - `AND`, `OR`, `NOT`
     - e.g., `SELECT * FROM users WHERE full_name = 'Harry Potter' OR enabled = 'false';
@@ -404,3 +406,5 @@
 [^17]: [SQL Style Guide](https://launchschool.com/lessons/a1779fd2/assignments/dc780258)
 [^18]: [PostgreSQL Data Types](https://launchschool.com/lessons/a1779fd2/assignments/83481591)
 [^19]: [Loading Database Dumps](https://launchschool.com/lessons/a1779fd2/assignments/fa05a889)
+[^20]: [NOT NULL and Default Values](https://launchschool.com/lessons/a1779fd2/assignments/c6a5a6cb)
+
