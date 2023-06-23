@@ -82,6 +82,9 @@
 
 - SQL style guide:  can use https://www.sqlstyle.guide/ [^17]
 
+- Note:  it is possible to define a column default value that conflicts with a column constraint - an error will only be raised when that default is attempted to be added as data to a new record [^21]q17
+
+
 ## setup
 
 ### installing:
@@ -182,18 +185,20 @@
     - e.g., `CREATE TABLE tablename (id serial PRIMARY KEY, name varchar(50));` : can add PRIMARY KEY designation directly when defining columns of new table
     - e.g., `FOREIGN KEY (fk_col_name) REFERENCES target_table_name (pk_col_name);` : sets the 'fk_col_name' column to reference table 'target_table_name' whose primary key is col 'pk_col_name' [^10];  can separate multiple FOREIGN KEY definitions with a comma
 
+
   - `ALTER TABLE tablename` : update *schema-only* of a table
       - `RENAME TO new_name` : rename tablename to new_name
       - `RENAME COLUMN old_name TO new_name` : rename column old_name
       - `ALTER COLUMN full_name TYPE varchar(25)` : change data type of column full_name to varchar(25)
       - `ALTER COLUMN full_name SET NOT NULL;` : adds NOT NULL constraint to column 'full_name'
+        - e.g., `ALTER COLUMN col_name SET DEFAULT 'value';` : sets the column 'col_name' to have a default value of 'value' in table 'tablename'
       - `ADD CONSTRAINT constraint_name constraint_type (column_name);` : add table constraints
         - e.g., `ADD CONSTRAINT unique_binomial_name UNIQUE (binomial_name)` [^4]exercise #6
-      - `ADD CHECK (full_name <> '');` : example of adding a CHECK constraint to a column [^5]
-      - `ADD UNIQUE (column_name)` : add UNIQUE to a column
+	      - `ADD CHECK (full_name <> '');` : example of adding a CHECK constraint to a column [^5]
+	      - `ADD UNIQUE (column_name)` : add UNIQUE to a column
       - `DROP CONSTRAINT constraint_name` : removes a constraint (from table)
-        - `DROP DEFAULT` : removes the default "constraint"
       - `ALTER COLUMN col_name DROP CONSTRAINT constraint_name` : drop constraint from column
+        - `DROP DEFAULT` : removes the default "constraint"
       - `ADD COLUMN new_column_name constraints` : adds a column
         - e.g. `ADD COLUMN last_login timestamp NOT NULL DEFAULT NOW();`
       - `DROP COLUMN column_name` : remove a column from tablename
@@ -204,6 +209,7 @@
   - `ALTER TABLE users ADD PRIMARY KEY (id);` : define column 'id' as primary key for table 'users' (note this column must be 'NOT NULL' and 'UNIQUE') [^10]
 
   - `CREATE SEQUENCE seq_name;` : adds a sequence object to the database structure; is considered part of DDL [^16]
+    - creates a new sequence with the name 'seq_name' (i.e., generates incrementing numbers, only returns a number once)
 
 - `CASCADE` : (e.g., `ON DELETE CASCADE`) : if the row being referenced is deleted, the row referencing is also deleted [^10]
 
@@ -407,4 +413,5 @@
 [^18]: [PostgreSQL Data Types](https://launchschool.com/lessons/a1779fd2/assignments/83481591)
 [^19]: [Loading Database Dumps](https://launchschool.com/lessons/a1779fd2/assignments/fa05a889)
 [^20]: [NOT NULL and Default Values](https://launchschool.com/lessons/a1779fd2/assignments/c6a5a6cb)
+[^21]: [More Constraints](https://launchschool.com/lessons/a1779fd2/assignments/f5b732e5)
 
