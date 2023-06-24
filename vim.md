@@ -59,7 +59,7 @@
   - `d3w` : delete next 3 words
   - `dd` : delete whole line
     - `ddp` : 'move' a line down (delete line, then put after cursor)
-    - `ddkP` : 'move' a line up (delete line, move, then put before cursor) 
+    - `ddkP` : 'move' a line up (delete line, move, then put before cursor)
   - `2dd` : 2 x delete line (i.e., delete 2 lines)
   - `o` : insert (next) line, move to start of that line, and enter insert mode
   - `caw` : 'change a word'
@@ -93,3 +93,10 @@
     - `q` : quit
     - `q!` : quit without saving
     - `wq` : write then quit
+  - `:set number` : show line numbers (absolute)
+  - `:set nonumber` : hide line numbers
+  - `:set relative number` : show relative line numbers
+
+  - `:set list` : display eol characters
+  - `:set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<` : show eol, tab, trailing spaces, ?, ?
+
