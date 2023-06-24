@@ -84,6 +84,24 @@
 
 - Note:  it is possible to define a column default value that conflicts with a column constraint - an error will only be raised when that default is attempted to be added as data to a new record [^21]q17
 
+- execution steps in a SELECT query: [^22]
+  1. `FROM`, `JOIN` tables collected into a virtual, temporary table (all rows)
+  2. `WHERE` clauses used to filter rows
+  3. `GROUP BY` clauses applied to divide rows into groups
+  4. `HAVING` conditions applied (like `WHERE`, but used to filter aggregate `GROUP BY` rows)
+  5. compute values (functions, columns)
+  6. `ORDER BY` used to sort results for display
+  7. `LIMIT` or `OFFSET` applied
+
+-  different uses for column / table aliases [^23]
+  - 'rename' columns for application : e.g., `SELECT films.id AS film_id, director_id FROM films_table JOIN director_table ON films.director_id = directors.director_id;`
+    - commonly used to disambiguate columns (e.g., `count(id) AS total_films` vs `count(DISTINCT director_id) AS total_directors`)
+  - 'rename' tables to shorten queries : e.g., `SELECT * FROM films AS f;`
+    - Note:  anywhere within the same query a table alias is defined, the new name *must* be used. e.g., in the query above, 'films' will not longer access the table, 'f' must be used
+    - table aliases are typically just used to help shorten longer queries
+
+ 
+
 
 ## setup
 
@@ -391,6 +409,10 @@
 
  
 
+## Things to review
+- [ ] `PRIMARY KEY` : what constraints does this add?  What conditions?  What kinds of data types can be 'primary  key's?
+
+
 
 # References
 [^1]: [Data vs Schema](https://launchschool.com/books/sql/read/basics_tutorial#datavsschema)
@@ -414,4 +436,7 @@
 [^19]: [Loading Database Dumps](https://launchschool.com/lessons/a1779fd2/assignments/fa05a889)
 [^20]: [NOT NULL and Default Values](https://launchschool.com/lessons/a1779fd2/assignments/c6a5a6cb)
 [^21]: [More Constraints](https://launchschool.com/lessons/a1779fd2/assignments/f5b732e5)
+[^22]: [How PostgreSQL Executes Queries](https://launchschool.com/lessons/a1779fd2/assignments/f4b7a9dc)
+[^23]: [Table and Column Aliases](https://launchschool.com/lessons/a1779fd2/assignments/d4825863)
+
 
