@@ -48,10 +48,15 @@
 - database *normalization*: [^10]
   - the act of splitting up data across multiple different tables and creating relationships between these tables
     - to reduce data redundancy and improve data integrity
+    - should reduce database anomalies (insertion, update, deletion anomalies) [^28]
     - using 'normal forms' (sets of rules which define when a database can be considered 'normalized')
   - define *entities* and *relationships*
   - entity:  a 'real world' object or set of data (e.g., 'user', 'book', 'checkout', 'reviews', 'addresses')
   - relationships:  can be mapped using an 'ERD' (*Entity Relationship Diagram* - graphical representation of entities and relationships)
+  - basic process of normalizing: [^28]
+    - extract (redundant) data into additional tables
+    - use foreign keys to tie it back to associated data
+
 
 - primary key: a unique identifier for a row of data [^10]
   - typically called 'id'
@@ -64,7 +69,7 @@
   - in relational data - table relationships must always be consistent
   - 'modality' determines why we can add a user without an address, but can't add an address without a user
   - e.g., `ON DELETE CASCADE` : deciding what to do when a row is deleted (especially when referenced by another table) is an important part of maintaining referential integrity
-    
+
 
 - key entity relationships: [^10]
   - one-to-one:
@@ -100,7 +105,63 @@
     - Note:  anywhere within the same query a table alias is defined, the new name *must* be used. e.g., in the query above, 'films' will not longer access the table, 'f' must be used
     - table aliases are typically just used to help shorten longer queries
 
- 
+
+- relational databases are *relational* because they persist data in a set of *relations* [^24]
+  - **relation**: a table (a set of columns and rows of data); in Postgres, also includes sequences and views (anything you can use in a `FROM` clause
+  - **relationship**: an association between the data stored in relations; a connetion between entity instances or rows of data, usually resulting from what those rows of data represent
+    - e.g., a row in a 'customers' table would probably have a relationship with 0 or more rows in an 'orders' table
+  - **relational data**: working with more than 1 table at a time
+
+
+### Database diagrams
+- levels of schema (abstraction), from less detail to more: [^25]
+  - 1) conceptual
+  - 2) logical
+  - 3) physical
+
+  - **conceptual schema**: high-level design focused on identifying entities and their relationships
+    - concerned with bigger objects, higher level concepts
+    - not worried about how data is stored in a database
+    - may also be called an entity-relationship model or entity-relationship diagram
+      - diagrams outline 1-to-1, 1-to-many, many-to-many relationships between entities (e.g., using straight line or 'crow's foot')
+    - e.g., cellphone (dialing app that makes phone calls): data model includes phone call, contact (w/ multiple phone numbers)
+    - each entity may be represented by more than 1 table in final physical schema
+      - representing 1-to-many:
+        - the "many" side should have a FOREIGN KEY
+        - the "1" side will have a primary key linked to the FOREIGN KEY
+      - representing many-to-many:
+        - need to add an additional "join" table to link each entity
+        - columns in this additional table will be FOREIGN KEYs linked to the PRIMARY KEY of other entities
+      - 1:1 : is rare, since this indicates that both entities should be folded into 1 table [^26]
+        - would define FOREIGN and PUBLIC KEY columns to be the same in 1 table (and point to the PRIMARY KEY of the other table)
+
+  - logical schema:
+    - may contain details about a database, but typically isn't specific to a particular database (e.g., using SQL standard)
+
+  - **physical schema**: low-level database-specific design focused on implementation
+    - database-specific implementation of conceptual model
+    - contains attributes an entity can hold, data types of those entities, rules about how entities relate to each other
+
+- **cardinality**: the number of objects on each side of the relationship (1:1, 1:M, M:M) [^26]
+- **modality**: if the relationship is required (at least 1 instance of that entity) or optional (may be 0 instances) [^26]
+  - may be indicated with (1) or (0)
+
+
+### Database anomalies
+- **update anomaly**: a situation where an update to a row creates an inconsistent database [^28]
+- **inconsistent database**: where a database contains more than 1 answer for a given question [^28]
+- **insertion anomaly**: where you cannot store information about something without having to enter info about something else [^28]
+  - e.g., must enter info about a call to enter info about a contact
+- **deletion anomaly**: where you lose information about 1 thing by removing information about something else [^28]
+  - e.g., lose all info about a contact if you delete the history of calls
+
+
+### Adding constraints
+- 'NOT NULL' cannot be added if table contains NULL values [^30]
+- 'CHECK' constraints (e.g., char must be 1 of several given options) cannot be added if table contains inadmissible values [^30]
+  - can add `NOT VALID` to ADD CHECK syntax to skip validity check
+
+
 
 
 ## setup
@@ -200,20 +261,34 @@
       enabled boolean DEFAULT TRUE
     );
     ```
-    - e.g., `CREATE TABLE tablename (id serial PRIMARY KEY, name varchar(50));` : can add PRIMARY KEY designation directly when defining columns of new table
+    - e.g., `CREATE TABLE tablename (id serial PRIMARY KEY, name varchar(50));`
+      - can add PRIMARY KEY designation directly when defining columns of new table
+    - e.g., `CREATE TABLE tablename (id serial PRIMARY KEY, product_id integer REFERENCES products(id));`
+      - adds FOREIGN KEY designation directly onto column 'product_id' which references the 'id' column of table 'products'
     - e.g., `FOREIGN KEY (fk_col_name) REFERENCES target_table_name (pk_col_name);` : sets the 'fk_col_name' column to reference table 'target_table_name' whose primary key is col 'pk_col_name' [^10];  can separate multiple FOREIGN KEY definitions with a comma
 
+- `CREATE SEQUENCE seq_name;` : adds a sequence object to the database structure; is considered part of DDL [^16]
+    - creates a new sequence with the name 'seq_name' (i.e., generates incrementing numbers, only returns a number once) 
+
+- `CREATE TYPE type_name AS ENUM ('O', 'B', 'A', 'F', 'G');` : creates an 'ENUM' type which enforces specific values [^31]
+
+
+
+#### ALTER TABLE
 
   - `ALTER TABLE tablename` : update *schema-only* of a table
       - `RENAME TO new_name` : rename tablename to new_name
       - `RENAME COLUMN old_name TO new_name` : rename column old_name
       - `ALTER COLUMN full_name TYPE varchar(25)` : change data type of column full_name to varchar(25)
+        - e.g., `ALTER COLUMN spectral_type TYPE spectral USING spectral_type::spectral;` : change existing type of column 'spectral_type' to type 'spectral', using a cast [^31]
       - `ALTER COLUMN full_name SET NOT NULL;` : adds NOT NULL constraint to column 'full_name'
         - e.g., `ALTER COLUMN col_name SET DEFAULT 'value';` : sets the column 'col_name' to have a default value of 'value' in table 'tablename'
       - `ADD CONSTRAINT constraint_name constraint_type (column_name);` : add table constraints
         - e.g., `ADD CONSTRAINT unique_binomial_name UNIQUE (binomial_name)` [^4]exercise #6
-	      - `ADD CHECK (full_name <> '');` : example of adding a CHECK constraint to a column [^5]
-	      - `ADD UNIQUE (column_name)` : add UNIQUE to a column
+          - `ADD CHECK (full_name <> '');` : example of adding a CHECK constraint to a column [^5]
+          - `ADD CHECK (spectral_type IN ('O', 'B', 'A', 'F', 'G', 'K', 'M'));` : ensure col 'spectral_type' is 1 of several listed values [^30]
+          - `ADD CHECK (spectral_type ~ '[OBAFGKM]') NOT VALID;` : same as above, different syntax, and use of `NOT VALID` skips the validity check one existing rows (i.e., if invalid values exist, check can still be applied) [^30]
+          - `ADD UNIQUE (column_name)` : add UNIQUE to a column
       - `DROP CONSTRAINT constraint_name` : removes a constraint (from table)
       - `ALTER COLUMN col_name DROP CONSTRAINT constraint_name` : drop constraint from column
         - `DROP DEFAULT` : removes the default "constraint"
@@ -221,13 +296,11 @@
         - e.g. `ADD COLUMN last_login timestamp NOT NULL DEFAULT NOW();`
       - `DROP COLUMN column_name` : remove a column from tablename
       - `ADD FOREIGN KEY (column_name) REFERENCES other_table(pk_column)` : adds a foreign key constraint to a column of 'tablename' (initial 'ALTER TABLE' statement)
-        
+
   - **additional commands can be added using a `,`**
   - `ALTER TABLE old_name RENAME TO new_name` : rename a table 'old_name' to 'new_name'
   - `ALTER TABLE users ADD PRIMARY KEY (id);` : define column 'id' as primary key for table 'users' (note this column must be 'NOT NULL' and 'UNIQUE') [^10]
 
-  - `CREATE SEQUENCE seq_name;` : adds a sequence object to the database structure; is considered part of DDL [^16]
-    - creates a new sequence with the name 'seq_name' (i.e., generates incrementing numbers, only returns a number once)
 
 - `CASCADE` : (e.g., `ON DELETE CASCADE`) : if the row being referenced is deleted, the row referencing is also deleted [^10]
 
@@ -251,6 +324,10 @@
     - e.g. `SELECT enabled, full_name FROM users WHERE id < 2;` will return info from enabled and full_name columns that meet the condition id < 2
     - e.g., `WHERE expression1 AND expression2`
     - e.g., `WHERE (expression 1 OR expression2) AND expression3;
+    - can cast column values (e.g., `WHERE part_number::text LIKE '3%';` : convert an integer 'part_number' to text to use string comparison to list all partnumbers starting with '3') [^32]
+    - can use `IN` and subqueries for conditionals requiring 'aggregates' in WHERE
+      - e.g., `WHERE part_number IN (SELECT part_number FROM parts WHERE device=2 ORDER BY part_number DESC LIMIT 2);`
+        - subquery returns a table which returns the largest 2 part numbers, which are then returned to the WHERE statement
 
   - `SELECT * FROM table_name LIMIT 1;` : limits the number of results displayed (displays the first result)
     - e.g., `SELECT name FROM countries ORDER BY population DESC LIMIT 1;` (`LIMIT` needs to go at the end)
@@ -295,11 +372,15 @@
 
   - join_type : 
     - `INNER` : the default JOIN if no other type is specified; returns the common elements of both tables (i.e., the intersection where they match the join condition)
+      - can replicate an inner join using: `SELECT * FROM table1, table2 WHERE table1.table2_id = table2.id;` (this syntax is less common since it's less explicit if additional `WHERE` clauses are included [^27]
     - `LEFT (OUTER)` : returns all rows from the LEFT table and include matching rows from RIGHT table (or indicate NULL, if no matches are available)
     - `RIGHT (OUTER)` : returns all rows from the RIGHT table and include matching rows from LEFT table (or indicate NULL, if no matches are available)
     - `FULL (OUTER)` : returns ALL rows from BOTH tables, indicating NULL if no matches are available
     - `CROSS` : does NOT use an ON clause, returns all rows from first table crossed with every row from second table (a "cross product" of 2 sets)
-  
+      - can also replicate a cross join using:  `SELECT * FROM table1, table2;` [^27]
+
+
+
   - multiple joins:
     - PostreSQL creates a 'transient table' (i.e., a temporary table) that contains the required info from the first join, then ADDS to this transient table with subsequent joins
     - e.g., 
@@ -324,7 +405,9 @@
     ```
     - can also omit 'AS' : e.g., `SELECT u.full_name FROM users u INNER JOIN checkouts c ...`
     - e.g., `SELECT count(id) AS "Num of Books Checked Out" FROM checkouts;` : displays the column title as "Num of Books Checked Out"
-  
+
+
+
 - Subqueries: [^11]
   - using the results of 1 query in another query - "nesting" - the nested query is the 'subquery'
   - can be an alternative to a JOIN;  generally JOINs are faster than subqueries
@@ -348,9 +431,11 @@
     - be careful - not including the `WHERE` expression will delete ALL rows from the table
 
 
+
+
 ### DCL (Data Control Language)
 - `GRANT`, `REVOKE` : common SQL constructs [^15]
- 
+
 
 ---
 
@@ -365,6 +450,7 @@
   - boolean : true or false, sometimes t or f
   - integer or INT : 'whole number' ; max value is +/- 2,147,483,647 [^18]
   - decimal(precision, scale) : precision - total digits on both sides of decimal point; scale - number of digits to the right of decimal point
+  - numeric : a number of arbitrary size and precision [^29]
   - timestamp : YYYY-MM-DD HH:MM:SS format
     - timestamptz : will store timestamp with timezone
   - date : YYYY-MM-DD format
@@ -377,7 +463,7 @@
 
 ## constraints
   - DEFAULT (not technically a constraint): sets a default value for the column (i.e., when no other value is specified)
-  
+
   - 2 types of constrants : table and column constraints - differ in syntax; not much other differences [^4]
   - NOT NULL : a value MUST be specified (cannot be left empty); generally always a column constraint [^4]
 
@@ -407,10 +493,11 @@
   - `avg()`
   - `string_agg(col_name, delimiter)` : concatenates string values using delimiter to produce a single string [^8]
 
- 
+
 
 ## Things to review
 - [ ] `PRIMARY KEY` : what constraints does this add?  What conditions?  What kinds of data types can be 'primary  key's?
+  - this should add 'UNIQUE'
 
 
 
@@ -438,5 +525,14 @@
 [^21]: [More Constraints](https://launchschool.com/lessons/a1779fd2/assignments/f5b732e5)
 [^22]: [How PostgreSQL Executes Queries](https://launchschool.com/lessons/a1779fd2/assignments/f4b7a9dc)
 [^23]: [Table and Column Aliases](https://launchschool.com/lessons/a1779fd2/assignments/d4825863)
-
+[^24]: [What is Relational Data?](https://launchschool.com/lessons/5ae760fa/assignments/074f64a8)
+[^25]: [Database Diagrams: Levels of Schema](https://launchschool.com/lessons/5ae760fa/assignments/2f3bc8f7)
+[^26]: [Database Diagrams: Cardinality and Modality](https://launchschool.com/lessons/5ae760fa/assignments/46053e3b)
+[^27]: [A Review of JOINs](https://launchschool.com/lessons/5ae760fa/assignments/0391f663)
+[^28]: [One-to-Many Relationships](https://launchschool.com/lessons/5ae760fa/assignments/e94816bd)
+[^29]: [DDL problem 4](https://launchschool.com/exercises/bd3c128d)
+[^30]: [Check Values in List](https://launchschool.com/exercises/03add4d4)
+[^31]: [Enumerated Types](https://launchschool.com/exercises/1e4b0da3)
+[^32]: [SELECT part_number](https://launchschool.com/exercises/b7e9a1e9)
+[^33]: [UPDATE device_id](https://launchschool.com/exercises/96b283fd)
 
