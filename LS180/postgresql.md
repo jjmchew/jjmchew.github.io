@@ -1,5 +1,7 @@
 # PostgreSQL
 
+---
+
 ## documentation:
 - notes from video[^12]
 - make sure to find your version (indicated when you start `psql` from command line)
@@ -9,25 +11,26 @@
   - `{}` : indicates options
   - ***terms*** : (bold and italic) indicate more details below - scroll through the page to find
 
+---
 
 ## theory:
-  - SQL (Structured Query Language) : is a 'special purpose language' - has a specific purpose for interacting with relational databases [^15]
-    - a declarative language : only details *what* to do, not *how* - 'under-the-hood' SQL may execute things differently depending on the dataset
-  - RDBMS (Relational Database Management System) : a software application that lets you issue commands and interact with a relational database (uses syntax that conforms to a set of conventions or standards) [^14]
-  - Relational Database : a database organized according to the relational model of data - defines a set of relations (or tables) and describes relationships between them [^14]
-  - data vs schema: [^1]
-    - data is 'contents' of the database
-    - schema is 'structure' of the database
-    - combining data and schema gives us *structured data* - otherwise, if all of the data wasn't assigned to a schema, it would be *unstructured data*
-  - SQL sub-language deals with different parts of database: [^2]
-    - **DDL** : Data Definition Language - define structure of database and tables / columns within it
-    - **DML** : Data Manipulation Language - retrieve or modify data stored in database (e.g., queries, `SELECT`, etc.)
-    - **DCL** : Data Control Language - define what users are allowed to do when interacting with database
-  - database analogy: [^3]
-    - database : building
-    - floor plan : schema
-    - rooms : tables
-  - database names are generally written in snake_case [^3]
+- SQL (Structured Query Language) : is a 'special purpose language' - has a specific purpose for interacting with relational databases [^15]
+  - a declarative language : only details *what* to do, not *how* - 'under-the-hood' SQL may execute things differently depending on the dataset
+- RDBMS (Relational Database Management System) : a software application that lets you issue commands and interact with a relational database (uses syntax that conforms to a set of conventions or standards) [^14]
+- Relational Database : a database organized according to the relational model of data - defines a set of relations (or tables) and describes relationships between them [^14]
+- data vs schema: [^1]
+  - data is 'contents' of the database
+  - schema is 'structure' of the database
+  - combining data and schema gives us *structured data* - otherwise, if all of the data wasn't assigned to a schema, it would be *unstructured data*
+- SQL sub-language deals with different parts of database: [^2]
+  - **DDL** : Data Definition Language - define structure of database and tables / columns within it
+  - **DML** : Data Manipulation Language - retrieve or modify data stored in database (e.g., queries, `SELECT`, etc.)
+  - **DCL** : Data Control Language - define what users are allowed to do when interacting with database
+- database analogy: [^3]
+  - database : building
+  - floor plan : schema
+  - rooms : tables
+- database names are generally written in snake_case [^3]
 
 - CRUD: [^5]
   - structure (schema) is in columns, data is in rows (sometimes called 'tuples')
@@ -84,8 +87,14 @@
     - for 1 entity instance there may be multiple records in the other table, and vice versa
     - typically implemented using a separate table (called a *join table*) which contains foreign key columns which reference the primary keys (id's) of each entity (i.e., implement 2 separate 1-to-many relationships)
     - e.g., `CREATE TABLE checkouts (id serial, user_id int NOT NULL, book_id int NOT NULL, checkout_date timestamp, return_date timestamp, PRIMARY KEY (id), FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE, FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE);` : creates a new table 'checkouts' which references the id (primary key) of the users table and the books table
+    - best practice for join tables: [^34]
+      - always define 'NOT NULL' for each foreign key - otherwise queries can be difficult
+      - always include 'ON DELETE CASCADE' - prevent references to non-existent rows
+      - include 'UNIQUE (a_id, b_id)` - ensure each pair of foreign keys is unique
 
 - SQL style guide:  can use https://www.sqlstyle.guide/ [^17]
+- convention is to use name join tables in alphabetic order (e.g., 'directors_films' NOT 'films_directors') [^35]
+
 
 - Note:  it is possible to define a column default value that conflicts with a column constraint - an error will only be raised when that default is attempted to be added as data to a new record [^21]q17
 
@@ -107,7 +116,7 @@
 
 
 - relational databases are *relational* because they persist data in a set of *relations* [^24]
-  - **relation**: a table (a set of columns and rows of data); in Postgres, also includes sequences and views (anything you can use in a `FROM` clause
+  - **relation**: a table (a set of columns and rows of data); in Postgres, also includes sequences and views (anything you can use in a `FROM` clause)
   - **relationship**: an association between the data stored in relations; a connetion between entity instances or rows of data, usually resulting from what those rows of data represent
     - e.g., a row in a 'customers' table would probably have a relationship with 0 or more rows in an 'orders' table
   - **relational data**: working with more than 1 table at a time
@@ -115,9 +124,9 @@
 
 ### Database diagrams
 - levels of schema (abstraction), from less detail to more: [^25]
-  - 1) conceptual
-  - 2) logical
-  - 3) physical
+  - 1. conceptual
+  - 2. logical
+  - 3. physical
 
   - **conceptual schema**: high-level design focused on identifying entities and their relationships
     - concerned with bigger objects, higher level concepts
@@ -161,8 +170,25 @@
 - 'CHECK' constraints (e.g., char must be 1 of several given options) cannot be added if table contains inadmissible values [^30]
   - can add `NOT VALID` to ADD CHECK syntax to skip validity check
 
+### Indexes
+- **index** : a mechanism that SQL engines use to speed up queries [^39]
+  - trade-offs: when reading, indexes can help, but when updating, both the db and the index must be updated - this can slow down databases overall
+  - generally, best used when sequential reading is inadequate
+    - e.g., columns that aid in mapping relationships (e.g., foreign key columns); columns frequently used for 'ORDER BY' clauses
+  - OR best-used when reading is frequent, but create / update is infrequent
 
+- different types of indexes exist which use different data structures / search methodologies
+  - check PostgreSQL documentation: "Index Types"
 
+### EXPLAIN
+- prepend `EXPLAIN` to the desired query and SQL will return the *query plan* (developed as part of query execution, as per PostgreSQL docs, "Overiew of PostgreSQL Internals") [^40]
+  - this returns *estimates* of query 'cost'
+  - queries are comprised of *nodes*, each node has a *cost* (e.g., `cost=32.75..54.93` which is start-up cost .. total cost)
+  - can compare different queries that return the same results by looking at *total cost*
+
+- prepend `EXPLAIN ANALYZE` and SQL will also return *actual* times to execute the query [^40]
+
+---
 
 ## setup
 
@@ -186,13 +212,11 @@
 
 ---
 
-
-
----
-
 ## Commands
 
 ### within psql console
+  - search "Meta-Commands" within PostgreSQL documentation
+
   - `\q` : quit
   - `\conninfo` : connection info (db, user, socket, port)
   - `\list` or `\l` : list all db's created; [^13]
@@ -202,10 +226,12 @@
   - `\ds` : list all sequences in db [^13]
   - `\d tablename` : show details of table 'tablename'
   - `\d` : describe available relations (list) [^13]
+  - `\di` : describe available indexes (list) [^39]
   - `\?` : list commands [^13]
   - `\h [topic]` : help; indicate topic is optional [^13]
   - `\i file_name` : import SQL commands into current db [^19]
     - e.g., `\i ~/folder/file_to_import.sql`
+  - `\copy file.csv` : imports data from file.csv into a database [^42]
 
 ### from command line
   - `/usr/bin/select-editor` : changes default psql text editor for `\e` command
@@ -272,6 +298,21 @@
 
 - `CREATE TYPE type_name AS ENUM ('O', 'B', 'A', 'F', 'G');` : creates an 'ENUM' type which enforces specific values [^31]
 
+### Indexes
+- `CREATE INDEX index_name ON table_name (field_name);` : creates a new index on field_name in table_name [^39]
+  - Note: 'index_name' is optional
+  - these are *non-unique* indexes - duplicate values are possible (i.e., this is different from primary keys which are *unique* indexes)
+- `DROP INDEX index_name` : deletes an index [^39]
+
+
+- multi-column indexes: [^39]
+  - `CREATE INDEX index_name ON table_name (field_name1, field_name2, ...);` : creates a new multi-column index on field_name1, field_name2, etc in table_name
+  - there is a limit to how many columns that can be combined into 1 index; only certain index types support multi-column indexes
+
+- partial indexes: [^39]
+  - can also index a subset a data that meets a conditional expression
+    - e.g., index only rows where the value of 'author_name' starts with 'A'
+
 
 
 #### ALTER TABLE
@@ -287,7 +328,9 @@
         - e.g., `ADD CONSTRAINT unique_binomial_name UNIQUE (binomial_name)` [^4]exercise #6
           - `ADD CHECK (full_name <> '');` : example of adding a CHECK constraint to a column [^5]
           - `ADD CHECK (spectral_type IN ('O', 'B', 'A', 'F', 'G', 'K', 'M'));` : ensure col 'spectral_type' is 1 of several listed values [^30]
-          - `ADD CHECK (spectral_type ~ '[OBAFGKM]') NOT VALID;` : same as above, different syntax, and use of `NOT VALID` skips the validity check one existing rows (i.e., if invalid values exist, check can still be applied) [^30]
+          - `ADD CHECK (spectral_type ~ '[OBAFGKM]') NOT VALID;`
+            - same as above, different syntax, and use of `NOT VALID` skips the validity check one existing rows (i.e., if invalid values exist, check can still be applied) [^30]
+            - `~` operator : allows regex match of column values [^36]
           - `ADD UNIQUE (column_name)` : add UNIQUE to a column
       - `DROP CONSTRAINT constraint_name` : removes a constraint (from table)
       - `ALTER COLUMN col_name DROP CONSTRAINT constraint_name` : drop constraint from column
@@ -372,7 +415,7 @@
 
   - join_type : 
     - `INNER` : the default JOIN if no other type is specified; returns the common elements of both tables (i.e., the intersection where they match the join condition)
-      - can replicate an inner join using: `SELECT * FROM table1, table2 WHERE table1.table2_id = table2.id;` (this syntax is less common since it's less explicit if additional `WHERE` clauses are included [^27]
+      - can replicate an inner join using: `SELECT * FROM table1, table2 WHERE table1.table2_id = table2.id;` (this syntax is less common since it's less explicit if additional `WHERE` clauses are included) [^27]
     - `LEFT (OUTER)` : returns all rows from the LEFT table and include matching rows from RIGHT table (or indicate NULL, if no matches are available)
     - `RIGHT (OUTER)` : returns all rows from the RIGHT table and include matching rows from LEFT table (or indicate NULL, if no matches are available)
     - `FULL (OUTER)` : returns ALL rows from BOTH tables, indicating NULL if no matches are available
@@ -406,18 +449,43 @@
     - can also omit 'AS' : e.g., `SELECT u.full_name FROM users u INNER JOIN checkouts c ...`
     - e.g., `SELECT count(id) AS "Num of Books Checked Out" FROM checkouts;` : displays the column title as "Num of Books Checked Out"
 
-
-
-- Subqueries: [^11]
-  - using the results of 1 query in another query - "nesting" - the nested query is the 'subquery'
-  - can be an alternative to a JOIN;  generally JOINs are faster than subqueries
-  - e.g., `SELECT u.full_name FROM users u WHERE u.id NOT IN (SELECT c.user_id FROM checkouts c);` : subquery is "SELECT c.user_id FROM checkouts c"
-  - expressions to compare value to results of a subquery:
-    - `IN`
-    - `NOT IN`
-    - `ANY`
-    - `SOME`
-    - `ALL`
+  - can use 'window lag function' to execute row-by-row calculations / comparisons
+  - can also use CASE comparisons
+    - e.g., Med problems q5:  database 'med_m_to_med_m' [^37]
+    ```
+    SELECT CASE WHEN customers.name = lag(customers.name) 
+                                        OVER (ORDER BY customers.name)
+                                        THEN '' 
+                ELSE customers.name 
+           END, 
+           services.description
+    FROM customers 
+      LEFT JOIN customers_services ON customer_id = customers.id 
+      LEFT JOIN services ON services.id = service_id;
+    ```
+      - displays output as (note name isn't repeated on each row):
+      ```
+           name      |    description
+      ---------------+--------------------
+       Chen Ke-Hua   | High Bandwidth
+                     | Unix Hosting
+       Jim Pornot    | Dedicated Hosting
+                     | Unix Hosting
+                     | Bulk Email
+       Lynn Blake    | Whois Registration
+                     | High Bandwidth
+                     | Business Support
+                     | DNS
+                     | Unix Hosting
+       Nancy Monreal |
+       Pat Johnson   | Whois Registration
+                     | DNS
+                     | Unix Hosting
+       Scott Lakso   | DNS
+                     | Dedicated Hosting
+                     | Unix Hosting
+      (17 rows)
+      ```
 
 
 - UPDATE: [^9]
@@ -431,11 +499,32 @@
     - be careful - not including the `WHERE` expression will delete ALL rows from the table
 
 
+#### Subqueries
+
+- Subqueries: [^11]
+  - using the results of 1 query in another query - "nesting" - the nested query is the 'subquery'
+  - can be an alternative to a JOIN;  generally JOINs are faster than subqueries
+  - e.g., `SELECT u.full_name FROM users u WHERE u.id NOT IN (SELECT c.user_id FROM checkouts c);` : subquery is "SELECT c.user_id FROM checkouts c"
+
+- generally, if return data from only 1 table, but it is conditional on info from another table, a subquery may be clearer [^41]
+  - if you return data from both tables, you generally need a 'JOIN'
+
+- subquery expressions: [^41]
+  - can search "subquery expressions" in PostgreSQL documentation
+  - `EXISTS` : check if any rows are returned by the nested query, if so return 'true', else 'false'
+    - e.g., `SELECT 1 WHERE EXISTS (SELECT id FROM books WHERE isbn = '9782382928394');` : if a book with isbn defined exists, then output '1'
+  - `IN` : compares and evaluated expression to every row in the subquery result, if a row equal to evaluated expression is found, thn return 'true', else 'false'
+    - e.g., `SELECT name FROM authors WHERE id IN (SELECT author_id FROM books WHERE title LIKE 'The%');` : subquery returns a list of author_ids for books where the title starts with 'The'; the outer query returns a list of author names (who have written books where the title starts with 'The')
+  - `NOT IN` : opposite of `IN`
+  - `ANY` / `SOME` (equivalent) : always used with an operator (e.g., `=`, `<`, `>`, etc.), return true if any true result is obtained
+    - e.g., `SELECT name FROM authors WHERE length(name) > ANY (SELECT length(title) FROM books WHERE title LIKE 'The%');` : inner query returns title lengths for any books with a title starting in 'The'; outer query returns the author name when the length of the name is > title length of ANY returned value from inner query
+    - using `= ANY` is equivalent to `IN`
+  - `ALL` : similar to `ANY` / `SOME`, but only returns true when condition evaluates to true for ALL returned values from inner query
+    - using `<> ALL` is equivalent to `NOT IN`
 
 
 ### DCL (Data Control Language)
 - `GRANT`, `REVOKE` : common SQL constructs [^15]
-
 
 ---
 
@@ -461,6 +550,8 @@
   - NULL : NULL = NULL will return *nothing* in SQL - must always use `IS NULL` or `IS NOT NULL` [^18]
     - i.e., `SELECT NULL IS NULL` will return `t` (true)
 
+---
+
 ## constraints
   - DEFAULT (not technically a constraint): sets a default value for the column (i.e., when no other value is specified)
 
@@ -472,6 +563,7 @@
   - FOREIGN KEY :  ; can be table or column constraint [^4]
   - CHECK :  ; can be table or column constraint [^4]
 
+---
 
 ## SQL functions
 - `now()` : provides the current date and time when called
@@ -493,11 +585,12 @@
   - `avg()`
   - `string_agg(col_name, delimiter)` : concatenates string values using delimiter to produce a single string [^8]
 
-
+---
 
 ## Things to review
 - [ ] `PRIMARY KEY` : what constraints does this add?  What conditions?  What kinds of data types can be 'primary  key's?
-  - this should add 'UNIQUE'
+  - A: applying 'PRIMARY KEY' applies 'NOT NULL' AND 'UNIQUE' [^38]q4
+
 
 
 
@@ -535,4 +628,12 @@
 [^31]: [Enumerated Types](https://launchschool.com/exercises/1e4b0da3)
 [^32]: [SELECT part_number](https://launchschool.com/exercises/b7e9a1e9)
 [^33]: [UPDATE device_id](https://launchschool.com/exercises/96b283fd)
-
+[^34]: [Many-to-Many Relationships](https://launchschool.com/lessons/5ae760fa/assignments/95ff0606)
+[^35]: [Converting a 1:M Relationship to a M:M Relationship](https://launchschool.com/lessons/5ae760fa/assignments/5c789742)
+[^36]: [Set Up Database](https://launchschool.com/exercises/ad984e31)
+[^37]: [Services for each Customer](https://launchschool.com/exercises/7ee03247)
+[^38]: [Lesson 3 quiz](https://launchschool.com/quizzes/9ac63522)
+[^39]: [Indexes ](https://launchschool.com/lessons/e752508c/assignments/17c58bc3)
+[^40]: [Comparing SQL Statements](https://launchschool.com/lessons/e752508c/assignments/87715c5f)
+[^41]: [Subqueries ](https://launchschool.com/lessons/e752508c/assignments/2009d549)
+[^42]: [Set Up the Database using \copy](https://launchschool.com/exercises/505113c2)
