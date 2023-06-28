@@ -269,7 +269,7 @@
     - `DROP TABLE IF EXISTS table_name;` : checks for existence of table before dropping
     - `DROP TABLE table1, table2;` : drops multiple tables
   - `CREATE TABLE table();` : creates a table - note `()` - columns need to be defined in ()
-    ```
+    ```sql
     CREATE TABLE table (
       column_name_1 column_1_data_type [constraints, ...],
       column_name_2 column_2_data_type [constraints, ...],
@@ -280,7 +280,7 @@
     );
     ```
     - for example:
-    ```
+    ```sql
     CREATE TABLE users (
       id serial UNIQUE not NULL,
       username char(25),
@@ -427,7 +427,7 @@
   - multiple joins:
     - PostreSQL creates a 'transient table' (i.e., a temporary table) that contains the required info from the first join, then ADDS to this transient table with subsequent joins
     - e.g., 
-    ```
+    ```sql
     SELECT users.full_name, books.title, checkouts.checkout_date 
       FROM users 
       INNER JOIN checkouts 
@@ -438,7 +438,7 @@
 
   - aliasing: using another (shorter) name to reference tables
     - e.g., the query above could be written:
-    ```
+    ```sql
     SELECT u.full_name, b.title, c.checkout_date
       FROM users AS u
       INNER JOIN checkouts AS c
@@ -452,7 +452,7 @@
   - can use 'window lag function' to execute row-by-row calculations / comparisons
   - can also use CASE comparisons
     - e.g., Med problems q5:  database 'med_m_to_med_m' [^37]
-    ```
+    ```sql
     SELECT CASE WHEN customers.name = lag(customers.name) 
                                         OVER (ORDER BY customers.name)
                                         THEN '' 
@@ -464,7 +464,7 @@
       LEFT JOIN services ON services.id = service_id;
     ```
       - displays output as (note name isn't repeated on each row):
-      ```
+      ```sql
            name      |    description
       ---------------+--------------------
        Chen Ke-Hua   | High Bandwidth
@@ -513,7 +513,7 @@
   - can search "subquery expressions" in PostgreSQL documentation
   - `EXISTS` : check if any rows are returned by the nested query, if so return 'true', else 'false'
     - e.g., `SELECT 1 WHERE EXISTS (SELECT id FROM books WHERE isbn = '9782382928394');` : if a book with isbn defined exists, then output '1'
-  - `IN` : compares and evaluated expression to every row in the subquery result, if a row equal to evaluated expression is found, thn return 'true', else 'false'
+  - `IN` : compares and evaluated expression to every row in the subquery result, if a row equal to evaluated expression is found, then return 'true', else 'false'
     - e.g., `SELECT name FROM authors WHERE id IN (SELECT author_id FROM books WHERE title LIKE 'The%');` : subquery returns a list of author_ids for books where the title starts with 'The'; the outer query returns a list of author names (who have written books where the title starts with 'The')
   - `NOT IN` : opposite of `IN`
   - `ANY` / `SOME` (equivalent) : always used with an operator (e.g., `=`, `<`, `>`, etc.), return true if any true result is obtained
@@ -521,6 +521,15 @@
     - using `= ANY` is equivalent to `IN`
   - `ALL` : similar to `ANY` / `SOME`, but only returns true when condition evaluates to true for ALL returned values from inner query
     - using `<> ALL` is equivalent to `NOT IN`
+
+- when querying from a 'sub-table', must alias the 'sub-table' [^43]
+  - e.g., `SELECT col_name FROM (SELECT col_name2 FROM table_name) AS alias_name;` : subquery from table_name has been aliased into 'alias_name' for outer query
+
+- row comparisons: [^44]
+  - can use `ROW` to construct a 'temporary table' for comparisons, etc.
+    - e.g., `SELECT id FROM items WHERE ROW(name, initial_price, sales_price) = ROW('Painting', 100.00, 250.00);`
+      - this compares name to 'Painting', initial_price to 100.00, sales_price to 250.00 and if each is equal, will return 'true'
+      - similar to doing comparisons with 'AND', but may be faster if there are many fields to compare
 
 
 ### DCL (Data Control Language)
@@ -587,13 +596,6 @@
 
 ---
 
-## Things to review
-- [ ] `PRIMARY KEY` : what constraints does this add?  What conditions?  What kinds of data types can be 'primary  key's?
-  - A: applying 'PRIMARY KEY' applies 'NOT NULL' AND 'UNIQUE' [^38]q4
-
-
-
-
 # References
 [^1]: [Data vs Schema](https://launchschool.com/books/sql/read/basics_tutorial#datavsschema)
 [^2]: [SQL SUb-languages](https://launchschool.com/books/sql/read/interacting_with_postgresql#sqlsublanguages)
@@ -637,3 +639,5 @@
 [^40]: [Comparing SQL Statements](https://launchschool.com/lessons/e752508c/assignments/87715c5f)
 [^41]: [Subqueries ](https://launchschool.com/lessons/e752508c/assignments/2009d549)
 [^42]: [Set Up the Database using \copy](https://launchschool.com/exercises/505113c2)
+[^43]: [Query from a Transient Table](https://launchschool.com/exercises/70e83085)
+[^44]: [Row Comparison](https://launchschool.com/exercises/22931033)
