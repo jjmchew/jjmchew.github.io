@@ -99,7 +99,7 @@
 - Note:  it is possible to define a column default value that conflicts with a column constraint - an error will only be raised when that default is attempted to be added as data to a new record [^21]q17
 
 - execution steps in a SELECT query: [^22]
-  1. `FROM`, `JOIN` tables collected into a virtual, temporary table (all rows)
+  1. `FROM`, `JOIN` tables collected into a virtual, temporary table ("transient table") (all rows)
   2. `WHERE` clauses used to filter rows
   3. `GROUP BY` clauses applied to divide rows into groups
   4. `HAVING` conditions applied (like `WHERE`, but used to filter aggregate `GROUP BY` rows)
@@ -117,7 +117,7 @@
 
 - relational databases are *relational* because they persist data in a set of *relations* [^24]
   - **relation**: a table (a set of columns and rows of data); in Postgres, also includes sequences and views (anything you can use in a `FROM` clause)
-  - **relationship**: an association between the data stored in relations; a connetion between entity instances or rows of data, usually resulting from what those rows of data represent
+  - **relationship**: an association between the data stored in relations; a connection between entity instances or rows of data, usually resulting from what those rows of data represent
     - e.g., a row in a 'customers' table would probably have a relationship with 0 or more rows in an 'orders' table
   - **relational data**: working with more than 1 table at a time
 
@@ -157,8 +157,8 @@
 
 
 ### Database anomalies
-- **update anomaly**: a situation where an update to a row creates an inconsistent database [^28]
 - **inconsistent database**: where a database contains more than 1 answer for a given question [^28]
+- **update anomaly**: a situation where an update to a row creates an inconsistent database [^28]
 - **insertion anomaly**: where you cannot store information about something without having to enter info about something else [^28]
   - e.g., must enter info about a call to enter info about a contact
 - **deletion anomaly**: where you lose information about 1 thing by removing information about something else [^28]
@@ -222,16 +222,16 @@
   - `\list` or `\l` : list all db's created; [^13]
   - `\c [db_name]` or `\connect [db_name]` : connect to db "db_name"
   - `\e` : opens text editor with last executed command to edit
+  - `\d` : describe available relations (list) [^13]
   - `\dt` : list all tables in db
   - `\ds` : list all sequences in db [^13]
-  - `\d tablename` : show details of table 'tablename'
-  - `\d` : describe available relations (list) [^13]
   - `\di` : describe available indexes (list) [^39]
+  - `\d tablename` : show details of table 'tablename'
   - `\?` : list commands [^13]
   - `\h [topic]` : help; indicate topic is optional [^13]
   - `\i file_name` : import SQL commands into current db [^19]
     - e.g., `\i ~/folder/file_to_import.sql`
-  - `\copy file.csv` : imports data from file.csv into a database [^42]
+  - `\copy target_table from 'file.csv' WITH DELIMITER ',' CSV HEADER` : imports data from file.csv into a database [^42]
 
 ### from command line
   - `/usr/bin/select-editor` : changes default psql text editor for `\e` command
@@ -267,6 +267,7 @@
   - `DROP DATABASE [db_name];` : deletes an existing database called 'db_name'
   - `DROP TABLE table_name;` : deletes a table 'table_name'
     - `DROP TABLE IF EXISTS table_name;` : checks for existence of table before dropping
+    - `DROP TABLE IF EXISTS table_name CASCADE;` : will remove dependent tables, as well
     - `DROP TABLE table1, table2;` : drops multiple tables
   - `CREATE TABLE table();` : creates a table - note `()` - columns need to be defined in ()
     ```sql
@@ -568,9 +569,9 @@
   - NOT NULL : a value MUST be specified (cannot be left empty); generally always a column constraint [^4]
 
   - UNIQUE : prevent duplicate values from being entered; can be table or column constraint [^4]
-  - PRIMARY KEY :  ; can be table or column constraint [^4]
-  - FOREIGN KEY :  ; can be table or column constraint [^4]
-  - CHECK :  ; can be table or column constraint [^4]
+  - PRIMARY KEY : can be table or column constraint [^4]
+  - FOREIGN KEY : can be table or column constraint [^4]
+  - CHECK : can be table or column constraint [^4]
 
 ---
 

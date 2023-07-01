@@ -61,6 +61,7 @@
 
 ## INSERT INTO
 - `INSERT INTO table_name (col1, col2, ...) VALUES (val11, val12, ...), (val21, val22, ...);`
+- inserting into a column that doesn't exist will return an error
 
 ## UPDATE
 - `UPDATE table SET col_name = new_val [ WHERE condition ]`
@@ -110,6 +111,7 @@
 
 ## Add when defining a table (CREATE TABLE)
 - add keyword after column type: `UNIQUE`, `NOT NULL`, `DEFAULT default_value` [^2]
+- can also add `PRIMARY KEY`, `REFERENCES other_table(pk)column` directly when defining a column in a new table
 
 ## Add to existing table (ALTER TABLE)
 - need to include `ALTER TABLE table_name` :
@@ -132,6 +134,7 @@
 - Note:  Defining `PRIMARY KEY` [^8]
   - is roughly equivalent to adding `NOT NULL UNIQUE`
   - does not automatically create a serial type - this must be defined
+  - adding a new primary key column (using serial) to a table with existing data will autopopulate the id's
 
 </details>
 
@@ -193,6 +196,10 @@
   - `ALTER COLUMN col_name SET DEFAULT default_value`
   - `ALTER COLUMN col_name DROP DEFAULT`
 
+- Note: A default must match the data type of the column it is being applied to.
+  - However, when defining a numeric default to a text column, PostgreSQL will cast the number into text
+
+
 </details>
 
 ---
@@ -246,6 +253,8 @@
 - `ALTER TABLE table_name`
   - `ADD FOREIGN KEY (col_name) REFERENCES other_table(pk_col) [ ON DELETE CASCADE ]`
   - `DROP CONSTRAINT foreign_key_constraint_name`
+
+- Note:  cannot add a foreign key which references a table that doesn't exist
 
 </details>
 
@@ -323,14 +332,19 @@
 
 
 ## Indexes [^13]
-- `CREATE INDEX index_name ON table_name (field_name1, field_name2, ... )`
+- `CREATE INDEX [index_name] ON table_name (field_name1, field_name2, ... )`
 - `DROP INDEX index_name`
 
 
 ## Meta-commands
-- `\copy file.csv` : import csv to current database
+- `\copy target_table from 'file.csv' WITH DELIMITER ',' CSV HEADER` : import csv to current database
 - `\i file.sql` : import sql commands
 
+## Referential integrity
+- (from PostgreSQL docs on "foreign key constraints") *Referential Integrity* between 2 related tables is maintained when the values in a column (or group of columns) must match the values appearing in some row of another table.
+
+## Using ROW
+- e.g., `SELECT id FROM items WHERE ROW(name, initial_price, sales_price) = ROW('Painting', 100.00, 250.00);`
 
 ---
 
@@ -354,7 +368,7 @@
 
 # Follow-up Questions
 
-- [X] `PRIMARY KEY` : what constraints does this add?  What conditions?  What kinds of data types can be 'primary  key's?
+- [X] `PRIMARY KEY` : what constraints does this add?  What conditions?  What kinds of data types can be 'primary key's?
   - A: applying 'PRIMARY KEY' applies 'NOT NULL' AND 'UNIQUE' [^38]q4
   - A: any data type can be a primary key, as long as it's unique and not-null
   - A: note:  primary key columns do NOT need to be auto-incrementing and a sequence is NOT added by default
@@ -362,12 +376,38 @@
 - [X] ERD diagrams - confirm I'm reading them the right way (w/ modality)
   - A: entityA 1 to entityB 0 implies that an entityB does not need to exist for an entityA, but IF an entityB exists, it *must* have an entityA
 
+- [X] Given the db can do quite a few calcs, does it make more sense to do those calcs in the db, or in the application?
+  - A: would depend on recency of data (from db) vs time (latency) on the HTTP connection to ping the db again
+
+- [X] character datatype : I can see space-padding when the column is 'selected', however when I call a string function (e.g., length) it doesn't seem to register the space
+    - bit_length, length, char_length are all equivalent and do not register the space-padding
+    - octet_length appears to register the space padding (octet_length will be length of char w/ space padding)
+
+- [X] Spot ques #2 - confirm a tuple is the actual data; attributes are fields (the schema)
+  - from SPOT session: may not be important
+  - A: attributes of the 'table' become the fields in the table
+
+- [ ] Spot ques #5 - what order are columns pulled?
+- [ ] Spot ques #15 - indexes - assuming all cols with an "index" entry are indexes?
+      - [ ] defining a column as unique creates an index - fair to call it a natural key?
+      - [ ] what type of algorithms?
+- [ ] Spot ques #22 - error messages : do these come from PostgreSQL or SQL?
+
+- [ ] terminology : field vs column?
+  - A: PostgreSQL docs use 'column'
+      - [X] WHERE is a clause?
+        - A: YES - based on the PostgreSQL docs (see 'SELECT')
+
+- [X] Review quizzes:
+    - [X] quiz 1 q3, q5, q15
+    - [ ] 
+
 ---
 
 # Prep
 
 - [X] review lessons - make study guide notes
-- [ ] Practice:
+- [x] Practice:
       - Create 'real' scenario (w/ multiple entities / relationships)
       - Sketch ERD
       - Create (define) tables
@@ -375,6 +415,8 @@
       - Retrieve data using subqueries AND joins (from .sql files)
       - Compare those queries
 
-- [ ] do spot questions
-- [ ] do quizzes again
+- [x] do spot questions
+- [X] do quizzes again
 - [ ] review trouble areas
+
+- [ ] https://pgexercises.com/questions/joins/
