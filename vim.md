@@ -24,6 +24,7 @@
   - `]]` : last line of file
   - `ctrl-i` : next edit location
   - `ctrl-o' : last edit location
+  - `507G` : goes to line 507
 
 #### tabs
   - `:tabe file1` : open a new tab, open 'file1'
@@ -61,10 +62,12 @@
     - `ddp` : 'move' a line down (delete line, then put after cursor)
     - `ddkP` : 'move' a line up (delete line, move, then put before cursor)
   - `2dd` : 2 x delete line (i.e., delete 2 lines)
-  - `o` : insert (next) line, move to start of that line, and enter insert mode
+  - `o` : 'open' (next) line, move to start of that line, and enter insert mode
+    - `O` : open (previous) line (i.e., start a line ABOVE cursor)
   - `caw` : 'change a word'
 
   - `r` then character to replace with : 'replaces' the current character with a new one
+  - `R` : enter 'Replace' mode - overwrites the character under the cursor
 
   - `y` : yank (copy)
     - `yy` : copy current line (w/ newline character)
@@ -84,10 +87,13 @@
 
 
 ### search
-  - `/foo` : searches for 'foo'
+  - `/foo` : searches (fwd) for 'foo'
+  - `?foo` : searches (bkwd) for 'foo'
   - `/` : type search terms [press enter]
   - `n` : next occurence
   - `N` : previous occurence
+
+  - `%` : finds matching brackets (goes back and forth b/w the pair)
 
 
 ---
@@ -97,6 +103,16 @@
     - `q` : quit
     - `q!` : quit without saving
     - `wq` : write then quit
+
+  - `:s/old/new/g` : substitutes 'old' for 'new' on the entire line
+    - `1,20s/old/new/g` : substitutes all occurences between lines 1 and 20
+    - `%s/old/new/g` : change every occurence in the whole file
+    - `%s/old/new/gc` : find every occurence in the whole file, prompt to change
+
+  - `:! [shell command]` : lets you execute shell commands and return to file editor
+
+
+## Settings
   - `:set number` : show line numbers (absolute)
   - `:set nonumber` : hide line numbers
   - `:set relative number` : show relative line numbers

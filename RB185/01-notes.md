@@ -6,7 +6,7 @@
   - e.g., `db = PG.connect(dbname: 'rb185')` : establishes connection with db
   - e.g., `db.exec "SELECT 1;"` : executes an SQL query, will return a result object
     - Note: the `;` is optional
-    - Best practice: only execute 1 SQL statement per `.exec` call (i.e., don't combine sql statements and separate them with a `;`
+    - Best practice: only execute 1 SQL statement per `.exec` call (i.e., don't combine sql statements and separate them with a `;`)
   - e.g., `result = db.exec "SELECT 1;"` : assigns the result object to a var
     - using pry: can do `cd result`, then `ls` to see methods available on the result object OR `ls result`
       - e.g., `show-method result.fields` : if 'show-method' is installed, will display documentation on `#fields` method
@@ -15,7 +15,7 @@
     - `result.fields` : lists headers in query result
     - `result.values.size` : lists number rows returned (incl. header)
     - `result.ntuples` : also lists number of rows returned (incl. header)
-    - e.g., `result.each { |tuple| puts "#{tuple['title'} came out in #{tuple['year']}" }
+    - e.g., `result.each { |tuple| puts "#{tuple['title']} came out in #{tuple['year']}" }
     - e.g., `result.each_row { |row| puts "#{row[1]} came out in #{row[2]}" }
     - e.g., `result[2]` : returns a hash of the 3rd row
     - e.g., `result.field_values('duration')` : returns an array where the values for column 'duration' are all returned as elements in an array
@@ -29,8 +29,23 @@
 - put `#! /usr/bin/env ruby` as the first line (indicates that ruby should be used to run the rest of the script file)
 - `chmod +x ruby_file_name` : to make it executable
 - `ARGV`: an array of the command line arguments passed in when ruby is invoked
+- when getting user input, need to define `$stdin` explicitly, otherwise, it's not possible to use 'gets' or 'getch' [^4]
+  - using gets:  `input = $stdin.gets.chomp`
+    - if ARGV has arguments in it, then `Kernel#gets` will treat the first argument as a file and try to read from it, hence the error `in 'gets': No such file or directory @ rb_sysopen - [argument value]`
+    - if we use ARGV.shift to remove the first argument, leaving an empty ARGV array, then the standard 'gets' will work without defining `$stdin`
+
+  - using getch:
+    ```ruby
+    require 'io/console'
+    input = STDIN.getch
+    ```
+- `SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'table_to_lookup';`
+  - this will return `1` if a table named 'table_to_lookup' exists; `0` otherwise [^6]
 
 # References
 [^1]: [Executing SQL Statements from Ruby](https://launchschool.com/lessons/10f7102d/assignments/003e5e30)
 [^2]: [Project Setup](https://launchschool.com/lessons/10f7102d/assignments/2090528a)
 [^3]: [Handling Parameters Safely](https://launchschool.com/lessons/10f7102d/assignments/6877d345)
+[^4]: [Clearing Expenses](https://launchschool.com/lessons/10f7102d/assignments/78571424)
+[^5]: [Forum question on gets/getch](https://launchschool.com/posts/d0c47b25)
+[^6]: [Creating the Schema Automatically](https://launchschool.com/lessons/10f7102d/assignments/99b9d97f)

@@ -499,6 +499,11 @@
   - `DELETE FROM table_name WHERE expression;`
     - be careful - not including the `WHERE` expression will delete ALL rows from the table
 
+- to determine if a table exists: [^45]
+  - `SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'table_to_lookup';`
+    - this will return `1` if a table named 'table_to_lookup' exists; `0` otherwise
+
+
 
 #### Subqueries
 
@@ -642,3 +647,4 @@
 [^42]: [Set Up the Database using \copy](https://launchschool.com/exercises/505113c2)
 [^43]: [Query from a Transient Table](https://launchschool.com/exercises/70e83085)
 [^44]: [Row Comparison](https://launchschool.com/exercises/22931033)
+[^45]: [Creating the Schema Automatically](https://launchschool.com/lessons/10f7102d/assignments/99b9d97f)
