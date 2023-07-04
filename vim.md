@@ -79,6 +79,10 @@
   - `V` : select by line
   - `ctrl-v` : visual block mode
 
+  - `>>` : indent current line (need to set shiftwidth - see commands)
+    - `4>>` : indents the next 4 lines
+
+
 ### search
   - `/foo` : searches for 'foo'
   - `/` : type search terms [press enter]
@@ -99,4 +103,8 @@
 
   - `:set list` : display eol characters
   - `:set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<` : show eol, tab, trailing spaces, ?, ?
+
+  - `:set tabstop=2` : set width of tab character
+  - `:set shiftwidth=2` : set width of `>>` command
+  - `:set expandtab` : use spaces instead of tab character
 
