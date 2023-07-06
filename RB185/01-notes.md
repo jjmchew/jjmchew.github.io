@@ -42,6 +42,24 @@
 - `SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'table_to_lookup';`
   - this will return `1` if a table named 'table_to_lookup' exists; `0` otherwise [^6]
 
+## Web application architecture
+- **adapter pattern** [^7]
+  - implementing separate classes (with common methods) to interact with different data stores (e.g., session cookies, postgresql db, etc.)
+  - browser <-- HTTP request / response --> Sinatra Application (handles incoming requests)
+  - Sinatra Application <-- Method Calls --> Store Adapter (e.g., for cookies, or Postgresql)
+  - Store Adapter <-- queries / response --> Database (e.g., actual cookie or db)
+- helpful to be consistent with where to deal with types [^8]
+  - e.g., route types are all strings, but inside "SessionPersistence" class, assume all types are as desired
+    - i.e., deal with changing types, etc. outside of SessionPersistence class and pass in correct types
+  - being consistent is helpful for later adding a db
+
+- use of built-in Sinatra logging functionality [^9]
+  - 'logger' : built-in Sinatra logging object
+  - `logger.info "string to log"` : add "string to log" (can be interpolated with variables) to an instance of logging info - included in terminal output
+  - to log all debugging info (e.g., from db) to the same place as other Sinatra log info
+  - 
+
+
 # References
 [^1]: [Executing SQL Statements from Ruby](https://launchschool.com/lessons/10f7102d/assignments/003e5e30)
 [^2]: [Project Setup](https://launchschool.com/lessons/10f7102d/assignments/2090528a)
@@ -49,3 +67,6 @@
 [^4]: [Clearing Expenses](https://launchschool.com/lessons/10f7102d/assignments/78571424)
 [^5]: [Forum question on gets/getch](https://launchschool.com/posts/d0c47b25)
 [^6]: [Creating the Schema Automatically](https://launchschool.com/lessons/10f7102d/assignments/99b9d97f)
+[^7]: [Project Overview](https://launchschool.com/lessons/421e2d1e/assignments/e8c01dbf)
+[^8]: [Extracting Session Manipulation Code](https://launchschool.com/lessons/421e2d1e/assignments/0ff36959)
+[^9]: [Executing and Logging Database Queries](https://launchschool.com/lessons/421e2d1e/assignments/d7a23509)

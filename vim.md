@@ -92,6 +92,8 @@
   - `/` : type search terms [press enter]
   - `n` : next occurence
   - `N` : previous occurence
+  - `zz` : centre the screen on current occurrence
+  - `:noh` : stop highlighting search terms, use this after searching
 
   - `%` : finds matching brackets (goes back and forth b/w the pair)
 
@@ -123,4 +125,7 @@
   - `:set tabstop=2` : set width of tab character
   - `:set shiftwidth=2` : set width of `>>` command
   - `:set expandtab` : use spaces instead of tab character
+
+  - `:set hlsearch` : enable highlighting of search terms
+  - `:set scrolloff=999` : (or `so=999`) keeps cursor in the centre of the screen (default is so=0)
 
