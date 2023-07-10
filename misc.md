@@ -13,6 +13,7 @@
 - RuboCop ABC (Assignment Branch Condition) Size errors:  https://launchschool.com/lessons/dfff5f6b/assignments/e1ba7b4b
 - Ruby exceptions:  https://launchschool.medium.com/getting-started-with-ruby-exceptions-d6318975b8d1
 
+- `echo $0` to see which terminal you're using (i.e., bash vs zsh)
 
 ## Coding reminders for me
 - don't add arguments to defs unless needed (don't plan too far ahead)

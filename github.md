@@ -22,6 +22,7 @@
 - `git push [alias] [local branch]`
 - `git push --set-upstream [alias] [branch name]`
 
+- `git grep -n [search term]` : will search all files in repo for 'search term'; `-n` displays line numbers for match
 
 
 

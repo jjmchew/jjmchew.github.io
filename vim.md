@@ -107,9 +107,9 @@
     - `wq` : write then quit
 
   - `:s/old/new/g` : substitutes 'old' for 'new' on the entire line
-    - `1,20s/old/new/g` : substitutes all occurences between lines 1 and 20
-    - `%s/old/new/g` : change every occurence in the whole file
-    - `%s/old/new/gc` : find every occurence in the whole file, prompt to change
+    - `:1,20s/old/new/g` : substitutes all occurences between lines 1 and 20
+    - `:%s/old/new/g` : change every occurence in the whole file
+    - `:%s/old/new/gc` : find every occurence in the whole file, prompt to change
 
   - `:! [shell command]` : lets you execute shell commands and return to file editor
 

@@ -599,6 +599,7 @@
   - `max()` : works with a variety of data types (e.g., numeric, date/time, string)
   - `avg()`
   - `string_agg(col_name, delimiter)` : concatenates string values using delimiter to produce a single string [^8]
+- e.g., `NULLIF(field_name, true)` : if the value in 'field_name' is 'true' then change to 'NULL': lets you use 'COUNT' to aggregate [^46]
 
 ---
 
@@ -648,3 +649,4 @@
 [^43]: [Query from a Transient Table](https://launchschool.com/exercises/70e83085)
 [^44]: [Row Comparison](https://launchschool.com/exercises/22931033)
 [^45]: [Creating the Schema Automatically](https://launchschool.com/lessons/10f7102d/assignments/99b9d97f)
+[^46]: [Optimizing N+1 Queries](https://launchschool.com/lessons/ce10b313/assignments/89590e77)

@@ -57,8 +57,20 @@
   - 'logger' : built-in Sinatra logging object
   - `logger.info "string to log"` : add "string to log" (can be interpolated with variables) to an instance of logging info - included in terminal output
   - to log all debugging info (e.g., from db) to the same place as other Sinatra log info
-  - 
 
+- when refactoring [^10]
+    - when changing an object and getting an error:
+        - can try just adding the required hash keys with defined values to see if it helps resolve enough errors to display the page,
+        - then go back and define the right values
+    - always best to have the same representation of objects in the code (i.e, the same keys / values, as required) to prevent errors
+    - don't be afraid to duplicate code:
+        - first duplicate code to get (tests) to work
+        - THEN - must go back to remove duplication to have clean code
+
+## DB vs application
+- when to push operations down to db [^10]
+  - when counting - more efficient for db (don't need to pass ALL data to application in order to count)
+  - only include the data required in each hash (e.g., separate todos info from list hash)
 
 # References
 [^1]: [Executing SQL Statements from Ruby](https://launchschool.com/lessons/10f7102d/assignments/003e5e30)
@@ -70,3 +82,10 @@
 [^7]: [Project Overview](https://launchschool.com/lessons/421e2d1e/assignments/e8c01dbf)
 [^8]: [Extracting Session Manipulation Code](https://launchschool.com/lessons/421e2d1e/assignments/0ff36959)
 [^9]: [Executing and Logging Database Queries](https://launchschool.com/lessons/421e2d1e/assignments/d7a23509)
+[^10]: [Pushing Down Operations to the Database](https://launchschool.com/lessons/ce10b313/assignments/bb9d2366)
+
+# To-dos
+- [X] look into deploying a postgresql db online (a2hosting)
+- [ ] convert inventory program to use db (w/ queries, etc.)
+- [ ] create study notes for RB189 based on study guide
+- [ ] create simple db web apps
