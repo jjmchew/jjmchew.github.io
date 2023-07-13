@@ -28,6 +28,7 @@
 
 #### tabs
   - `:tabe file1` : open a new tab, open 'file1'
+  - `:Te` : open a file explorer window and open file in new tab
   - `:clo` : close tab / window
   - `gt` : next tab
   - `gT` : previous tab
@@ -42,7 +43,11 @@
   - `ctrl-w w` : switch windows (or can use `ctrl-w h` or `l`)
   - `ctrl-w r` : rotate windows (change position)
   - `ctrl-w >` : make current window 1 col bigger
+  - `ctrl-w =` : make all windows the same width
   - `:clo` : close tab / window
+
+  - `:Ve` : opens an interactive file explorer to create a vertical split
+  - `:Se` : opens an interactive file explorer to create a horizontal split
 
 ### edit
   - `u` : undo last command
@@ -96,6 +101,11 @@
   - `:noh` : stop highlighting search terms, use this after searching
 
   - `%` : finds matching brackets (goes back and forth b/w the pair)
+
+### recordings
+  - `q` + [letter] : allows you to record keypresses into a register denoted by [letter]
+    - press `q` again to stop recording
+    - press `@` + [letter] : 'replay' keystrokes
 
 
 ---

@@ -22,6 +22,12 @@
     - e.g., `result.column_values(4)` : similar to 'field_values', but requires a column index number
     - Note: 'tuple' is a Ruby hash (not an SQL 'tuple'), 'row' refers to an array with each element a value in that row
   - e.g., `result = db.exec_params("INSERT INTO table (amount, memo) VALUES ($1, $2::text), [value1, value2])` : better than using `#exec` - using parameters will help to manage SQL injection attacks [^3]
+    - Note: 'exec_params' params (e.g., $1, $2) can only be used as substitutes for values, but not for identifiers [^11]
+      - can use 'string interpolation' or can use `quote_ident`. e.g.:
+        ```ruby
+        table_name = db.quote_ident(table_name)
+        query_result = db.exec("SELECT * FROM #{table_name}")
+        ```
 
 
 ## Creating command line programs with Ruby [^2]
@@ -72,6 +78,24 @@
   - when counting - more efficient for db (don't need to pass ALL data to application in order to count)
   - only include the data required in each hash (e.g., separate todos info from list hash)
 
+## Lessons learned from adding db in personal project
+- Use of a custom class to store data created an extra step when pulling from and pushing to db (i.e., had to convert to and from the custom class)
+- use of the custom class to manage qty (e.g., `Item#use`) meant that both the data store and the session managed adding/removing items - I didn't create a 'clean' (consistent) interface;  need to be consistent in future
+- in yml: easy to just write everything stored in ruby objects (e.g., source of truth was ruby objects)
+  - i.e., `item#[some method]` to alter entire object, then `PersistYML#write_list` to write everything (incl. changes)
+- in db: db needs to be source of truth - need to manage the 'diff' - i.e., what's been changed and push just that change to db (doesn't make sense to just write the entire object back to db)
+- naming of classes, variables, fields - I use 'list' in the app, but 'inventory' in the object : big potential to be confusing;  should be consistent between app / class / objects / db
+- once custom class objects have been created they 'carry' the methods created in them, no need to 'require' the class file
+  - i.e., persist_yml.rb can invoke the custom class methods on 'Inventory' and 'Item' class objects without needing `require 'inventory'` or `require 'item'` statements
+  - NOTE:  this example might be working since the test suite REQUIRES app.rb which requires item / inventory - as long as the required definition is included SOMEWHERE, then the code will work
+
+
+
+
+
+
+
+
 # References
 [^1]: [Executing SQL Statements from Ruby](https://launchschool.com/lessons/10f7102d/assignments/003e5e30)
 [^2]: [Project Setup](https://launchschool.com/lessons/10f7102d/assignments/2090528a)
@@ -83,9 +107,18 @@
 [^8]: [Extracting Session Manipulation Code](https://launchschool.com/lessons/421e2d1e/assignments/0ff36959)
 [^9]: [Executing and Logging Database Queries](https://launchschool.com/lessons/421e2d1e/assignments/d7a23509)
 [^10]: [Pushing Down Operations to the Database](https://launchschool.com/lessons/ce10b313/assignments/bb9d2366)
+[^11]: [A special case with exec_params...](https://launchschool.com/posts/f6d8afa3)
 
 # To-dos
 - [X] look into deploying a postgresql db online (a2hosting)
 - [ ] convert inventory program to use db (w/ queries, etc.)
+    - [X] decide on db schema
+    - [X] create persist_yml class
+      - [X] confirm tests work for persist_yml class
+    - [X] update persist_yml / app to allow 'replace-ability' with persist_pg (update existing inv/items)
+
+    - [X] create persist_pg class
+    - [X] implement persist_pg class in app.rb
+      - [ ] confirm tests work for persist_pg class
 - [ ] create study notes for RB189 based on study guide
-- [ ] create simple db web apps
+- [ ] create simple db web apps from scratch to review / apply study guide concepts

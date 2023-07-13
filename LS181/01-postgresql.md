@@ -203,8 +203,11 @@
   - `sudo -u postgres createdb $USER`
   - navigate to home directory
   - `touch .psql_history` to create a history file to save history
-  - `psql`to start server (psql is a kind of 'repl' for postgres)
+  - `psql`to start repl (psql is a kind of 'repl' for postgres)
   - `\q` to quit server
+- `sudo service postgresql start` : to start the postgresql db server (e.g., after rebooting computer)
+- `sudo service postgresql stop` : to stop the postgresql db server
+
 
 ### using:
   - `createdb`, `dropdb` are 'wrappers' around SQL commands - these are run from the terminal;  these are distinct from commands run within the `psql` console / terminal
