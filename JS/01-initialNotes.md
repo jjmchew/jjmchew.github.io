@@ -22,6 +22,7 @@
     - functions can be PascalCase (start with uppercase letter) (for constructor functions)
   - "Magic Number" - a constant (may not be a number) that is important to our program but not as a configuration value:  use SCREAMING_SNAKE_CASE [^1]
   - in JS, snake_case is not really used
+  - generally add `;`, *except* for `function`, `class`, `if`, `for`, `while` blocks [^11]
 
 - [javascript (ecma) standards](https://www.ecma-international.org/publications-and-standards/standards/ecma-262/)
 
@@ -41,9 +42,11 @@
   - Null : note `typeof null` returns `'object'` (a legacy JS mistake, standard states its a primitive)
   - Boolean
   - (Symbol, BigInt : introduced in ES6)
+    - for BigInt, add `n` after the number:  e.g., `23n ** 17n` will return a BigInt number (not floating point notation)
 
 - **literal** : any notation that lets you represent a fixed value in source code [^2]
 - **expression** : anything that JavaScript can evaluate to a value, even if that value is `undefined` or `null`; a value that can be captured and used in subsequent code [^2]
+  - common expressions: evaluate to a number, a string, or a boolean [^14]
 - **statement** : a line of coding commanding a task (or action for the computer to perform); will not return a value that can be captured and reused later in code; is not an expression - typically a declaration, control flow, iteration, or something else;  may contain expressions, but it is not an expression itself [^2]
   - [MDN statements and declarations](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements)
   - statements don't return values [^3] (declarations are statements e.g., `let firstName = 'Mitchell'`, the assignment may return 'Mitchell', but the declaration does not return anything)
@@ -93,13 +96,18 @@
     - can invoke the function before you declare it
     - declaring a function 1) defines the function and 2) creates a variable which is used to reference that function [^5]q6 (video)
   2. **function expression**: `let greetPeople = function () { }`
-    - a function is saved to a variable - thus a function expression
+    - an anonymous[^18] function is saved to a variable - thus a function expression
     - cannot invoke the function before you declare it
     - *first-class functions* : functions are objects - can be treated like any other value (assign to variables, pass as arguments, return from a function call)
     - any function definition that doesn't have `function` at the beginning of the statement is a function expression
       - e.g., `(function greetPeople() { });` is a function expression - brackets come first
+      - Note: a function defined with `function` will also create a variable with the same name, using a function expression does NOT create a variable with the same name as the function [^18]
+    - can also used *named* function expressions: e.g., `let hello = function foo() { }`[^18]
+      - Note: that the function name `foo` is ONLY accessible within the function scope (i.e., inside the variable 'hello')
   3. **arrow functions**: `let greetPeople = () => `
     - have implicit return "when and only when the function body contains a single expression that is not itself surrounded by curly braces" (i.e., evaluates to a single value)
+    - can omit `()` from arguments if there is only a single argument [^18]
+    - arrow functions inherit the *execution context* from the surrounding code [^18]
 
 - comparison operators: [^6]
   - `===` : *strict equality operator* (or *identity operator*) returns true when operands have the same type *and* value [^6]
@@ -115,7 +123,19 @@
 
 - `++` incrementing: [^7]
   - `++a` is the *pre-increment* operator - returns the **new** value
+    - modifies OPERAND first, then evaluates the expression [^14]
   - `a++` is the *post-increment* operator - returns the **old** value
+    - evaluates EXPRESSION first, then modifies the operand [^14]
+  - e.g., [^14]
+  ```js
+  let a;
+  let b;
+  let c;
+
+  a = 1;
+  b = a++;  // equivalent to "b = a; a += 1;". so now b is 1 and a is 2
+  c = ++a;  // equivalent to "a += 1; c = a;". so now c is 3 and a is 3
+  ```
 
 - JS arrays - beware of: [^8]
   - changing the 'length' of the array will truncate the elements beyond the new defined length
@@ -154,6 +174,79 @@
 
 - JS error types: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error
 
+- special string characters: [^12]
+  - `\n` : new line
+  - `\t` : tab
+  - `\r` : carriage return
+  - `\v` : vertical tab
+  - `\b` : backspace
+  - use `\` to escape quotes / double-quotes / newlines (in multi-line strings)
+    - e.g., 
+    ```js
+    let longText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do \
+    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut \
+    enim ad minim veniam, quis nostrud exercitation ullamco laboris \
+    nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor \
+    in reprehenderit in voluptate velit esse cillum dolore eu fugiat \
+    nulla pariatur. Excepteur sint occaecat cupidatat non proident, \
+    sunt in culpa qui officia deserunt mollit anim id est laborum.';
+    ```
+- strings: [^12]
+  - `string.charAt(num)` : access the character at 'num' in 'string'
+  - OR: `string[num]` : same as above
+  - `something.toString()` OR `String(something)`
+
+- JS reserved words:  https://262.ecma-international.org/5.1/#sec-7.6.1.1
+
+- e.g., `let name = 'Jane';` : is a variable declaration combined with an *initializer* (distinct from assignment e.g., `name = 'James';`) [^13]
+  - constants MUST be declared and initialized (since they cannot be changed)
+- JS is dynamically-typed - a variable may refer to a value of any data type and can be re-assigned without error
+
+- *unary operator* : an operator that takes only 1 operand
+
+- implicit type coercion: [^15]
+  - unary `+` : coerces with same rules as `Number()`
+    - true => 1
+    - false => 0
+    - '' or ' ' => 0
+    - \n => 0
+    - null => 0
+    - undefined => NaN
+    - other strings => NaN
+  - binary `+` (2 operands)
+    - if a string or object is present, coerce everything to strings
+    - if no strings are present, coerce everything to number and add
+    - note: 1 + NaN = NaN
+  - `-`, `*`, `%`, `/` (only defined for numbers)
+    - coerce everything to numbers
+  - `==`:
+    - string == number : coerce string to number
+    - boolean == other : coerce the boolean to number
+    - null == undefined : always true
+    - null == other : always false
+    - undefined == other : always false
+    - NaN == other : always false
+  - `>`, `<`, `<=`, `>=` (only for strings or numbers)
+    - coerce to numbers to compare
+      - any comparison with NaN is false
+    - unless both operands are strings - then compare as strings
+
+- conditionals: [^16]
+  - `1 && 2` will return `2` (truthy)
+  - `1 || 2` will return `1` (truthy)
+  - *expression* : e.g., `score > 70`
+  - *conditional statement* : e.g., `if (score > 70)`
+
+- scope: [^17]
+  - *global scope* : the 'main' scope
+  - *function scope* : an inner scope created when a function is defined
+  - *block scope* : an inner scope created when a block is defined (e.g., for a while loop, etc.)
+  - JS uses *lexical scoping* (vs *dynamic scoping*) to determine where it looks for variables
+    - looks at the structure of the source code
+      - Note: the code doesn't need to be executed for the scope to exist
+    - searches the scope hierarchy from the bottom (innermost) scope to the top (outermost)
+    - returns the first variable it finds with a matching name: variables in a lower scope can *shadow* or hide variables with the same name in outer scopes
+    - if JS cannot find a matching variable, it *creates a new global variable* as a default action : can lead to bugs
 
 ## References
 [^1]: [Preparations ](https://launchschool.com/books/javascript/read/preparations)
@@ -166,4 +259,11 @@
 [^8]: [Arrays ](https://launchschool.com/books/javascript/read/arrays)
 [^9]: [Objects ](https://launchschool.com/books/javascript/read/objects)
 [^10]: [More Stuff](https://launchschool.com/books/javascript/read/more_stuff)
-
+[^11]: [Code Style](https://launchschool.com/lessons/7377ece4/assignments/88ed1c52)
+[^12]: [More on Strings](https://launchschool.com/lessons/7377ece4/assignments/84419ace)
+[^13]: [Variables ](https://launchschool.com/lessons/7377ece4/assignments/4a43f341)
+[^14]: [Expressions and Statements](https://launchschool.com/lessons/7377ece4/assignments/d84fdace)
+[^15]: [Implicit Primitive Type Coercions](https://launchschool.com/lessons/7377ece4/assignments/3d2e392a)
+[^16]: [Conditionals ](https://launchschool.com/lessons/7377ece4/assignments/5f7c3a20)
+[^17]: [Functional Scopes and Lexical Scoping](https://launchschool.com/lessons/7cd4abf4/assignments/0b1349b7)
+[^18]: [Function Declarations and Function Expressions](https://launchschool.com/lessons/7cd4abf4/assignments/5cb67110)

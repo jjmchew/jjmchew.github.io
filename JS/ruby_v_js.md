@@ -30,10 +30,14 @@
 - JS: have an immutable binding - cannot be changed
 
 ## scope
-- Ruby: `if` doesn't create a new scope
-- JS: `if` creates blocks
+- Ruby: 
+  - `if` doesn't create a new scope
+  - uses lexical scoping
+- JS: 
+  - `if` creates blocks
   - not all things between `{}` are blocks, technically functions are not, but can be thought of as blocks
   - `let foo = { bar: 42 }` is NOT a block (object)
+  - uses lexical scoping
 
 ## if
 - Ruby: 
@@ -62,10 +66,19 @@
   - falsy: `false`, `nil`
 - JS:
   - falsy: `false`, `0`, `-0`, `0n` (BigInt zero), `''`, `undefined`, `null`, `NaN`
+  - truthy: `'false'` (the string 'false')
+  - can use `!!` or `Boolean()` to convert to true/false
 
 ## incrementing
 - Ruby: `+=`
 - JS: `+=`, `++`
+
+## operators
+- Ruby:
+  - `+` works for numbers, strings, arrays
+- JS:
+  - `+` works only for numbers or strings (i.e., will coerce arrays to strings then concatenate strings)
+  - `true` is coerced to 1;  `false` is coerced to 0
 
 ## loops
 - Ruby: `next`, `break`
@@ -84,6 +97,12 @@
   - used `object_id` to show that different primitives have different object_id's
 - JS:
   - used 'memory address' analogy to show that values are stored at a memory address assigned to each variable
+
+## arrays
+- Ruby:
+  - `[]` is an method
+- JS:
+  - `[]` is an operator
 
 ## libraries
 - Ruby: use 'Gemfile'
