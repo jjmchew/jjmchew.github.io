@@ -237,16 +237,141 @@
   - *expression* : e.g., `score > 70`
   - *conditional statement* : e.g., `if (score > 70)`
 
-- scope: [^17]
-  - *global scope* : the 'main' scope
-  - *function scope* : an inner scope created when a function is defined
-  - *block scope* : an inner scope created when a block is defined (e.g., for a while loop, etc.)
-  - JS uses *lexical scoping* (vs *dynamic scoping*) to determine where it looks for variables
-    - looks at the structure of the source code
-      - Note: the code doesn't need to be executed for the scope to exist
-    - searches the scope hierarchy from the bottom (innermost) scope to the top (outermost)
-    - returns the first variable it finds with a matching name: variables in a lower scope can *shadow* or hide variables with the same name in outer scopes
-    - if JS cannot find a matching variable, it *creates a new global variable* as a default action : can lead to bugs
+## scope [^17]
+- *global scope* : the 'main' scope (sometimes function scope at the top level, 'file scope' or 'module scope' might be better terms[^19])
+- *function scope* : an inner scope created when a function is defined
+  - use `var` or `function` [^19]
+- *block scope* : an inner scope created when a block is defined (e.g., for a while loop, etc.)
+  - use `let`, `const`, `class` [^19]
+- JS uses *lexical scoping* (vs *dynamic scoping*) to determine where it looks for variables
+  - looks at the structure of the source code
+    - Note: the code doesn't need to be executed for the scope to exist
+  - searches the scope hierarchy from the bottom (innermost) scope to the top (outermost)
+  - returns the first variable it finds with a matching name: variables in a lower scope can *shadow* or hide variables with the same name in outer scopes
+  - if JS cannot find a matching variable, it *creates a new global variable* as a default action : can lead to bugs
+- can think of differences between 'declared' scope and 'visible' scope (LS-terms)
+  - e.g., you might use `let` to declare a variable with block-scope, which HAS global visible-scope
+  - typically declared scope is block or function
+  - typically visible scope is global or local (i.e., function or block)
+
+## hoisting [^19]
+- during the *creation phase* of js program execution (i.e., before actual code execution begins), variable, function, class declarations are reviewed and *appear* to be 'moved to the top' of their respective scopes (i.e., functions or blocks)
+  - identifiers are noted and added to the appropriate scope: global or local (block or function)
+  - creation phase will scan your code in order, and syntax errors will be noted as the arise (based on the order of your code)
+- **don't** nest function declarations inside non-function blocks
+  - if you must, function expressions are better
+  - if using function expressions, variables will follow standard hoisting rules
+    - note that the variable will be 'hoisted' and declared first and set as 'undefined'
+    - the assignment of the function to that variable will occur in the sequence of code execution (i.e., no hoisting for function assignment will occur)
+  - e.g., 
+    ```javascript
+    console.log(hello());
+
+    var hello = function () {
+      return 'hello world';
+    };
+    ```
+    is equivalent to
+    ```javascript
+    var hello;
+
+    console.log(hello());    // raises "TypeError: hello is not a function"
+
+    hello = function () {
+      return 'hello world';
+    };
+    ```
+- if both variable and function declarations exist, functions will be hoisted above the variable declarations:
+  - example 1:
+  ```javascript
+  // example 1
+  bar();             // logs "world"
+  var bar = 'hello';
+
+  function bar() {
+    console.log('world');
+  }
+  ```
+  is hoisted to:
+  ```javascript
+  // example 1 hoisted
+  function bar() {
+    console.log('world');
+  }
+
+  bar(); // world
+  bar = 'hello';
+  ```
+
+  - example 2:
+  ```javascript
+  // example 2
+  var bar = 'hello';
+  bar();             // raises "TypeError: bar is not a function"
+
+  function bar() {
+    console.log('world');
+  }
+  ```
+  is hoisted to:
+  ```javascript
+  function bar() {
+    console.log('world');
+  }
+
+  bar = 'hello';
+  bar(); // error - can't invoke a string
+  ```
+- `var`
+  - is *function-scoped*
+    - a variable declared with `var` will be accessible everywhere within a function, even if the declaration is contained within a block which never gets executed (will have an 'undefined' value)
+    - e.g., 
+    ```javascript
+    function foo() {
+      if (false) {
+        var a = 1;
+      }
+      console.log(a); // undefined
+    }
+    ```
+  - cannot create constants
+  - creates 'properties' accessible on the 'global' object (if used in the global scope)
+    - note: this only works when code is run in the REPL, NOT through a .js file
+      - code run through a .js file is first 'wrapped' in a function, hence there is no change to the global object
+    ```javascript
+    var bar = 42;
+    console.log(global.bar); // 42
+
+    let foo = 86;
+    console.log(global.foo); // undefined
+    ```
+  - during hoisting, `var` variables are given a value of `undefined` and are thus accessible during execution prior to actual code execution
+  - can define variables and functions with the same name
+- `let` / `const`
+  - is *block-scoped*
+  - during hoisting, `let` or `const` variables are NOT given an initial value (left 'not defined' in the TDZ - *temporal dead zone*) and are thus NOT accessible in code prior to actual declaration
+  - cannot define variable and function with the same name
+  - multiple declarations and assignments to the same variable using `let` are allowed within loops but NOT within the main scope
+    - e.g.,
+    ```javascript
+    let a = 'hello';
+    let a = 'bye'; // SyntaxError
+    ```
+    BUT
+    ```javascript
+    let a = 'hello';
+    for (let x = 0; x < 4; x++) {
+      let a = 'pizza' + x; // is allowed - no error
+    }
+    ```
+
+## best practice (let/const vs var) [^19]
+- use `let` and `const` if possible - avoid details of `var`
+  - declare variables as close to first use as possible
+- if using `var` - place all definitions at top of scope (i.e., replicate hoisted code)
+- declare functions before using them (avoid variations with hoisted behaviour)
+
+
 
 ## References
 [^1]: [Preparations ](https://launchschool.com/books/javascript/read/preparations)
@@ -267,3 +392,4 @@
 [^16]: [Conditionals ](https://launchschool.com/lessons/7377ece4/assignments/5f7c3a20)
 [^17]: [Functional Scopes and Lexical Scoping](https://launchschool.com/lessons/7cd4abf4/assignments/0b1349b7)
 [^18]: [Function Declarations and Function Expressions](https://launchschool.com/lessons/7cd4abf4/assignments/5cb67110)
+[^19]: [Hoisting ](https://launchschool.com/lessons/7cd4abf4/assignments/510e62bb)

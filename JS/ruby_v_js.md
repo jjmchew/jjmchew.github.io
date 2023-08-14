@@ -88,9 +88,11 @@
 - Ruby: 
   - maintain order (based on order of key creation)
   - key values may be strings, integers, etc.
+  - all values are objects
 - JS:
   - generally, the order keys are added, BUT non-negative integer keys grouped first, then string-valued keys, symbol keys last
   - all key values are coerced into strings
+  - primitive values are distinct from object-values
 
 ## variables as pointers
 - Ruby:
