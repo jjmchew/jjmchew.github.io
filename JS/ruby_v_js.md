@@ -20,10 +20,12 @@
 - JS: may fail silently (e.g., `Number('foo')` returns `NaN`, not an error)
 
 ## variables
-- Ruby: just define them
+- Ruby:
+  - can "initialize and assign" them (no keywords)
 - JS: use `let` or `const` (constants) - have block scope
   - using `var` variables have broader scoping
   - undeclared variables (e.g., `p = 'foo'`) have global scope : can be the source of debugging errors
+  - can "declare" and "initialize" within the same line, or just "declare" (value is undefined)
 
 ## constants
 - Ruby: can be changed, but shouldn't

@@ -35,7 +35,7 @@
   - blue triangle with `!`: non-standard item (may not work on all platforms)
   - beaker icon: experimental item (should not be used in production code - may change behaviour or be removed)
 
-- JS primitive data types: [^2]
+- JS primitive data types: [^2] ([B]BUNNS[S])
   - String
   - Number (`NaN`, `Infinity`, `-Infinity` are all typeof Number)
   - Undefined
@@ -158,6 +158,9 @@
     - keywords (e.g., 'new', 'function', 'let', 'const', etc.)
     - comments
     - etc.
+- generally there are 2 types of values: [^20]
+  - "reference-type" value - objects (e.g., arrays, other non-primitives)
+  - "primitives" - primitive values ("BBUNNSS")
 
 - JS objects: [^9]
   - `let newObj = Object.create(protoObj)` : creates a new object (`newObj`) using `protoObj` as the prototype
@@ -371,6 +374,96 @@
 - if using `var` - place all definitions at top of scope (i.e., replicate hoisted code)
 - declare functions before using them (avoid variations with hoisted behaviour)
 
+## Closures [^21]
+- "Closures use the scope in effect at a function's *definition* point to determine what variables that function can access. The variables in scope during a function's execution depend on that closure."
+  - A function can access variables needed in (lexical) scope from when the function was *defined*, even if those variables aren't in-scope when the function is *invoked*
+- Note: closure is different than **state** - if a variable's value changes, the function will see the updated value, not the old one
+- Using local variables accessed via closure provides some 'data protection':
+  ```javascript
+  function makeCounter() {
+    let counter = 0;
+
+    return function() {
+      counter += 1;
+      return counter;
+    }
+  }
+
+  let incrementCounter = makeCounter();
+  console.log(incrementCounter()); // 1
+  console.log(incrementCounter()); // 2
+  ```
+  - i.e., `counter` can only be accessed via the returned function (using 'incrementCounter') - each instance of `makeCounter` will declare and use a new instance of `counter`
+- can also create closures that share the same local variable
+  ```javascript
+  function makeCounter() {
+    let counter = 0;
+
+    const fun1 = function() {
+      counter += 1;
+      return counter;
+    }
+
+    const fun2 = function() {
+      counter += 2;
+      return counter;
+    }
+
+    return [fun1, fun2];
+  }
+
+  let funs = makeCounter();
+  let fun1 = funs[0];
+  let fun2 = funs[1];
+  console.log(fun1()); // 1
+  console.log(fun2()); // 3
+  ```
+  - `fun1` and `fun2` both share 'counter' and affect it differently
+
+
+## First-class value / First-class object [^21]
+- describes values that can be:
+  - assigned to a variable or an element of a data structure (such as an array or object)
+  - passed as an argument to a function
+  - returned as the return value of a function
+- in JS - refers to primitives, arrays, objects, functions
+  - if functions are first-class values this means:
+    - functions can take other functions as arguments and return other functions - allows a more declarative and expressive programming style
+    - don't have to execute a function in the same scope in which it was defined
+
+
+
+## Partial function application [^21]
+- when the number of arguments required to invoke a function is *reduced* by creating a new function
+- useful when you need to call a function which takes multiple arguments, however when called, you'll only provide *some* of the arguments
+  - you can create a function which returns a function which supplies *other* arguments and takes *some* arguments
+  ```javascript
+  // REQUIRED scenario : download needs an errorHandler that only takes 1 argument
+  function download(locationOfFile, errorHandler) {
+    // try to download the file
+    if (gotError) {
+      errorHandler(reasonCode);
+    }
+  }
+
+  // existing errorHandler function takes 2 arguments
+  function errorDetected(url, reason) {
+    // handle the error
+  }
+
+  download("https://example.com/foo.txt", /* ??? */); // WHAT TO DO?
+  ```
+  - can use partial function application:
+  ```javascript
+  function makeErrorHandlerFor(locationOfFile) {
+    return function(reason) {
+      errorDetected(locationOfFile, reason);
+    };
+  }
+
+  let url = "https://example.com/foo.txt";
+  download(url, makeErrorHandlerFor(url));
+  ```
 
 
 ## References
@@ -393,3 +486,5 @@
 [^17]: [Functional Scopes and Lexical Scoping](https://launchschool.com/lessons/7cd4abf4/assignments/0b1349b7)
 [^18]: [Function Declarations and Function Expressions](https://launchschool.com/lessons/7cd4abf4/assignments/5cb67110)
 [^19]: [Hoisting ](https://launchschool.com/lessons/7cd4abf4/assignments/510e62bb)
+[^20]: [Variables, Functions, and Blocks: Revisted](https://launchschool.com/lessons/7cd4abf4/assignments/8ac6ad6d)
+[^21]: [Closures ](https://launchschool.com/lessons/7cd4abf4/assignments/0ea7c745)
