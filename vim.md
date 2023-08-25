@@ -120,9 +120,11 @@
     - `:1,20s/old/new/g` : substitutes all occurences between lines 1 and 20
     - `:%s/old/new/g` : change every occurence in the whole file
     - `:%s/old/new/gc` : find every occurence in the whole file, prompt to change
+    - `&` repeats the last `:s` command
 
   - `:! [shell command]` : lets you execute shell commands and return to file editor
 
+  - `@:` : repeat the last ':' command
 
 ## Settings
   - `:set number` : show line numbers (absolute)

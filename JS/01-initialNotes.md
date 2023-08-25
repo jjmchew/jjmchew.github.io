@@ -1,5 +1,6 @@
 # LS JavaScript book notes
 
+## Misc
 - *programming languages* express the steps that a machine needs to perform to convert some input into an output [^1]
 - JavaScript is an *interpreted language* - an interpreter converts the code written by a programmer into a form a computer can understand; then runs that interpreted code directly, or passes it on to a companion program [^1]
   - compiled languages use a compiler to produce output that a computer can run directly (perhaps after additional processing called 'linking')
@@ -35,15 +36,13 @@
   - blue triangle with `!`: non-standard item (may not work on all platforms)
   - beaker icon: experimental item (should not be used in production code - may change behaviour or be removed)
 
-- JS primitive data types: [^2] ([B]BUNNS[S])
-  - String
-  - Number (`NaN`, `Infinity`, `-Infinity` are all typeof Number)
-  - Undefined
-  - Null : note `typeof null` returns `'object'` (a legacy JS mistake, standard states its a primitive)
-  - Boolean
-  - (Symbol, BigInt : introduced in ES6)
-    - for BigInt, add `n` after the number:  e.g., `23n ** 17n` will return a BigInt number (not floating point notation)
+- JS compatibility table:  http://kangax.github.io/compat-table/es2016plus/
+  - to determine whether or not a specific JS feature may be supported by various browsers / runtimes
 
+
+
+
+## Elements of JavaScript Language
 - **literal** : any notation that lets you represent a fixed value in source code [^2]
 - **expression** : anything that JavaScript can evaluate to a value, even if that value is `undefined` or `null`; a value that can be captured and used in subsequent code [^2]
   - common expressions: evaluate to a number, a string, or a boolean [^14]
@@ -56,10 +55,48 @@
 - **predicates** : functions that always a return a boolean value (true or false) [^5]
 - **callback**: a function that you pass to another function as an argument; the callback function will be invoked at the time specified by the other function [^8]
 
-- JS operators: [^2]
-  - `+`, `-`, `*`, `/`, `%` (remainder, NOT modulo)
+- JS reserved words:  https://262.ecma-international.org/5.1/#sec-7.6.1.1
 
-- remainder vs modulo [^2]
+
+## Data Types
+- JS primitive data types: [^2] ([B]BUNNS[S])
+  - String
+  - Number (`NaN`, `Infinity`, `-Infinity` are all typeof Number)
+  - Undefined
+  - Null : note `typeof null` returns `'object'` (a legacy JS mistake, standard states its a primitive)
+  - Boolean
+  - (Symbol, BigInt : introduced in ES6)
+    - for BigInt, add `n` after the number:  e.g., `23n ** 17n` will return a BigInt number (not floating point notation)
+
+- in JS: things that aren't objects or primitives: [^9]
+  - data and functions are objects or primitives
+  - anything that isn't data or a function is NOT a primitive or an object:
+    - variables, identifiers
+    - statements (e.g., 'if', 'return', 'try', etc.)
+    - keywords (e.g., 'new', 'function', 'let', 'const', etc.)
+    - comments
+    - etc.
+
+- generally there are 2 types of values: [^20]
+  - "reference-type" value - objects (e.g., arrays, other non-primitives)
+  - "primitives" - primitive values ("BBUNNSS")
+
+- JS error types: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error
+
+
+## Numbers
+- `NaN` : `NaN === NaN` will return `false` - the only value in JS that is not equal to itself [^2]
+  - use `Number.isNaN(value)` or `Object.is(value, NaN)`, where `value` is a variable you want to determine if it might be `NaN` (expression will return `true` if it is, `false` if not)
+
+- implicit type coersion : when using `+`, if either operand is a string then the non-string operand will be coerced into a string first, then concatenated [^2]
+
+- use `Number` for type casting (general style rule) [^22]
+- always use `parseInt` with a 'radix' (i.e., base) to parse Strings e.g., `parseInt(aVariable, 10);` [^22]
+
+
+
+
+## Remainder vs Modulo [^2]
 +----+----+---------------+------------+
 | a  | b  | a remainder b | a modulo b |
 +----+----+---------------+------------+
@@ -72,25 +109,16 @@
   - the sign of remainder is the same as sign of a
   - the sign of modulo is same as sign of b
 
-- `NaN` : `NaN === NaN` will return `false` - the only value in JS that is not equal to itself [^2]
-  - use `Number.isNaN(value)` or `Object.is(value, NaN)`, where `value` is a variable you want to determine if it might be `NaN` (expression will return `true` if it is, `false` if not)
-
-- implicit type coersion : when using `+`, if either operand is a string then the non-string operand will be coerced into a string first, then concatenated [^2]
-
-- JS compatibility table:  http://kangax.github.io/compat-table/es2016plus/
-  - to determine whether or not a specific JS feature may be supported by various browsers / runtimes
-
-- `=`: can be an *assignment operator* or a *syntactic token* [^3]
-  - `let name = 'Mitchell'` : `=` is a syntactic operator
-  - `name = 'Mitchell'` : `=` is the assignment operator
 
 
+## Using libraries
 - using libraries w/ JS [^4]
   - `npm init -y` : create a package.json file
   - `npm install [library] --save` : install [library] and add to package.json, creates a package-lock.json, and adds a 'node_modules' folder to current directory with packages
   -  e.g., `let rlSync = require('readline-sync');`
     - `let name = rlSync.question("What's your name?\n");`
 
+## Declaring functions
 - 3 ways to declare a function: [^5]
   1. **function declaration**: `function functionName(args) { }`
     - can invoke the function before you declare it
@@ -109,17 +137,15 @@
     - can omit `()` from arguments if there is only a single argument [^18]
     - arrow functions inherit the *execution context* from the surrounding code [^18]
 
+## Operators
+- JS operators: [^2]
+  - `+`, `-`, `*`, `/`, `%` (remainder, NOT modulo)
+
 - comparison operators: [^6]
   - `===` : *strict equality operator* (or *identity operator*) returns true when operands have the same type *and* value [^6]
   - `!==` : *strict inequality operator* - the inverse of the `===`
   - `==` : *non-strict equality operator* (or *loose equality operator*) - will try to coerce 1 or both operands and then compare (e.g., `5 == '5'` returns true)
   - `<`, `>` will use coerce operands
-
-- booleans: [^6]
-  - `let isOk = !!(foo || bar);` is equivalent to `let isOk = (foo || bar) ? true : false;`
-    - converts values into booleans (i.e., truthy into true and falsey into false)
-  - `??` : *nullish coalescing operator* - evaluates to the Right operand if the Left operand is `null` or `undefined`
-    - e.g., `null ?? 'over here!'` returns `'over here!'`
 
 - `++` incrementing: [^7]
   - `++a` is the *pre-increment* operator - returns the **new** value
@@ -137,6 +163,23 @@
   c = ++a;  // equivalent to "a += 1; c = a;". so now c is 3 and a is 3
   ```
 
+- `=`: can be an *assignment operator* or a *syntactic token* [^3]
+  - `let name = 'Mitchell'` : `=` is a syntactic operator
+  - `name = 'Mitchell'` : `=` is the assignment operator
+
+- *unary operator* : an operator that takes only 1 operand
+
+
+## Booleans
+- booleans: [^6]
+  - `let isOk = !!(foo || bar);` is equivalent to `let isOk = (foo || bar) ? true : false;`
+    - converts values into booleans (i.e., truthy into true and falsey into false)
+  - `??` : *nullish coalescing operator* - evaluates to the Right operand if the Left operand is `null` or `undefined`
+    - e.g., `null ?? 'over here!'` returns `'over here!'`
+- best to use `!!` to convert to boolean (e.g., `let hasAge = !!age;`) [^22]
+
+
+## Arrays
 - JS arrays - beware of: [^8]
   - changing the 'length' of the array will truncate the elements beyond the new defined length
   - arrays are objects: `typeof [1, 2, 3]` returns 'object'
@@ -150,18 +193,8 @@
   - `Array.includes` uses `===` to check values - i.e., checking if an element is a specific array is difficult
   - can use `.slice()` to create a copy of an array
 
-- in JS: things that aren't objects or primitives: [^9]
-  - data and functions are objects or primitives
-  - anything that isn't data or a function is NOT a primitive or an object:
-    - variables, identifiers
-    - statements (e.g., 'if', 'return', 'try', etc.)
-    - keywords (e.g., 'new', 'function', 'let', 'const', etc.)
-    - comments
-    - etc.
-- generally there are 2 types of values: [^20]
-  - "reference-type" value - objects (e.g., arrays, other non-primitives)
-  - "primitives" - primitive values ("BBUNNSS")
 
+## Objects
 - JS objects: [^9]
   - `let newObj = Object.create(protoObj)` : creates a new object (`newObj`) using `protoObj` as the prototype
     - properties from `protoObj` will return false to `newObj.hasOwnProperty(key)`
@@ -170,13 +203,16 @@
       - can use 'for..of' instead - works with strings and arrays (only ES6+) [^10]
     - `Object.keys(newObj)` will only iterate over own keys
 
+
+## RegEx
 - RegEx in JS [^10]
   - `/[regex]/.test(str)` : test 'str' with [regex] pattern - returns true / false
   - `str.match(/[regex]/)` : look for [regex] pattern in str - returns array of matches
     - don't use `/g` (global match) with `test` if you only need to test for a single occurrence - otherwise, you will get different responses each time you run `//g.test(str)` based on the number of occurences of a match within 'str';  use 'match' instead
 
-- JS error types: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error
 
+
+## Strings
 - special string characters: [^12]
   - `\n` : new line
   - `\t` : tab
@@ -198,15 +234,18 @@
   - `string.charAt(num)` : access the character at 'num' in 'string'
   - OR: `string[num]` : same as above
   - `something.toString()` OR `String(something)`
+  - use `.toString()` if you want to raise errors when (explicitly) coercing to a string [^22]
+    - e.g., `null.toString();`
+  - use `String()` if you want to guarantee coercion to a string [^22]
+    - e.g., `String(null);`
 
-- JS reserved words:  https://262.ecma-international.org/5.1/#sec-7.6.1.1
+
 
 - e.g., `let name = 'Jane';` : is a variable declaration combined with an *initializer* (distinct from assignment e.g., `name = 'James';`) [^13]
   - constants MUST be declared and initialized (since they cannot be changed)
 - JS is dynamically-typed - a variable may refer to a value of any data type and can be re-assigned without error
 
-- *unary operator* : an operator that takes only 1 operand
-
+## Implicit type coercion
 - implicit type coercion: [^15]
   - unary `+` : coerces with same rules as `Number()`
     - true => 1
@@ -236,6 +275,7 @@
 
 - conditionals: [^16]
   - `1 && 2` will return `2` (truthy)
+    - Note:  `undefined && false` returns `undefined` [^23] and from experimentation
   - `1 || 2` will return `1` (truthy)
   - *expression* : e.g., `score > 70`
   - *conditional statement* : e.g., `if (score > 70)`
@@ -488,3 +528,5 @@
 [^19]: [Hoisting ](https://launchschool.com/lessons/7cd4abf4/assignments/510e62bb)
 [^20]: [Variables, Functions, and Blocks: Revisted](https://launchschool.com/lessons/7cd4abf4/assignments/8ac6ad6d)
 [^21]: [Closures ](https://launchschool.com/lessons/7cd4abf4/assignments/0ea7c745)
+[^22]: [JavaScript Coding Styles](https://launchschool.com/lessons/c26a6fcc/assignments/272f9d57)
+[^23]: [XOR ](https://launchschool.com/lessons/c26a6fcc/assignments/bbd0a58c)

@@ -35,11 +35,13 @@
 - Ruby: 
   - `if` doesn't create a new scope
   - uses lexical scoping
+  - has a 'main' scope
 - JS: 
   - `if` creates blocks
   - not all things between `{}` are blocks, technically functions are not, but can be thought of as blocks
   - `let foo = { bar: 42 }` is NOT a block (object)
   - uses lexical scoping
+  - has a 'global scope' (but no global object when code is run from a file - this code is wrapped in a function)
 
 ## if
 - Ruby: 
