@@ -59,7 +59,7 @@
 - https://medium.com/@abmrodger/spiegel-im-spiegel-in-ruby-9ad13fb30cad
 - https://www.reddit.com/r/launchschool/comments/klxl2t/a_full_week_of_content_on_study_habits_tools_and/
 - https://www.youtube.com/watch?v=U-wvbwnYC7Y
-
+- Clean Code (book) summary:  https://gist.github.com/wojteklu/73c6914cc446146b8b533c0988cf8d29
 
 ## Notes from Tyler Frye on studying
 On top of the A+ check list, I'd highly recommend checking out the podcast I link below (and others, they're great). But this one in particular is a recording of a SPOT session from Jake, the guy who created the Checklist.

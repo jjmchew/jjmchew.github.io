@@ -72,6 +72,8 @@
   - falsy: `false`, `0`, `-0`, `0n` (BigInt zero), `''`, `undefined`, `null`, `NaN`
   - truthy: `'false'` (the string 'false')
   - can use `!!` or `Boolean()` to convert to true/false
+  - `NaN === NaN // returns false` : only value in JS which returns false when compared to itself
+    - `NaN !== NaN // returns true`
 
 ## incrementing
 - Ruby: `+=`

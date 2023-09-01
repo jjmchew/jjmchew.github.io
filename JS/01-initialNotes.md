@@ -1,4 +1,4 @@
-# LS JavaScript book notes
+# LS JavaScript book and JS210 notes
 
 ## Misc
 - *programming languages* express the steps that a machine needs to perform to convert some input into an output [^1]
@@ -24,6 +24,8 @@
   - "Magic Number" - a constant (may not be a number) that is important to our program but not as a configuration value:  use SCREAMING_SNAKE_CASE [^1]
   - in JS, snake_case is not really used
   - generally add `;`, *except* for `function`, `class`, `if`, `for`, `while` blocks [^11]
+  - generally best to include trailing `,` for last property in objects [^26]
+    - only creates 1 line difference in `git diff`, easy to re-arrange properties
 
 - [javascript (ecma) standards](https://www.ecma-international.org/publications-and-standards/standards/ecma-262/)
 
@@ -39,7 +41,8 @@
 - JS compatibility table:  http://kangax.github.io/compat-table/es2016plus/
   - to determine whether or not a specific JS feature may be supported by various browsers / runtimes
 
-
+- JS is *weakly typed* - i.e., don't have to tell interpreter what kind of value you plan to store in a particular variable [^33]
+- JS is *dynamically typed* - i.e., the type of value stored in a particular variable can be changed [^33]
 
 
 ## Elements of JavaScript Language
@@ -83,6 +86,7 @@
 
 - JS error types: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error
 
+- can use `typeof` (an operator) to determine type:  e.g., `typeof []; // 'object'` [^24]
 
 ## Numbers
 - `NaN` : `NaN === NaN` will return `false` - the only value in JS that is not equal to itself [^2]
@@ -93,7 +97,9 @@
 - use `Number` for type casting (general style rule) [^22]
 - always use `parseInt` with a 'radix' (i.e., base) to parse Strings e.g., `parseInt(aVariable, 10);` [^22]
 
-
+- `-0` [^10]
+  - can determine if a value is `-0` using `Object.is(value, -0)`
+  - could also check with `1 / value === -Infinity` (will return true if value is `-0`)
 
 
 ## Remainder vs Modulo [^2]
@@ -185,13 +191,55 @@
   - arrays are objects: `typeof [1, 2, 3]` returns 'object'
   - use `Array.isArray(ary)` to determine if 'ary' is an array
   - Arrays can have 'properties' which appear to be key-value pairs which look like elements
-    - these properties do not count as part of the 'length'
+    - these properties do not count as part of the 'length', will not be found by `indexOf` [^30]
+    - e.g.,
+      ```javascript
+      let ary = [1, 2];
+      ary['foo'] = 'bar';
+      ary; // [1, 2, foo: 'bar']
+      ary.length; // 2
+      ```
     - you can use `Object.keys(ary)` to return these keys (in addition to standard numeric keys, returned as strings)
   - arrays can hold an '<empty item>' which is not a true item (will count towards length, but does not count as a key or a true value)
+    - empty values will return as 'undefined' [^24]
+      - e.g., 
+        ```javascript
+        let count = [1, 2, 3];
+        count[5] = 5;
+        count;    // [1, 2, 3, empty x 2, 5]
+        count.length = 10;
+        count;    // [1, 2, 3, empty x 2, 5, empty x 4]
+        count[4]; // undefined
+        ```
     - note: 'undefined' is a value
   - `===` : in JS - 2 arrays are equal ONLY IF they are the same array (i.e,. occupy the same spot in memory)
   - `Array.includes` uses `===` to check values - i.e., checking if an element is a specific array is difficult
   - can use `.slice()` to create a copy of an array
+- a property name is an array index when it is a non-negative integer [^30]
+  - values assigned to index properties are called *elements* of the array
+  - the value of `Array.length` is dependent on the largest array index
+- although `delete` will work on arrays, it's better to use `splice` instead [^30]
+- empty array slots will NOT be processed by array methods (they aren't array elements) [^30]
+
+- *sparse arrays* : arrays that contain 'empty' items
+  - empty items are spots for an array that have **no index** (no key) [^31]
+  - accessing the value of an 'empty' item will return `undefined`, but it's not *truly* undefined - actually setting the value of an 'empty' item to `undefined` will create an index (key) for that item
+
+- defining an 'empty' array [^31]
+  - using `Array.length` will include 'empty' slots, but NOT include non-index properties
+  - using `Object.keys` will not include empty slots, but WILL include non-index properties
+  - non-index properties of arrays are not part of the length, and are ignored by built-in Array methods; they can be present, but the array can still be considered 'empty' [^31]
+  - the developer needs to decide what is desired by an 'empty' array
+
+- to get elements from the end of an array, use `Array.prototype.at()`, which can take a negative index
+
+
+### Working w/ Function Arguments [^36]
+- every function has an object `arguments` which is "array-like"
+  - it has a `length` property, elements can be accessed by bracket notation (e.g., `arguments[0]`)
+  - BUT:  cannot use array properties on it, `Array.isArray(arguments) === false`
+- can convert arguments to a real array using `let args = Array.prototype.slice.call(arguments);`
+- the `arguments` property exists (and will accept arguments) whether or not any parameters are defined in the function (can make it hard to read code using it)
 
 
 ## Objects
@@ -202,7 +250,67 @@
       - never use 'for..in' to iterate over arrays (the keys returned will be strings, not index integers) [^10]
       - can use 'for..of' instead - works with strings and arrays (only ES6+) [^10]
     - `Object.keys(newObj)` will only iterate over own keys
+- Built in JS objects: [^26]
+  - `String`, `Array`, `Object`, `Math`, `Date`, etc.
+  - some *object* types are named the same as the *primitive* types (e.g., `String`, `Number`)
+    - JS *temporarily* coerces these primitive types to *object* types to be able to call methods on primitives
 
+- use `for ... in` to iterate across object properties OR `Object.keys` [^28]
+  - `for ... in` and `Object.keys` will iterate over properties where the `enumerable` flag is `true` [^29]
+    - `for...of` and `forEach` do *not* use the enumerable flag
+    - `Object.defineProperty(customObj, 'keyName', { enumerable: false});`
+- enumerability is involved when `let newObj = Object.create(objName)` is used to create a new object, `newObj` using `objName` as a prototype [^29]
+  - check properties using `newObj.hasOwnProperty(keyName)`
+
+- `==` and `===`: 2 objects are only equal if they are the *same* object [^30]
+- if object literal notation is used at the start of a line, JavaScript will interpret it as a block of code, instead of an object [^30]
+  e.g.,
+  ```javascript
+  {} + []; // 0 : becomes +[]
+  {}[0]; // [0] -- the object is ignored, so the array [0] is returned
+  { foo: 'bar' }['foo'];    // ["foo"]
+  {} == '[object Object]';  // SyntaxError: Unexpected token ==
+  ```
+
+- making **deep copy** of array / object (works for nested arrays and plain objects, NOT objects with methods, complex objects like dates or custom objects) [^32]
+  ```javascript
+  let arr = [{ b: 'foo' }, ['bar']];
+  let serializedArr = JSON.stringify(arr);
+  let deepCopiedArr = JSON.parse(serializedArr);
+  ```
+
+### Custom objects
+- created with "object literal notation" : e.g., `let colors = { red: '#f00', orange: '#ff0', };` [^26]
+- objects have *properties* (data) and *behaviours* (methods)
+  - methods are also properties; essentially just functions[^26]
+- best *not* to use arrow functions to define methods [^26]
+- property names can be any valid string (other types will be coereced) [^27]
+- property values can be any valid expression [^27]
+  - can be accessed via bracket (e.g., `foo['a key']`) or dot notation (e.g., `foo.name`)
+- `delete` (a reserved keyword) removes properties from objects (e.g., `delete foo.a`)
+
+
+## Objects vs Arrays [^30]
+- use arrays if:
+  - data needs to be maintained in a specific order
+- use objects if:
+  - data has many parts
+  - need to access values based on the names of those parts (i.e., using keys) (sometimes called an "associative array")
+
+
+## Dates
+- JS has 4 ways to create a date object: [^35]
+  - `new Date();`
+  - `new Date(value);`
+  - `new Date(dateString)`
+  - `new Date(year, month[, date[, hours[, minutes[, seconds[, milliseconds]]]]]);`
+
+  - `new Date(today)` involves implicit coercion, which is not recommended - using `getTime()` explicitly is better:
+    ```javascript
+    let today = new Date();
+    let tomorrow = new Date(today.getTime())
+    tomorrow.setDate(today.getDate() + 1);
+    ```
 
 ## RegEx
 - RegEx in JS [^10]
@@ -240,10 +348,18 @@
     - e.g., `String(null);`
 
 
-
 - e.g., `let name = 'Jane';` : is a variable declaration combined with an *initializer* (distinct from assignment e.g., `name = 'James';`) [^13]
   - constants MUST be declared and initialized (since they cannot be changed)
 - JS is dynamically-typed - a variable may refer to a value of any data type and can be re-assigned without error
+
+- strings (primitives) are immutable [^32]
+  ```javascript
+  let alpha = 'abcde';
+  alpha[0] = 'z';   // 'z'
+  alpha;            // 'abcde' : no change to alpha - immutable string
+  ```
+
+- `.padStart()` can help create padding zeros for strings (e.g., 2 digit times like '01')
 
 ## Implicit type coercion
 - implicit type coercion: [^15]
@@ -272,6 +388,17 @@
     - coerce to numbers to compare
       - any comparison with NaN is false
     - unless both operands are strings - then compare as strings
+    - if 1 operand is an *object* will coerce to string '[object Object]' [^30]
+  - when operators are used with arrays [^25]
+    - JS will first coerce arrays to strings, then perform the operation
+    - e.g., `['a', 'b', 'c'] + 'd' // 'a,b,c' + 'd' === 'a,b,cd`
+    - e.g., `['a', 'b', 'c'] + ['d'] // 'a,b,c' + 'd' === 'a,b,cd'`
+    - e.g., `[1] * 2 // '1' * 2 === 1 * 2 === 2`
+    - e.g., `[1, 2] * 2 // '1,2' * 2 === NaN * 2 === NaN`
+    - e.g., `[] == '0' // '' == '0'  ===  false`
+  - using `==` or `===` on arrays:
+    - only returns `true` when both arrays are the *same object* [^25]
+    - e.g., `[] == [] // false`, and `[] === [] // false`
 
 - conditionals: [^16]
   - `1 && 2` will return `2` (truthy)
@@ -506,6 +633,33 @@
   ```
 
 
+## Side Effects
+- **side effect** : when a function call performs: [^34]
+  - re-assigns a non-local variable
+  - mutates the value of any object referenced by a non-local variable
+  - reads from or writes to any data entity (file, network connection, etc) that is non-local to the program
+    - this includes keyboard input, console output, accessing system date / time, generating random numbers - anything that causes JavaScript to look outside the program for a place to read or send data is a side effect
+  - raises an exception (that isn't caught and handled)
+  - calls another function that has side effects
+- side effects are only important if non-local (e.g., "outside") to the calling function
+- technically, function *calls* have side-effects - depending on the arguments, a function call may not have any side-effects [^34]
+  - unexpected side effects are a major source of bugs [^34]
+- functions should return a useful value OR have a side effect - **NOT BOTH** [^34]
+  - some exceptions: reading from a database or reading keyboard input typically also involves returning a value
+
+- **pure function** : a function that [^34]
+  - has no side effects
+  - given the same set of arguments, will always return the same value during the function's lifetime (the return value depends solely on its arguments)
+
+- a function's *lifetime* [^34]
+  - begins when a function is created, ends when a function is destroyed
+  - nested functions have a lifetime that spans a single execution of the outer function
+    - nested functions are re-created each time the outer function is invoked
+    - i.e., each instantiation of a nested function is separate; it may look identical, but may produce different results for each instantiation
+    - may still be a pure function - depends on side effects, return value relies solely on arguments
+
+
+
 ## References
 [^1]: [Preparations ](https://launchschool.com/books/javascript/read/preparations)
 [^2]: [The Basics](https://launchschool.com/books/javascript/read/basics)
@@ -530,3 +684,16 @@
 [^21]: [Closures ](https://launchschool.com/lessons/7cd4abf4/assignments/0ea7c745)
 [^22]: [JavaScript Coding Styles](https://launchschool.com/lessons/c26a6fcc/assignments/272f9d57)
 [^23]: [XOR ](https://launchschool.com/lessons/c26a6fcc/assignments/bbd0a58c)
+[^24]: [Arrays ](https://launchschool.com/lessons/e15c92bb/assignments/20dcbcab)
+[^25]: [Arrays and Operators](https://launchschool.com/lessons/e15c92bb/assignments/5aed9f6f)
+[^26]: [Introduction to Objects](https://launchschool.com/lessons/79b41804/assignments/091246c3)
+[^27]: [Object Properties](https://launchschool.com/lessons/79b41804/assignments/5564f6e8)
+[^28]: [Stepping Through Object Properties](https://launchschool.com/lessons/79b41804/assignments/b88f5906)
+[^29]: [Intro to Iteration and Enumerability](https://medium.com/launch-school/javascript-weekly-an-introduction-to-iteration-and-enumerability-70bb1054064a)
+[^30]: [Arrays and Objects](https://launchschool.com/lessons/79b41804/assignments/5dc08268)
+[^31]: [Arrays: What is an Element?](https://launchschool.com/lessons/79b41804/assignments/153a803b)
+[^32]: [Mutability of Value and Objects](https://launchschool.com/lessons/79b41804/assignments/40b5852e)
+[^33]: [Data Types and Mutability](https://medium.com/launch-school/javascript-weekly-data-types-and-mutability-e41ab37f2f95)
+[^34]: [Pure FUnctions and Side Effects](https://launchschool.com/lessons/79b41804/assignments/88138dd5)
+[^35]: [Working with Dates](https://launchschool.com/lessons/79b41804/assignments/a2584ce1)
+[^36]: [Working with Function Arguments](https://launchschool.com/lessons/79b41804/assignments/55096c15)
