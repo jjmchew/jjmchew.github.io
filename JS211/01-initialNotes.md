@@ -27,6 +27,13 @@
   - generally best to include trailing `,` for last property in objects [^26]
     - only creates 1 line difference in `git diff`, easy to re-arrange properties
 
+- [ninja code](https://javascript.info/ninja-code)
+  - what NOT to do when coding
+
+- [ESLint](https://eslint.org/)
+    - `npm install eslint@7.12.1 eslint-cli babel-eslint --save-dev`
+    - `npx eslint programFile.js`
+
 - [javascript (ecma) standards](https://www.ecma-international.org/publications-and-standards/standards/ecma-262/)
 
 - [mdn javascript references](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
@@ -174,6 +181,7 @@
   - `name = 'Mitchell'` : `=` is the assignment operator
 
 - *unary operator* : an operator that takes only 1 operand
+
 
 
 ## Booleans
@@ -377,7 +385,8 @@
     - note: 1 + NaN = NaN
   - `-`, `*`, `%`, `/` (only defined for numbers)
     - coerce everything to numbers
-  - `==`:
+  - `===` ("strict equality operator")
+  - `==` ("abstract equality operator"):
     - string == number : coerce string to number
     - boolean == other : coerce the boolean to number
     - null == undefined : always true
@@ -403,9 +412,17 @@
 - conditionals: [^16]
   - `1 && 2` will return `2` (truthy)
     - Note:  `undefined && false` returns `undefined` [^23] and from experimentation
+    - Note: `false && undefined` returns `false` [from experimentation]
   - `1 || 2` will return `1` (truthy)
   - *expression* : e.g., `score > 70`
   - *conditional statement* : e.g., `if (score > 70)`
+
+- `&&`, `||` do not always return a boolean - they return the value of one of their operands (which may be a non-boolean) [^39]
+  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators
+  - `&&` returns the value of the first 'falsy' operand from left to right **OR** the value of the last operand if they are all 'truthy' [MDN]
+  - `||` if used with non-Boolean values, it will return a non-Boolean value [MDN]
+    - `x || y` : if `x` can be converted to `true` returns `x`, else returns `y`
+
 
 ## scope [^17]
 - *global scope* : the 'main' scope (sometimes function scope at the top level, 'file scope' or 'module scope' might be better terms[^19])
@@ -658,6 +675,104 @@
     - i.e., each instantiation of a nested function is separate; it may look identical, but may produce different results for each instantiation
     - may still be a pure function - depends on side effects, return value relies solely on arguments
 
+## Strict Mode [^37]
+- **pragma** : a language construct (not part of the language) that tells a compiler, interpreter, or other translator to process the code in a different way (e.g., 'use strict;')
+- add `'use strict';` to the beginning of file (or function)
+  - strict mode can be global-scoped OR function-scoped;  CANNOT be block-scoped
+  - once enabled, it cannot be disabled
+
+- disables use of uninitialized variables (will not define undeclared variables as properties of global object)
+- disables implicit setting of execution context to global object (e.g., `this` being set to global object when methods are invoked with function call syntax)
+- disables interpreting of numbers with leading zeros as octal numbers
+  - e.g., 01234567 in octal is 342391 decimal
+  - this is why you should always include a radix with `parseInt` (e.g., `parseInt(num, 10)` ensures JS doesn't parseInt as an octal)
+- prevents declaring 2 function parameters with the same name
+- prevents using some reserved keywords (e.g., `let`, `static`) as variable names
+- prevents the use of `delete` operator on a variable name
+- forbids binding of `eval` and `arguments` in any way
+- disables access to some properties of `arguments` object in functions
+- disables `with` statement
+- prevents use of function declarations in blocks (ES5 only)
+- prevents declaration of 2 properties with the same name in an object (ES5 only)
+
+
+## ES6 syntactic sugar
+- concise property initializers (when returning objects) : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer
+  ```javascript
+  function xyz(foo, bar, baz) {
+      return {
+        foo: foo,
+        bar: bar,
+        answer: baz,
+      };
+  }
+
+  // ABOVE long form is equivalent to below SHORT form
+
+  function xyz(foo, bar, baz) {
+    return {
+      foo,
+      bar,
+      answer: baz,
+    };
+  }
+  ```
+- destructuring : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#object_destructuring
+  ```javascript
+  let foo = obj.foo;
+  let bar = obj.bar;
+  let baz = obj.baz;
+
+  // ABOVE is equivalent to below
+
+  let {baz, foo, bar} = obj;
+  ({foo, baz} = obj);  // can define only what you need, note parentheses for re-assignment
+  ({foo: newFoo, bar} = obj);  // can define a new name for 'foo'
+  ```
+- spread and rest syntax `...` : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax
+  ```javascript
+  function maxItem() {
+    let max = arguments[0];  // using `...` would prevent this (arguments isn't a true array)
+    [].forEach.call(arguments, value => {
+      if (value > max) max = value;
+    });
+
+    return max;
+  }
+
+  // or let args = Array.from(arguments); // creates an array from `arguments` object
+  ```
+
+
+## Errors
+- ReferenceError : use a variable or function that doesn't exist
+- TypeError : access a property that doesn't exist, call something that isn't a function
+- SyntaxError : bad syntax (typically thrown before execution)
+
+### Preventing errors (e.g., using guard clauses)
+- consider edge cases (examine assumptions)
+- focus on the 'happy path' (most basic / common use cases)
+- generally, you should be able to trust your program - i.e., that functions will be called with valid values
+  - think about key sources of error (e.g., user input, dbs, etc.)
+
+### Catching errors
+```javascript
+try {
+  // do something that might throw an error
+} catch (error) {
+  // if error occurs, can access `error.name` and `error.message`
+} finally {
+  // optional block; always runs
+}
+```
+- creating custom error types:  https://medium.com/launch-school/javascript-weekly-graceful-error-handling-2f4045262df
+
+
+- only catch errors when: [^38]
+  1. a built-in JS function or method can throw an Error and you need to handle or prevent that error 
+  **AND**
+  2. a simple guard clause is impossible or impractical to prevent the error
+    - e.g., `JSON.parse` may throw an error, but it doesn't make sense to 'pre-parse' the string to see if it will throw an error; just try/catch
 
 
 ## References
@@ -694,6 +809,9 @@
 [^31]: [Arrays: What is an Element?](https://launchschool.com/lessons/79b41804/assignments/153a803b)
 [^32]: [Mutability of Value and Objects](https://launchschool.com/lessons/79b41804/assignments/40b5852e)
 [^33]: [Data Types and Mutability](https://medium.com/launch-school/javascript-weekly-data-types-and-mutability-e41ab37f2f95)
-[^34]: [Pure FUnctions and Side Effects](https://launchschool.com/lessons/79b41804/assignments/88138dd5)
+[^34]: [Pure Functions and Side Effects](https://launchschool.com/lessons/79b41804/assignments/88138dd5)
 [^35]: [Working with Dates](https://launchschool.com/lessons/79b41804/assignments/a2584ce1)
 [^36]: [Working with Function Arguments](https://launchschool.com/lessons/79b41804/assignments/55096c15)
+[^37]: [Modern JavaScript: Strict Mode](https://launchschool.com/gists/406ba491)
+[^38]: [Catching Errors](https://launchschool.com/lessons/d299fc36/assignments/748ab030)
+[^39]: [Logical Operation](https://launchschool.com/exercises/6f50a742)

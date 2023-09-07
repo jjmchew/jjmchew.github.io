@@ -23,7 +23,7 @@
 - Ruby:
   - can "initialize and assign" them (no keywords)
 - JS: use `let` or `const` (constants) - have block scope
-  - using `var` variables have broader scoping
+  - using `var` variables have broader scoping (functional scope)
   - undeclared variables (e.g., `p = 'foo'`) have global scope : can be the source of debugging errors
   - can "declare" and "initialize" within the same line, or just "declare" (value is undefined)
 
@@ -36,12 +36,14 @@
   - `if` doesn't create a new scope
   - uses lexical scoping
   - has a 'main' scope
+  - methods create a new scope (can't access outside variables without explicitly passing them in)
 - JS: 
   - `if` creates blocks
   - not all things between `{}` are blocks, technically functions are not, but can be thought of as blocks
   - `let foo = { bar: 42 }` is NOT a block (object)
   - uses lexical scoping
   - has a 'global scope' (but no global object when code is run from a file - this code is wrapped in a function)
+  - functions do not create a new scope (CAN access outside variables without explicitly passing them in)
 
 ## if
 - Ruby: 
