@@ -111,8 +111,10 @@
 ## arrays
 - Ruby:
   - `[]` is an method
+  - `map` is mutating
 - JS:
   - `[]` is an operator
+  - `map` is non-mutating (returns a new array)
 
 ## libraries
 - Ruby: use 'Gemfile'

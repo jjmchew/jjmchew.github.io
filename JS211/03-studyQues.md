@@ -129,3 +129,47 @@ console.log(customObj);
 
 ---
 
+
+- [ ] Which is spread vs rest operator?
+- [ ] create shallow copies
+```javascript
+let arr = [1, 2, 3, 4, [9, 8, 7]];
+// create a copy of this array. name it `arrCopy`
+
+let copy1 = arr.slice();
+let copy2 = [...arr];
+let copy3 = arr.map(ele => ele);
+let copy4 = Array.from(arr); // review this
+
+copy3[2] = 'a';
+console.log(copy3, arr);
+```
+- double-check Object.assign vs Object.create
+- [ ] review for..in vs for..of : enumerable vs non-enumerable
+  - for..in lists all keys in arrays (including non-indexes) (enumerable is true)
+  - for..of in arrays - will not list non-valid indexes
+  - We can add properties to the object arr that are not elements of the array. All we have to do is use a key that is not a non-negative integer; it doesn't even have to be a number: https://launchschool.com/lessons/79b41804/assignments/153a803b
+
+---
+
+// Write a function that takes an array of strings and returns a new array containing only 
+// the elements from the argument that begin with capitalized letters and contain at least 3
+// characters. You must use a built in itterative method within your function. 
+
+let test = ['String', 'Sr', 'Fast', 'fast', 'slow', 'Steady'];
+
+// Write a function `findSecond` that takes two arguments (an array and a predicate callback 
+// function) that uses two (and only two) built in Array itteration methods to find the second
+// occurance of the predicate.
+// A predicate callback is a function that returns true or false.
+
+// Write a function in the theme of `findSecond` above named `findNth` that finds the nth occurance of a true return value of the predicate condition. 
+  // solve with recursion
+  // solve with PFA (partial function application)
+
+// Can you use == or === to compare arrays in JavaScript? Why or why not?
+
+// Write a function that returns true if two arrays contain the same values and false if
+// they do not.
+// Write a similar function to compare two objects.
+//====================================

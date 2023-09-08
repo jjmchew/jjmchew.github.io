@@ -241,6 +241,10 @@
 
 - to get elements from the end of an array, use `Array.prototype.at()`, which can take a negative index
 
+- `[...Array(3).keys()]` will return an array of 3 elements `[0, 1, 2]`
+- `Array(3).fill(0)` will return an array of 3 elements `[0, 0, 0]`
+
+
 
 ### Working w/ Function Arguments [^36]
 - every function has an object `arguments` which is "array-like"
