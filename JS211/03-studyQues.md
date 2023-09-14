@@ -173,3 +173,74 @@ let test = ['String', 'Sr', 'Fast', 'fast', 'slow', 'Steady'];
 // they do not.
 // Write a similar function to compare two objects.
 //====================================
+
+
+---
+
+1. 
+What will the code output and why?
+
+```javascript
+function checkValue() {
+  myVar1 = 3;
+}
+
+checkValue();
+
+let myVar1 = 27;
+console.log(myVar1);
+```
+
+---
+
+2. 
+Define `myFunc` using `filter` so that the code below outputs `true` twice
+
+```javascript
+let arr = [12, 45, 'a', 3, 'dc'];
+console.log(myFunc(arr)[0] === 'dc');
+console.log(myFunc(arr)[1] === 'a');
+```
+
+---
+
+3. 
+Is `myFunct` a pure function?
+
+```javascript
+let myFunct = (arg) => arg.length = 10;
+
+let arr = [1, 2];
+myFunct(arr);
+```
+
+---
+
+4. 
+What is output to screen and why?
+
+```javascript
+let arr = [1, 2, 3];
+arr.length = 5;
+
+for (let value in arr) {
+  console.log(value);
+}
+```
+
+---
+
+5. 
+What is the output and why?
+```javascript
+let obj = {
+  a: '1',
+  b: '2',
+  c: [1, 'a', 'd'],
+};
+
+obj['c'][2] = ['fe', 'fi', 'fo'];
+obj.length = 5;
+
+console.log(obj);
+```

@@ -57,9 +57,11 @@
 - Ruby: implicit return of last line
   - always declared using 'def'
   - need to use procs / lambdas to return functions
+  - Ruby has "class methods" (`Class::method`) and "instance methods" (`Class#method`)
 - JS: no implicit return, returns 'undefined' unless `return` is explicitly indicated
   - 3 ways to define (function declaration, function expression, arrow function)
   - first-class functions: functions are objects (like any other value)
+  - JS has "static methods" (`Constructor.methodName()`) and "instance methods" (`Constructor.prototyp.methodName()`)
 
 ## comparisons
 - Ruby: uses `==`, no coercion
