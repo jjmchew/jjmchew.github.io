@@ -81,10 +81,12 @@
   - it is the only value in JS that is not equal to itself (i.e., `NaN === NaN` returns false)
   - use `Number.isNaN(value)` or `Object.is(value, NaN)` to determine `NaN`
 - `1 / 0 === Infinity`;  `-1 / 0 === -Infinity`
+- `0 / 0` returns `NaN` (i.e., `Number.isNaN(0/0) === true`)
 
 
 ### Implicit Coercions
 
+#### original notes
 - `==`:
   - object / array & non-object / array : coerce to strings (objects as `[object Object]`)
   - boolean & other : coerce boolean to number (false is 0, true is 1)
@@ -112,7 +114,27 @@
     a === 'true'; // returns true
     ```
 
-- JS temporarily *primitive* types (NOMADS: Number, Object, Math, Array, Date, String) to a corresponding *object* type
+- JS temporarily coerces *primitive* types Number and String to a corresponding *object* type
+  - (NOMADS: Number, Object, Math, Array, Date, String) are all automatically coerced to object types with methods available
+
+#### summary notes on coercion
+- for `==` and comparison operators:  (if number, then numbers)
+  1. objects to string (`[object Object]`)
+  2. arrays to string (`[]` as `''`, `[1, 2, 3]` as `'1,2,3'`)
+  3. boolean to number (`false` as `0`, `true` as `1`)
+  4. if numbers are present, coerce to number
+  5. `NaN` & other : always `false`
+  6. `null == undefined` : always true
+  7. `null` or `undefined` & other : false
+
+- for '+': (if string, then strings)
+  1. if objects, all to string
+  2. if arrays, all to string
+  3. if string, boolean to string;  OTHERWISE boolean to number (no objects or strings)
+  4. if strings are present, coerce to string
+
+- for arithmetic operators ('- * / %'):
+  - coerce to numbers
 
 
 ### Explicit Coercions
@@ -121,13 +143,18 @@
   - `parseInt(str, 10)` or `parseFloat(str)`
 
   - Zero-NEWS: Zero (`0`) is coerced from (Null, Empty, Whitespace, Special characters)
-  - alphabetic strings coerce to `NaN`
+    - special characters:  `\t`, `\n`, etc.
+  - strings with alphabet coerce to `NaN`
   - `undefined` coerces to `NaN` (cannot be converted to a number)
 
   - use `Number.isNaN(value)` to check if `value` is `NaN`
 
 - to string:
   - `String(num)` or `(num).toString()`
+  - Note:
+    - `String([null])` returns `''`
+    - `String([undefined])` returns `''`
+    - `String([false])` returns `'false'`
 
 - `Boolean(value)` or `!!(value)` : converts `value` to `true` or `false` (EFUNNZZZ)
 
@@ -136,8 +163,8 @@
 - re-assigning the properties of an object **mutates** the **object**
 - "reassignment is the assignment of a variable to a new value or object" (changing the *binding* of a variable)
 - "mutation is changing the value of the object or array referenced by a variable"
-- `Object.freeze(obj)` prevents `obj` from objects 1 level down from changing
-  - for nested objects, also need to define `freeze`
+- `Object.freeze(obj)` prevents objects in `obj` 1 level down from changing
+  - for nested objects, also need to define `freeze` (if desired)
 - `obj.slice()` to create a (shallow) copy of `obj`
 
 - a function that is part of an object is called a *method*
@@ -216,7 +243,7 @@
   - added in ES6
 
 ### Summary table
-- `for..in` is essentially the same as `Object.keys`
+- `for..in` is essentially the same as `Object.keys` (for arrays)
 
 +---------+--------------+-------------+---------+--------------+--------------+
 |         |              | forEach/map | for..of |   for..in    | Object.keys  |
@@ -249,9 +276,6 @@
 - `obj.length` will return the 'length' of an array (incl. empty items, but NOT including non-elements - i.e., keys that are not non-negative integers)
 
 
-
-
-
 ## Variables as pointers
 - 'references' are 'pointers' : terms can be used interchangably - JavaScript does not make a distinction
 - i.e., "a variable *points to* or *references* an object in memory", "the pointers stored in variables are references"
@@ -276,7 +300,7 @@
 
 
 ## console.log vs return
-- `console.log` writes (or displays or outputs) something to the console; it is an expression which *does * something and also **returns** a value (`undefined`)
+- `console.log` writes (or displays or outputs) something to the console; it is an expression which *does* something and also **returns** a value (`undefined`)
 - a return value is a value that an expression evaluates to
 
 
@@ -284,9 +308,9 @@
 - expressions that evaluate to `true` are 'truthy'
 - expressions that evalue to `false` are 'falsy'
 - falsy values in JS:
-  - EFUNNZ(ZZ): `''`, `false`, `undefined`, `NaN`, `null`, `0` (`-0`, `0n`)
+  - EFUNNZ(ZZ): `''` (empty), `false`, `undefined`, `NaN`, `null`, `0` (`-0`, `0n`)
 
-- `||` returns the first *truthy* operand
+- `||` returns the first *truthy* operand **OR** last operand
 - `&&` returns the first *falsy* operand **OR** last operand if both are truthy
 
 
@@ -306,10 +330,10 @@
 
 - functions can be nested (no limit to how deeply)
 
-### arguments
+### `arguments`
 - `arguments` is an array-like local variable available inside all functions
   - it contains the arguments passed to a function
-  - 'object' type
+  - type 'object'
   - can use bracket notation to access elements
   - cannot call array methods on it (e.g., like `pop`)
   - can create an array using `let args = Array.prototype.slice.call(arguments);`
@@ -346,12 +370,12 @@
 
 
 ## Side effects
-- a function *call* that does any of the following has side effects (WRRRMC):
+- a function *call* that does any of the following has side effects (WRRECM):
   - Reads / Writes to any data entity (file, network, console, keyboard, db, clock, mouse, random number generator, speakers, etc.) - anything outside the JS program
   - Re-assigns a non-local variables
-  - Raises an exception
-  - Mutates the value of any object referenced by a non-local variable
+  - Exception raised
   - Calls another function that has (non-local) side effects
+  - Mutates the value of any object referenced by a non-local variable
 
 - generally, consider whether a function will have side effects when used as intended
   - e.g., no required arguments omitted
@@ -414,7 +438,7 @@
 - features:
   - disables uninitialized variables (will catch if `this` is forgotten)
   - using function call syntax sets `this` to undefined
-  - disallows numbers leading `0` (i.e., octal literals)
+  - disallows numbers w/ leading `0` (i.e., octal literals)
   - disables 2 function parameters sharing the same name
   - disables using reserved keywords (e.g., `let` and `static`) as variable names
   - cannot use `delete` on a variable name
@@ -569,3 +593,264 @@
       hello();
       ```
 
+- [ ] coercion exercises
+      - [ ] from practice 1, review:  4, 5, 6, 9, 24, 35, 44
+  ```javascript
+  [] == '0'; // 1
+  [] == 0; // 2
+  [] == false; //3
+  [] == ![]; // 4
+  [null] == ''; // 5
+  [undefined] == false; // 6
+  [false] == false; // 7
+  1 + true // 8
+  '4' + 3 // 9
+  false == 0 // 10
+  +('123') // 11
+  +(true) // 12
+  +(false) // 13
+  +('') // 14
+  +(' ') // 15
+  +('\n') // 16
+  +(null) // 17
+  +(undefined) // 18
+  +('a') // 19
+  +('1a') // 20
+  '123' + 123 // 21
+  123 + '123' // 22
+  null + 'a' // 23
+  '' + true // 24
+  1 + true // 25
+  1 + false // 26
+  true + false // 27
+  null + false // 28
+  null + null // 29
+  1 + undefined // 30
+  [1] + 2 // 31
+  [1] + '2' // 32
+  [1, 2] + 3 // 33
+  [] + 5 // 34
+  [] + true // 35
+  42 + {} // 36
+  (function foo() {}) + 42 // 37
+  1 - true // 38
+  '123' * 3 // 39
+  '8' - '1' // 40
+  -'42' // 41
+  null - 42 // 42
+  false / true // 43
+  true / false // 44
+  '5' % 2 // 45
+  1 === 1 // 46
+  1 === '1' // 47
+  0 === false // 48
+  '' === undefined // 49
+  '' === 0 // 50
+  true === 1 // 51
+  'true' === true // 52
+  '42' == 42 // 53
+  42 == '42' // 54
+  42 == 'a' // 55
+  0 == '' // 56
+  0 == '\n' // 57
+  42 == true // 58
+  0 == false // 59
+  '0' == false // 60
+  '' == false // 61
+  true == '1' // 62
+  true == 'true' // 63
+  null == undefined // 64
+  undefined == null // 65
+  null == null // 66
+  undefined == undefined // 67
+  undefined == false // 68
+  null == false // 69
+  undefined == '' // 70
+  undefined === null // 71
+  NaN == 0 // 72
+  NaN == NaN // 73
+  NaN === NaN // 74
+  NaN != NaN // 75
+  11 > '9' // 76
+  '11' > 9 // 77
+  123 > 'a' // 78
+  123 <= 'a' // 79
+  true > null // 80
+  true > false // 81
+  null <= false // 82
+  undefined >= 1 // 83
+  ```
+
+  - answers
+  ```javascript
+  // 1  false -- becomes '' == '0'
+  // 2  true -- becomes '' == 0, then 0 == 0
+  // 3  true -- becomes '' == false, then 0 == 0
+  // 4  true -- same as above
+  // 5  true -- becomes '' == ''
+  // 6  true -- becomes '' == false, then false == false
+  // 7  false -- becomes 'false' == 0, then NaN == 0
+  // 8  true is coerced to the number 1, so the result is 2
+  // 9  3 is coerced to the string '3', so the result is '43'
+  // 10  false is coerced to the number 0, so the result is true
+  // 11:  123
+  // 12:  1
+  // 13:  0
+  // 14:  0
+  // 15:  0
+  // 16:  0
+  // 17:  0
+  // 18:  NaN
+  // 19:  NaN
+  // 20:  NaN
+  // 21:  "123123" -- if a string is present, coerce for string concatenation
+  // 22:  "123123"
+  // 23:  "nulla" -- null is coerced to string
+  // 24:  "true"
+  // 25:  2
+  // 26:  1
+  // 27:  1
+  // 28:  0
+  // 29:  0
+  // 30:  NaN
+  // 31:  "12"
+  // 32:  "12"
+  // 33:  "1,23"
+  // 34:  "5"
+  // 35:  "true"
+  // 36:  "42[object Object]"
+  // 37:  "function foo() {}42"
+  // 38:  0
+  // 39:  369 -- the string is coerced to a number
+  // 40:  7
+  // 41:  -42
+  // 42:  -42
+  // 43:  0
+  // 44:  Infinity
+  // 45:  1
+  // 46:  true
+  // 47:  false
+  // 48:  false
+  // 49:  false
+  // 50:  false
+  // 51:  false
+  // 52:  false
+  // true  53
+  // true  54
+  // false -- becomes 42 == NaN  55
+  // true -- becomes 0 == 0   56
+  // true -- becomes 0 == 0  57
+  // false -- becomes 42 == 1  58
+  // true -- becomes 0 == 0  59
+  // true -- becomes '0' == 0, then 0 == 0 (two conversions)  60
+  // true -- becomes '' == 0, then 0 == 0  61
+  // true  62
+  // false -- becomes 1 == 'true', then 1 == NaN 63
+  // true  64
+  // true  65
+  // true  66
+  // true  67
+  // false  68
+  // false  69
+  // false  70
+  // false -- strict comparison  71
+  // false  72
+  // false  73
+  // false -- even with the strict operator  74
+  // true -- NaN is the only JavaScript value not equal to itself  75
+  // true -- '9' is coerced to 9  76
+  // true -- '11' is coerced to 11  77
+  // false -- 'a' is coerced to NaN; any comparison with NaN is false  78
+  // also false  79
+  // true -- becomes 1 > 0  80
+  // true -- also becomes 1 > 0  81
+  // true -- becomes 0 <= 0  82
+  // false -- becomes NaN >= 1  83
+  ```
+
+  ## Coercion practice 1
+  ```javascript
+  [] == '0'; // 1  :  '' == '0'  :  false
+  [] == 0; // 2  :  '' == 0  :  0 == 0  :  true
+  [] == false; //3  :  '' == 0  :  0 == 0  :  true
+  [] == ![]; // 4  :  '' == !''  :  '' == true  :  '' == 1  :  0 == 1  :  false  *************  '' == false  :  true
+  [null] == ''; // 5  :  'null' == ''  :  false  **************  '' == ''  :  true
+  [undefined] == false; // 6  :  'undefined' == false  :  NaN == 0  :  false  ********** '' == false  :  0 == 0  : true
+  [false] == false; // 7  :  'false' == 0  :  NaN == 0  :  false
+  1 + true // 8  :  1 + 1  :  2
+  '4' + 3 // 9  :  4 + 3  :  7  ********  '4' + '3'  :  '43'
+  false == 0 // 10  :  0 == 0  :  true
+  +('123') // 11  :  123
+  +(true) // 12 :  1
+  +(false) // 13  :  0
+  +('') // 14  :  0
+  +(' ') // 15  :  0
+  +('\n') // 16  :  0
+  +(null) // 17  :  0
+  +(undefined) // 18  :  NaN
+  +('a') // 19  :  NaN
+  +('1a') // 20  :  NaN
+  '123' + 123 // 21  :  '123123'
+  123 + '123' // 22  :  '123123'
+  null + 'a' // 23  :  'nulla'
+  '' + true // 24  :  '' + 1  :  '1'  ***** '' + true  :  'true'
+  1 + true // 25  :  1 + 1  :  2
+  1 + false // 26  :  1 + 0  :  1
+  true + false // 27  :  1 + 0  :  1
+  null + false // 28 :  0 + 0  :  0
+  null + null // 29  :  0
+  1 + undefined // 30  :  1 + NaN  :  NaN
+  [1] + 2 // 31  :  '1' + 2  :  '12'
+  [1] + '2' // 32  :  '1' + '2'  :  '12'
+  [1, 2] + 3 // 33  :  '1, 2' + 3  :  '1,23'
+  [] + 5 // 34  :  '' + 5  :  '5'
+  [] + true // 35  :  '' + 1  :  '1'  *** '' + 'true'  :  'true'
+  42 + {} // 36  :  42 + '[object Object]'  :  '42[object Object]'
+  (function foo() {}) + 42 // 37  :  'function foo() {}' + 42  :  'function foo() {}42'
+  1 - true // 38  :  1 - 1  :  0
+  '123' * 3 // 39  :  123 * 3  :  369
+  '8' - '1' // 40  :  8 - 1  :  7
+  -'42' // 41  :  -42
+  null - 42 // 42  :  0 - 42  :  -42
+  false / true // 43  :  0 / 1  :  0
+  true / false // 44  :  1 / 0  :  NaN  *********  1 / 0  :  Infinity
+  '5' % 2 // 45  :  5 % 2  :  1
+  1 === 1 // 46  :  true
+  1 === '1' // 47  :  false
+  0 === false // 48  :  false
+  '' === undefined // 49  :  false
+  '' === 0 // 50  :  false
+  true === 1 // 51  :  false
+  'true' === true // 52  :  false
+  '42' == 42 // 53  :  42 == 42  :  true
+  42 == '42' // 54  :  42 == 42  :  true
+  42 == 'a' // 55  :  42 == NaN  :  false
+  0 == '' // 56  :  0 == 0  :  true
+  0 == '\n' // 57  :  0 == 0  :  true
+  42 == true // 58  :  42 == 1  :  false
+  0 == false // 59  :  0 == 0  :  true
+  '0' == false // 60  :  '0' == 0  :  true
+  '' == false // 61  :  '' == 0  :  0 == 0  :  true
+  true == '1' // 62  :  1 == '1'  :  true
+  true == 'true' // 63  :  1 == 'true'  :  1 == NaN  :  false
+  null == undefined // 64  :  true
+  undefined == null // 65  :  true
+  null == null // 66  :  true
+  undefined == undefined // 67  :  true
+  undefined == false // 68  :  false
+  null == false // 69  :  false
+  undefined == '' // 70  :  false
+  undefined === null // 71  :  false
+  NaN == 0 // 72  :  false
+  NaN == NaN // 73  :  false
+  NaN === NaN // 74  :  false
+  NaN != NaN // 75  :  true
+  11 > '9' // 76  :  11 > 9  :  true
+  '11' > 9 // 77  :  11 > 9  :  true
+  123 > 'a' // 78  :  123 > NaN  :  false
+  123 <= 'a' // 79  :  123 <= NaN  :  false
+  true > null // 80  :  1 > 0  : true
+  true > false // 81  :  1 > 0  :  true
+  null <= false // 82  :  0 <= 0  :  true
+  undefined >= 1 // 83  :  NaN >= 1  :  false
+  ```
