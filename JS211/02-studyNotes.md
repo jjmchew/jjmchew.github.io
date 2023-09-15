@@ -2,7 +2,11 @@
 
 ## Assignments and comparisons
 - precedence of operators:
-  - CEAO:  Comparison (<=, <, >, >=), Equality (===, !==, ==, !=), (logical) AND (&&), (logical) OR (||)
+  - CEAO:
+    - Comparison `<=, <, >, >=`
+    - Equality `===, !==, ==, !=`
+    - AND (logical) `&&`
+    - OR (logical) `||`
 
 
 ## Variable scope, especially how variables interact with function definitions and blocks
@@ -43,7 +47,7 @@
   - scope exists, even if code is never executed
 - when JS tries to find a variable, it searches the scope hierarchy from the bottom (inside) to the top (outside) and uses the first variable it finds with a matching name
   - all variables in the same or surrounding scopes are visible inside functions and blocks
-  - variables in lower (inside) scopes can *shadow* variables with the same name in an higher (outer) scope
+  - variables in lower (inside) scopes can *shadow* variables with the same name in a higher (outer) scope
   - if no variable can be found, a ReferenceError is raised
 
 - named function expressions (e.g., `let hello = function howdy() { };`)
@@ -77,6 +81,7 @@
   - it is the only value in JS that is not equal to itself (i.e., `NaN === NaN` returns false)
   - use `Number.isNaN(value)` or `Object.is(value, NaN)` to determine `NaN`
 - `1 / 0 === Infinity`;  `-1 / 0 === -Infinity`
+
 
 ### Implicit Coercions
 
@@ -301,6 +306,15 @@
 
 - functions can be nested (no limit to how deeply)
 
+### arguments
+- `arguments` is an array-like local variable available inside all functions
+  - it contains the arguments passed to a function
+  - 'object' type
+  - can use bracket notation to access elements
+  - cannot call array methods on it (e.g., like `pop`)
+  - can create an array using `let args = Array.prototype.slice.call(arguments);`
+  - drawbacks: the arguments used are not explicitly declared as parameters within the function definition
+
 
 ## Function declarations, function expressions, and arrow functions
 - nested functions are created and destroyed every time the outer function runs; are 'private'
@@ -332,8 +346,29 @@
 
 
 ## Side effects
+- a function *call* that does any of the following has side effects (WRRRMC):
+  - Reads / Writes to any data entity (file, network, console, keyboard, db, clock, mouse, random number generator, speakers, etc.) - anything outside the JS program
+  - Re-assigns a non-local variables
+  - Raises an exception
+  - Mutates the value of any object referenced by a non-local variable
+  - Calls another function that has (non-local) side effects
+
+- generally, consider whether a function will have side effects when used as intended
+  - e.g., no required arguments omitted
+  - e.g., function is passed the expected arguments
+  - e.g., all expected preparations are established (e.g., opening connections, etc.)
+
+- unexpected side effects are bugs
+- generally, functions should return a useful value OR have side effects, NOT BOTH
+  - exceptions might include user input or db - will have side effect, but also need to return a value
+
 
 ## Pure functions and side effects
+- pure functions
+  - have no side effects
+  - given the same arguments, always returns the same value during the function's lifetime (nothing else in the program influences the return value)
+
+- function lifetime: begins when function is created, ends when function is destroyed
 
 ## Naming conventions (legal vs idiomatic)
 - use camelCase for variable and function names
@@ -359,12 +394,136 @@
 - variable names are *identifiers*
 
 ## Strict mode vs sloppy mode
+- strict mode:
+  - eliminates some *silent errors* and throws errors
+  - prevents running some code which is not optimized
+  - prohibits using names and syntax which may conflict with future versions of JavaScript
+
+- why strict mode?
+  - B: prevent or mitigate bugs
+  - F: code can run faster
+  - A: avoids conflicts with future language changes
+  - D: make debugging faster
+
+- `use strict;`
+  - can only be enabled at the start of the file or a function
+  - is lexically scoped, will have function scope
+  - cannot be disabled once enabled
+  - is automatically enabled within the body of a `class` and in JS modules
+
+- features:
+  - disables uninitialized variables (will catch if `this` is forgotten)
+  - using function call syntax sets `this` to undefined
+  - disallows numbers leading `0` (i.e., octal literals)
+  - disables 2 function parameters sharing the same name
+  - disables using reserved keywords (e.g., `let` and `static`) as variable names
+  - cannot use `delete` on a variable name
+  - forbids binding of `eval` and `arguments`in any way
+  - disables access to some properties of the `arguments` object
+  - disables `with` statement
+
 
 ## JavaScript syntactic sugar
+- concise property initializers
+  - when returning an object from a function, variables can be returned as properties with the same name
+  ```javascript
+  function xyzzy(foo, bar, qux) {
+    return {
+      foo,
+      bar,
+      qux,
+    };
+  }
+  // is equivalent to
+  function xyzzy(foo, bar, qux) {
+    return {
+      foo: foo,
+      bar: bar,
+      qux: qux,
+    };
+  }
+  ```
+- concise methods
+  - can eliminate `function` when defining methods in objects
+  ```javascript
+  let obj = {
+    foo: function(bar) {
+    };
+    // is equivalent to
+    foo(bar) {
+    };
+  };
+  ```
+- object destructuring
+  - can perform multiple assignments in a single expression
+  ```javascript
+  let obj = {a: 1, b: 2, c:3};
+  //
+  let a = obj.a;
+  let b = obj.b;
+  let c = obj.c;
+  // is equivalent to
+  let { c, a, b } = obj; // note: spaces in {} are helpful, not required (distinguish from literals)
+                         // note: order doesn't matter, a still assigned to obj.a, etc.
+  let { a: newName, c } = obj; // assigns obj.a to newName
 
+  // for function parameters
+  function xyzzy({ a, b, c }) {
+    console.log(a); // 1
+    console.log(b); // 2
+    console.log(c); // 3
+  }
 
+  // for re-assignment
+  ({ a, b, c } = obj); // use parentheses
+  ```
 
+- array destructuring (same as objects)
+  ```javascript
+  let arr = [1, 2, 3];
+  
+  let [ a, b, c ] = arr; // a = 1, b = 2, c = 3
+  let [ d, , f] = arr; //d = 1, f = 3
 
+  // swap values in variables
+  let a = 1;
+  let b = 2;
+  [ a, b ] = [b, a]; // note R side is an array literal
+  ```
+
+- spread syntax
+  - equivalent to using `Function.prototype.apply`
+  - when used with objects, only returns enumerable 'own' properties (sames as `Object.keys` - will not duplicate the prototype object)
+  ```javascript
+  function add3(num1, num2, num3) {
+    return num1 + num2 + num3;
+  }
+
+  let foo = [3, 7, 11];
+  add3(foo[0], foo[1], foo[2]);
+  // is equivlent to
+  add3.apply(null, foo);
+  // is equivalent to
+  add3(...foo);
+
+  // w/ objects
+  let bar = {a: 1, b: 2};
+  let copy = { ...bar };  // creates a copy of bar (new object)
+  ```
+
+- rest syntax
+  - used to collect multiple items into an array or object
+  ```javascript
+  let obj = {a: 1, b: 2, c: 3, d: 4};
+  let { a, d, ...other } = obj;  // a = 1, d = 4, other = {b: 2, c: 3};
+
+  let arr = [1, 2, 3, 4];
+  let [ first, ...otherArr ] = arr; // first = 1, otherArr = [2, 3, 4]
+  ```
+
+### spread vs rest
+- *rest parameter* : *collects* arguments together into an array (e.g., `function sum(...args)`)
+- *spread parameter* : *distributes* array elements into separate arguments (e.g., `let copy = [...arrayVar];`)
 
 
 # Questions
@@ -390,3 +549,23 @@
 - [ ] could review: https://launchschool.com/lessons/7cd4abf4/assignments/1d43f233
 - [ ] could review: https://launchschool.com/lessons/7cd4abf4/assignments/01c3e47c
 - [ ] could review: https://launchschool.com/lessons/e15c92bb/assignments/5aed9f6f (additional coercions w/ arrays)
+- [X] play around problems on function / block scope and variable def'ns, e.g.
+      ```javascript
+      function hello() {
+        function hi() {
+          console.log(a);
+        }
+
+        function howdy() {
+          a = 'pizza';
+          console.log(a);
+        }
+
+        hi(); // move this around
+        let a = 'a';
+        howdy(); // move this around
+        console.log(a);
+      }
+      hello();
+      ```
+
