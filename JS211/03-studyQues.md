@@ -130,7 +130,7 @@ console.log(customObj);
 ---
 
 
-- [ ] Which is spread vs rest operator?
+- [X] Which is spread vs rest operator?
 - [ ] create shallow copies
 ```javascript
 let arr = [1, 2, 3, 4, [9, 8, 7]];
@@ -145,7 +145,7 @@ copy3[2] = 'a';
 console.log(copy3, arr);
 ```
 - double-check Object.assign vs Object.create
-- [ ] review for..in vs for..of : enumerable vs non-enumerable
+- [X] review for..in vs for..of : enumerable vs non-enumerable
   - for..in lists all keys in arrays (including non-indexes) (enumerable is true)
   - for..of in arrays - will not list non-valid indexes
   - We can add properties to the object arr that are not elements of the array. All we have to do is use a key that is not a non-negative integer; it doesn't even have to be a number: https://launchschool.com/lessons/79b41804/assignments/153a803b
