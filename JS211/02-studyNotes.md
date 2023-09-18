@@ -120,7 +120,7 @@
 #### summary notes on coercion
 - for `==` and comparison operators:  (if number, then numbers)
   1. objects to string (`[object Object]`)
-  2. arrays to string (`[]` as `''`, `[1, 2, 3]` as `'1,2,3'`)
+  2. arrays to string (`[]` as `''`, `[1, 2, 3]` as `'1,2,3'`, `[null]`, `[undefined]` as `''`, `[false]` as `'false'`)
   3. boolean to number (`false` as `0`, `true` as `1`)
   4. if numbers are present, coerce to number
   5. `NaN` & other : always `false`
@@ -597,6 +597,7 @@
       ```
 - [ ] coercion exercises
       - [ ] from practice 1, review:  4, 5, 6, 9, 24, 35, 44
+      - [ ] from practice 2, review:  36
 - [ ] review statements and expressions
 - [ ] review term 'lexical scoping' (lesson 2)
 - [ ] clarify operators vs methods
@@ -869,88 +870,89 @@ undefined >= 1 // 83  :  NaN >= 1  :  false
 
 ## Coercion practice 2
 ```javascript
-[] == '0'; // 1
-[] == 0; // 2
-[] == false; //3
-[] == ![]; // 4
-[null] == ''; // 5
-[undefined] == false; // 6
-[false] == false; // 7
-1 + true // 8
-'4' + 3 // 9
-false == 0 // 10
-+('123') // 11
-+(true) // 12
-+(false) // 13
-+('') // 14
-+(' ') // 15
-+('\n') // 16
-+(null) // 17
-+(undefined) // 18
-+('a') // 19
-+('1a') // 20
-'123' + 123 // 21
-123 + '123' // 22
-null + 'a' // 23
-'' + true // 24
-1 + true // 25
-1 + false // 26
-true + false // 27
-null + false // 28
-null + null // 29
-1 + undefined // 30
-[1] + 2 // 31
-[1] + '2' // 32
-[1, 2] + 3 // 33
-[] + 5 // 34
-[] + true // 35
-42 + {} // 36
-(function foo() {}) + 42 // 37
-1 - true // 38
-'123' * 3 // 39
-'8' - '1' // 40
--'42' // 41
-null - 42 // 42
-false / true // 43
-true / false // 44
-'5' % 2 // 45
-1 === 1 // 46
-1 === '1' // 47
-0 === false // 48
-'' === undefined // 49
-'' === 0 // 50
-true === 1 // 51
-'true' === true // 52
-'42' == 42 // 53
-42 == '42' // 54
-42 == 'a' // 55
-0 == '' // 56
-0 == '\n' // 57
-42 == true // 58
-0 == false // 59
-'0' == false // 60
-'' == false // 61
-true == '1' // 62
-true == 'true' // 63
-null == undefined // 64
-undefined == null // 65
-null == null // 66
-undefined == undefined // 67
-undefined == false // 68
-null == false // 69
-undefined == '' // 70
-undefined === null // 71
-NaN == 0 // 72
-NaN == NaN // 73
-NaN === NaN // 74
-NaN != NaN // 75
-11 > '9' // 76
-'11' > 9 // 77
-123 > 'a' // 78
-123 <= 'a' // 79
-true > null // 80
-true > false // 81
-null <= false // 82
-undefined >= 1 // 83
+[] == '0'; // 1  :  '' == '0'  :  false
+[] == 0; // 2  :  '' == 0  :  0 == 0  :  true
+[] == false; //3  :  '' == 0  :  true
+[] == ![]; // 4  :  '' == false  :  true
+[null] == ''; // 5  :  '' == ''  :  true
+[undefined] == false; // 6  :  '' == false  :  true
+[false] == false; // 7  :  'false' == false  :  NaN == 0  :  false
+1 + true // 8  :  1 + 1  :  2
+'4' + 3 // 9  :  '4' + '3'  :  '43'
+false == 0 // 10  :  0 == 0  :  true
++('123') // 11  :  123
++(true) // 12  :  1
++(false) // 13  :  0
++('') // 14  :  0
++(' ') // 15  :  0
++('\n') // 16  :  0
++(null) // 17  :  0
++(undefined) // 18  :  NaN
++('a') // 19  :  NaN
++('1a') // 20  :  NaN
+'123' + 123 // 21  :  '123123'
+123 + '123' // 22  :  '123123'
+null + 'a' // 23  :  'nulla'
+'' + true // 24  :  'true'
+1 + true // 25  :  1 + 1  :  2
+1 + false // 26  :  1 + 0  :  1
+true + false // 27  :  1 + 0  :  1
+null + false // 28  :  0 + 0  :  0
+null + null // 29  :  0 + 0  :  0
+1 + undefined // 30  :  1 + NaN  :  NaN
+[1] + 2 // 31  :  '1' + 2  :  '12'
+[1] + '2' // 32  :  '1' + '2'  :  '12'
+[1, 2] + 3 // 33  :  '1,2' + 3  :  '1,23'
+[] + 5 // 34  :  '' + 5  :  '5'
+[] + true // 35  :  '' + 'true'  :  'true'
+42 + {} // 36  :  42 + ''  :  '42'  ****** '42[object Object]'
+(function foo() {}) + 42 // 37  :  'function foo() {}42'
+1 - true // 38  :  1 - 1  :  0
+'123' * 3 // 39  :  123 * 3  :  369
+'8' - '1' // 40  :  8 - 1  :  7
+-'42' // 41  :  -42
+null - 42 // 42:  :  -42
+false / true // 43  :  0 / 1  :  0
+true / false // 44  :  1 / 0  :  Infinity
+'5' % 2 // 45  :  5 % 2  :  1
+1 === 1 // 46  :  true
+1 === '1' // 47  :  false
+0 === false // 48  :  false
+'' === undefined // 49  :  false
+'' === 0 // 50  :  false
+true === 1 // 51  :  false
+'true' === true // 52  :  false
+'42' == 42 // 53  :  42 == 42  :  true
+42 == '42' // 54  :  42 == 42  :  true
+42 == 'a' // 55  :  42 == NaN  :  false
+0 == '' // 56  :  0 == 0  :  true
+0 == '\n' // 57  :  0 == 0  :  true
+42 == true // 58  :  42 == 1  :  false
+0 == false // 59  :  0 == 0  :  true
+'0' == false // 60  :  0 == 0  :  true
+'' == false // 61  :  0 == 0  :  true
+true == '1' // 62  :  1 == 1  :  true
+true == 'true' // 63  :  1 == NaN  :  false
+null == undefined // 64  :  true
+undefined == null // 65  :  true
+null == null // 66  :  true
+undefined == undefined // 67  :  true
+undefined == false // 68  :  false
+null == false // 69  :  false
+undefined == '' // 70  :  false
+undefined === null // 71  :  false
+NaN == 0 // 72  :  false
+NaN == NaN // 73  :  false
+NaN === NaN // 74  :  false
+NaN != NaN // 75  :  true
+11 > '9' // 76  :  11 > 9  :  true
+'11' > 9 // 77  :  11 > 9  :  true
+123 > 'a' // 78  :  123 > NaN  :  false
+123 <= 'a' // 79  :  123 <= NaN  :  false
+true > null // 80  :  1 > 0  :  true
+true > false // 81  :  1 > 0  :  true
+null <= false // 82  :  0 <= 0  :  true
+undefined >= 1 // 83  :  NaN >= 1  :  false
 ```
+
 
