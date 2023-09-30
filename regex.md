@@ -26,6 +26,7 @@
 - `\t` : tab
 - add `i` after regex (e.g, `/s/i`) for case-**in**sensitive matching
 - add `g` after regex (e.g., `/s/g`) for 'global' matching (for JS)
+- add `m` after regex (e.g., `/m`) for 'multiline' option to match newlines when using `.`
 - note:  regex is NOT a variable or a string (in Ruby)
   - e.g.,:
   ```ruby
@@ -49,10 +50,15 @@
   - `^` as first char in class creates a *negated* class (i.e., match everything except what's in the class)
     - e.g., `/[^y]/` matches any char except 'y' (including spaces, newlines, non-alphanumeric, etc.)
 - `/./` matches all characters EXCEPT newlines
+    - add `m` after regex (e.g., `/m`) for 'multiline' option to match newlines when using `.`
 - `\s` matches whitespace characters (` ` space,`\t` tab, `\v` vertical tab, `\r` carriage return, `\n` line feed, `\f` form feed)
+    - equivalent to `/[ \t\v\r\n\f]/`
 - `\S` matches all non-whitespace characters
+    - equivalent to `/[^ \t\v\r\n\f]/`
 - `\d` any decimal digit (0-9)
 - `\D` any character except Decimal digit
+- `\h` any hexadecimal digit 0-9A-Fa-f (Ruby)
+- `\H` any character except hexadecimal digit (Ruby)
 - `\w` matches word characters: incl. a-z, A-Z, 0-9, _ 
 - `\W` matches non-word characters (all except above)
 
@@ -78,6 +84,8 @@
 ## Quantifiers
 - `*` : match zero or more occurrences (of pattern to the left)
   - e.g. `\d\d\d\d*` matches 3 or more digits (note the `*` is 0 or more)
+  - e.g., `/co*t/` matches 'ct', 'cot', 'coot', 'cooot'
+  - note: `/x*/` will match between every character (0 x's)
 - `+` : match 1 or more occurrences (of pattern to the left)
   - e.g. `\d\d\d+` also matches 3 or more digits
 - `?` : matches once or not at all (i.e., 0 or 1 occurrence)
@@ -120,7 +128,7 @@
   /
     (['"]) # single OR double quotes;  NOTE use of ()
     .+?    # 1 or more of any character except newline, lazy (shortest possible match)
-    \1     # backreference to 1st capture goupr: single OR double quotes (whatever was originally matched)
+    \1     # backreference to 1st capture group: single OR double quotes (whatever was originally matched)
   /
   ```
   - `\2`, `\3`, `\4`, etc match subsequent capture groups (reading from left to right)
