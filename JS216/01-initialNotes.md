@@ -59,4 +59,12 @@
   - how to deal with bad input?
 
 ## Helpful methods
-`Array(length).fill([]);`
+`Array(length).fill(0);`
+`Array.from({length: 2}, (_) => [])`
+- `[...Array(3).keys()]` will return an array of 3 elements `[0, 1, 2]`
+- for (quick) deep copies of basic objects:
+```javascript
+let arr = [{ b: 'foo' }, ['bar']];
+let serializedArr = JSON.stringify(arr);
+let deepCopiedArr = JSON.parse(serializedArr);
+```

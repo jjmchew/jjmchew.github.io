@@ -69,7 +69,7 @@
 
 
 ## Data Types
-- JS primitive data types: [^2] ([B]BUNNS[S])
+- JS primitive data types: [^2] ([B]BUNNS[S])  BB U NNSS
   - String
   - Number (`NaN`, `Infinity`, `-Infinity` are all typeof Number)
   - Undefined
