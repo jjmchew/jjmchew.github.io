@@ -266,10 +266,111 @@ obj.foo();        // => undefined undefined
   - concepts are related:  likely would not have a programming language that supports higher-order functions without first-class functions
 
 
+## Memory allocation / Garbage Collection
+- generally speaking, GC is de-allocating memory
+  - in JS, allocation of memory is a separate process that is part of creation phase
+
+- to remove a closure and 'de-reference' values to free them for GC
+  - assign any variabls referencing that value to `null` - this will 'de-reference' the prior value and free it for GC
+
+- in languages that do not have Garbage Collection (GC), in order to assign values to variables:
+  - claim memory
+  - test for successful allocation of memory
+  - copy required values into memory
+  - use required values (in memory)
+  - release memory
+  ```javascript
+  // fictional representation
+  let name = claim(5);   // Claim 5 bytes of memory for use by name
+  if (memoryNotAllocated(name)) {
+    throw new Error("Memory allocation error!");
+  }
+
+  copy(name, "Sarah");  // Copies "Sarah" into claimed memory referenced by name
+  console.log(name);    // Do something with object referenced by name
+  release(name);        // Release memory for use by others
+  ```
+
+
+- simple model of GC (assumes all values participate in GC):
+  - as long as an object / variable remains 'accessible' JS can't / won't GC
+    - note that multiple copies of primitives will be formed (as required) if assigned, re-assigned, etc.
+      - typically only 1 version of objects is formed (objects can be assigned by reference)
+    - copies that are not required are removed by GC
+
+- more advanced model:
+  - most languages divide memory into 'stack' and 'heap'
+    - generally items on stack are fixed size (size can be predetermined)
+    - items on heap will have different sizes (that can't be predetermined)
+  
+  - *primitive values don't get involved in GC when they are stored on the stack*
+    - memory is assigned on the stack during creation phase of execution, after execution, memory is released
+      - this process is *similar to* GC, but is considered distinct
+      - when a block / function begins executing, JS calculates and assigns memory required on stack based upon variables declared and fixed item sizes
+      - some primitive values are not stored on stack (since they aren't fixed size), e.g., string, bigint;  however, they act like they are on the stack, and we can consider them to be on the stack
+  
+  - JS stores most primitive values and references (pointers to actual values) to objects on the stack
+    - everything else on the heap
+  
+  - on the heap, must decide when a value can be GC
+    - could use a value's reference count, i.e., when it reaches 0 it can be garbage collected (*not* when a variable goes out of scope, i.e., closures, arrays, objects may make a value relevant, even if out-of-scope)
+      - reference count is when a value is relied on by other variables, etc.
+    - GC generally occurs at regular intervals during a program's lifetime, generally no control over this
+    - modern JS engines use "mark and sweep" algorithm (when an object is unreachable) to do GC, this eliminates the "reference cycle" problem (2 objects both reference each other and thus are never GC)
+      - this can introduce memory fragmenting which makes it difficult to allocate large chunks of memory
+
+  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_Management
+
+
+
+## IIFEs
+- **IIFE** (Immediately Invoked Function Expressions):  a function that is defined and invoked simultaneously
+  - a function expression (wrapped with brackets) is followed by another set of `()` to immediately invoke it
+  - invoking `()` can be inside or outside wrapping brackets:
+    ```javascript
+    (function(a) {
+      return a + 1;
+    })(2); // 3
+    // OR
+    (function(a) {
+      return a + 1;
+    }(2)); // 3
+    ```
+  - surrounding brackets are not required if the function definition / expression doesn't occur at the start of the line
+  ```javascript
+  let foo = function() {
+    return function() {
+      return 10;
+    }();
+  }();
+
+  console.log(foo);       // => 10
+  ```
+  - IIFEs are helpful for creating a defined scope and private variables that cannot interfere with global scope
+    - example: studentIds can be protected and a function exists to produce them consistently
+    ```javascript
+    let generateStudentId = (function() {
+      let studentId = 0;
+
+      return function() {
+        studentId += 1;
+        return studentId;
+      };
+    })();
+    ```
+
+## Closures
+- closures are created when a function is DEFINED, and allow the function to retain access to the variables it needs from its outer scope
+
+
 
 # Things to review
 - [ ] : Mutability of objects, Problem 4 and 5:  https://launchschool.com/lessons/4671d66f/assignments/9695cfa4
 - [ ] : could do further exploration (deep equality): https://launchschool.com/exercises/1937fc28
 - [ ] : review context, problem 5:  https://launchschool.com/lessons/c9200ad2/assignments/84fbe7cb
 - [ ] : defining this, problem 2, 4(try all methods):  https://launchschool.com/lessons/c9200ad2/assignments/7bef6908
-
+- [ ] : could review GC, problem 1: https://launchschool.com/lessons/0b371359/assignments/c19c9fbf
+- [ ] : review GC, problem 1:  https://launchschool.com/lessons/0b371359/assignments/d5156138
+- [ ] : https://launchschool.com/exercises/f7659085
+- [ ] : https://launchschool.com/exercises/19cc5636
+- [ ] : https://launchschool.com/exercises/2726c8c6
