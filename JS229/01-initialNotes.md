@@ -706,7 +706,7 @@ class Square extends Rectangle {
 - [X] : Mutability of objects, Problem 4 and 5:  https://launchschool.com/lessons/4671d66f/assignments/9695cfa4
 - [X] : could do further exploration (deep equality): https://launchschool.com/exercises/1937fc28
 - [X] : review context, problem 5:  https://launchschool.com/lessons/c9200ad2/assignments/84fbe7cb
-- [ ] : defining this, problem 2, 4(try all methods):  https://launchschool.com/lessons/c9200ad2/assignments/7bef6908
+- [X] : defining this, problem 2, 4(try all methods):  https://launchschool.com/lessons/c9200ad2/assignments/7bef6908
 - [ ] : could review GC, problem 1: https://launchschool.com/lessons/0b371359/assignments/c19c9fbf
 - [ ] : review GC, problem 1:  https://launchschool.com/lessons/0b371359/assignments/d5156138
 - [ ] : https://launchschool.com/exercises/f7659085

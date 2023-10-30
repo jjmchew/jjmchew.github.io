@@ -77,11 +77,6 @@ explicit context being passed in)
   - `bind` will not alter the original function (it returns a new one)
   - note: once `bind` has been used, the execution context (of the returned function) can no longer be changed later 
 
-- arrow functions preserve the `this` of their execution 'context'
-  - they will use the `this` of their lexical context:
-    - if defined in the global scope, the execution context of global scope cannot change
-    - if defined in another function, the execution context of that function can change (and thus `this` will also change for the arrow function)
-
 
 ### Implicit function execution context
 - **implicit execution context** : an execution context that JS sets 'implicitly' (i.e., the developer does not define it explicitly)
@@ -106,8 +101,15 @@ explicit context being passed in)
 - arrow functions do *not* get their context lexically (execution state still matters)
   - arrow functions do not have their own `this`;  `this` lookup happens in the same way as regular variable search via the outer lexical environment (https://javascript.info/arrow-functions)
 
+- from personal experiments on `this` and arrow functions:
+  - arrow functions share the same `this` as any outer functions in which they are defined (i.e., nested)
+    - they share the `this` of outer functions, and only functions - not plain objects
+  - if they are part of the global context, `this` can only be the global execution context
+  - you cannot explicitly change the `this` of arrow functions (e.g., using `call`, `apply`, or `bind`)
+  - if an arrow function is returned by an outer function, execution context will still depend on the execution context of that outer function.  Depending on how the arrow function is invoked, the execution context of the outer function may or may not change
 
 ```javascript
+// LS example of `this` changing for arrow functions
 let obj1 = {
   a: 'This is obj1',
 
@@ -125,17 +127,84 @@ obj1.foo();                   // This is obj1
 
 obj2.foo = obj1.foo;
 obj2.foo();                   // This is obj2 - note context for arrow function depends on execution / invocation
+
+// personal examples - showing how arrow is invoked will affect execution context
+let obj4 = {
+  a: 'obj4',
+  func() {
+    let arrow = () => console.log(this, this.a);
+    return arrow;
+  },
+}
+obj4.func()(); // obj4  :  execution context of `func` is `obj4`
+
+let obj5 = {
+  a: 'obj5',
+  func: obj4.func(), // `arrow` is assigned directly to `obj5.func`
+};
+obj5.func(); // obj4  :  execution context of `obj4.func` didn't change
+
+let obj6 = {
+  a: 'obj6',
+  func: obj4.func,
+}
+obj6.func()(); // obj6  :  execution context of `obj4.func` is now `obj6`
 ```
 
 
 
 ## Scope and Closures
+- variable scope:  the part of the program that can access that variable by name;  how and where a language finds and retrieves values from previously declared variables
+  - variables are looked up using lexical scoping
+  - functions create a new inner scope;  code within an inner scope can access any variables in the same or surrounding scope
+  - blocks also create a new inner scope
+
+- (only) functions form closures (not objects)
+  - e.g., function declaration, function expression, assigning functions to properties
+- **closure** : when functions *close over* or *enclose* the lexical environment at their definition point, thus retaining access to (only) the variables (and most current values) required at the time of execution
+  - closures use scope
+  - only variables required will be part of the closure
+  - closures are private data : it is impossible to access the value of variables in closures other than through the provided code
+
 
 ### Higher-order functions
+- **higher-order functions** : are functions that
+  1. can accept a function as an argument,
+  2. return a function when invoked,
+  3. or both
+
+- first-class functions vs higher-order functions
+  - first-class functions: when a language treats functions as values (i.e., functions can be assigned to variables, passed around, used in control structures, etc.)
+    - this is a specific property of programming languages (not a specific language)
+  - higher-order functions: functions that "work" on other functions
+    - a general concept that also applies to mathematics
+
 
 ### Creating and using private data
+- use closures to store private data; use returned functions to access / modify that private data
+  - any variables in the closure will only be accessible via the defined methods
+  - to access that data differently may require altering the original code (e.g., you can prevent "monkey patching" depending on how you define the original code)
+
 
 ### Garbage collection
+- **garbage collection** (GC) : a process of "automatically" freeing up (deallocate, unclaim, or release) memory allocated to unused values
+- GC only applies to non-primitive values;  primitives are not subject to GC
+  - whether or not GC takes place with strings are bigInts is an implementation detail that may change among different implementations of JS
+  - (non-primitive) values are eligible for GC when they are no longer needed (referenced) / accessible
+    - variables can go "out-of-scope" and still be referenced through closures, arrays, objects, etc.
+  - modern JS implementations use *mark-and-sweep* algorithm to determine what to GC (eliminates the referency cycle problem)
+  - GC can occur at any time; typically at periodic intervals during a program's lifetime
+  - in modern JS, the programming has no control over GC
+
+- stack: sequential memory;  generally primitives (fixed size) are stored here since required memory can be calculated during hoisting (creation phase)
+- heap: "random access" memory - values here require a pointer (stored in the stack) to be accessed
+
+- memory allocation in programming languages (may be "invisible" to the developer):
+  - *claim* memory to be used by a variable
+  - *test* (verify) memory allocation
+  - *copy* desired value into claimed memory
+  - *use* value (now stored in memory)
+  - *release* memory (when unneeded)
 
 ### IIFEs
 
