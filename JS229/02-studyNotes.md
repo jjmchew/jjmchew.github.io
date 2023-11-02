@@ -44,6 +44,11 @@
 
 ### Object factories
 - **object factory** : a function that returns an object, used specifically for creating objects (with a common structure)
+- also called "Factory Object Creation Pattern"
+
+- disadvantages:
+  - every object has a full copy of all the methods and properties, which can be redundant
+  - there is no way to inspect an object and know whether it was created from a factory function (i.e., identify "type" or "class")
 
 
 
@@ -101,6 +106,7 @@ explicit context being passed in)
 - arrow functions do *not* get their context lexically (execution state still matters)
   - arrow functions do not have their own `this`;  `this` lookup happens in the same way as regular variable search via the outer lexical environment (https://javascript.info/arrow-functions)
 
+#### arrow functions and `this`
 - from personal experiments on `this` and arrow functions:
   - arrow functions share the same `this` as any outer functions in which they are defined (i.e., nested)
     - they share the `this` of outer functions, and only functions - not plain objects
@@ -162,10 +168,12 @@ obj6.func()(); // obj6  :  execution context of `obj4.func` is now `obj6`
 - (only) functions form closures (not objects)
   - e.g., function declaration, function expression, assigning functions to properties
 - **closure** : when functions *close over* or *enclose* the lexical environment at their definition point, thus retaining access to (only) the variables (and most current values) required at the time of execution
+  - closures let a function access any variable that was in scope when the function was defined
   - closures use scope
   - only variables required will be part of the closure
   - closures are private data : it is impossible to access the value of variables in closures other than through the provided code
 
+- closures also help to organize code into data and associated behaviour that relies on that data (similar to objects)
 
 ### Higher-order functions
 - **higher-order functions** : are functions that
@@ -188,13 +196,15 @@ obj6.func()(); // obj6  :  execution context of `obj4.func` is now `obj6`
 
 ### Garbage collection
 - **garbage collection** (GC) : a process of "automatically" freeing up (deallocate, unclaim, or release) memory allocated to unused values
-- GC only applies to non-primitive values;  primitives are not subject to GC
+- GC only applies to non-primitive values;  **primitives are not subject to GC**
   - whether or not GC takes place with strings are bigInts is an implementation detail that may change among different implementations of JS
   - (non-primitive) values are eligible for GC when they are no longer needed (referenced) / accessible
     - variables can go "out-of-scope" and still be referenced through closures, arrays, objects, etc.
   - modern JS implementations use *mark-and-sweep* algorithm to determine what to GC (eliminates the referency cycle problem)
   - GC can occur at any time; typically at periodic intervals during a program's lifetime
-  - in modern JS, the programming has no control over GC
+  - in modern JS, the programmer has no control over GC
+
+- the **"JS runtime"** handles GC
 
 - stack: sequential memory;  generally primitives (fixed size) are stored here since required memory can be calculated during hoisting (creation phase)
 - heap: "random access" memory - values here require a pointer (stored in the stack) to be accessed
@@ -206,26 +216,177 @@ obj6.func()(); // obj6  :  execution context of `obj4.func` is now `obj6`
   - *use* value (now stored in memory)
   - *release* memory (when unneeded)
 
+- when assessing GC in JS - beware:
+  - any values declared / assigned and used *within* a function are required until that function stops execution (not eligible for GC within that function)
+  - remember:  **primitives are not eligible for GC**
+
 ### IIFEs
+- **immediately invoked function expression** (IIFE) : a function that is defined and invoked simultaneously
+  - involves a pair of parentheses around a function expression, then followed by another set of parentheses at the end to invoke that function
+  - initial parentheses tell JS to evaluate what is inside as an expression (i.e., a function expression returns a function), thus, it can be invoked immediately
+- 2 styles of syntax:
+```javascript
+(function (){ console.log("hello"); })();  // style 1
+(function (){ console.log("hello"); }());  // style 2 : invoking `()` inside outer `()`
+```
+- pre-ES6: IIFEs were the best way to create a new scope (with variables) that was entirely separate from global scope
+  - with `let` and `const`, can just create that new scope using a block (i.e., `{ // code here }`) (using `var` within a block would not contain the variable scope)
+
+- IIFE can be used to define private data / methods
+  - e.g., an object can be "converted" to an IIFE which returns an object accessing private data (which prevents direct access to the properties, which is possible in an object)
+
+
 
 ### Partial Function Application
-
+- **partial function application** : returning a function that can call a 3rd function with some of its arguments already supplied
+  - partial function application must *reduce* the number of arguments required to invoke that 3rd function by supplying those arguments in advance
+- closures are used in partial function application to retain the arguments passed to the initial generating function (which returns another function)
+- can also use `bind` (with `null` as execution context) for partial function execution (`bind` returns a new function with some of the arguments already supplied)
 
 
 
 ## Object Creation Patterns
+- see also Object factories ("Factory Object Creation Pattern")
+- using constructor functions with `new` : "Prototype Pattern" or "Constructor Pattern"
+
 
 ### Constructor functions
+- part of "Constructor Pattern" (also called "Prototype Pattern" in LS notes)
+- constructor functions are intended to be called with the `new` operator
+  - invoking constructor functions without `new` will create properties on the global object
+
+- `new` - executes the following actions:
+  - a new object is created (with `[[Prototype]]` set to `ConstructorFct.prototype`)
+  - `this` is set to point to the new object
+  - code in the function is executed
+  - `this` is returned if the constructor doesn't explicitly return an object
+    - if you *don't* want an object of the constructor type to be returned, need to **return an object**
+
+- the *function prototype* (i.e., `.prototype` object) of the constructor function is the *object prototype* of instantiated objects (i.e., `[[Prototype]]` of the new object)
+
+- the `.constructor` property of an instance object points to the constructor function
+  - e.g., `newObj.constructor = ConstructionFct`
+  - you can use `.constructor` to determine the type ("class") of an object **if** that property hasn't been re-assigned / is properly assigned
+  - `instanceOf` will always work
+
+
 
 ### Prototype objects
+- **prototype object** : the object referenced by the (hidden) `[[Prototype]]` property of an object
+      - a deprecated version of this is `__proto__` (non-hidden)
+  - this object is part of the prototype chain that is checked when JS looks for a property (incl. methods) on an object
+  - can be interacted with using `Object.getPrototypeOf` / `Object.setPrototypeOf()` / `.isPrototypeOf()`
+
+
+- objects created via object literal notation have `Object.prototype` as their `[[Prototype]]`
+  - the `[[Prototype]]` of `Object.prototype` is `null` (i.e., `Object.getPrototypeOf(Object.prototype) === null`)
+
+- `obj1.isPrototypeOf(obj2)` will indicate if `obj1` is *anywhere in the prototype chain* of `obj2`
+
 
 ### Behaviour delegation
+- **behavior delegation** : the term given to the design pattern where an "upstream" (parent) object in the prototype chain handles behaviours (i.e., method requests) associated with the current object (enabled by prototypal inheritance in JS)
+
+- use `Object.getOwnPropertyNames` (returns array of "own" properties)
+- use `obj.hasOwnProperty('propName')` (returns `true` if `obj` has a property `propName`)
+- generally `Object.prototype.toString()` should be overridden in custom objects to create a more descriptive string output (i.e, other than `[object Object]`)
+
 
 ### OLOO and Pseudo-Classical patterns
+
 
 ### `class` syntax
 
 
+### Misc notes (from videos)
+- JS functions have `prototype` property;  this is distinct from `[[Prototype]]` (or `__proto__`)
+
+- **CRITICAL** : when you create a *function* in JS (e.g., `myFunction`)
+  - a "function object" is created with `prototype` property pointing to a ('prototype') *object*:
+    - called `myFunction.prototype`
+      - whose `[[Prototype]]` is `Object.prototype`
+      - with `constructor` pointing to the original function (e.g., `myFunction`)
+- every function you create is a bit like a "do-nothing class" (it can be a constructor if you want it to be)
+  - hence the distinction to use capitals to indicate constructor functions
+```javascript
+function Answer() {}
+Answer.prototype // is an *object*
+Answer.prototype.constructor === Answer // the constructor of Answer.prototype is the original constructor function
+Object.getPrototypeOf(Answer.prototype) === Object.prototype // a "plain" object with `Object` properties
+  // note: `Object.getPrototypeOf(Object.prototype) === null`
+  // note:  `Object.prototype` has a property 'constructor'
+```
+
+- `[[Prototype]]`:
+  - of myObject : `Object.prototype`
+  - of myFunction : `Function.prototype`
+  - of `Object.prototype` : `null`
+  - of `Function.prototype` : `Object.prototype`
+
+- can create objects with no prototype by using `Object.create(null)`
+
+#### prototypal inheritance
+- declare a **prototype object** (w/ constructor and methods)
+  - use `Object.create(PrototypeObject)`
+  - invoke the constructor on the new object
+
+- basic structure
+  - using `Object.create(ParentObj)` returns a new object with the `[[Prototype]]` set to `ParentObj`
+    - typically "prototype objects" (use for creating other objects) are capitalized
+    - if desired, need to manually define `.constructor` property
+  - when looking for methods, it will first search the current object
+  - if it doesn't find it in current object, it will search in `[[Prototype]]` object
+  - if it doesn't find it, it will continue searching up the prototype chain
+- to call a method from somewhere up the chain (but reference values in the current object)
+  - use `parentObj.methodName.call(this)` : executes a different method, using the current (object) context
+
+- instantiating objects:
+  1. create the object: extend the prototype (which has the methods) ("class")
+  2. initialize the data ("instance")
+
+- to create sub-classes
+  - need to run `Object.create` on a child object (not the parent object)
+  - if you want to instantiate directly from a child 'constructor' object, need to manually set prototype of child to be parent
+  - or could create the subclass prototype object using `Object.create(ParentObj)` and then modify *that* object directly (can't re-assign it to a new object using object literal notation or prototype will be reset)
+
+
+- properties that are private are often denoted with `_` prefix (e.g., `this._value` indicates a private property that is set through a "constructor" or "initialization" function, rather than directly)
+
+#### classical inheritance (JS)
+- declare a **constructor function** (that defines data)
+- declare methods on `ConstructorFunction.prototype.myFunction = //... code here`
+      - `.prototype` object is automatically created by JS, `constructor` property is automatically pointing to constructor function (i.e., same as for all functions)
+  - use `new` keyword to instantiate
+      - automatically invokes constructor on new object (since `constructor` property on `.prototype` object points to the constructor function)
+      - automatically uses `.prototype` object as prototype (e.g., `ConstructorFunction.prototype`)
+
+- define a constructor function (a prototype is automatically created)
+  - if necessary, create a *new object* where `[[Prototype]]` points to the parent prototype object
+  - need to manually set the `constructor` property (of this new object) to point back to the constructor function
+- use `new` keyword with constructor function to create a new instance
+
+- to create sub-classes:
+  - create a new constructor function
+      - invoke the parent constructor function (using `.call(this, ...)` as required)
+  - set `NewConstructorFct.prototype = Object.create(OldConstructorFct.prototype)`
+      - then set `NewConstructorFct.prototype.constructor = NewConstructorFct` 
+
+#### `class` syntax
+- declare a `class` with constructor and methods (can use `extends`)
+    - no 'commas' between methods (e.g., similar to a function)
+    - no need to define methods on the `.prototype`
+  - use `new` keyword to instantiate (same as classical inheritance)
+
+- if using `extends`:
+  - don't need to manually create a linked prototype object to parent for sub-class
+  - don't need to manually set `.constructor` to the sub-class constructor function
+
+
+#### instanceOf
+- e.g., `lifeAnswer instanceOf Answer`:
+  - JS will compare if `[[Prototype]]` of `lifeAnswer` === `Answer.prototype`
+    - note:  the different 'prototypes' being compared
+    - JS will search up the prototype chain of `[[Prototype]]` which can result in a match
 
 
 ## Modules

@@ -18,7 +18,7 @@ https://launchschool.com/quizzes/fec2a80d
 
 
 ## Quiz 2
-
+https://launchschool.com/quizzes/4ee07ceb
 1.  
 2.  
 3.  
@@ -28,14 +28,12 @@ https://launchschool.com/quizzes/fec2a80d
 7.  
 8.  
 9.  
-10. 
-11. 
-12. 
+
 
 
 
 ## Quiz 3
-
+https://launchschool.com/quizzes/271634cb
 1.  
 2.  
 3.  
@@ -43,16 +41,12 @@ https://launchschool.com/quizzes/fec2a80d
 5.  
 6.  
 7.  
-8.  
-9.  
-10. 
-11. 
-12. 
+
 
 
 
 ## Quiz 4
-
+https://launchschool.com/quizzes/628cc30a
 1.  
 2.  
 3.  
@@ -61,7 +55,3 @@ https://launchschool.com/quizzes/fec2a80d
 6.  
 7.  
 8.  
-9.  
-10. 
-11. 
-12. 

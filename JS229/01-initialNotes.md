@@ -707,8 +707,8 @@ class Square extends Rectangle {
 - [X] : could do further exploration (deep equality): https://launchschool.com/exercises/1937fc28
 - [X] : review context, problem 5:  https://launchschool.com/lessons/c9200ad2/assignments/84fbe7cb
 - [X] : defining this, problem 2, 4(try all methods):  https://launchschool.com/lessons/c9200ad2/assignments/7bef6908
-- [ ] : could review GC, problem 1: https://launchschool.com/lessons/0b371359/assignments/c19c9fbf
-- [ ] : review GC, problem 1:  https://launchschool.com/lessons/0b371359/assignments/d5156138
+- [X] : could review GC, problem 1: https://launchschool.com/lessons/0b371359/assignments/c19c9fbf
+- [X] : review GC, problem 1:  https://launchschool.com/lessons/0b371359/assignments/d5156138
 - [ ] : https://launchschool.com/exercises/f7659085
 - [ ] : https://launchschool.com/exercises/19cc5636
 - [ ] : https://launchschool.com/exercises/2726c8c6
