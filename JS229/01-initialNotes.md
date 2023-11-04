@@ -714,11 +714,14 @@ class Square extends Rectangle {
 - [ ] : https://launchschool.com/exercises/2726c8c6
 - [ ] : null prototypes, problem 1:  https://launchschool.com/lessons/24a4613a/assignments/b158be5a
 - [ ] : global scope vs variables; node vs browser : problem 1:  https://launchschool.com/lessons/24a4613a/assignments/2d53f659
-- [ ] : prototype objects : problem 5:  https://launchschool.com/lessons/24a4613a/assignments/2d53f659
-- [ ] : constructors and inheritance : see my solution to Problem 7:  https://launchschool.com/lessons/24a4613a/assignments/2d53f659
+- [X] : prototype objects : problem 5:  https://launchschool.com/lessons/24a4613a/assignments/2d53f659
+- [X] : constructors and inheritance : see my solution to Problem 7:  https://launchschool.com/lessons/24a4613a/assignments/2d53f659
         - Why would the constructor for an inherited object be the SAME as the constructor for the object?
-        - likely because the constructor property is INHERITED for object literal objects anyway - either way, we're looking up the prototype chain to get that constructor
-- [ ] : constructors, problem 1, 5: https://launchschool.com/lessons/24a4613a/assignments/cbb1afa7
+        - because the constructor property is INHERITED for object literal objects - we're looking up the prototype chain to get that constructor property (which is pointing to a constructor function)
+- [X] : constructors, problem 1, 5: https://launchschool.com/lessons/24a4613a/assignments/cbb1afa7
+- [X] : Problem 3:  https://launchschool.com/lessons/24a4613a/assignments/cbb1afa7
+        - Why would using the constructor for the *prototype* change the prototype, if it's defined explicitly?
+        - A:  if the constructor if `[Function: Object]`, the associated prototype is `[Object: null prototype]`: it appears we cannot re-assign this prototype to a new object, although we can add properties to it
 - [ ] : pseudo-classical:  https://launchschool.com/exercises/c32e20ee
 - [ ] : ** private data in instances:  https://launchschool.com/exercises/6abaca87  (check user-submitted solutions!)
         - use `WeakMap`?

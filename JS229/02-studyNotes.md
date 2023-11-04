@@ -48,7 +48,7 @@
 
 - disadvantages:
   - every object has a full copy of all the methods and properties, which can be redundant
-  - there is no way to inspect an object and know whether it was created from a factory function (i.e., identify "type" or "class")
+  - there is no way to inspect an instance object and know whether it was created from a factory function (i.e., identify "type" or "class")
 
 
 
@@ -88,6 +88,13 @@ explicit context being passed in)
   - for function execution, it is the global object (`window` in browser, or `global` in Node)
     - in strict mode it will be `undefined`
   - for method execution, it is the calling object
+
+- in node:
+  - 'main' execution context is `module.exports`
+    - `this` in the main scope will be `module.exports`
+    - `module.exports` is the default 'global' scope for `this`
+  - 'global' execution context is `global`
+    - undeclared variables end up in `global` no matter where this occurs
 
 
 ### Explicit function execution context
@@ -247,7 +254,11 @@ obj6.func()(); // obj6  :  execution context of `obj4.func` is now `obj6`
 
 ## Object Creation Patterns
 - see also Object factories ("Factory Object Creation Pattern")
-- using constructor functions with `new` : "Prototype Pattern" or "Constructor Pattern"
+  - note: object factory functions also create "instances" of a fixed type, even if there's no way to determine the type
+- "Constructor Pattern" : using constructor functions with `new`
+- "Prototype Pattern"  : defining shared behaviours on prototypes (constructor's `prototype` property)
+- pseudo-classical : using constructors and prototypes
+- OLOO : using `Object.create` from "prototype objects"
 
 
 ### Constructor functions
@@ -269,12 +280,33 @@ obj6.func()(); // obj6  :  execution context of `obj4.func` is now `obj6`
   - you can use `.constructor` to determine the type ("class") of an object **if** that property hasn't been re-assigned / is properly assigned
   - `instanceOf` will always work
 
+#### Static properties and methods
+- **static properties** : properties defined and accessed directly on the constructor (function) and *not* a specific instance
+properties can be
+- **static methods** : methods defined and accessed directly on the constructor (function) and *not* a specific instance
 
+- define these directly onto the constructor
+```javascript
+function Dog(name, breed) {
+  this.name = name;
+  this.breed = breed;
+  Dog.allDogs.push(this);
+}
+Dog.species = 'Canis lupus'; // static property
+Dog.allDogs = []; // static property
+Dog.showSpecies = function() { // static method
+  console.log(Dog.species);
+};
+
+Dog.showSpecies(); // invokes static method
+```
 
 ### Prototype objects
 - **prototype object** : the object referenced by the (hidden) `[[Prototype]]` property of an object
       - a deprecated version of this is `__proto__` (non-hidden)
   - this object is part of the prototype chain that is checked when JS looks for a property (incl. methods) on an object
+    - prototype chain lookup happens at the time of execution
+        - i.e., you can define a method on the prototype after the object is instantiated, but it can still be later invoked since lookup happens on invocation (not at instantiation)
   - can be interacted with using `Object.getPrototypeOf` / `Object.setPrototypeOf()` / `.isPrototypeOf()`
 
 
@@ -282,6 +314,12 @@ obj6.func()(); // obj6  :  execution context of `obj4.func` is now `obj6`
   - the `[[Prototype]]` of `Object.prototype` is `null` (i.e., `Object.getPrototypeOf(Object.prototype) === null`)
 
 - `obj1.isPrototypeOf(obj2)` will indicate if `obj1` is *anywhere in the prototype chain* of `obj2`
+
+- using `Object.create` to set prototype at object creation is a good pattern and well supported
+- using `setPrototypeOf` *prior* to object creation (i.e., for setting object prototype) is okay
+  - using this dynamically may disrupt JS engines and cause de-optimized behaviour
+- using `class` syntax may be best - can also define private methods (no obvious way to do this without `class` syntax)
+
 
 
 ### Behaviour delegation
@@ -294,11 +332,65 @@ obj6.func()(); // obj6  :  execution context of `obj4.func` is now `obj6`
 
 ### OLOO and Pseudo-Classical patterns
 
+#### Pseudo-Classical
+- combines constructor pattern and prototype pattern
+
+- declare a constructor that initializes states (data) within each object
+- define methods on the `prototype` (to reduce duplication)
+
+- can check type using `instanceof`
+
+- if creating a longer prototype chain, it may be better to set prototype using `Object.setPrototypeOf` vs `Object.create`:
+  - from MDN: there are limited performance impacts from using `setPrototypeOf` if no instances have been created yet
+    - if using `Object.create`, this will reset the `constructor`
+        - need to re-set the constructor of the prototype to point to the constructor function
+
+
+#### OLOO
+- "Object Linking to Other Objects" (OLOO)
+
+- create "prototype" objects with the desired behaviours and a constructor function
+  - must make sure to `return this` in constructor, especially if chaining (otherwise, no object exists)
+- use `Object.create` to create new objects
+  - chain invocation of the constructor
+
+- check type using `isPrototypeOf`
+
 
 ### `class` syntax
+- similar to use of constructor functions (i.e., syntax is most similar to that of a function, *not* an object)
+  - define properties in `constructor` function using `this.propName = ... `
+  - no `,` between method declarations
+  - all code in `class` declaration executes in strict mode
+  - class declarations are *not* hoisted (the name of the class is hoisted similar to `let` and `const`, i.e., into the Temporal Dead Zone [TDZ])
+  - the `prototype` object cannot be re-assigned
+  - can't use `Object.setPrototype` to give the object a different prototype
 
+- can use "class expression" or "class declaration" (similar to functions) - there is no difference between class expression or class declaration
+- define static methods or properties by prepending keyword `static` on the declaration
+
+- create instances using the `new` keyword
+
+- use `extends` for subclasses
+  - e.g., `let Student = class extends Person { ... };`
+
+
+### My summary notes
+- *functions* have `.prototype` property (an *object*)
+    - this references an *object* : `FunctionName.prototype` which has a `.constructor` property (points to a function)
+
+   instance object                       prototype object               constructor function
+[instance : `[[Prototype]]`] > [object : `FunctionName.prototype`] < [         : `prototype`    ]
+                               [         `constructor`           ] > [function : `FunctionName` ]
+                               [         `[[Prototype]]`         ]   [           `[[Prototype]]`] > [`Function.prototype`]
+                                             V
+                                          `Object.prototype`
+
+- constructors are *functions*
+- constructors (*functions*) MAKE *objects*
 
 ### Misc notes (from videos)
+- http://www.objectplayground.com/
 - JS functions have `prototype` property;  this is distinct from `[[Prototype]]` (or `__proto__`)
 
 - **CRITICAL** : when you create a *function* in JS (e.g., `myFunction`)
@@ -382,14 +474,59 @@ Object.getPrototypeOf(Answer.prototype) === Object.prototype // a "plain" object
   - don't need to manually set `.constructor` to the sub-class constructor function
 
 
-#### instanceOf
-- e.g., `lifeAnswer instanceOf Answer`:
+#### instanceof
+- e.g., `lifeAnswer instanceof Answer`:
   - JS will compare if `[[Prototype]]` of `lifeAnswer` === `Answer.prototype`
     - note:  the different 'prototypes' being compared
     - JS will search up the prototype chain of `[[Prototype]]` which can result in a match
 
 
 ## Modules
+
+### benefits
+- splitting up code makes it easier to understand: more lines of code is more difficult to understand
+- large single-file programs tend to lose cohesion (i.e., parts of code become tangled and dependent on other parts)
+- working on a long program is difficult (may need to look at several different sections of a longer codebase concurrently - involves jumping around)
+- if you are working with a team, it becomes difficult to work concurrently (e.g., may have to manually resolve conflicts)
+- not everyone encapsulates effectively - it can be difficult to encapsulate parts of large programs
+- modules are easy to share between programs (can clearly define what is public - exported; vs not)
+
+### how to use and create CommonJS modules
+- may need to first install the module using npm
+- use `require` (e.g., `const readline = require('readline-sync');`)
+
+### how CommonJS modules pass exported items to the importing module
+- to create a module, explicitly add things to `module.exports`
+  - e.g., `module.exports = function logIt(string) { console.log(string); };`
+  - `module.exports` is an object: can use object destructuring to export / require
+
+### notes on CommonJS modules
+- CommonJS modules are loaded synchronously
+- these modules are not supported by the browser (can be transpiled using Babel to work)
+- CommonJS modules can work well for Node
+- `__dirname` : contains the absolute pathname of the directory that contains the module
+- `__filename` : contains the absolute pathname of the file that contains the module
+
+### JS Modules
+- use `import` statement
+  - e.g., `import { bar } from './bar'` : imports an non-default export
+  - e.g., `import { bar as newNameBar } from './bar`
+  - e.g., `import * as FooModule from './foo'`
+  - e.g., `import qux from './utils'` : imports an default export with name `qux`
+  - e.g., `import { otherStuff, moreStuff } from './utils'` : also imports named exports from same file
+- use `export` keyword to indicate what will be exported in the module (and thus what can be imported)
+  - can use `export` multiple times in a module
+  - called "named" exports
+- can use `export default` once per file
+- in Node, need to name JS modules with `.mjs` extension OR add `"type: "module"` to the `package.json` file
+
+
+
+
+
+## Additional references
+- talks about prototype vs class-based: https://alistapart.com/article/prototypal-object-oriented-programming-using-javascript/
+- Video about JS prototypal vs classical inheritance:  http://www.objectplayground.com/
 
 
 
