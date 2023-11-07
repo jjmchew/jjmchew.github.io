@@ -70,14 +70,14 @@
         console.log(this.a + ' ' + this.b);
       }
 
-      bar();
+      bar();  // bar is invoked with global context
     },
   };
 
   obj.foo();        // => undefined undefined
   ```
 
-- using `bind` is both explicit (and the time of binding) and implicit (since the returned function will be executed without 
+- using `bind` is both explicit (at the time of binding) and implicit (since the returned function will be executed without 
 explicit context being passed in)
   - `bind` will not alter the original function (it returns a new one)
   - note: once `bind` has been used, the execution context (of the returned function) can no longer be changed later 
@@ -95,6 +95,8 @@ explicit context being passed in)
     - `module.exports` is the default 'global' scope for `this`
   - 'global' execution context is `global`
     - undeclared variables end up in `global` no matter where this occurs
+
+- `this` will be the global object by default; may vary depending on **function** invocation, not object definition
 
 
 ### Explicit function execution context
@@ -174,8 +176,8 @@ obj6.func()(); // obj6  :  execution context of `obj4.func` is now `obj6`
 
 - (only) functions form closures (not objects)
   - e.g., function declaration, function expression, assigning functions to properties
-- **closure** : when functions *close over* or *enclose* the lexical environment at their definition point, thus retaining access to (only) the variables (and most current values) required at the time of execution
-  - closures let a function access any variable that was in scope when the function was defined
+- **closure** : when functions *close over* or *enclose* the **lexical environment** at their *definition* point, thus retaining access to (only) the variables (and most current values) required at the time of execution
+  - closures let a function access any variable that was in scope when the function was *defined*
   - closures use scope
   - only variables required will be part of the closure
   - closures are private data : it is impossible to access the value of variables in closures other than through the provided code
@@ -202,12 +204,12 @@ obj6.func()(); // obj6  :  execution context of `obj4.func` is now `obj6`
 
 
 ### Garbage collection
-- **garbage collection** (GC) : a process of "automatically" freeing up (deallocate, unclaim, or release) memory allocated to unused values
+- **garbage collection** (GC) : a process of "automatically" freeing up (de-allocate, unclaim, or release) memory allocated to unused values
 - GC only applies to non-primitive values;  **primitives are not subject to GC**
-  - whether or not GC takes place with strings are bigInts is an implementation detail that may change among different implementations of JS
+  - whether or not GC takes place with strings or bigInts is an implementation detail that may change among different implementations of JS
   - (non-primitive) values are eligible for GC when they are no longer needed (referenced) / accessible
     - variables can go "out-of-scope" and still be referenced through closures, arrays, objects, etc.
-  - modern JS implementations use *mark-and-sweep* algorithm to determine what to GC (eliminates the referency cycle problem)
+  - modern JS implementations use *mark-and-sweep* algorithm to determine what to GC (eliminates the reference cycle problem)
   - GC can occur at any time; typically at periodic intervals during a program's lifetime
   - in modern JS, the programmer has no control over GC
 
@@ -362,7 +364,7 @@ Dog.showSpecies(); // invokes static method
   - define properties in `constructor` function using `this.propName = ... `
   - no `,` between method declarations
   - all code in `class` declaration executes in strict mode
-  - class declarations are *not* hoisted (the name of the class is hoisted similar to `let` and `const`, i.e., into the Temporal Dead Zone [TDZ])
+  - class declarations are *not* hoisted like `function` (the name of the class is hoisted similar to `let` and `const`, i.e., into the Temporal Dead Zone [TDZ])
   - the `prototype` object cannot be re-assigned
   - can't use `Object.setPrototype` to give the object a different prototype
 
@@ -521,6 +523,9 @@ Object.getPrototypeOf(Answer.prototype) === Object.prototype // a "plain" object
 - in Node, need to name JS modules with `.mjs` extension OR add `"type: "module"` to the `package.json` file
 
 
+## Misc
+- undeclared properties on the global object *can* be deleted with the `delete` keyword
+- declared properties on the global object *cannot* be deleted with the `delete` keyword
 
 
 
@@ -531,7 +536,7 @@ Object.getPrototypeOf(Answer.prototype) === Object.prototype // a "plain" object
 
 
 # Study Questions
-- [ ] https://web.archive.org/web/20180209163541/https://dmitripavlutin.com/gentle-explanation-of-this-in-javascript/
+- [X] https://web.archive.org/web/20180209163541/https://dmitripavlutin.com/gentle-explanation-of-this-in-javascript/
       - 7.2 example (walkPeriod): can the execution context of `format` be changed, similar to LS example https://launchschool.com/lessons/c9200ad2/assignments/f68a9f7f where `this` changes for arrow function?
       - see 7.1 : "An arrow function is bound with the lexical context once and forever. `this` cannot be modified..."
       - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#cannot_be_used_as_methods

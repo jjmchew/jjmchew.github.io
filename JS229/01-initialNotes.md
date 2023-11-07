@@ -709,11 +709,11 @@ class Square extends Rectangle {
 - [X] : defining this, problem 2, 4(try all methods):  https://launchschool.com/lessons/c9200ad2/assignments/7bef6908
 - [X] : could review GC, problem 1: https://launchschool.com/lessons/0b371359/assignments/c19c9fbf
 - [X] : review GC, problem 1:  https://launchschool.com/lessons/0b371359/assignments/d5156138
-- [ ] : https://launchschool.com/exercises/f7659085
-- [ ] : https://launchschool.com/exercises/19cc5636
-- [ ] : https://launchschool.com/exercises/2726c8c6
-- [ ] : null prototypes, problem 1:  https://launchschool.com/lessons/24a4613a/assignments/b158be5a
-- [ ] : global scope vs variables; node vs browser : problem 1:  https://launchschool.com/lessons/24a4613a/assignments/2d53f659
+- [X] : https://launchschool.com/exercises/f7659085
+- [X] : https://launchschool.com/exercises/19cc5636
+- [X] : https://launchschool.com/exercises/2726c8c6
+- [X] : null prototypes, problem 1:  https://launchschool.com/lessons/24a4613a/assignments/b158be5a
+- [X] : global scope vs variables; node vs browser : problem 1:  https://launchschool.com/lessons/24a4613a/assignments/2d53f659
 - [X] : prototype objects : problem 5:  https://launchschool.com/lessons/24a4613a/assignments/2d53f659
 - [X] : constructors and inheritance : see my solution to Problem 7:  https://launchschool.com/lessons/24a4613a/assignments/2d53f659
         - Why would the constructor for an inherited object be the SAME as the constructor for the object?
@@ -722,10 +722,10 @@ class Square extends Rectangle {
 - [X] : Problem 3:  https://launchschool.com/lessons/24a4613a/assignments/cbb1afa7
         - Why would using the constructor for the *prototype* change the prototype, if it's defined explicitly?
         - A:  if the constructor if `[Function: Object]`, the associated prototype is `[Object: null prototype]`: it appears we cannot re-assign this prototype to a new object, although we can add properties to it
-- [ ] : pseudo-classical:  https://launchschool.com/exercises/c32e20ee
-- [ ] : ** private data in instances:  https://launchschool.com/exercises/6abaca87  (check user-submitted solutions!)
+- [X] : pseudo-classical:  https://launchschool.com/exercises/c32e20ee
+- [X] : ** private data in instances:  https://launchschool.com/exercises/6abaca87  (check user-submitted solutions!)
         - use `WeakMap`?
-- [ ] : review 'private methods for constructor functions' : need to confirm when methods are private or not private
+- [X] : review 'private methods for constructor functions' : need to confirm when methods are private or not private
         - e.g., LS solution vs my solution for https://launchschool.com/exercises/d6d3971a
         - e.g., can use class syntax with `#` to indicate private methods
 
