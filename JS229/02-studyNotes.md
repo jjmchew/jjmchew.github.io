@@ -527,7 +527,16 @@ Object.getPrototypeOf(Answer.prototype) === Object.prototype // a "plain" object
 - undeclared properties on the global object *can* be deleted with the `delete` keyword
 - declared properties on the global object *cannot* be deleted with the `delete` keyword
 
-
+## Creating utility functions (e.g., from take-home project videos)
+- this may be useful for creating functions that do not exist in older versions of JS
+```javascript
+_.isArray = Array.isArray || function(obj) { // checks if the `isArray` function exists, if not, declares it
+  return toString.call(obj) === '[object Array]'; // can use `toString` since it returns 'Array'
+};
+```
+  - can do something similar with `toString.call(obj) === '[object Boolean]'`
+    `toString.call(obj) === '[object Number]'`
+    `toString.call(obj) === '[object String]'`
 
 ## Additional references
 - talks about prototype vs class-based: https://alistapart.com/article/prototypal-object-oriented-programming-using-javascript/
