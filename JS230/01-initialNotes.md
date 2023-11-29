@@ -22,6 +22,12 @@
 - DOM visualizer:  https://bioub.github.io/dom-visualizer/
 
 
+## BOM (Browser Object Model)
+- an object that allows access to components of the browser:
+  - e.g., windows used to display web pages
+  - e.g., browser's history
+  - e.g., sensors, including location
+
 ## Nodes
 - (DOM) **node** : a single point in the node tree, such as the document itself, HTML elements, text, and comments
   - all DOM objects are nodes
@@ -36,6 +42,8 @@
 
 - `document` node : represents the entire HTML document (the top-most DOM node)
   - `window.HTMLDocument` is an alias for `document`
+  - `document.head` references the head directly
+  - `document.body` references the body directly
 - `.querySelector()` searches the entire DOM for an element that matches a selector
 
 
@@ -66,6 +74,8 @@
   - will contain everything between the next opening or closing tag
   - will depend on how HTML text is actually written (formatted)
 - `.textContent` : returns all text content within an *element* (including whitespace)
+- `.data` : returns the textual content of a text node
+    - this belongs to the `CharacterData` DOM interface which presents textual data as a `DOMString` (a String-like object)
 
 ### Traversing nodes
 - DOM nodes connect to each other via properties that point to other nodes
@@ -94,6 +104,18 @@ walk(document.body, node => {                                // log nodeName of 
 });
 ```
 
+### Notes
+- cannot load JS scripts in the HEAD if I want to manipulate the body - need to load the JS scripts after the HTML elements have been created
+
+- Using Chrome "Snippets"
+  - can create and test code directly on webpages using "snippets"
+  - go to: Dev Tools (F12) > Sources
+  - CTRL-SHIFT-P to open command window
+    - type "snippets"
+    - select "create new snippet"
+  - CTRL-Enter to execute snippet
+
+
 ## Elements
 - can access the attributes of an Element using:
   - `.getAttribute(name)` : returns value as string
@@ -117,5 +139,60 @@ walk(document.body, node => {                                // log nodeName of 
       - e.g., `h1.style.color = null` (to remove a property)
       - e.g., `h1.style.lineHeight = '3em'` (note camelCase for properties with dashes)
 
+- `document.getElementById(id)` : access a (single) element by assigned id (should only have 1 element for each id)
+- `document.getELementsByTagName(tagName)` : returns an `HTMLCollection` or `NodeList` (depending on browser) (array-like collection of nodes)
+- `document.getElementsByClassName(className)` : returns an `HTMLCollection` or `NodeList` (depending on browser)
+    - must use `Array.prototype.slice.call(collection)` to convert to a true array
+    - Note: if an `HTMLCollection` is returned, it will be a *live collection* - it will update automatically based on changes in the DOM
+        - this may lead to unexpected behaviour, especially if iterated over or the return value is used
 
-##
+- `document.querySelector(selectors)` : returns the *first* element matching the provided selectors, or `null`
+- `document.querySelectorAll(selectors)` : returns a `NodeList` (not live) of matching elements
+
+- properties on `document` or `document.body` (IE)
+  - `.children` : returns a live collection of all child elements
+  - `.firstElementChild` : returns first element child (`children[0]`) or `null`
+  - `.lastElementChild` : returns last element child (`children[children.length - 1]`) or `null`
+  - `.childElementCount` : returns `children.length`
+  
+  - `.nextElementSibling` : returns `.parentNode.children[n + 1]` or `null`
+  - `.previousElementSibling` : returns `.parentNode.children[n - 1]` or `null`
+
+  - use `.textContent` to access or assign the text node
+    - Note: if used for assignment, this will remove all child nodes from the element and replace them with a text node
+    - accessing and replacing text is easiest if it is contained within a `<span>` or `<div>` element
+
+- check https://caniuse.com for compatibility with browsers, especially IE versions before v9
+
+## Manipulating Nodes
+
+### Creating Nodes
+- `document.createElement(tagName)` : creates an element (e.g., `let newElement = document.createElement('p')`)
+- `document.createTextNode(str)` : creates a text node (e.g., `let textNode = document.createTextNode('this is a new text node')`)
+- `node.cloneNode(boolean)` : copies an existing `node`
+    - if boolean is `true`, creates a "deepClone" (i.e., copies the node and *all* descendants), if `false` copies only the `node`
+    - copies are independent
+
+### Adding Nodes
+- `parent.appendChild(node)` : append `node` to end of `parent.childNodes`
+    - cannot use `document.appendChild`, use `document.body.appendChild`
+- `parent.insertBefore(node, targetNode)` : insert `node` into `parent.childNodes` before `targetNode`
+- `parent.replaceChild(node, targetNode)` : remove `targetNode` from `parent.childNodes` and insert `node` in its place
+
+### Inserting Nodes
+- Note: the same node cannot appear twice within the DOM; inserting it somewhere new will move it
+
+- `element.insertAdjacentElement(position, newElement)` : inserts `newElement` at `position` relative to `element`
+- `element.insertAdjacentText(position, text)` : inserts text node that contains `text` at `position` relative to `element`
+  - `position` must be:
+      - 'beforebegin' : before the element
+      - 'afterbegin' : before the first child of the element
+      - 'beforeend' : after the last child of the element
+      - 'afterend' : after the element
+
+### Removing Nodes
+- unless a reference to the node is saved in a variable, the node will no longer be accessible after removing
+
+- `node.remove()` : remove `node` from DOM
+- `parent.removeChild(node)` : remove `node` from `parent.childNodes`
+
