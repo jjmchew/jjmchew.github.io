@@ -74,6 +74,7 @@
   - will contain everything between the next opening or closing tag
   - will depend on how HTML text is actually written (formatted)
 - `.textContent` : returns all text content within an *element* (including whitespace)
+- `.innerText` : returns text associated with an element
 - `.data` : returns the textual content of a text node
     - this belongs to the `CharacterData` DOM interface which presents textual data as a `DOMString` (a String-like object)
 
@@ -121,6 +122,8 @@ walk(document.body, node => {                                // log nodeName of 
   - `.getAttribute(name)` : returns value as string
   - `.setAttribute(name, newValue)` : sets the value, returns `undefined`
       - use `Element.value` instead of `Element.setAttribute` if possible (`setAttribute` works inconsistently for some attributes, potentially where default values exist)
+      - note:  *attributes* are different than *properties*
+              - e.g., `onclick` is a property (accessed via standard `.onclick` notation), but `class` is an attribute
   - `.hasAttribute(name)` : check if element has attribute, returns `true` or `false`
   - `.id` : can be used to directly modify  these attributes of the Element
   - `.name` : (as above)
@@ -140,7 +143,7 @@ walk(document.body, node => {                                // log nodeName of 
       - e.g., `h1.style.lineHeight = '3em'` (note camelCase for properties with dashes)
 
 - `document.getElementById(id)` : access a (single) element by assigned id (should only have 1 element for each id)
-- `document.getELementsByTagName(tagName)` : returns an `HTMLCollection` or `NodeList` (depending on browser) (array-like collection of nodes)
+- `document.getElementsByTagName(tagName)` : returns an `HTMLCollection` or `NodeList` (depending on browser) (array-like collection of nodes)
 - `document.getElementsByClassName(className)` : returns an `HTMLCollection` or `NodeList` (depending on browser)
     - must use `Array.prototype.slice.call(collection)` to convert to a true array
     - Note: if an `HTMLCollection` is returned, it will be a *live collection* - it will update automatically based on changes in the DOM
@@ -163,6 +166,13 @@ walk(document.body, node => {                                // log nodeName of 
     - accessing and replacing text is easiest if it is contained within a `<span>` or `<div>` element
 
 - check https://caniuse.com for compatibility with browsers, especially IE versions before v9
+
+- properties of elements:
+  - e.g., `onclick` (although it shouldn't be used)
+
+- properties of `e` (event):
+  - `.preventDefault` : a function
+  - `.currentTarget` : returns the element (i.e., that was clicked and thus triggered `e`, the event)
 
 ## Manipulating Nodes
 
