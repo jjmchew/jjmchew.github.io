@@ -187,6 +187,7 @@ walk(document.body, node => {                                // log nodeName of 
 - `parent.appendChild(node)` : append `node` to end of `parent.childNodes`
     - cannot use `document.appendChild`, use `document.body.appendChild`
 - `parent.insertBefore(node, targetNode)` : insert `node` into `parent.childNodes` before `targetNode`
+    - if `targetNode` is `null` then `node` will be inserted at the end
 - `parent.replaceChild(node, targetNode)` : remove `targetNode` from `parent.childNodes` and insert `node` in its place
 
 ### Inserting Nodes
