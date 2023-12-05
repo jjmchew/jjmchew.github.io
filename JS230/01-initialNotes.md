@@ -151,8 +151,11 @@ walk(document.body, node => {                                // log nodeName of 
 
 - `document.querySelector(selectors)` : returns the *first* element matching the provided selectors, or `null`
 - `document.querySelectorAll(selectors)` : returns a `NodeList` (not live) of matching elements
+  - if an `id` tag begins with a number (e.g., `id="1"`) then the string to be used for `querySelector` is: `document.querySelector("id=['1']")`
+  - see also:  https://stackoverflow.com/questions/20306204/using-queryselector-with-ids-that-are-numbers
 
-- properties on `document` or `document.body` (IE)
+
+- properties on `document` (or `document.body`, if using IE)
   - `.children` : returns a live collection of all child elements
   - `.firstElementChild` : returns first element child (`children[0]`) or `null`
   - `.lastElementChild` : returns last element child (`children[children.length - 1]`) or `null`
