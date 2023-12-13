@@ -77,6 +77,8 @@
 - `.innerText` : returns text associated with an element
 - `.data` : returns the textual content of a text node
     - this belongs to the `CharacterData` DOM interface which presents textual data as a `DOMString` (a String-like object)
+- `.contains(anotherNode)` : returns `true` if `node` contains `anotherNode` (assuming invoked as `node.contains(anotherNode)`)
+
 
 ### Traversing nodes
 - DOM nodes connect to each other via properties that point to other nodes
@@ -189,6 +191,7 @@ walk(document.body, node => {                                // log nodeName of 
 ### Adding Nodes
 - `parent.appendChild(node)` : append `node` to end of `parent.childNodes`
     - cannot use `document.appendChild`, use `document.body.appendChild`
+    - can also use `parent.append(node)`
 - `parent.insertBefore(node, targetNode)` : insert `node` into `parent.childNodes` before `targetNode`
     - if `targetNode` is `null` then `node` will be inserted at the end
 - `parent.replaceChild(node, targetNode)` : remove `targetNode` from `parent.childNodes` and insert `node` in its place
