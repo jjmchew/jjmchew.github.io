@@ -74,6 +74,7 @@
   - will contain everything between the next opening or closing tag
   - will depend on how HTML text is actually written (formatted)
 - `.textContent` : returns all text content within an *element* (including whitespace)
+  - i.e., the concatenation of the `textContent` property value of every child node
 - `.innerText` : returns text associated with an element
 - `.data` : returns the textual content of a text node
     - this belongs to the `CharacterData` DOM interface which presents textual data as a `DOMString` (a String-like object)
@@ -212,4 +213,132 @@ walk(document.body, node => {                                // log nodeName of 
 
 - `node.remove()` : remove `node` from DOM
 - `parent.removeChild(node)` : remove `node` from `parent.childNodes`
+
+
+## Asynchronous execution
+- can use `setTimeout` to create a delay on when code is executed - asynchronous execution (i.e., code won't be executed sequentially in the order in which it is encountered, it may be executed later)
+  - note: code execution takes place in event cycles;  if `setTimeout` with no delay is used, code will not get executed until the next cycle
+  - `setTimeout` may also behave unpredictably for small time differences (i.e., execution sequence may vary)
+  ```javascript
+  setTimeout(()=>{ 
+    f();            // executed after g since it is executed at the next event cycle
+  });
+
+  g();              // still executed first
+  ```
+- can use `setInterval` to run something repeatedly with a set delay
+  - `let counterId = setInterval(callback, delay);` : note `setInterval` returns an identifier; `callback` is called with `delay` number of ms delay
+  - use `clearInterval(counterId);` to cancel the interval
+
+
+## Events
+- once displayed, most UIs *wait* for something to happen, then execute the appropriate code as a response
+  - an **event** is an object that represents some occurrence
+  - an **event listener** (also known as **event handler**) is code that browser runs in response to an event
+
+- common events:
+  - keyboard:  `keydown`, `keyup`
+  - mouse:  `mouseenter`, `mouseleave`, `mousedown`, `mouseup`, `click`, `mousemove`
+  - touch: `touchstart`, `touchend`, `touchmove`
+  - window: `scroll`, `resize`
+  - form: `submit`
+
+- https://developer.mozilla.org/en-US/docs/Web/Events
+
+- steps to setup event handler:
+  - identify the event to handle (e.g., `click`)
+  - identify the element that will receive the event (e.g., a button)
+  - define a function to call when this event occurs (it will be passed an `event` object, which may or may not be used)
+  - register the function as an event listener (i.e., `addEventListener`)
+
+
+### Page lifecycle events
+- a webpage will display in multiple steps - simplified mental model:
+  - HTML code received from server
+  - HTML parsed and JS evaluated
+  - DOM constructed from parsed HTML
+  - `DOMContentLoaded` event fires on `document` (sometimes called "DOM Ready Event", typically uesd for JS code that must access the DOM)
+  - Page dislayed on screen
+  - Embedded assets are loaded
+  - `load` event fires on `window`  (this may fire much later after everything on page loads incl. images, videos, etc.)
+- using `DOMContentLoaded`:
+  ```javascript
+  document.addEventListener('DOMContentLoaded', event => { 
+    // do something with the DOM
+  });
+  ```
+
+### Event object
+- an object passed to the event handler that contains extra contextual information about the event:
+  - `type` : the name of the event
+  - `currentTarget` : the current object the event object is on (always refers to the element that has the event listener on it)
+  - `target` : the object on which the event occurred (e.g., actual element clicked by user (may be nested under `currentTarget`))
+
+- mouse events:
+  - `button` : indicates which button was pressed (read-only property)
+  - `clientX` : horizontal position of mouse when event occurred (relative to visible area of page - pixels from upper L corner of browser viewport)
+  - `clientY` : vertical position of mouse when event occurred (relative to visible area of page - pixels from upper L corner of browser viewport)
+
+- keyboard events:
+  - `key` : string value of pressed key (**older browsers do not support this property**)
+  - `shiftKey` : boolean, true if user pressed shift
+  - `altKey` : boolean, true if user pressed alt (option) key
+  - `ctrlKey` : boolean, true if user pressed control
+  - `metaKey` : boolean, true if user pressed meta (command) key
+
+### Event capturing and bubbling
+- nested elements can also "trigger" events
+  - e.g., adding eventListener to outermost event allows `event.target.id` to identify inner nested elements that are clicked
+    - `event.currentTarget.id` will always be the element with the eventListener (i.e., the outer element)
+    - Note:  `this` (if using a function expression) will be the same as `event.currentTarget`
+- event "capturing":
+  - the event always starts at `window`, goes to `document`, continues to get passed inwards to `target`
+  - as it passes various elements, they are "checked" to see if there is a relevant eventListener
+  - once it reaches `target`, "capturing" is finished
+- event "bubbling":
+  - from `target` it moves back outwards, and any relevant eventListeners are "fired" (i.e., callback functions are executed)
+- `addEventListener(event, callbackFn, useCapture)`
+  - can set `useCapture` to `true` to fire events on capture, rather than bubble (which is default)
+  - e.g., `addEventListener('click', event => console.log(event.key), true)`
+
+- `event.stopPropogation()` : prevents further bubbling or capturing (depends on whether events are triggered on capture or bubbling)
+- `event.preventDefault()` : prevents a "default action" (e.g., loading a page when clicking on an "a" href)
+  - the default behaviour is attached to the `event` object, *not* the event listener (e.g., all nested events can have their default behaviour prevented)
+  - all capturing / bubbling happens *before* default actions are performed;  thus a single "preventDefault" in the propogation path (any listener that the event "travels" to) prevents all default behaviour
+    - Note:  if `stopPropogation` is used, then the event may not "reach" a `preventDefault` defined for a nested event
+      - this will depend on whether an eventListener is defined on capture / bubble, nesting, etc.
+
+### Event delegation
+- the use of *event propogation* to attach a single event handler to a parent element, rather than attach individual eventListeners to individual objects
+  - e.g., all 8 buttons are part of a `div` or the listener is attached to `document`
+  - pros:
+    - with multiple cells (e.g., a spreadsheet), don't need to add new listeners to each cell (would be very slow)
+    - if attaching to `document`, don't need to wait for DOM to load - can be faster
+  - cons:
+    - code will be more complicated if there are different types of events, different types of tags involved (need to address each case to 
+    differentiate the common eventListener)
+    - e.g., `if (event.target.tagName === 'BUTTON') ...` and `if (event.target.tagName === 'A') ...`
+
+- generally, start with individual eventListeners / handlers for new/small projects
+  - as code gets more complex, use delegation to reduce the number of event handlers required
+
+
+### Event loop
+- the **event loop** - monitors the call stack and task queue (or callback queue, or message queue):  If the stack is empty, it takes the next item (e.g., a callback function) from the *task queue* and pushes it onto the stack (and runs it)
+- code such as `setTimeout` or XHR requests are part of a *web API* (part of the browser, not the JS runtime) which allows things to run concurrently
+  - web API code will run asynchronously and then go to the *task queue* where the *event loop* will move it to the stack once ready
+- the *JS runtime* is the JS engine (e.g., Chrome V8) which is "pure JS";  the browser also includes access to *web APIs* and includes functionality of the *task queue* and *event loop* which collectively support *asynchronous* activities
+- node.js is similar, but instead of web APIs, it has "C++ APIS"
+- in ES6 (for promises) (https://blog.bitsrc.io/understanding-asynchronous-javascript-the-event-loop-74cd408419ff):
+  - a "job queue" (also called micro-task queue) is added, which has higher priority than the message queue
+  - promises use the job queue, which will be resolved before tasks waiting in the task/message queue
+
+
+## Misc
+- to change button appearance (disabled vs not disabled):
+  - CSS selector:  `input[type="submit"] { css here... }` and `input[type="submit"]:disabled { css here }`
+  - then set disabled attribute:  e.g., `document.querySelector('input[type="submit"]').disabled = true;`
+
+
+
 
