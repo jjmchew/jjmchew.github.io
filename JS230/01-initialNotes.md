@@ -229,6 +229,23 @@ walk(document.body, node => {                                // log nodeName of 
 - can use `setInterval` to run something repeatedly with a set delay
   - `let counterId = setInterval(callback, delay);` : note `setInterval` returns an identifier; `callback` is called with `delay` number of ms delay
   - use `clearInterval(counterId);` to cancel the interval
+    - Note:  you can cancel the interval from *within* the interval callback:
+    ```javascript
+    function startCounter(callback) {
+      let count = 1;
+
+      let int = setInterval(() => {
+        let finish = callback(count);
+        if (finish) clearInterval(int); // the interval is cleared from within the callback
+        count += 1;
+      }, 1000);
+    }
+
+    startCounter( count => {
+      console.log(count);
+      return count === 5;
+    });
+    ```
 
 
 ## Events
@@ -334,6 +351,34 @@ walk(document.body, node => {                                // log nodeName of 
   - promises use the job queue, which will be resolved before tasks waiting in the task/message queue
 
 
+## Asynchronous coding patterns
+
+### Callbacks
+- **callback** : a function (e.g., `cb`) that is passed into another function (e.g., `foo`) that will be invoked for `foo` to complete an action.  The callback function `cb` will be executed later to prevent blocking the main execution of the program
+- **callback hell** : when callbacks are nested together into a 'pyramid' (also called the "pyramid of doom")
+  - to eliminate callback hell, use modular functions (break them into smaller pieces), use *named functions* to track and reference them
+  - aim to flatten code so that callbacks aren't all nested
+
+### Promises
+- **promise** : an object that represents an asynchronous operation that will complete at some point and produce a value
+- rather than pass a callback into a function, you receive a promise object that you can attach callbacks to, without nesting them
+- promises have 3 states:
+  - pending: operation not yet complete
+  - fulfilled: operation completed (resulting value produced)
+  - rejected: operation failed (promise has an error)
+- promises are created using `new Promise( (resolve, reject) => { ... })`
+- can chain
+  - `.then(successCallback, failCallback)` for successful resolving (returns a promise which can be chained)
+  - `.catch(callback)` for unsuccessful resolving (reject)
+    - `callback` *must* be a function, otherwise, the catch method will not work
+    - it is good practice to always include a `catch` method at the end of promise chains to handle errors
+    - can return values from `catch` methods to ensure subsequent chained promises have a "fallback value"
+  - `.finally(callback)` for actions that are alway executed after resolving (e.g., clean-up actions)
+- promises can be chained with multiple `.then` methods
+
+
+
+
 ## Misc
 - to change button appearance (disabled vs not disabled):
   - CSS selector:  `input[type="submit"] { css here... }` and `input[type="submit"]:disabled { css here }`
@@ -342,3 +387,6 @@ walk(document.body, node => {                                // log nodeName of 
 
 
 
+## To review
+- [ ] Q3 https://launchschool.com/lessons/519eda67/assignments/5e87f026
+      - my initial implementation to retry did not work with the catch block properly
