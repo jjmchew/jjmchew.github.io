@@ -250,12 +250,12 @@ walk(document.body, node => {                                // log nodeName of 
 
 ## Events
 - once displayed, most UIs *wait* for something to happen, then execute the appropriate code as a response
-  - an **event** is an object that represents some occurrence
-  - an **event listener** (also known as **event handler**) is code that browser runs in response to an event
+  - an **event** is an object that represents some occurrence and contains a variety of information about what happened and where it happened
+  - an **event listener** (also known as **event handler**) is code (a callback) that browser runs in response to an event
 
 - common events:
   - keyboard:  `keydown`, `keyup`
-  - mouse:  `mouseenter`, `mouseleave`, `mousedown`, `mouseup`, `click`, `mousemove`
+  - mouse:  `mouseenter`, `mouseleave`, `mousedown`, `mouseup`, `click`, `mousemove`, `clientX`, `clientY`
   - touch: `touchstart`, `touchend`, `touchmove`
   - window: `scroll`, `resize`
   - form: `submit`
@@ -308,12 +308,14 @@ walk(document.body, node => {                                // log nodeName of 
   - e.g., adding eventListener to outermost event allows `event.target.id` to identify inner nested elements that are clicked
     - `event.currentTarget.id` will always be the element with the eventListener (i.e., the outer element)
     - Note:  `this` (if using a function expression) will be the same as `event.currentTarget`
-- event "capturing":
-  - the event always starts at `window`, goes to `document`, continues to get passed inwards to `target`
-  - as it passes various elements, they are "checked" to see if there is a relevant eventListener
-  - once it reaches `target`, "capturing" is finished
-- event "bubbling":
-  - from `target` it moves back outwards, and any relevant eventListeners are "fired" (i.e., callback functions are executed)
+- events propogate in 3 phases:
+  - event "capturing":
+    - the event always starts at `window`, goes to `document`, continues to get passed inwards to `target`
+    - as it passes various elements, they are "checked" to see if there is a relevant eventListener
+  - event "target"
+    - once it reaches `target`, "capturing" is finished
+  - event "bubbling":
+    - from `target` it moves back outwards, and any relevant eventListeners are "fired" (i.e., callback functions are executed)
 - `addEventListener(event, callbackFn, useCapture)`
   - can set `useCapture` to `true` to fire events on capture, rather than bubble (which is default)
   - e.g., `addEventListener('click', event => console.log(event.key), true)`
@@ -326,7 +328,7 @@ walk(document.body, node => {                                // log nodeName of 
       - this will depend on whether an eventListener is defined on capture / bubble, nesting, etc.
 
 ### Event delegation
-- the use of *event propogation* to attach a single event handler to a parent element, rather than attach individual eventListeners to individual objects
+- **event propogation** : attaching a single event handler to a parent element, rather than attach individual eventListeners to individual objects
   - e.g., all 8 buttons are part of a `div` or the listener is attached to `document`
   - pros:
     - with multiple cells (e.g., a spreadsheet), don't need to add new listeners to each cell (would be very slow)
@@ -359,6 +361,7 @@ walk(document.body, node => {                                // log nodeName of 
   - to eliminate callback hell, use modular functions (break them into smaller pieces), use *named functions* to track and reference them
   - aim to flatten code so that callbacks aren't all nested
 
+
 ### Promises
 - **promise** : an object that represents an asynchronous operation that will complete at some point and produce a value
 - rather than pass a callback into a function, you receive a promise object that you can attach callbacks to, without nesting them
@@ -376,7 +379,41 @@ walk(document.body, node => {                                // log nodeName of 
   - `.finally(callback)` for actions that are alway executed after resolving (e.g., clean-up actions)
 - promises can be chained with multiple `.then` methods
 
+- `Promise.all(promiseArray)` : takes an array of promises, returns an array of all resolved values (in same order), or rejects if any promise rejects
+- `Promise.race(promiseArray)` : will resolve as soon as a single promise in `promiseArray` resolves, or rejects if all promises provided reject
+- `Promise.allSettled(promiseArray)` : takes an array of promises, returns an array of objects that describe the result (i.e., `{ status: 'fullfilled', value: returnValue }` OR `{status: 'rejected', reason: returnValue}`)
+- `Promise.any(promiseArray)` : takes an array of promises, will return a single promise: if any of given promises resolves, it returns that value; if no promises resolve, it returns `AggregateError` (groups individual errors)
 
+
+### Async/await
+- adding the `async` keyword to functions indicates that the function should return a promise
+  ```javascript
+  async function fetchData() {
+    return "data from server"
+  }
+
+  fetchData().then(data => console.log(data)); // outputs "data from server"
+  ```
+- `await` is used *inside* an `async` function to indicate the code should wait for a promise to fulfill
+  - best practice is to only use `await` inside `async` functions
+  - an exception is more advanced use of `await` with modules (not covered in LS)
+- `try`/`catch` blocks can be used inside `async` functions to catch errors in the `await` statement or function called
+```javascript
+async function fetchMultipleData() {
+  try {
+    let [firstData, secondData] = await Promise.all([
+      fetchFirst(),
+      fetchSecond(),
+    ]); // Promise.all used to trigger multiple promises in parallel;  await used to pause until all promises resolve
+    console.log(firstData, secondData);
+  } catch (error) {
+    console.error("An error occurred while fetching data:", error);
+  }
+}
+```
+- note:
+  - may be best to avoid using `await` in a loop since each iteration will require the async operation to complete;  `Promise.all()` may be better
+  - don't use unnecessarily - can reduce performance (from waiting)
 
 
 ## Misc
@@ -384,9 +421,50 @@ walk(document.body, node => {                                // log nodeName of 
   - CSS selector:  `input[type="submit"] { css here... }` and `input[type="submit"]:disabled { css here }`
   - then set disabled attribute:  e.g., `document.querySelector('input[type="submit"]').disabled = true;`
 
-
+- from Douglas Crockford lecture on theory of DOM (https://youtu.be/Y2Y0U-2qJMs)
+  - early browser worked in this way:
+    - (url) > **Fetch** > (cache) > **Parse** > (tree) > **Flow** > (display list) > **Paint** > (pixels)
+      - "Flow" is a layout engine that calculates the size and position of each element
+      - when an image is required, early browsers would go back to "fetch" (to get the image and determine how big it was supposed to be), while displaying nothing - this would happen for each image, which felt slow since nothing would be displayed until all images were retrieved
+      - newer browsers put a placeholder in for the image and kept painting while the image fetch was taking place, and would then re-paint as images were received. This is actually slower, but is better for the user since some content appears quickly
+  - modern scripted browser worked in a cycle:
+    - **Flow** > **Paint** > **Event** > **Script** > (back to Flow)
+      - "Event" could be any kind of event, fetch, UI event (e.g., click), timer, etc.
+      - "Script" is a function call (i.e., event handler)
+  - Douglas Crockford "walk the DOM" (recursive):
+  ```javascript
+  function walkTheDOM(node, func) {
+    func(node);
+    node = node.firstChild;
+    while (node) {
+      walkTheDOM(node, func);
+      node = node.nextSibling;
+    }
+  }
+  ```
+  - in IE can use `node.currentStyle.stylename` to get the CSS styles assigned to a particular element (current state)
+  - in non-IE (W3C), must use `document.defaultView().getComputedStyle(node, "").getPropertyValue(stylename)`
+  - best practice (for IE6) to remove eventHandlers from a node before you delete the node (event handlers prevent garbage collection)
+  - `alert`, `confirm`, `prompt` (all browser functions) - blocks the browser-thread (prevents asynchronous traffic from occurring in the background while the alert is on-screen);  recommended to avoid these
 
 
 ## To review
 - [ ] Q3 https://launchschool.com/lessons/519eda67/assignments/5e87f026
-      - my initial implementation to retry did not work with the catch block properly
+      - my initial implementations to retry did not work with the catch block properly
+      - really need to understand the nuance of synchronous vs asynch and how to make the loop (retries) happen as-if "synchronous" - i.e., need to try the attempt, exit if successful or try again if failed a fixed number of times
+
+- [ ] Q5 https://launchschool.com/lessons/519eda67/assignments/5e87f026
+      - try to replicate the coding pattern used in LS solution for `loadData` - different than my initial, but makes sense as a "package" (single function and simple function invocation)
+
+- [ ] Q4 https://launchschool.com/lessons/519eda67/assignments/2f41b3a1
+      - suspect LS solution may only works since the fallback is delayed by 1 sec; otherwise how can we be sure that the primary is being used?
+      - re-work solution to guarantee the primary is tried first, then the fallback secondarily
+
+- [ ] Q5 https://launchschool.com/lessons/519eda67/assignments/2f41b3a1
+      - could confirm feedback sent:  i.e., need explicit return in solution for `fetch(url)` and don't want to "pre-process" errors as indicated in the LS solution
+
+- [ ] Q4 https://launchschool.com/lessons/519eda67/assignments/90b41710
+      - confirm that my solution actually fetches each resource sequentially and not in parallel
+
+- [ ] https://launchschool.com/exercises/7555977a
+      - had a lot of trouble with this - especially making each function in an array of functions execute each second
