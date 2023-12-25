@@ -468,3 +468,8 @@ async function fetchMultipleData() {
 
 - [ ] https://launchschool.com/exercises/7555977a
       - had a lot of trouble with this - especially making each function in an array of functions execute each second
+
+- [ ] get very comfortable walking the DOM and doing something to each node
+- [ ] https://launchschool.com/exercises/ba09ed14
+      - had some trouble with identifying valid elements to delegate to
+      - would help to practice this again
