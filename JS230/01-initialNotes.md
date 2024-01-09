@@ -416,6 +416,149 @@ async function fetchMultipleData() {
   - don't use unnecessarily - can reduce performance (from waiting)
 
 
+## APIs (LS API book)
+- **API** :  (Application Programming Interface) A way for systems to interact with each other;  AIS provide functionality for use by another program
+  - programming languages have a built-in API that is used to write programs
+  - mobile devices provide APIs to access location or other sensor data (e.g., GPS, device orientation)
+  - OS have APIs to open files, access memory, draw text, etc.
+  - **web APIs** (or HTTP APIs) : APIs built with web technologies that work in a similar way to the web
+
+- **API provider** : the system that provides the API for other parties to use (generally the "server" for the LS book)
+- **API consumer** : the system that *uses* the API to accomplish some work (generally the "client" for the LS book)
+
+- common uses for APIs:
+  - sharing / transferring data between systems
+  - allow users of a service to make use of it in new and useful ways
+  - integrate a developer's own code with a service's functionality
+    - enable application developers to build their app on top of other specialized systems; allows focus on actual objectes and not worry about complexities of every part of the system
+  - as an "escape hatch" - allowing users to customize software's behaviour or integrate it with other systems, if required
+
+- benefits of using web APIs:
+  - API operations can be shorter and more succinct to document (e.g., CRUD is mapped to a specific path / resource)
+  - APIs have less limitations (don't rely on web forms which may be limited by HTML spec and specific web browsers)
+  - development of APIs moves more quickly than HTML since compatibility is ensured by using HTTP (methods)
+  - mapping of CRUD actions to HTTP methods is fairly standard
+
+
+- **public API** : an API intended for consumption *outside* of the organization that provides it
+  - to use a public API, you generally must accept the terms and conditions of use (e.g., resposibility for data privacy, rate / request limits, etc.)
+- **private API** : an API intended only for internal use by an organization
+
+- **parsing** : the process of converting data from one format into another
+  - typically there is a format designed for data transfer or data persistence which must be converted into another format that is easier to work with for a computer
+  - e.g., parse HTML text into page DOM
+  - common HTTP content type for transfer of data in HTTP response body is `application/json`
+
+- **data serialization format** : describes a common way for programs to convert data into a form that is more easily or efficiently stored or transferred
+  - e.g., SVG (vector graphics)
+  - e.g., XML (**extensible markup language**) : similar, but stricter than HTML
+  - e.g., JSON (**JavaScript Object Notation**) : perhaps the most popular data serialization format used by web APIs today
+    - similar to JS syntax for objects, but note that all keys (in key-value pairs) are surrounded by double-quotes `"`
+
+
+- **MIME type** : (also called **content types** or **media types**) identifies how the content within an HTTP response is encoded (i.e., the format of a response's body)
+  - https://en.wikipedia.org/wiki/Media_type#List_of_common_media_types
+  - e.g., `Content-Type: text/html; charset=UTF-8` or `text/html; charset=ISO-8859-1`
+  - e.g., `text/css`, `text/plain`, `application/javascript`, `text/css`
+  - e.g., `image/jpeg`
+  - e.g., SG
+
+### REST / CRUD
+- **REST** (representational state transfer) : how a representation of a resource is being transferred (not the resource itself) via a stateless protocol
+  - think of a resource as a webpage
+  - "REST" is a way to define everything you might want to do with 2 values: **what** (what resource) and **how** (how do we change/interact with that resource)
+  - REST is a set of conventions, not rules;  practically, there may be deviations as a result of development/support costs, business needs, etc.
+
+
+- **CRUD** : describes the 4 actions that can be taken on resources:
+  - Create (use `POST` HTTP method)
+  - Read (use `GET` HTTP method)
+  - Update (use `PUT` HTTP method - APIs only)
+  - Delete (use `DELETE` HTTP method - APIs only)
+
+  - with APIs, params can get passed as JSON (i.e., not as URL params)
+
+- general CRUD pattern:
+
+| objective   | how       |             | what     |               |
+|-------------|-----------|-------------|----------|---------------|
+|             | operation | HTTP method | resource | Path          |
+| get info    | Read      | GET         | info     | /info/:id     |
+| add info    | Create    | POST        | info <br> collection     | /info         |
+| change info | Update    | PUT         | info     | /info/:id     |
+| remove info | Delete    | DELETE      | info     | /info/:id     |
+
+  - generally, need to translate "verb-oriented" functionality into "noun (or resource)-oriented actions for CRUD
+    - e.g., "deposit $100 into this account" changes to "create a new transaction with an amount of $100 for this account" for CRUD
+    - with CRUD, the simplicity of each step may require multiple steps for things that appear easy (eg., submitting an order for 2 items may require multiple CRUD requests)
+
+- **singular resource** (or **singleton resource**) : where the resource and path identify only a single resource (i.e., are "singular")
+
+- **resource** : a representation of some grouping of data; data can be anything that a user may need to interact with (e.g., posts, tags, comments, accounts, transactions, etc.)
+  - when fetching a resource from an API, the JSON body in the response will be a representation of a single resource on the server, which may include multiple properties (e.g., a single product may have an *id*, *name*, *price*, etc.)
+  - every resource must have a unique URL to identify and access it
+    - URL is comprised of *hostname* and *path*
+  - a resource can be a *collection* which identifies multiple resources as a group (e.g., returned body may be represented as an array)
+  - best way to tell if a path/resource will return a collection vs a single element is to look at documentation, or infer from the returned body (e.g., single element returned vs multiple elements returned)
+  - when requeesting resources, may be helpful to define an *accept header* (e.g., `Accept:application/json`) to tell provider what media types can be used to respond to the request
+  - note:  HTTP requests may have side effects (e.g., a GET request may increment a counter);  be aware of potential side effects
+
+- APIs may enforce **rate limiting** : allotting each API consumer a fixed number of requests within a specified amount of time
+
+- common API response codes:
+  - *2xx* : typically a successful request / response
+    - e.g., *200 OK* for a GET request or succesful PUT request
+    - e.g., *201 Created* for a successful POST request
+    - e.g., *204 No Content* when a DELETE request is successful (no content to return)
+  - *4xx* : typically "client" errors (user has done something incompatible)
+    - e.g., *422 Unprocessable Entity* (required params not provided)
+    - e.g., *404 Not Found* (path/resource doesn't exist, also often used for unauthorized access to prevent knowledge that a privileged resource exists at that path)
+    - e.g., *401 Unauthorized* or *403 Forbidden* (sometimes used when incorrect authorization credentials are provided)
+    - typically requests submitted beyond rate limits return a *403 Forbidden* status code
+    - e.g., *415 Unsupported Media Type* (body submitted in the wrong format, e.g., HTML form vs JSON)
+  - *5xx* : typically "server" errors (not the result of anything a user does)
+    - could result from a bug or oversight in server implementation
+    - hardware / infrastructure problems
+    - sometimes retrying a request later may solve server errors
+    - resubmitting requests which return errors may worsen problems with a remote system
+
+- common API request headers:
+  - see https://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Response_fields
+  - `Access-Control_Allow-Origin: *` : allows all sites access using CORS
+  - e.g., `Allow: GET, HEAD` : typically used with a *405 Method Not Allowed* status to indicate what methods ARE allowed
+  - `Content-Length: ` : indicates length of response body in bytes
+  - `Content-Type: application/json; charset=utf-8` : indicates media type / format of body
+  - e.g., `ETag: "6df23dc03f9b54cc"` : used to specify a specific version of a resource
+    - changes to the resource result in a new ETag
+    - this value can be sent with future requests to the same URL using the `If-None-Match` header
+      - if there are no changes, server typically returns *304 Not Modified*
+      - if there are changes, the response should include the entire resource along with new ETag
+    - helps to avoid fetching / processing unmodified data
+  - e.g., `Last-Modified: Thu, 05 Jul 2012 15:31:30 GMT` : indicates last time resource was modified
+    - typically this value can be sent with future requests to the same URL using the `If-Modified-Since` header
+  - e.g., `WWW-Authenticate: Basic` : indicates basic HTTP authentication is required
+  - `X-` prefix (e.g., `X-RateLimit-Limit: 60`) : typically indicates non-standard headers
+    - e.g., GitHub uses these to indicate status of rate limiting with each request
+
+
+### Tools
+- HTTPie : linux command line tool
+  - to check version / installation: `http --version`
+  - `http --print HBhb` : show submitted headers, request, etc. and response headers, body, etc.
+  - `http Authorization:"token AUTH_TOKEN` : was required to submit a request header "Authorization" with value "token AUTH_TOKEN" to authenticate on heroku app
+  - `http [url] name="Purple Pen 2.0"` : submits json body key-value pairs in request
+  - `http --form` : submits POST request with header/content-type as HTML form data (e.g., `name=purple+Pen+2.0&sku=purp101`)
+
+
+- Postman (now a windows app)
+- deployed the LS test server at https://github.com/gotealeaf/web_store to heroku
+  - my deployed URL is:  https://jctealeaf-f7d075977a46.herokuapp.com/
+  - turns out there is a working LS version still online at: https://ls-230-web-store-demo.herokuapp.com
+
+
+
+
+
 ## Misc
 - to change button appearance (disabled vs not disabled):
   - CSS selector:  `input[type="submit"] { css here... }` and `input[type="submit"]:disabled { css here }`
