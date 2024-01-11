@@ -540,6 +540,104 @@ async function fetchMultipleData() {
   - `X-` prefix (e.g., `X-RateLimit-Limit: 60`) : typically indicates non-standard headers
     - e.g., GitHub uses these to indicate status of rate limiting with each request
 
+## AJAX
+- **AJAX**:  Asynchronous Javascript And Xml
+  - provides the ability to fetch data (typically HTML or XML) and update parts of a web page (rather than re-rendering the entire webpage)
+  - an "AJAX request" (or "via AJAX") refers to an HTTP request from a web browser that *does not perform a full page load*
+  - benefits of AJAX over HTML forms:
+    - allows the use of all HTTP methods (HTML forms only allow `GET` and `POST`)
+    - allows detailed control of headers and data-format (e.g., HTML, JSON, XML)
+  - AJAX requests are initiated from JavaScript code, typically an event listener
+    - JS code will handle the response, the developer *can* (but doesn't need to) update the page (typically specific sections of the page), as desired
+
+- **single page application** : a web application in which the DOM is created entirely from JavaScript running in the client browser, often run entirely within a single HTML page
+  - instead of fetching HTML from a server, the application will fetch data from the server (often encoded in JSON)
+
+### XMLHttpRequest
+```javascript
+let request = new XMLHttpRequest();
+request.open('GET', '/path');  // by default will use the existing domain
+request.send(data); // occurs asynchronously (by default), never use this synchronously
+                    // data is optional
+            // request.open('GET', '/path', false) indicates a synchronous request
+            // this functionality may be deprecated
+request.setRequestHeader(header, value);  // set HTTP `header` to `value`
+request.abort();  // cancel an active request
+request.getResponseHeader('Content-Type');
+
+// properties of XMLHttpRequest object
+request.responseText; // raw text of response body
+request.response;     // parsed response (not always meaningful)
+request.status;       // number code
+request.statusText;
+request.timeout;      // max time a request can take to complete (in ms), default is `0`
+request.readyState;   // no default value
+
+// since request.send is asynchronous, can use event listener on 'load'
+request.addEventListener('load', event = {
+  var request = event.target;  // the XMLHttpRequest object
+  console.log(request.responseText);
+});
+```
+- events
+  - `readystatechange` : occurs after request is instantiated and after request is sent
+    - 'OPENED', 'HEADERS_RECEIVED', 'LOADING', 'DONE'
+
+  - `loadstart` : request sent to server
+  - `progress` : typically occurs while loading a response
+
+  - 1 of the following events may occur
+    - `load` : a complete response loaded
+    - `abort` : request was interrupted before it could complete
+    - `error` : an error occurred
+    - `timeout` : a response wasn't received before timeout period ended
+
+  - `loadend` : response loading done and all other events have fired - last event to fire
+
+- it's always best to check the request response to ensure the desired response was received (i.e., the browser will consider any request that receives a complete response as "successful", even if that response is non-200 or an error)
+
+
+### Data serialization formats
+
+- Query string (without encodeURIComponent)
+  - e.g., `title=Do Androids Dream of Electric Sheep?&year=1968`
+- URL encoding (with encodeURIComponent)
+  - e.g., `title=Do%20Androids%20Dream%20of%20Electric%20Sheep%3F&year=1968`
+  - to use with `POST` request:
+    - include header `Content-Type: aplication/x-www-form-urlencoded; charset=utf-8`
+    - put encoded string in request body
+
+- Multipart forms
+  - used for forms with file uploads or that use `FormData` objects to collect data
+  - name-value pairs are put in separate sections of request body separated by a **boundary delimiter**
+  - typically do not define `charset` for multipart forms (best to define `charset` for other types)
+  - example (complete request):
+      POST /path HTTP/1.1
+      Host: example.test
+      Content-Length: 267
+      Content-Type: multipart/form-data; boundary=----WebKitFormBoundarywDbHM6i57QWyAWro
+      Accept: */*
+
+      ------WebKitFormBoundarywDbHM6i57QWyAWro
+      Content-Disposition: form-data; name="title"
+
+      Do Androids Dream of Electric Sheep?
+      ------WebKitFormBoundarywDbHM6i57QWyAWro
+      Content-Disposition: form-data; name="year"
+
+      1968
+      ------WebKitFormBoundarywDbHM6i57QWyAWro--
+  - note final boundary is trailed by `--` which indicates end of multipart content
+
+- JSON (JavaScript Object Notation)
+  - can exchange arrays, objects, strings, numbers, boolean values
+  - does not (natively) support complex data types like dates and times, would need to define a format using strings, numbers, objects that both client and server understand
+  - e.g., `Content-Type: application/json; charset=utf-8` and `{"title":"Do Androids Dream of Electric Sheep?","year":"1968"}`
+
+
+
+
+
 
 ### Tools
 - HTTPie : linux command line tool
