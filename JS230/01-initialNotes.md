@@ -553,12 +553,20 @@ async function fetchMultipleData() {
 - **single page application** : a web application in which the DOM is created entirely from JavaScript running in the client browser, often run entirely within a single HTML page
   - instead of fetching HTML from a server, the application will fetch data from the server (often encoded in JSON)
 
-### XMLHttpRequest
+- **SSR** (server-side rendering) : a complete web page is built by the server and sent to the client (web browser) for display
+
+- **CSR** (client-side rendering) : a server sends only the bare-bones HTML document and some JavaScript to the client. The client will run the JS code to request the data it needs to fill out the rest of the page dynamically
+
+
+### XMLHttpRequest object
 ```javascript
 let request = new XMLHttpRequest();
 request.open('GET', '/path');  // by default will use the existing domain
+request.open('POST', '/path');
 request.send(data); // occurs asynchronously (by default), never use this synchronously
-                    // data is optional
+                    // data is optional (e.g., if using `POST` method)
+                    // if sending data, must set headers
+  request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); // as example
             // request.open('GET', '/path', false) indicates a synchronous request
             // this functionality may be deprecated
 request.setRequestHeader(header, value);  // set HTTP `header` to `value`
@@ -573,12 +581,16 @@ request.statusText;
 request.timeout;      // max time a request can take to complete (in ms), default is `0`
 request.readyState;   // no default value
 
+request.responseType = 'json';  // could also be 'text', 'arraybuffer', 'blob', 'document'
+                                // see comments below in Data Serialization > Receiving JSON data
+
 // since request.send is asynchronous, can use event listener on 'load'
 request.addEventListener('load', event = {
   var request = event.target;  // the XMLHttpRequest object
   console.log(request.responseText);
 });
 ```
+
 - events
   - `readystatechange` : occurs after request is instantiated and after request is sent
     - 'OPENED', 'HEADERS_RECEIVED', 'LOADING', 'DONE'
@@ -634,6 +646,187 @@ request.addEventListener('load', event = {
   - does not (natively) support complex data types like dates and times, would need to define a format using strings, numbers, objects that both client and server understand
   - e.g., `Content-Type: application/json; charset=utf-8` and `{"title":"Do Androids Dream of Electric Sheep?","year":"1968"}`
 
+### Working with different formats
+
+#### Submit (url-encoded) data for post request
+```javascript
+let request = new XMLHttpRequest();
+request.open('POST', 'https://lsjs230-book-catalog.herokuapp.com/books');
+
+request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+let data = 'title=Effective%20JavaScript&author=David%20Herman';
+
+request.addEventListener('load', () => {
+  if (request.status === 201) {
+    console.log(`This book was added to the catalog: ${request.responseText}`);
+  }
+});
+
+request.send(data);
+```
+- corresponding request looks like this:
+    POST /books HTTP/1.1
+    Host: lsjs230-book-catalog.herokuapp.com
+    Content-Length: 50
+    Content-type: application/x-www-form-urlencoded
+    Accept: */*
+
+    title=Effective%20JavaScript&author=David%20Herman
+
+#### Submit (url-encoded) data from a form
+```html
+<form id="form" method="POST" action="books">
+  <p><label>Title: <input type="text" name="title"></label></p>
+  <p><label>Author: <input type="text" name="author"></label></p>
+  <p><button type="submit">Submit</button></p>
+</form>
+```
+
+```javascript
+let form = document.getElementById('form');
+
+// Bind to the form's submit event to handle the submit button
+// being clicked, enter being pressed within an input, etc.
+form.addEventListener('submit', event => {
+  // prevent the browser from submitting the form
+  event.preventDefault();
+
+  // access the inputs using form.elements and serialize into a string
+  let keysAndValues = [];
+
+  for (let index = 0; index < form.elements.length; index += 1) {
+    let element = form.elements[index];
+    let key;
+    let value;
+
+    if (element.type !== 'submit') {
+      key = encodeURIComponent(element.name);
+      value = encodeURIComponent(element.value);
+      keysAndValues.push(`${key}=${value}`);
+    }
+  }
+
+  let data = keysAndValues.join('&');
+
+  // submit the data
+  let request = new XMLHttpRequest();
+  request.open(form.method, `https://ls-230-web-store-demo.herokuapp.com/${form.getAttribute('action')}`);
+  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+  request.addEventListener('load', () => {
+    if (request.status === 201) {
+      console.log(`This book was added to the catalog: ${request.responseText}`);
+    }
+  });
+
+  request.send(data);
+});
+```
+- request sent is identical to previous example, but data string was created from user-entered form data
+
+#### Submit form data using FormData
+- use same form as above
+```javascript
+let form = document.getElementById('form');
+
+form.addEventListener('submit', event => {
+  // prevent the browser from submitting the form
+  event.preventDefault();
+
+  // NOTE:  FormData only uses input fields with a `name` attribute
+  let data = new FormData(form);
+
+  let request = new XMLHttpRequest();
+  request.open(form.method, `https://ls-230-web-store-demo.herokuapp.com/${form.getAttribute('action')}`);
+
+  request.addEventListener('load', () => {
+    if (request.status === 201) {
+      console.log(`This book was added to the catalog: ${request.responseText}`);
+    }
+  });
+
+  request.send(data);
+});
+```
+- request will be in a multipart serialization format
+    POST /books HTTP/1.1
+    Host: lsjs230-book-catalog.herokuapp.com
+    Content-Length: 234
+    Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryf0PCniJK0bw0lb4e
+    Accept: */*
+
+    ------WebKitFormBoundaryf0PCniJK0bw0lb4e
+    Content-Disposition: form-data; name="title"
+
+    Effective JavaScript
+    ------WebKitFormBoundaryf0PCniJK0bw0lb4e
+    Content-Disposition: form-data; name="author"
+
+    David Herman
+    ------WebKitFormBoundaryf0PCniJK0bw0lb4e--
+
+
+#### Receiving JSON data
+simple example:
+```javascript
+let request = new XMLHttpRequest();
+request.open('GET', 'https://api.github.com/repos/rails/rails');
+
+request.addEventListener('load', event => {
+  let data = JSON.parse(request.response); // depending on response, this may raise an error
+  // do something with data
+});
+
+request.send();
+```
+- if `request.responseType` is not defined, developer will need to manually define what to do with various data types
+  - trying to parse non-JSON data with `JSON.parse` will raise an error, would need to manage with a `try...catch` block
+  - **Updated solution** : could add `request.responseType = 'json';`:
+
+  ```javascript
+  let request = new XMLHttpRequest();
+  request.open('GET', 'https://api.github.com/repos/rails/rails');
+  request.responseType = 'json';
+
+  request.addEventListener('load', event => {
+    // request.response will be the result of parsing the JSON response body
+    // or null if the body couldn't be parsed or another error
+    // occurred.
+
+    let data = request.response;
+  });
+
+  request.send();
+  ```
+
+#### Submit form data in JSON
+```javascript
+let request = new XMLHttpRequest();
+request.open('POST', 'https://lsjs230-book-catalog.herokuapp.com/books');
+request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+
+let data = { title: 'Eloquent JavaScript', author: 'Marijn Haverbeke' };
+let json = JSON.stringify(data);
+
+request.send(json);
+```
+- serialized JSON will look like: `{"title":"Eloquent JavaScript","author":"Marijn Haverbeke"}`
+- get in the habit of setting request headers for `Content-Type` to `application/json; charset=utf-8`
+
+
+
+## CORS
+- **Origin** : comprised of *scheme*, *hostname*, *port*
+- **Cross-origin request** : occurs when a page tries to access a resource from a different origin
+- **CORS** (Cross-Origin Resource Sharing) : a mechanism to allow cross-origin access to resources
+
+- by default, an `XHR` object cannot send a cross-origin request
+  - CORS is a W3C specification that defines how a browser and server must communicate when accessing cross-origin resources;  this will determine whether the request should succeed or fail
+  - every `XHR` request must contain an `Origin` header with the origin of the requesting page
+    - typically, this is added automatically by the browser
+    - the receiving server will check `Origin` - if allowed, it will send back a response with the header `Access-Control-Allow-Origin` with value `*` (available to everyone) or the same origin
+
+- Note:  may need to check "Disable cache" in developer tools, otherwise, CORS headers can be cached and thus result in unexpected behaviour
 
 
 
@@ -688,6 +881,10 @@ request.addEventListener('load', event = {
   - best practice (for IE6) to remove eventHandlers from a node before you delete the node (event handlers prevent garbage collection)
   - `alert`, `confirm`, `prompt` (all browser functions) - blocks the browser-thread (prevents asynchronous traffic from occurring in the background while the alert is on-screen);  recommended to avoid these
 
+- **fetch** vs **XMLHttpRequest**
+  - https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+  - `XMLHttpRequest` is callback-based API (asynchronous)
+  - `fetch` is promise-based (asynchronous)
 
 ## To review
 - [ ] Q3 https://launchschool.com/lessons/519eda67/assignments/5e87f026
