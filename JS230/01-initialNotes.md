@@ -881,10 +881,19 @@ request.send(json);
   - best practice (for IE6) to remove eventHandlers from a node before you delete the node (event handlers prevent garbage collection)
   - `alert`, `confirm`, `prompt` (all browser functions) - blocks the browser-thread (prevents asynchronous traffic from occurring in the background while the alert is on-screen);  recommended to avoid these
 
+- there is a `defer` attribute of the `script` element:
+  - https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script
+  - indicates to the browser that the script is meant to be executed after the document is parsed, but before firing `DOMContentLoaded`
+  - cannot be used with inline scripts (i.e., need the `src` attribute)
+
 - **fetch** vs **XMLHttpRequest**
   - https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
   - `XMLHttpRequest` is callback-based API (asynchronous)
   - `fetch` is promise-based (asynchronous)
+  - `fetch` will return a `Response` object, which has a number of useful built-in methods (e.g., `response.ok?` which is true for any 2xx status code)
+
+- HTML forms have a `submit` event
+
 
 ## To review
 - [ ] Q3 https://launchschool.com/lessons/519eda67/assignments/5e87f026
@@ -911,3 +920,7 @@ request.send(json);
 - [ ] https://launchschool.com/exercises/ba09ed14
       - had some trouble with identifying valid elements to delegate to
       - would help to practice this again
+
+- [ ] https://launchschool.com/exercises/c2055175
+      - there are "built-in" ways of accomplishing this that may be more straightforward than my solution
+      - my solution felt a bit "spaghetti"
