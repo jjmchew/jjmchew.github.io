@@ -128,6 +128,7 @@ walk(document.body, node => {                                // log nodeName of 
       - note:  *attributes* are different than *properties*
               - e.g., `onclick` is a property (accessed via standard `.onclick` notation), but `class` is an attribute
   - `.hasAttribute(name)` : check if element has attribute, returns `true` or `false`
+  - `.toggleAttribute('hidden')` : can be used to toggle `'hidden'` on/off
   - `.id` : can be used to directly modify  these attributes of the Element
   - `.name` : (as above)
   - `.title` : (as above)
@@ -341,6 +342,9 @@ walk(document.body, node => {                                // log nodeName of 
 - generally, start with individual eventListeners / handlers for new/small projects
   - as code gets more complex, use delegation to reduce the number of event handlers required
 
+- e.g., `form.dispatchEvent(new Event('submit', { cancelable: true }));` :
+  - this dispatches the 'submit' event another element `form`, which is 'cancelable'
+
 
 ### Event loop
 - the **event loop** - monitors the call stack and task queue (or callback queue, or message queue):  If the stack is empty, it takes the next item (e.g., a callback function) from the *task queue* and pushes it onto the stack (and runs it)
@@ -411,10 +415,14 @@ async function fetchMultipleData() {
   }
 }
 ```
-- note:
+- notes:
   - may be best to avoid using `await` in a loop since each iteration will require the async operation to complete;  `Promise.all()` may be better
   - don't use unnecessarily - can reduce performance (from waiting)
-
+  - be careful with `myPromise.then(func1()).catch(func2())`:
+    - if there is an error with `func1()`, then the `.catch` block and `func2` will also be executed
+    - if there is a chance that errors may arise with `func1`, then it is safer to use `.then(func1, func2)` - `func1` will execute if `myPromise` is successful or `func2` will execute if `myPromise` is unsuccessful
+  - When working with promises / async/await:
+    - **don't confuse a promise (async code) for synchronous code (i.e., a non-promise):  must always deal with `.then`, etc. with async code
 
 ## APIs (LS API book)
 - **API** :  (Application Programming Interface) A way for systems to interact with each other;  AIS provide functionality for use by another program
@@ -813,6 +821,10 @@ request.send(json);
 - serialized JSON will look like: `{"title":"Eloquent JavaScript","author":"Marijn Haverbeke"}`
 - get in the habit of setting request headers for `Content-Type` to `application/json; charset=utf-8`
 
+#### Working with form data
+- use `querySelector` to get the form node (e.g.,`let form = document.querySelector('form')`)
+- can then use `id` or `name` to access form data (e.g., `form['idValue']` or `form['nameValue']`)
+  - the `idValue` or `nameValue` must be unambiguous (or else it will return nothing)
 
 
 ## CORS
@@ -924,3 +936,14 @@ request.send(json);
 - [ ] https://launchschool.com/exercises/c2055175
       - there are "built-in" ways of accomplishing this that may be more straightforward than my solution
       - my solution felt a bit "spaghetti"
+
+- [ ] https://launchschool.com/exercises/2a95a258
+      - my solution was okay - but perhaps a bit spaghetti
+      - try making the solution easier to understand and more straightforward
+      - could also try with async/await syntax (like user submitted solutions)
+
+- [ ] https://launchschool.com/exercises/1aefc02b
+      - do this problem, but with a "toggle" (can use 'hidden' attribute, `toggleAttribute`)
+
+- [ ] could try practice problems with various OO methods (e.g., pseudo-classical, prototypal, class, etc.)
+      - also try with `fetch` vs `XMLHttpRequest` : will need to get familiar with different syntax
