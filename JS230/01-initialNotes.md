@@ -576,20 +576,22 @@ request.send(data); // occurs asynchronously (by default), never use this synchr
                     // if sending data, must set headers
   request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); // as example
             // request.open('GET', '/path', false) indicates a synchronous request
-            // this functionality may be deprecated
+            // - setting sychronous requests may be deprecated
+            // Note: must set request method using `request.open` before setting request headers
 request.setRequestHeader(header, value);  // set HTTP `header` to `value`
 request.abort();  // cancel an active request
 request.getResponseHeader('Content-Type');
 
 // properties of XMLHttpRequest object
 request.responseText; // raw text of response body
-request.response;     // parsed response (not always meaningful)
+request.response;     // parsed (interpreted) response based on value in `.responseText` (not always meaningful)
 request.status;       // number code
 request.statusText;
 request.timeout;      // max time a request can take to complete (in ms), default is `0`
 request.readyState;   // no default value
 
 request.responseType = 'json';  // could also be 'text', 'arraybuffer', 'blob', 'document'
+                                // - assigning this affects the interpreted value in `request.response`
                                 // see comments below in Data Serialization > Receiving JSON data
 
 // since request.send is asynchronous, can use event listener on 'load'
@@ -830,6 +832,7 @@ request.send(json);
 ## CORS
 - **Origin** : comprised of *scheme*, *hostname*, *port*
 - **Cross-origin request** : occurs when a page tries to access a resource from a different origin
+  - the *same origin policy* prevents `XMLHttpRequest` from making cross-domain requests
 - **CORS** (Cross-Origin Resource Sharing) : a mechanism to allow cross-origin access to resources
 
 - by default, an `XHR` object cannot send a cross-origin request
@@ -857,6 +860,70 @@ request.send(json);
 - deployed the LS test server at https://github.com/gotealeaf/web_store to heroku
   - my deployed URL is:  https://jctealeaf-f7d075977a46.herokuapp.com/
   - turns out there is a working LS version still online at: https://ls-230-web-store-demo.herokuapp.com
+
+
+
+## Using JS libraries
+- place script tags for the library BEFORE script tags where the library is used
+- when using a CDN to load libraries (i.e., via script tag), be sure to include `integrity` and `crossorigin` attributes
+  - this is for *subresource integrity*:  https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity
+  e.g.,:
+  ```html
+  <!doctype html>
+  <html lang="en">
+    <head>
+        <title>My Awesome Project</title>
+        <script
+          src="https://code.jquery.com/jquery-3.6.0.min.js"
+          integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+          crossorigin="anonymous"
+        ></script>
+    </head>
+    <body>
+
+    <!-- rest of html -->
+  ```
+
+### jquery
+- check if an object is a jquery object using `obj.jquery` : will return a string with jquery version or `undefined`
+  - convention is to name all jquery objects with `$` prefix
+  - **Careful** : keep track of whether your object / collection is a jquery object or a DOM object
+    - jquery objects represent DOM objects, but are NOT DOM objects and DOM methods cannot be called on them
+    - similarly, jquery methods CANNOT be called on DOM objects
+
+- `$(document).ready(callback)` : DOM loaded and ready, referenced image on img tags are not ready
+  - shortcut:  `$(callback)`
+- `$(window).load(callback)` : DOM loaded and ready, referenced image on img tags loaded and ready
+
+- `$('p')` : get all 'p' elements in a jquery object (e.g., `$ps = $('p')`)
+- e.g., `$obj.css('font-size', '18px')` : **sets** css `font-size` for all elements in `$obj` (a jquery object)
+- e.g., `$obj.css('font-size')` : **gets** the value of the `font-size` property for elements in `$obj`
+  - can also pass in an object:
+  ```javascript
+  $obj.css({
+    'font-size': '18px', // note use of quotes b/c of the '-' in `font-size`;  can also use 'fontSize'
+    color: '#b00b00',
+  });
+  ```
+- `.width()` / `.height()` : can be setter and getter for 'width' and 'height' property with *numeric* values
+
+- traversing nodes:
+  - e.g., `$obj.parent('.highlight')` : finds the parent(s) of `$obj` with class `'highlight'` 
+    - argument for `parent` is optional
+    - `parent` doesn't start matching with the current element (`.closest` does - may return the same elements as contained in the calling object)
+  - `.closest('selector')` : will get the closest elements matching 'selector'
+  - `.parents('selector')` : will get all parent elements matching 'selector'
+  - `.find('selector')` : will get all child elements matching 'selector'
+  - `.children('selector')` : will get immediate children matching 'selector' ('selector' is optional)
+  - `.nextAll()`
+  - `.prevAll()`
+  - `.next()`
+  - `.prev()`
+  - `.siblings()`
+- `.show()` / `.hide()`
+- `.eq(#)` : returns the jquery object at index position `#` within a collection
+- `[ # ]` : use of array notation on a jquery collection returns a *DOM* object at index `#` (not a jquery object)
+
 
 
 
@@ -947,3 +1014,9 @@ request.send(json);
 
 - [ ] could try practice problems with various OO methods (e.g., pseudo-classical, prototypal, class, etc.)
       - also try with `fetch` vs `XMLHttpRequest` : will need to get familiar with different syntax
+
+- [ ] https://launchschool.com/exercises/05c8e206
+      - further exploration: my UI was very simple and did NOT refresh once changes were made
+      - could re-do this to refresh data once changes are made to a booking, etc.
+      - could also add student names to the displayed bookings (for teachers) - need to pull student list and incorporate info
+
