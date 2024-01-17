@@ -309,6 +309,9 @@ walk(document.body, node => {                                // log nodeName of 
   - e.g., adding eventListener to outermost event allows `event.target.id` to identify inner nested elements that are clicked
     - `event.currentTarget.id` will always be the element with the eventListener (i.e., the outer element)
     - Note:  `this` (if using a function expression) will be the same as `event.currentTarget`
+      - `this` has the value `event.currentTarget` (which will be the same as `event.target` if the event listener is attached to the same element)
+      - `event.target` will be the clicked element (if the listener is attached to a parrent)
+
 - events propogate in 3 phases:
   - event "capturing":
     - the event always starts at `window`, goes to `document`, continues to get passed inwards to `target`
@@ -923,9 +926,20 @@ request.send(json);
 - `.show()` / `.hide()`
 - `.eq(#)` : returns the jquery object at index position `#` within a collection
 - `[ # ]` : use of array notation on a jquery collection returns a *DOM* object at index `#` (not a jquery object)
+- `.slideToggle()` : animate opening and closing (for "accordion elements")
 
+- e.g., `$obj.on('click', callback)` : add a 'click' event listener to `$obj`
+- e.g., `$obj.off('click')` : remove the 'click' event listener on `$obj`
+- e.g., `$obj.trigger('click')` : used to trigger a 'click' event on `$obj`
 
-
+### handlebars
+- used for HTML templating : i.e., keep the HTML out of JS code
+  - other libraries with similar features include Mustache and Underscore
+- whitespace control: https://handlebarsjs.com/guide/expressions.html#whitespace-control
+  - use of `~` character in `{{ }}` removes whitespace (can be used before or after expressions)
+  - nesting of element tags vs handlebars expressions affects rendering
+- Note: data (JS) must be passed into templates as an object with a key corresponding to what is identified in the template
+  - e.g., `{{#each posts}}` implies that the data object passed in has a key `'posts'` which is an array
 
 
 
