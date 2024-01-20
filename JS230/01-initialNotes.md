@@ -260,6 +260,7 @@ walk(document.body, node => {                                // log nodeName of 
   - touch: `touchstart`, `touchend`, `touchmove`
   - window: `scroll`, `resize`
   - form: `submit`
+  - input: `focus`, `focusout` (note:  `blur` doesn't bubble, so is not good for delegated events)
 
 - https://developer.mozilla.org/en-US/docs/Web/Events
 
@@ -310,7 +311,9 @@ walk(document.body, node => {                                // log nodeName of 
     - `event.currentTarget.id` will always be the element with the eventListener (i.e., the outer element)
     - Note:  `this` (if using a function expression) will be the same as `event.currentTarget`
       - `this` has the value `event.currentTarget` (which will be the same as `event.target` if the event listener is attached to the same element)
-      - `event.target` will be the clicked element (if the listener is attached to a parrent)
+      - `event.target` will be the clicked element (if the listener is attached to a parent)
+  - `.closest(selector)` : will find the closest ancestor element which matches `selector` (incl. itself) or `null` (if no match)
+    - e.g., can use `event.target.closest('a')` to find the closest 'a' if there are nested elements within 'a'
 
 - events propogate in 3 phases:
   - event "capturing":
@@ -832,7 +835,7 @@ request.send(json);
   - the `idValue` or `nameValue` must be unambiguous (or else it will return nothing)
 
 
-## CORS
+### CORS
 - **Origin** : comprised of *scheme*, *hostname*, *port*
 - **Cross-origin request** : occurs when a page tries to access a resource from a different origin
   - the *same origin policy* prevents `XMLHttpRequest` from making cross-domain requests
@@ -932,6 +935,20 @@ request.send(json);
 - e.g., `$obj.off('click')` : remove the 'click' event listener on `$obj`
 - e.g., `$obj.trigger('click')` : used to trigger a 'click' event on `$obj`
 
+- HTML data attributes
+  - these are used to store extra-information on elements (e.g., to link a button to article, store additional metadata on an element)
+  - HTML attributes that always start with `data-` and at least 1 character after the `-`
+  - https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes
+    - data attributes can be accessed (get and set) in HTML by using `.dataset` object available on the DOM element or `.getAttribute()`
+    - data attributes can be accessed in CSS by using e.g., `attr(data-parent)` ('data-parent' is the name of the attribute)
+- in jQuery:
+  - can use `.attr('data-name')` method to access 'data-name'
+    - best for getting and setting HTML data attribute
+  - can use `.data('name')` method : accesses 'data-name'
+    - setting using `.data` does NOT modify HTML, but sets  key-value data on an internal store for data on that DOM element
+    - can be used to set and retrieve custom data *after* a page has rendered, but does NOT update HTML
+
+
 ### handlebars
 - used for HTML templating : i.e., keep the HTML out of JS code
   - other libraries with similar features include Mustache and Underscore
@@ -987,6 +1004,30 @@ request.send(json);
 
 - HTML forms have a `submit` event
 
+- **dispatch table** : an object which contains a series of key-value pairs where the key helps SELECT the appropriate value (function) to execute based upon the key
+  e.g.,
+  ```javascript
+  const Calculate = {
+    '+': (num1, num2) => num1 + num2,
+    '-': (num1, num2) => num1 - num2,
+    '*': (num1, num2) => num1 * num2,
+    '/': (num1, num2) => num1 / num2,
+  };
+
+  let calculate = Calculate['*'];  // first "select" the right function
+  let answer = calculate(1, 4);    // use the function
+  ```
+
+- to create colour palettes (UX design):  use adobe color (https://color.adobe.com/create/color-wheel)
+
+- CSS transitions - to make things appear / disappear:
+  - use `visibility: hidden` and `visibility: visible` along with `opacity: 0` and `opacity: 1`
+  - `modal` will have CSS `transition: visibility 1s, opacity 1s`;  start with `hide` (as desired)
+  - add CSS classes `show` (`visibility: visible; opacity 1`) or `hide` (`visibility: hidden; opacity: 0`) on click
+  - Note:  cannot transition visibility if the entire element is removed from the DOM; don't remove elements for transitions
+      - better to just show/hide and dynamically change element content when clicked
+
+
 
 ## To review
 - [ ] Q3 https://launchschool.com/lessons/519eda67/assignments/5e87f026
@@ -1034,3 +1075,6 @@ request.send(json);
       - could re-do this to refresh data once changes are made to a booking, etc.
       - could also add student names to the displayed bookings (for teachers) - need to pull student list and incorporate info
 
+- [ ] https://launchschool.com/lessons/bf83d729/assignments/0a5dd23b
+      - my solution worked for show/hide, but transitions did not work
+      - LS solution enables transitions, and is much cleaner
