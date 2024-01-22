@@ -171,6 +171,7 @@ walk(document.body, node => {                                // log nodeName of 
   - use `.textContent` to access or assign the text node
     - Note: if used for assignment, this will remove all child nodes from the element and replace them with a text node
     - accessing and replacing text is easiest if it is contained within a `<span>` or `<div>` element
+  - Note:  if this doesn't work, can try using `let nextNode = document.createTextNode('my text')` and then `myElement.appendChild(textNode)`
 
 - check https://caniuse.com for compatibility with browsers, especially IE versions before v9
 
@@ -323,9 +324,11 @@ walk(document.body, node => {                                // log nodeName of 
     - once it reaches `target`, "capturing" is finished
   - event "bubbling":
     - from `target` it moves back outwards, and any relevant eventListeners are "fired" (i.e., callback functions are executed)
-- `addEventListener(event, callbackFn, useCapture)`
+- `.addEventListener(event, callbackFn, useCapture)`
   - can set `useCapture` to `true` to fire events on capture, rather than bubble (which is default)
   - e.g., `addEventListener('click', event => console.log(event.key), true)`
+
+- `.removeEventListener(event, callbackFn)` : must use the same arguments as passed to `.addEventListener`; must use a named function (not an anonymous one)
 
 - `event.stopPropogation()` : prevents further bubbling or capturing (depends on whether events are triggered on capture or bubbling)
 - `event.preventDefault()` : prevents a "default action" (e.g., loading a page when clicking on an "a" href)
@@ -958,7 +961,14 @@ request.send(json);
 - Note: data (JS) must be passed into templates as an object with a key corresponding to what is identified in the template
   - e.g., `{{#each posts}}` implies that the data object passed in has a key `'posts'` which is an array
 
-
+- STEPS:
+  - HTML:  include handlebars script src in head;  create script template w/ id (`type=text/x-handlebars`)
+            - template and handlebars need to match naming within a data object to be passed in (keys must match)
+  - JS: get the element's HTML (`.innerHTML` in vanilla JS/DOM or `.html()` in jquery)
+        - create the "handlebars function" using the template HTML : `templateFct = Handlebars.compile(templateHTML)`
+        - create a desired element (optional)
+        - generate resulting HTML from template/data object and turn it into an element:  e.g., `domElement.innerHTML = templateFct(dataObj)`
+          - can modify existing elements, or create new elements and then append them to existing elements
 
 ## Misc
 - to change button appearance (disabled vs not disabled):

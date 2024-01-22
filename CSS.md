@@ -75,6 +75,12 @@
   - `fixed` : positions an element within the *window*; also removed from normal flow of document
 - `z-index` : only works on *positioned* elements
 
+### Notes
+- To arrange elements that must be stacked on top of each other:
+  - create a container with position `relative` (to contain that stacked elements)
+  - each stacked element should be position `absolute` with a defined position (e.g., `top: 0; left: 0`)
+
+
 ## misc
 - `textarea` : can add css: `resize` : vertical, horizontal, both to define what axes a resize is allowed in [^8]css video
 - liquid layouts : relative sizes remain constant (e.g., use percentage widths) [^11]
