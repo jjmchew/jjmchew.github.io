@@ -784,6 +784,24 @@ form.addEventListener('submit', event => {
     David Herman
     ------WebKitFormBoundaryf0PCniJK0bw0lb4e--
 
+##### Another option with FormData
+```javascript
+document.querySelector('form').addEventListener('submit', e => {
+  e.preventDefault();
+  let form = e.target;
+
+  let data = new FormData(form);
+
+  fetch(form.getAttribute('action'), {
+    method: form.getAttribute('method'),
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+    },
+    body: new URLSearchParams([...data]),  // creates string in format key=value&key2=value2 in encoded format, etc.
+  })
+    .then(response => response.json());
+});
+```
 
 #### Receiving JSON data
 simple example:
@@ -871,6 +889,18 @@ request.send(json);
   - turns out there is a working LS version still online at: https://ls-230-web-store-demo.herokuapp.com
 
 
+### Using Fetch
+- typically must resolve things in stages:  each stage returns a promise:
+
+```javascript
+fetch(url, {method: 'GET'})           // see options available (e.g., headers, etc.)
+  .then(response => response.json())  // can also call different methods on Response obj :  e.g., response.body() for readable stream
+  .then(json => console.log(json));   // define what to do with the resulting data here
+```
+
+
+
+
 
 ## Using JS libraries
 - place script tags for the library BEFORE script tags where the library is used
@@ -894,6 +924,7 @@ request.send(json);
   ```
 
 ### jquery
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.2/jquery.min.js"></script>
 - check if an object is a jquery object using `obj.jquery` : will return a string with jquery version or `undefined`
   - convention is to name all jquery objects with `$` prefix
   - **Careful** : keep track of whether your object / collection is a jquery object or a DOM object
@@ -953,6 +984,8 @@ request.send(json);
 
 
 ### handlebars
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.js"></script>
+- https://handlebarsjs.com/guide/
 - used for HTML templating : i.e., keep the HTML out of JS code
   - other libraries with similar features include Mustache and Underscore
 - whitespace control: https://handlebarsjs.com/guide/expressions.html#whitespace-control
@@ -969,6 +1002,26 @@ request.send(json);
         - create a desired element (optional)
         - generate resulting HTML from template/data object and turn it into an element:  e.g., `domElement.innerHTML = templateFct(dataObj)`
           - can modify existing elements, or create new elements and then append them to existing elements
+
+- partials:
+  - `Handlebars.registerPartial('myPartial', template)`
+    - where 'myPartial' is the name of the partial (e.g., invoked with `{{> myPartial }}`)
+    - where 'template' is the text string of the template (e.g., `innerHTML`)
+
+- LS code to automatically register templates:
+  ```javascript
+  const templates = {};  
+  // grabs all script tags with type 'text/x-handlebars' (i.e., full templates)
+  document.querySelectorAll("script[type='text/x-handlebars']").forEach(tmpl => {
+    // assigns (compiled) template to `templates` obj with defined 'id' (tag attribute)
+    templates[tmpl["id"]] = Handlebars.compile(tmpl["innerHTML"]);
+  });
+
+  // grabs all partial templates based on `data-type` attribute
+  document.querySelectorAll("[data-type=partial]").forEach(tmpl => {
+    Handlebars.registerPartial(tmpl["id"], tmpl["innerHTML"]);
+  });
+  ```
 
 ## Misc
 - to change button appearance (disabled vs not disabled):

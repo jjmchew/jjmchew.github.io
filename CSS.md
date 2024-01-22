@@ -79,6 +79,7 @@
 - To arrange elements that must be stacked on top of each other:
   - create a container with position `relative` (to contain that stacked elements)
   - each stacked element should be position `absolute` with a defined position (e.g., `top: 0; left: 0`)
+  - LS:  uses CSS `figure + figure` selector to hide all subsequent `figure` elements except the first
 
 
 ## misc
