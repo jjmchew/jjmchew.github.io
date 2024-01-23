@@ -803,6 +803,14 @@ document.querySelector('form').addEventListener('submit', e => {
 });
 ```
 
+- to iterate through FormData entries:
+```javascript
+let data = new FormData(form);
+for (const pair of data.entries()) {
+  console.log(pair[0], pair[1]);
+}
+```
+
 #### Receiving JSON data
 simple example:
 ```javascript
@@ -1090,6 +1098,13 @@ fetch(url, {method: 'GET'})           // see options available (e.g., headers, e
   - Note:  cannot transition visibility if the entire element is removed from the DOM; don't remove elements for transitions
       - better to just show/hide and dynamically change element content when clicked
 
+- https://developer.mozilla.org/en-US/docs/Learn/Forms/Form_validation
+  - HTML forms have a `novalidate` attribute to prevent built in validations
+    - turns off browser's automatic validation
+    - still allows JS and constraint validation API (e.g., `pattern`) with custom validation messages to run
+    - `:valid` css selector still works
+  - input validation can be done using the `pattern="regex here"` of inputs
+  - can also use `data-allowed-pattern` attribute (e.g., `data-allowed-pattern="\d"` allows only digits)
 
 
 ## To review
@@ -1141,3 +1156,7 @@ fetch(url, {method: 'GET'})           // see options available (e.g., headers, e
 - [ ] https://launchschool.com/lessons/bf83d729/assignments/0a5dd23b
       - my solution worked for show/hide, but transitions did not work
       - LS solution enables transitions, and is much cleaner
+
+- [ ] https://launchschool.com/exercises/b9409ae0
+      - my solution was good
+      - it would have been better if I had encapsulated it into a package and made it "tighter"
