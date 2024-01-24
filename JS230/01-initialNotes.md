@@ -430,14 +430,20 @@ async function fetchMultipleData() {
   }
 }
 ```
-- notes:
-  - may be best to avoid using `await` in a loop since each iteration will require the async operation to complete;  `Promise.all()` may be better
+
+### Notes
+- may be best to avoid using `await` in a loop since each iteration will require the async operation to complete;  `Promise.all()` may be better
   - don't use unnecessarily - can reduce performance (from waiting)
-  - be careful with `myPromise.then(func1()).catch(func2())`:
-    - if there is an error with `func1()`, then the `.catch` block and `func2` will also be executed
-    - if there is a chance that errors may arise with `func1`, then it is safer to use `.then(func1, func2)` - `func1` will execute if `myPromise` is successful or `func2` will execute if `myPromise` is unsuccessful
-  - When working with promises / async/await:
-    - **don't confuse a promise (async code) for synchronous code (i.e., a non-promise):  must always deal with `.then`, etc. with async code
+- be careful with `myPromise.then(func1()).catch(func2())`:
+  - if there is an error with `func1()`, then the `.catch` block and `func2` will also be executed
+  - if there is a chance that errors may arise with `func1`, then it is safer to use `.then(func1, func2)` - `func1` will execute if `myPromise` is successful or `func2` will execute if `myPromise` is unsuccessful
+- When working with promises / async/await:
+  - **don't confuse a promise (async code) for synchronous code (i.e., a non-promise):  must always deal with `.then`, etc. with async code
+- `try / catch / finally` blocks are inherently synchronous - the `try` block can't inherently catch errors in asynchronous functions
+  - to catch asynchronous errors, must use the `.catch` method
+- `.then / .catch / .finally` : these *methods* are synchronous - must be used with promises
+  - can also use `async/await` to create an async `try` block to `await` an async operation
+
 
 ## APIs (LS API book)
 - **API** :  (Application Programming Interface) A way for systems to interact with each other;  AIS provide functionality for use by another program
