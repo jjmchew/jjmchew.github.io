@@ -305,6 +305,12 @@ walk(document.body, node => {                                // log nodeName of 
   - `altKey` : boolean, true if user pressed alt (option) key
   - `ctrlKey` : boolean, true if user pressed control
   - `metaKey` : boolean, true if user pressed meta (command) key
+  - `keydown` : good for checking if a key has been pressed (limiting input / response to valid keys)
+                - occurs before the `input` event fires so the last key pressed is not included in input value
+                - works for "modifier keys" (e.g., alt, ctrl, shift)
+  - `keyup` : better for managing input values on text entered
+              - note:  `altKey`, `ctrlKey` only work for `keyup` if another key is pressed concurrently
+
 
 ### Event capturing and bubbling
 - nested elements can also "trigger" events
@@ -1030,6 +1036,11 @@ fetch(url, {method: 'GET'})           // see options available (e.g., headers, e
     Handlebars.registerPartial(tmpl["id"], tmpl["innerHTML"]);
   });
   ```
+
+- for partials, arrays, etc :  be aware of "context" and when I pass in another object (e.g., `this`)
+  - my solution for /probs/04forms/05quiz shows this : passing `this` into `{{> radioTemplate}}` worked better
+    -  previously I had the {{#each options}} within the main template instead of the partial - this prevented me from passing anything into each question
+
 
 ## Misc
 - to change button appearance (disabled vs not disabled):
