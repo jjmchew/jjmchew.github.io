@@ -1125,9 +1125,10 @@ fetch(url, {method: 'GET'})           // see options available (e.g., headers, e
 
 
 ## To review
-- [ ] Q3 https://launchschool.com/lessons/519eda67/assignments/5e87f026
+- [X] Q3 https://launchschool.com/lessons/519eda67/assignments/5e87f026
       - my initial implementations to retry did not work with the catch block properly
       - really need to understand the nuance of synchronous vs asynch and how to make the loop (retries) happen as-if "synchronous" - i.e., need to try the attempt, exit if successful or try again if failed a fixed number of times
+      - **Notes**:  my new solution worked;  both new solution and LS solution involve a "recursive" solution - need to keep trying the given function and need to that with 'nested' catch invocations while keeping count of the number of attempts
 
 - [ ] Q5 https://launchschool.com/lessons/519eda67/assignments/5e87f026
       - try to replicate the coding pattern used in LS solution for `loadData` - different than my initial, but makes sense as a "package" (single function and simple function invocation)
