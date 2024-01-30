@@ -918,7 +918,13 @@ fetch(url, {method: 'GET'})           // see options available (e.g., headers, e
   .then(json => console.log(json));   // define what to do with the resulting data here
 ```
 
-
+### HTML data attributes
+- these are used to store extra-information on elements (e.g., to link a button to article, store additional metadata on an element)
+- HTML attributes that always start with `data-` and at least 1 character after the `-`
+- https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes
+  - data attributes can be accessed (get and set) in HTML by using `.dataset` object available on the DOM element or `.getAttribute()`
+  - data attributes can be accessed in CSS by using e.g., `attr(data-parent)` ('data-parent' is the name of the attribute)
+- datasets:  https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset
 
 
 
@@ -989,18 +995,14 @@ fetch(url, {method: 'GET'})           // see options available (e.g., headers, e
 - e.g., `$obj.off('click')` : remove the 'click' event listener on `$obj`
 - e.g., `$obj.trigger('click')` : used to trigger a 'click' event on `$obj`
 
-- HTML data attributes
-  - these are used to store extra-information on elements (e.g., to link a button to article, store additional metadata on an element)
-  - HTML attributes that always start with `data-` and at least 1 character after the `-`
-  - https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes
-    - data attributes can be accessed (get and set) in HTML by using `.dataset` object available on the DOM element or `.getAttribute()`
-    - data attributes can be accessed in CSS by using e.g., `attr(data-parent)` ('data-parent' is the name of the attribute)
 - in jQuery:
-  - can use `.attr('data-name')` method to access 'data-name'
-    - best for getting and setting HTML data attribute
-  - can use `.data('name')` method : accesses 'data-name'
-    - setting using `.data` does NOT modify HTML, but sets  key-value data on an internal store for data on that DOM element
-    - can be used to set and retrieve custom data *after* a page has rendered, but does NOT update HTML
+- can use `.attr('data-name')` method to access 'data-name'
+  - best for getting and setting HTML data attribute
+- can use `.data('name')` method : accesses 'data-name'
+  - setting using `.data` does NOT modify HTML, but sets  key-value data on an internal store for data on that DOM element
+  - can be used to set and retrieve custom data *after* a page has rendered, but does NOT update HTML
+
+
 
 
 ### handlebars
@@ -1046,6 +1048,10 @@ fetch(url, {method: 'GET'})           // see options available (e.g., headers, e
 - for partials, arrays, etc :  be aware of "context" and when I pass in another object (e.g., `this`)
   - my solution for /probs/04forms/05quiz shows this : passing `this` into `{{> radioTemplate}}` worked better
     -  previously I had the {{#each options}} within the main template instead of the partial - this prevented me from passing anything into each question
+
+- Note:  the new element (using handlebars template) must be created in a `newElement` "container" using `newElement.innerHTML = template(data)`
+  - to not include the `newElement` container, use `newElement.firstElementChild`
+
 
 
 ## Misc
