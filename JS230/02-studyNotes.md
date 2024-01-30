@@ -13,14 +13,24 @@
   - browsers automatically insert element (e.g., `<head>` `<body>`, `<tbody>`, etc.)
 
 - the DOM is comprised of nodes
-  - element notes (HTML tags)
+  - element notes (HTML tags, specific sub-types inherit from `HTMLElement`)
   - text nodes (including whitespace nodes or "empty" nodes)
   - comment nodes
 
 - **Node** : a single point in the node tree (e.g., document, element, text, comment, etc.)
   - complete list of nodeType:  https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType
   - Notes:  element nodes have no `nodeValue`;  then have `textContent` (all contained `nodeValue` concatenated together)
+  - `EventTarget` is a type of node
+ 
+ - Determining node type:
+  - use `.toString()` OR `.constructor` (or `.constructor.name`) on a node to get the type
+  - use `instance of` (e.g., `document.querySelector('p') instance of HTMLParagraphElement` returns `true`)
+    - or `p instance of Element`
+  - use `.tagName` (result is in uppercase) or `.nodeName`
 
+- **live collection** :
+  - an "array-like" collection of DOM nodes or HTML elements which update automatically to reflect changes in the DOM
+  - `document.getElementsByClassName` and `document.getElementsByTagName` both return live collections
 
 
 ### Common web APIs
