@@ -66,11 +66,12 @@
 ### Events
 - **event**:
   - an object that represents an occurence
-  - the object contains info on what happened, where, other details
-  - the browser triggers events : e.g., page loads, user interactions, etc.
+  - the object contains info on what happened, where it happened, other details
+  - the browser or the user trigger events : e.g., page loads, user interactions, etc.
   
-- **event listener** (or *event handler*): the code the browser runs in response to an event
+- **event listener** (or *event handler*): the code the browser runs in response to an event (a callback)
   - note: multiple event listeners of the same type can be added to the same element
+  - use `element.addEventListener` to register event listeners on an element
 
 - common events:
   - **Reference**: https://developer.mozilla.org/en-US/docs/Web/Events
@@ -78,12 +79,18 @@
   - `load` : after 'DOMContentLoaded', page displayed, embedded assets are loaded, 'load' event fires on `window`
   - jquery `$.ready` is similar to `DOMContentLoaded`
 
+- `event.type` : returns a string of the event type (e.g., `click`, `load`, `error`, etc.)
 - `event.target` : the element interacted with
 - `event.currentTarget` (same as `this`) : the element to which the event listener is attached
 
+- keyboard event properties:  `.key`
+- mouse event properties:  `.button`, `.clientX`, `.clientY`
+
 
 ### Capturing / Bubbling
-- capturing and bubbling are 2 different phases which an event goes through after it initially fires
+- events go through **3** phases:  capturing, target, bubbling
+
+- capturing and bubbling are different phases which an event goes through after it initially fires
   - events are dispatched to each element twice, but will only fire in 1 phase : capturing OR bubbling (the default)
   - Note:  objects which do not have a parent-child relationship with the target will not be affected (i.e., siblings will not fire an event)
 
@@ -91,11 +98,15 @@
   - the event gets dispatched to the global `window` object and then down *nested elements* to the target element
   - at each nested element, the event will check for any listeners that might be attached to various elements
 
+- **target**:
+  - the event reaches the `target` element (e.g., the element clicked)
+
 - **bubbling**:
   - the event gets dispatched from the target element back up *parent elements* to the global `window` object
 
+
 - `event.stopPropogation()`
-  - prevents the event from propogating along its path and triggering any further associated events
+  - prevents the event from propogating along its path and triggering any further associated events (in current and further phases)
   - can prevent a `preventDefault` from being reached further along the propogation path
 
 - `event.preventDefault()`
@@ -152,10 +163,73 @@
 - use `.catch` for error handling
   - it will catch any errors arising from prior `.then` methods
 
+- additional methods:
+  - `Promise.all(promiseArray)` : will return an array with all resolved values (same order), or rejects immediately if any input promise rejects
+  - `Promise.race(promiseArray)` : will return a single value for the first promise that resolves
+  - `Promise.allSettled(promiseArray)` : returns an array with the status of each input promise (i.e., an object: `{ status: 'rejected', reason: 'returned string'} `) (status: 'fulfilled' or 'rejected')
+  - `Promise.any(promiseArray)` : returns the first resolved value of any input promise;  if all promises are rejected it returns an `AggregateError` (which groups all individual errors)
+
+
+### async/await
+- `async` : tells a function to return a promise, resulting return can use `.then`, etc.
+  - any return value (even if just a string) is wrapped in a promise
+- `await` : is only used in async functions and *only* for promises
+  - it tells JS to *wait* until the promise is fulfilled before executing subsequent code
+
+
+### Notes
+- Remember:  the output of an asynchronous function (e.g., uses `async`) is a *promise*
+  - can't just `console.log(asynchFunc())` - the output will be a pending promise
+  - always need to use `.then` or `await` to ensure the promise resolves prior to using output
+
 
 ## Communicating with the server through XHR and rendering the response to the page
 
+- `XMLHttpRequest` is a browser API that provides network programming functionality to JS applications
+  - it uses the HTTP protocol and it's included request/response cycle
+
+
 ### Communicating with the server
+
+- typically communicate through an *API*
+- **API** (Application Programming Interface) : a way for computer systems to interact with each other
+  - APIs provide functionality for use by another program
+  - most commonly used to share or transfer data, enable automation, customize software behaviour or integrate it with other systems
+  - there are public and private APIs
+
+
+- web APIs (or HTTP APIs) are built with web technologies and operate over HTTP
+  - requests have methods, paths, protocol version (e.g., HTTP/1.1), headers, (sometimes) a body
+    - example headers:
+      - "Accept" : defines desired media type of response (e.g., `*/*` is any type, `application/json`, etc.)
+  - responses have 3 main parts:  status code, headers, body
+    - `Content-Type` header describes the format of the response body (also called media type or MIME type)
+  - typical convention used is "REST" (REpresentational State Transfer)
+    - define all interactions as being with a "resource"
+    - define *WHAT* resource is acted on and *HOW* we change/interact with that resource
+    - CRUD defines the 4 actions that can be taken on resources:
+      - Create (POST http method: can act on an element resource or collection)
+      - Read (GET)
+      - Update (PUT)
+      - Delete (DELETE)
+
+  - elements:  a representation of a single type of API resource
+  - collections: a grouping of elements of the same type; commonly the collection is a "parent" and an element is a "child"
+- API provider : the system providing the API for other parties (generally the "server")
+- API consumer: the system *using* the API to accomplish some work (generally the "client")
+
+- URLs are comprised of:
+  - scheme : e.g., http
+  - hostname : e.g., google.com
+  - path : e.g. /api/v1 (may contain a "placeholder" e.g., /:id to represent variables)
+  - query string (optional) : e.g., query=term&size=50
+
+  - single resource (also called a singleton resource): a path (or URL) that identifies a single resource
+
+
+- typically data sent to the server (an API) is *serialized*
+  - i.e., converted to a format that is more easily or efficiently stored or transferred
+  - e.g., XML (extensible markup language) or JSON (JavaScript Object Notation)
 
 ### Rendering the response to the page
 

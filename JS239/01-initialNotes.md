@@ -1136,23 +1136,40 @@ fetch(url, {method: 'GET'})           // see options available (e.g., headers, e
       - really need to understand the nuance of synchronous vs asynch and how to make the loop (retries) happen as-if "synchronous" - i.e., need to try the attempt, exit if successful or try again if failed a fixed number of times
       - **Notes**:  my new solution worked;  both new solution and LS solution involve a "recursive" solution - need to keep trying the given function and need to that with 'nested' catch invocations while keeping count of the number of attempts
 
-- [ ] Q5 https://launchschool.com/lessons/519eda67/assignments/5e87f026
+- [X] Q5 https://launchschool.com/lessons/519eda67/assignments/5e87f026
       - try to replicate the coding pattern used in LS solution for `loadData` - different than my initial, but makes sense as a "package" (single function and simple function invocation)
+      - **Notes** :
+        - definitely better to catch the error in the `loadData` function
+        - the question DEFINES the response to an error - catching it and then returning a new promise (i.e., `return Promise.resolve('Using cached data)`) - need to pay attention to the question
 
-- [ ] Q4 https://launchschool.com/lessons/519eda67/assignments/2f41b3a1
+- [X] Q4 https://launchschool.com/lessons/519eda67/assignments/2f41b3a1
       - suspect LS solution may only works since the fallback is delayed by 1 sec; otherwise how can we be sure that the primary is being used?
       - re-work solution to guarantee the primary is tried first, then the fallback secondarily
+      - **Notes**:
+        - remember:  an async function always returns a **promise** - can't just use output directly (e.g., with a `console.log`)
+          - need to use `.then` to wait for promise to resolve
 
-- [ ] Q5 https://launchschool.com/lessons/519eda67/assignments/2f41b3a1
+- [X] Q5 https://launchschool.com/lessons/519eda67/assignments/2f41b3a1
       - could confirm feedback sent:  i.e., need explicit return in solution for `fetch(url)` and don't want to "pre-process" errors as indicated in the LS solution
+      - **Notes**:
+        - output is specified specifically - the `catch` method in `loadMultipleResources` is there to alter the error message
 
-- [ ] Q4 https://launchschool.com/lessons/519eda67/assignments/90b41710
+- [X] Q4 https://launchschool.com/lessons/519eda67/assignments/90b41710
       - confirm that my solution actually fetches each resource sequentially and not in parallel
+      - **Notes**:
+        - `Promise.all` and `Promise.allSettled` offer *concurrent* async task execution, which is not strictly sequential
+        - i.e., my original solution (using `Promise.allSettled`) would NOT be sequential
+        - using explicit `await` steps (e.g., like LS solution and my subsequent solution) are expicitly sequential
 
-- [ ] https://launchschool.com/exercises/7555977a
+- [X] https://launchschool.com/exercises/7555977a
       - had a lot of trouble with this - especially making each function in an array of functions execute each second
+      - **Notes**:
+        - clearly `setInterval` would have been easier
+        - making use of `async/await` made counting seconds by giving the interval easier
+        - separating "counting time" from "executing callbacks" made things very easy
 
 - [ ] get very comfortable walking the DOM and doing something to each node
+
 - [ ] https://launchschool.com/exercises/ba09ed14
       - had some trouble with identifying valid elements to delegate to
       - would help to practice this again

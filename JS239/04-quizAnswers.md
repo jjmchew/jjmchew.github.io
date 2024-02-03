@@ -16,7 +16,7 @@ https://launchschool.com/quizzes/86974a0a
 
 
 ## Quiz 2
-
+https://launchschool.com/quizzes/fef3a404
 1.  
 2.  
 3.  
@@ -27,7 +27,10 @@ https://launchschool.com/quizzes/86974a0a
 8.  
 9.  
 10. 
-
+11. 
+12. 
+13. 
+14. 
 
 
 ## Quiz 3
