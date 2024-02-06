@@ -1129,6 +1129,12 @@ fetch(url, {method: 'GET'})           // see options available (e.g., headers, e
   - input validation can be done using the `pattern="regex here"` of inputs
   - can also use `data-allowed-pattern` attribute (e.g., `data-allowed-pattern="\d"` allows only digits)
 
+- import a "module" js within HTML:
+  - include in header:  `<script type="module" src="./filename.js"></script>`
+  - within `filename.js` can include:  `import someFunc from './otherFolder/anotherFile.js'`
+  - within `anotherFile.js` need to include: `export default function someFunc() {}`
+
+
 
 ## To review
 - [X] Q3 https://launchschool.com/lessons/519eda67/assignments/5e87f026
@@ -1168,15 +1174,26 @@ fetch(url, {method: 'GET'})           // see options available (e.g., headers, e
         - making use of `async/await` made counting seconds by giving the interval easier
         - separating "counting time" from "executing callbacks" made things very easy
 
-- [ ] get very comfortable walking the DOM and doing something to each node
+- [X] get very comfortable walking the DOM and doing something to each node
+      - **Notes**:
+        - memorized the approach for "walking the DOM";  may not need to use it that frequently, DOM API querySelector may be easier
 
-- [ ] https://launchschool.com/exercises/ba09ed14
+- [X] https://launchschool.com/exercises/ba09ed14
       - had some trouble with identifying valid elements to delegate to
       - would help to practice this again
+      - **Notes**:
+        - had trouble with the callback - forgot to pass in 'e' and didn't recognize the error.  Pay more attention to the errors - make sure I track them down and don't jump to conclusions
+        - remember, I can use `===` on nodes - the same node will return true for the `===` operator
+        - it helps to review all of the use cases to understand the problem before coding.  working through use cases 1 at a time is okay, but can be slow if I need to revise my approach each time
 
-- [ ] https://launchschool.com/exercises/c2055175
+
+- [X] https://launchschool.com/exercises/c2055175
       - there are "built-in" ways of accomplishing this that may be more straightforward than my solution
       - my solution felt a bit "spaghetti"
+      - **Notes**:
+        - updated solution was much cleaner, although I didn't parse the data fully to count staff schedules
+        - definitely felt more confident with promises / asynchronous code and organizing it
+
 
 - [ ] https://launchschool.com/exercises/2a95a258
       - my solution was okay - but perhaps a bit spaghetti

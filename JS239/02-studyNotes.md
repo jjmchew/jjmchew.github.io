@@ -60,6 +60,17 @@
   - `title`
   - `value`
 
+- using `data` attributes:
+  - assign an attribute to elements which is prefixed by `data-`
+    - e.g., `<div id="gold" data-block-="gold"></div>`
+  - 'store' that element
+    - e.g., `let gold = document.getElementById('gold')`
+  - access the property `dataset`
+    - e.g., `console.log(gold.dataset)`
+    - e.g., `gold.dataset.block = 'silver'` (change the value of that attribute)
+    - e.g., `delete gold.dataset.block` (remove data attribute)
+    - e.g., `gold.dataset.sponser = 'newSponsor'` (add an attribute 'data-sponsor')
+
 
 ## Understanding event-driven programming for front-end development
 
@@ -188,6 +199,14 @@
 - `XMLHttpRequest` is a browser API that provides network programming functionality to JS applications
   - it uses the HTTP protocol and it's included request/response cycle
 
+- **Single Page Applications** : web applications where the DOM is entirely created from JavaScript running in a client's browser
+  - these applications are often run entirely within a single HTML page with all data being passed as JSON (not HTML)
+  - these applications rely exclusively on JavaScript and `XMLHttpRequest` to communicate with the server and build up the DOM
+
+- **SSR** (Server-side rendering) : building a complete web page on the server and sending that page to the client (the web browser) which then display it
+
+- **CSR** (Client-side rendering) : the server sends only a bare-bones HTML document and some JavaScript to the client;  the client then executes the JS code which requests the data it needs from the server to fill out the rest of the page dynamically
+
 
 ### Communicating with the server
 
@@ -203,7 +222,15 @@
     - example headers:
       - "Accept" : defines desired media type of response (e.g., `*/*` is any type, `application/json`, etc.)
   - responses have 3 main parts:  status code, headers, body
-    - `Content-Type` header describes the format of the response body (also called media type or MIME type)
+    - `Content-Type: application/json` header describes the format of the response body (also called media type or MIME type)
+    - `Access-Control-Allow-Origin: *` : allow all sites access via CORS
+    - `Allow: GET, HEAD` : define allowed methods (e.g., GET, HEAD)
+    - `Content-Length` : specifies length of body in bytes
+    - `ETag: "6df23dc03f9b54cc"` : identifies a specific version of a resource
+    - `Last-Modified: Thu, 05 Jul 2012 15:31:30 GMT` : specifies last time the requested resource was modified
+    - `WWW-Authenticate: Basic` : specifies basic HTTP authentication is required to access the resource
+    - `X-RateLimit-Limit: 60` : headers with `X-` are non-standard, often application-specific headers
+
   - typical convention used is "REST" (REpresentational State Transfer)
     - define all interactions as being with a "resource"
     - define *WHAT* resource is acted on and *HOW* we change/interact with that resource
@@ -212,6 +239,14 @@
       - Read (GET)
       - Update (PUT)
       - Delete (DELETE)
+
+    - PUT is typically used to update the value of a resource using a complete representation of that resource (i.e., send all required values back to the server)
+      - missing values are thus assumed to be empty (e.g., null or nil)
+      - some PUT implementations are more similar to PATCH (which only updates the values given and ignores the unspecified values) - this convention is less widely adopted
+      - PUT is **idempotent** (making a series of identical requests is the same as making a single request)
+        - (POST is *not* : multiple requests will add multiple entries to the collection)
+      - the URL used for PUT should be the same as the URL that will be used in future to GET the data
+
 
   - elements:  a representation of a single type of API resource
   - collections: a grouping of elements of the same type; commonly the collection is a "parent" and an element is a "child"
@@ -231,17 +266,273 @@
   - i.e., converted to a format that is more easily or efficiently stored or transferred
   - e.g., XML (extensible markup language) or JSON (JavaScript Object Notation)
 
+#### AJAX
+- **A**synchronous **J**avaScript **A**nd **X**ML : 
+  - a technique used to exchange data between a browser and a server without causing a page reload
+  - an HTTP request from a web browser that does not require a full HTTP page reload
+  - benefits:
+    - reloading an entire webpage is a limiting factor (a lot of data is transmitted, takes a lot of time)
+    - all HTTP methods are available (i.e., not just GET / POST)
+    - detailed control of headers is possible (e.g., data can be requested in different formats, HTML, JSON, XML, etc. which may not be possible with a purely HTML-based form)
+  - Notes:
+    - JS code initiates AJAX requests, typically from event listeners
+    - once a response is received by the browser, JS handles the response (and can decide what to do with the response)
+
+### XMLHttpRequest
+- `XMLHttpRequest` objects are part of the browser API (not JS language)
+- `request.send` is asynchronous
+- popular response formats are HTML, JSON, XML
+  - JSON is the most popular
+
+```javascript
+let request = new XMLHttpRequest(); // create new XMLHttpRequest object
+request.open('GET', '/path');  // optional 3rd argument: false indicates send using a synchronous request (likely deprecated in modern browsers);  true is redundant (default - asynchronous request)
+request.setRequestHeader('Content-Type', value); // e.g., value could be 'application/json; charset=utf-8'
+request.send(); // `.send(data)` optional
+request.timeout = 30; // time in ms until timeout
+request.readyState;
+request.responseType = 'json' // could also be `text`, `arraybuffer`, `blob`, `document`
+request.abort();
+
+request.addEventListener('load', event => {
+  // let xhr = event.target; // if the original request object is defined within a function and not accessible from an outer scope, it can be accessed in this way
+  request.responseText;
+  request.response; // will change to reflect `responseType`
+  // Note:  `responseText` is only available if `responseType` is '' or 'text'
+  request.status;
+  request.statusText;
+  request.getResponseHeader('Content-Type');
+});
+
+request.addEventListener('error', e => {  // note additional handler added to manage errors
+  console.log('An error occurred');
+});
+```
+- `XMLHttpRequest` events:
+  - `loadstart` : request sent to server
+  - `readystatechange` : some change occurs (e.g., `OPENED`, `HEADERS_RECEIVED`, `LOADING`, `DONE`, etc.)
+  
+  - `load` : complete response loaded
+  - `abort` : request was interrupted before it could complete
+  - `error` : an error occurred
+  - `timeout` : a response was not received before end of timeout period
+
+  - `loadend` : last event to fire:  response loading done and all other events hae fired
+
+- NOTE:  all received respones are considered successful, even if response has a non-200 status code or represents an application error
+  - i.e., the "semantic meaning" of the response is NOT considered - the developer needs to *inspect* the response and  accommodate this based on the application
+
+- query string / URL encoding:
+  - use `encodeURIComponent` for URL encoding for query strings (e.g., use `%20` or `+` for spaces)
+    - encoded data in HTTP request body must have `Content-Type: application/x-www-for-urlencoded; charset=utf-8` header
+    - including `charset` is optional, but considered best practice
+
+- multipart form data:
+  - multipart forms use a *delimiter* defined within the header
+    - e.g., `Content-Type: multipart/form-data; boundary=----WebKitFormBoundarywDbHM6i57QWyAWro`
+
+- JSON:
+  - header:  `Content-Type: application/json; charset=utf-8`
+  - `let data = JSON.stringify(dataObj)`
+
+
+
+#### Serializing data for submission
+- URL-encoding for POST:
+  - set header: `request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");`
+  - encode keys / values with `encodeURIComponent`
+  - combine then into a string with format `key=value&key2=value2` etc.
+
+- using `FormData`:
+  - `let data = new FormData(form)` : where `form` is the DOM form element (e.g., `let form = document.querySelector('form')`)
+  - `form.method`, `form.getAttribute('action')`
+  - using `request.send(form)` will send formData as a multipart form
+
+- using JSON:
+  - `request.responseType = 'json'`  (if this isn't defined, may need to use `try/catch` blocks to test if response is parse-able)
+  - `let data = JSON.parse(request.response)`
+
+
 ### Rendering the response to the page
+- if using `XMLHttpRequest`:
+  - once the response is received, DOM content can be updated using JS
+  - e.g., if HTML is received, can use `element.innerHTML = request.response`
+  - 
+
+### Common HTTP/API responses / errors
+- client (user) errors (4XX):
+  - 422 Unprocessable Entity : sometimes missing parameters, validation errors on data provided
+  - 404 Not Found:
+    - resource may not exist
+    - URL could be incorrect
+    - authentication may be required (but server does not indicate this for security reasons)
+  - 401 or 403 Forbidden : authentication errors, valid credentials required
+    - 403 may also indicate rate limiting is in effect (i.e., only a fixed number of requests within a specified time are allowed)
+  - 415 Unsupported Media Type : data was provided in the wrong format
+  - 405 Method Not Allowed : typically used if requested methods are not specified in `Allow` header
+
+- server errors (5XX)
+  - typically caused by:
+    - bugs or oversights in the server implementation
+    - hardware or other infrastructure problems with remote system
+    - any other error not foreseen by the remote server implementation
+  - can sometimes be fixed by trying the API again later
+
+- 201 Created : new data entry created by server
+- 204 No Content : request successfully processed, but no data is sent back (e.g., a good response for a DELETE request)
+
+- 304 Not Modified : often used in conjunction with `ETag` headers
 
 
+### CORS
+- **CORS** (Cross Origin Resource Sharing) : a W3C specification that defines how the browser and server must communicate when accessing cross-origin resources
+  - request must include `Origin` header
+  - response must include `Access-Control-Allow-Origin` header
+    - this header can include the specific `Origin` supplied in the request
+    - could also include `*`
+  - if both request and response headers match, then the browser will allow the script access to the response
+
+- a *cross-origin request* occurs when a page tries to access a resource from a different origin
+  - i.e., scheme, hostname and port of requesting page are different from that of resource URL
+
+- by default `XHR` objects *cannot* send cross-origin requests for security reasons
+  - browsers implement a security feature called the **same-origin policy** which prevents `XHR` objects from making cross-origin requests
+
+
+### debounce
+- used to **throttle** XHR requests (i.e., send only the requests that are required)
+  - e.g., autocomplete - don't need to search on every keypress, just keypresses after a fixed interval to allow users to type
+```javascript
+// debounce.js
+export default (func, delay) => {
+  let timeout;
+  return (...args) => {
+    if (timeout) { clearTimeout(timeout) }
+    timeout = setTimeout(() => func.apply(null, args), delay);
+  };
+};
+
+// project JS file
+import debounce from './debounce.js';
+
+const App = {
+  // etc
+
+  this.valueChanged = debounce(this.valueChanged.bind(this), 300); 
+
+  //etc
+}
+```
 
 ## jQuery
+- a library that provides an API to work with DOM, manipulate elements, handle events, make AJAX requests
+  - a function that wraps DOM elements and convience methods into an *object*
+  - convention is to use `$` to prefix jquery objects
+  - all jquery objects have a `.content` property - this can be used to check if a variable / object is a jquery object
+
+- equivalent operations in jquery / vanilla JS/dom:
+    - https://tobiasahlin.com/blog/move-from-jquery-to-vanilla-javascript/
+
+
+### Using libraries
+- libraries like jquery were traditionally used to ensure that the same front end code worked across all browsers
+- reading documentation:
+  1. first read high-level overview : understand use case(s), assess fit, basic mental model / syntax
+  2. check tutorials / how-tos : should provide a way to get quickly up to speed and achieve specific goals
+  3. use API references, as required:
+    - learn the structure (e.g., how things are grouped)
+    - learn the syntax / style of documentation
+    - leverage existing mental models for fundamental concepts
+
+- libraries can be be hosted:
+  - locally (i.e., downloaded to same server as HTML / application files)
+  - using a CDN (i.e., available online through a Content Distribution Network)
+    - remember to include `integrity` and `crossorigin` attributes
+    - these attributes are part of a browser security feature called **subresource integrity**
+      - https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity
+    - e.g.,
+    ```html
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    ```
+
 
 ### Using web APIs
+- get elements:  `let $content = $('#content')` : will store element with id 'content', returned as a collection object (array-like)
+  - can use `$content.length` to see how many items are in the collection
+- CSS:  `$content.css('attribute', 'value')`  :  setter
+        `$content.css('attribute')`  : getter
+- many methods can be chained
+- may also be able to input multiple key-value pairs by passing in an object, rather than a string
+  - e.g., for CSS:  `$content.css({ 'font-size': '18px', color: '#b00b00'})`
+
+- traversing DOM:
+  - `$element.parent(selector)` : can pass in an optional selector to target a specific parent (will not check itself)
+  - `.parents()` : will get all parents
+  - `.closest(selector)` : closest parent (including itself, if matching)
+  - `.find(selector)` : checks for child elements (incl. nested) that meet a selector criteria
+  - `.children()` : gets all immediate children
+  - `.next()` : next sibling element
+  - `.last()` : last sibling element  (can also use `.eq(-1)`)
+  - `.nextAll()`
+  - `.prevAll()`
+  - `.hide()` : hide element
+  - `.show()` : show element
+  - `.eq(idx)` : will get the element with index number `idx` from a collection (e.g., of multiple children)
+  - `.odd()` : will get the odd-number elements
+  - `.not()`
+
+- `$element.val()` : changes value of an element (e.g., for an input)
+- `.text()` : gets text value
+- `.remove()` : removes the element from DOM
+
+
+- pseudo-selectors:
+  - https://api.jquery.com/category/selectors/
+  - e.g., `$('li li').filter(":contains('ac ante')")` : can use `filter` and also pseudo-selector `:contains()` (a string)
+  - `:not()`
+  - e.g., `$('a[href^="#"]');` : pseudo-selector `^` for "beginning with"
+  - e.g., `$('[class*=block]');` : pseudo-selector `*` for "contains"
+
+- misc:
+  - `.stop()` : stops current animations on element
+  - `.fade()` : animate visibility of element (needs `visibility: visible` CSS)
+  - `.fadeIn()` : animate appearance
 
 ### Event-driven programming
-- jquery `$.ready` is similar to `DOMContentLoaded`
+- jquery `$.ready` is similar to `DOMContentLoaded` (DOM loaded and ready, referenced img tags are not ready)
+  - can also use `$( function() {} )`
+- `$(window).load( function() {} )` : DOM loaded and ready, referenced img tags are loaded and ready
+- `$('a').on('click', e => {})` : adds 'click' listener to 'a' element (or all 'a' elements')
+  - `.off()` removes an event listener
+- `$('a').trigger('click')` : e.g., will trigger the 'click' event listener registered on the 'a' element(s)
+- `.slideToggle()` : built-in method for accordion content (i.e., clicking a button reveals more content)
+- `$element.append(string)` : where `string` is HTML text; HTML elements in `string` will get appended to `$element`
+- `$element.html()` : will get HTML within `$element` (e.g., good for handlebars templates)
+
+- `$element.attr('data-block')` : will return the value of the `data-block` attribute of `$element`
+  - can also be used as a setter:  `.attr('data-block', 'newvalue')` - will change the HTML markup
+- `$element.data('block')` : equivalent to above (will return value of `data-block` attribute)
+  - can also be used as a setter:  `.data('block', 'newvalue')` - will *not* change the HTML markup, data is stored in a separate internal jquery data store associated with that element
+
 
 ### Asynchronous JS
+- `$.ajax(configObj)` where `configObj` contains:
+ ```javascript
+let configObj = {
+  url: '/path',
+  type: 'GET',
+  dataType: 'json',
+};
+
+$.ajax(configObj)
+.done(function(json))
+.fail(function())
+.always();
+ ```
+
 
 ### Communicating with the server
