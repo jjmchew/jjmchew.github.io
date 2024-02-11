@@ -295,9 +295,163 @@ console.log(insertionSort(array)); // Output: [1, 2, 3, 4]
 ## Pointer-based optimization strategies
 - start-end pointers: define a segment within the list, process elements within that segment
   - good for subarray problems (e.g., longest increasing subarray, finding palindromes)
+  - generally best for sorted or partially-sorted arrays
+
 - anchor/runner pointers: employ pointers with different speeds
   - also known as slow/fast pointers
   - often used to find midpoint of an array, determining if duplicates exist
+  - also good for removing duplicates or paritioning elements based on specific conditions
+
 - K-window slide: process elements within a sliding window of size "K"
   - maintain a fixed window and slide it through the list, updating boundaries as you iterate
   - often used for finding max/min sum of fixed-window size, calculating sliding window averages, solving substring problems
+  - also good for finding max or min sums, averages, other operations on consecutive subarrays
+
+- overall, these approaches reduce time complexity from quadratic to linear while maintaining constant space complexity
+  - generally, solutions can be solved in place
+  - generally work well with array-based problems
+
+
+### Start/End pointers
+- need to answer key questions:
+  - where does `start` pointer begin?
+  - where does `end` pointer begin?
+  - under what conditions does `start` pointer move?
+  - under what conditions does `end` pointer move?
+  - under what condition do iterations stop?
+
+- use questions above to develop clear algorithm
+- may be able to achieve O(N) complexity
+
+- example problem:
+  - given a *sorted array* of numbers, find 2 numbers that sum to a given target
+
+  - Naive solution:
+      - check every possible combination of 2 numbers from array and see if the sum is the target
+      - this solution is O(N^2) - not efficient;  typically implemented with 2 nested for loops to check all pairs of numbers
+
+  - Better solution:
+      - `start` pointer at index 0, `end` pointer at index length-1
+      - if sum of numbers at both pointers is *greater* than target, move `end` pointer to LEFT
+      - if sum of numbers at both pointers is *less* than target, move `start` pointer to RIGHT
+      - stop moving pointers if they are adjacent to each other, return `null` if sum is not target
+
+  - the better solution leverages the sorted nature of the array to ensure that moving the pointers correlates to the desired change in calculated sum of 2 numbers
+
+### Anchor/Runner pointers
+- need to answer key questions:
+  - where does `anchor` pointer start?
+  - where does `runner` pointer start?
+  - under what conditions does `anchor` move?
+  - under what conditions does `runner` move?
+  - what does `anchor` do besides moving?
+  - what does `runner` do besides moving?
+
+- this may allow an array to be mutated in place, prevents the need for nested loops
+
+- example problem:
+  - given an array of positive integers and zeros, move all zeros to the end of the array while preserving the relative order of non-zero elements
+  - if no zeros are present, no changes are needed
+
+  - Naive solution:
+    - iterate through array to check each element: if it's a zero, splice it from array, push to the end
+    - this solution is O(N^2) because a deletion operation is O(N) and that operation is repeated for each element of the array
+
+  - Better solution:
+    - `anchor` and `runner` both start at 0
+    - check number at `runner` index - if it is 0, increment `runnner`
+                                     - if it is non-0, swap numbers with `anchor`, increment both pointers
+    - stop moving pointers when `runner` reaches the end
+
+    - Note:  both pointers must start at 0;  otherwise, non-zero elements could be swapped resulting in a change to their order
+      - i.e., runner cannot start at last element (which could be non-zero)
+      - i.e., runner cannot start at second element (index 1), which could also be non-zero
+
+  - Variant solution (reader/writer):
+    - `anchor` is considered the `writer` : it indicates the position where next non-zero element should be written
+    - `runner` is considered the `reader` : it looks for non-zero elements to be written
+    - both `writer` and `reader` start at 0
+    - move `writer` when the element at `runner` is non-zero
+        - write the non-zero element at `runner` in `writer`'s position, then increment `writer`
+    - move `runner` on each iteration
+    - stop iterating when `runner` reaches the end, then fill all positions from `writer` onwards with zeros
+
+  - both solutions are O(N) time complexity and O(1) space complexity (array is modified in place with no additional space)
+  - for arrays, either variation can be used with no differences (just preference)
+  - the reader/writer variation is better for linked lists (since swapping is difficult)
+
+### K-window slide
+- use 2 pointers a fixed distance apart, move them in a synchronized fashion
+
+- key questions to answer:
+  - where do the `left` and `right` pointers start? (i.e., what is the size of the window)
+  - what does the `left` pointer do besides moving?
+  - what does the `right` pointer do besides moving?
+
+- example problem:
+  - given an array of integers, and an integer k, what is the maximum sum of consecutive k elements in the array?
+  - if the array contains less than k elements, return `null`
+  - if the integer k is less than 1, return `null`
+
+  - Naive solution:
+    - initialize `max` to the lowest possible integer
+    - iterate through the array generating subarrays of length `k` and compute their sum
+    - if the sum is greater than `max`, reassign `max`
+    - the time complexity is O(N*K) where N is number of elements in the array, K is the size of the window since for each iteration, the array must be sliced to get the subarray of k consecutive elements
+
+  - Better solution:
+    - `left` pointer is set to 0, `right` pointer is set to 0 + k - 1
+    - calculate `currentSum` of the numbers between `left` and `right` (inclusive); assign that sum to `maxSum`
+    - when `left` pointer is incremented, subtract value of the number at previous position from `currentSum`
+    - when `right` pointer is incremented, add value of the number at new position to `currentSum`
+    - re-assign `maxSum` as appropriate:  take max of (`maxSum` and `currentSum`)
+
+  - better solution is time complexity O(N), where N is length of the input array;  there are no nested loops or additional data structures
+
+
+## Binary Search
+- used to efficiently search for a target value in an ordered array
+- it divides the search space in half at each step, thus it has a time complexity of O(logN) (better than O(N) )
+  - it is especially better for arrays with a large number of elements
+  - e.g., for 10 elements, binary search requires 4 comparisons : log2(10) ~ 3.32
+  - e.g., for 1000 elements, binary search requires 10 comparisons : log2(1000) ~ 9.97   :  a 99% improvement
+
+- when implementing binary search, **off-by-one errors** are common
+  - i.e., iterate until `left < right` or `left + 1 < right` or `left <= right`
+  - when reassigning `left` : assign to `mid` or `mid + 1`
+  - when reassigning `right` : assign to `mid` or `mid - 1`
+
+- using a binary search template is recommended:
+
+```javascript
+let left = 0
+let right = array.length - 1
+while (left <= right) {
+  mid = Math.floor((left + right) / 2)
+  if (array[mid] == target) { // note use of double equal here
+    // Optional early return
+  } else if (***comparison***) { // note this line needs to be updated (generall array[mid] < target)
+    left = mid + 1
+  } else {
+    right = mid - 1
+  }
+}
+
+// Most often, if the target is not found, additional handling
+// or returning a specific value is needed. In most cases it will
+// be the value that `left` variable holds.
+```
+
+## Linked Lists
+
+
+## Recursion
+
+
+## Divide and conquer algorithms
+
+
+
+# Questions
+- [ ] why is an array deletion operation O(N) complexity? (i.e., from Anchor/runner example - lesson 3 assignment 3)
+

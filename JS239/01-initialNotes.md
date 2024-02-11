@@ -1134,6 +1134,14 @@ fetch(url, {method: 'GET'})           // see options available (e.g., headers, e
   - within `filename.js` can include:  `import someFunc from './otherFolder/anotherFile.js'`
   - within `anotherFile.js` need to include: `export default function someFunc() {}`
 
+### MVC
+- **MVC** (Model-View-Controller) : an architecture paradigm where the code is split up into 3 components
+  - Model: involved in managing the data of the application (e.g., back-end calls, data structures, etc.)
+  - View: involved in managing the visual display (visual representation) of the model (e.g., HTML/CSS, DOM manipulation, etc.)
+  - Controller: acts as the intermediary between those 2 previous components by calling Model and updating View
+    - i.e., managing user interactions (e.g., manage user input, event handlers, etc.)
+  
+  - model should never touch the view, view never touches model : controller connects them
 
 
 ## To review

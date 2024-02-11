@@ -20,7 +20,7 @@
 
 - **Node** : a single point in the node tree (e.g., document, element, text, comment, etc.)
   - complete list of nodeType:  https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType
-  - Notes:  element nodes have no `nodeValue`;  then have `textContent` (all contained `nodeValue` concatenated together)
+  - Notes:  element nodes have no `nodeValue`;  they have `textContent` (all contained `nodeValue` concatenated together)
   - `EventTarget` is a type of node
  
  - Determining node type:
