@@ -1130,6 +1130,7 @@ fetch(url, {method: 'GET'})           // see options available (e.g., headers, e
   - can also use `data-allowed-pattern` attribute (e.g., `data-allowed-pattern="\d"` allows only digits)
 
 - import a "module" js within HTML:
+  - Note:  to use `import` in a JS file referenced through a `<script>` tag, the `<script>` must contain `type='module'`
   - include in header:  `<script type="module" src="./filename.js"></script>`
   - within `filename.js` can include:  `import someFunc from './otherFolder/anotherFile.js'`
   - within `anotherFile.js` need to include: `export default function someFunc() {}`

@@ -443,6 +443,70 @@ while (left <= right) {
 ```
 
 ## Linked Lists
+- arrays vs linked lists:
+  - **arrays**:
+    - arrays are like a row of boxes: each box can hold data
+    - memory allocated for arrays must be *contiguous*
+    - note JS arrays are not implemented to be stored in contiguous blocks of memory, but they look and act sufficiently like real arrays to treat them that way
+    - are **static data structures** - memory must be allocated in advance
+      - making an array larger involves finding contiguous memory, copying existing items to the new location
+      - this can be time-consuming and memory-intensive
+
+  - **linked lists**:
+    - can be thought of as a series of individual nodes
+    - each node contains data and references the next node
+    - these nodes can be scattered throughout the computer's memory
+    - are **dynamic data structures** - they can grow or shrink in size as required
+      - no need to find contiguous memory blocks
+      - node pointers are easy to re-arrange, no need to copy data
+    - linked lists are superior to arrays for inserting or deleting with large datasets:
+      - for each deletion or insertion, the remaining elements in an array must be moved(for 2000 elements with 400 insertions, there could be 800,000 additional steps)
+      - in a linked list, the list must be traversed, but insertion is just 1 step (operation); no elements need to be moved
+
+
+- structure of linked lists:
+  - **head** : first node of linked list
+      - the primary access point to the linked list
+      - a head is required to determine the starting point of the list (otherwise impossible)
+  - **node** :
+      - contains data
+      - contains a reference (or pointer) to the next node
+  - final node:
+      - contains a pointer to `null` rather than another node
+
+- **singly linked list** :
+    - you can only move forward through this list
+- **doubly linked list** :
+    - nodes are linked forwards and backwards
+- **circular linked list** :
+    - the first node is connected to the last node
+    - these may be singly or doubly linked
+
+- there are several ways to implement a linked list - this course uses *node-as-a-class*
+  - other approaches may create a `LinkedList` class to encapsulte `Node` objects
+
+- **node-as-a-class** :
+  - each node is an instance of a `Node` class
+  - 2 main components:  `data` and `reference` to next node
+  - in this approach, there is no way to encapsulate the entire linked list
+  - work with the `head` node and traverse from there
+  ```javascript
+  class Node {
+    constructor(data, next) {
+      this.val = data === undefined ? 0 : data;
+      this.next = next === undefined ? null : next;
+    }
+  }
+  ```
+
++-----------+------------------------------------+-----------------------------------------------------------+
+| Operation | Arrays                             | Linked Lists                                              |
++-----------+------------------------------------+-----------------------------------------------------------+
+| Reading   | O(1) - can read directly           | O(N) - worst case, traverse every node                    |
+| Searching | O(N) - need to check every element | O(N) - need to check every element                        |
+| Inserting | at front: O(N), at back: O(1)      | at front: O(1), at back: O(N)                             |
+| Deleting  | at front: O(N), at back: O(1)      | at front: O(1), at back: O(N) (must traverse to find end) |
++-----------+------------------------------------+-----------------------------------------------------------+
 
 
 ## Recursion
