@@ -483,7 +483,7 @@ while (left <= right) {
     - these may be singly or doubly linked
 
 - there are several ways to implement a linked list - this course uses *node-as-a-class*
-  - other approaches may create a `LinkedList` class to encapsulte `Node` objects
+  - other approaches may create a `LinkedList` class to encapsulate `Node` objects
 
 - **node-as-a-class** :
   - each node is an instance of a `Node` class
