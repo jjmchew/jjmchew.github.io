@@ -118,6 +118,8 @@ test('interact with DOM', () => {
     - `npx @puppeteer/browser install chrome@stable`
     - note:  I needed to be on the latest version of Node (v20) and *NOT* the default v13 which is running when I start ubuntu in WSL
 
+- web also recommends installing jest-puppeteer:  https://medium.com/touch4it/end-to-end-testing-with-puppeteer-and-jest-ec8198145321
+  - `npm install --save-dev jest-puppeteer`
 ```javascript
 const puppeteer = require('puppeteer');
 
@@ -146,8 +148,11 @@ test('use puppeteer to test localhost and find a button', async () => {
 ## Using ES6 modules
 - in `package.json`:
   ```javascript
-  "scripts": {
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+  {
+    "type": "module",
+    "scripts": {
+      "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+    }
   }
   ```
 - for puppeteer: `import puppeteer from 'puppeteer';`
