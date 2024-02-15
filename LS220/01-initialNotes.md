@@ -508,6 +508,12 @@ while (left <= right) {
 | Deleting  | at front: O(N), at back: O(1)      | at front: O(1), at back: O(N) (must traverse to find end) |
 +-----------+------------------------------------+-----------------------------------------------------------+
 
+- sample problem:  deleting a node with a target value from a linked list
+  - need to traverse from head; use a `prev` and `curr` counter to track the previous node and the current node
+  - if the target value of `curr` node matches, then set `prev.next` to `curr.next` : skipping the existing node
+  - then iterate pointers
+  - need to watch : if the first node has `target` value (i.e., there is no `prev` value - initially `null` at the start), then need to reset `head`
+
 
 ## Recursion
 
