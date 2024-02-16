@@ -514,8 +514,135 @@ while (left <= right) {
   - then iterate pointers
   - need to watch : if the first node has `target` value (i.e., there is no `prev` value - initially `null` at the start), then need to reset `head`
 
+  - alternative code solution:
+    - can create a new variable `dummy` (a node) before `head`
+    - i.e., `dummy.next` intitially points to `head`
+    - using this `dummy` node, there is no need to address edge cases to reassign `head` specifically (i.e., if `prev` is `null` at the start of the linked list)
+
+
+- visual analogy for pointer variables and how they relate to linked list nodes:
+  - imagine the linked list is a series of connected balloons, each with a string to hold; each balloon is a node
+    - the last balloon is connected to a tag with a string `null`
+  - imagine cats are variables (i.e., 3 cats: `head`, `prev`, `curr`)
+  - the `head` cat never lets go of the first string / balloon
+    - when `prev = null`, the `prev` cat has no string (balloon), when `curr = head`, the `curr` cat is also hanging on to the same string as `head`
+  - when iterating `curr`, that cat grabs the next string in the row of balloons / nodes
+    - by last balloon, the next string will be the `null` tag
+    - after that, there will be an error (no more strings to grab)
+
+- Notes:
+  - when working with linked lists always need to maintain a link to the next node
+    - e.g., reversing a linked list:
+      - can't just change `curr.next` to point to `prev`: if `curr.next` is "held" by a variable (cat) then the rest of the list will be lost
+      - solution:  create a new variable (cat) `next` that "holds" `curr.next`
+
 
 ## Recursion
+- a computer science concept where functions call themselves:  can be an elegant and efficient solution to complex problems
+
+- **base case** : the condition where the recursive function stops calling itself (to prevent infinite loops)
+  - e.g., `if (number < 0) return`
+  - also called a termination condition
+- **recursive case** : the part of the recursive function where it calls itself
+  - this takes a larger problem and breaks it down into a smaller, similar subproblem
+  - e.g., `populationCount(number - 1)`
+- **reduction step** : a part of the recursive case, where the input is modified to move closer to the base case
+  - this ensures each recursive call works on a smaller version of the original problem
+  - e.g., `number - 1`
+
+### Call stack
+- the call stack is a stack of function calls
+  - keeps track of:
+    - order in which functions are called
+    - execution contexts of each call
+  - operates on LIFO (last-in-first-out) principle (most recently added function call is the first to be resolved and removed from the call stack)
+  - once a function completes execution, it is removed from the stack (popped off) allowing the previous function (below) to resume its execution
+  - can be thought of as a stack of plates (functions): the one on top is the most useful
+  - as (recursive) functions are added, the stack grows until it reaches the base case / condition
+    - then a value can be returned and the stack begins to unwind and shrink again until all functions are resolved and a final answer is available
+
+- **stack overflow** :
+  - a condition where the call stack exceeds its capacity
+  - the call stack is too large for the system to handle, resulting in a runtime error
+    - i.e., too many function calls are added to the stack
+    - typically occurs with infinite recursion or excessively deep recursion
+    - not including a proper base case is a common cause
+
+### Time complexity
+- measures the amount of time an algorithm takes to run, based on input size
+- to measure:
+  - count the number of recursive calls (based on input size)
+  - assess the work done at each level (analyze time of each recursive call, and any additional time outside of each recursive call)
+  - combine the # of calls with work done at each call to determine work done at each level
+  - total the time for the algorithm
+  - drawing a recursion tree can be helpful to see the number of calculations at each level
+
+### Space complexity
+- measures the amount of memory required by an algorithm to perform its computations
+- for a recursive function, consider the maximum depth of the call stack and any additional data structures
+  - e.g., creating a new array at each level will allocate additional O(n) space at each level
+    - this results in overall space complexity of O(n^2) : for large inputs, will be a significant amount of memory
+    - better to pass the array through the function call and adjust pointers
+
+### Examples
+
+-e.g., factorial function
+```javascript
+function factorial(n) {
+  if (n === 1) return 1;
+  return n * factorial(n - 1);
+}
+```
+- e.g., factorial function:
+  - `n` calls :  time complexity is O(n) (linear growth rate with n)
+  - depth of call stack will be `n` calls : space complexity is O(n) (linear space usage)
+
+```javascript
+function fibonacci(n) {
+  if (n === 1 || n == 2) return 1;
+  return fibonacci(n - 2) + fibonacci(n - 1);
+}
+```
+
+- e.g., fibonnaci sequence:
+  - at each level, 2 recursive calls are made and addition performed : work done at each level is proportional the number of calls
+  - since the number of recursive calls doubles at each level time complexity is ~ O(2^N), where N is input size
+    - i.e., after initial function call, next level has 2 function calls
+      - then next level has 4 function calls (each prior call has 2)
+      - then next level has 8 function calls
+      - etc.
+  - space complexity:
+    - draw the recursion tree for a sample call (e.g., `fibonacci(4)`) involving left and right sides
+    - note that the left side of the tree (e.g., `fibonacci(3)`) will be larger than the right side (e.g., `fibonacci(2)`)
+    - note that the call stack will never exceed `n` depth since the last number on each side will be resolved by base case
+    - thus, no matter how large the input, the call stack will not exceed `n` depth
+    - space complexity of O(n), where n is input size
+
+### Function signature
+- common in interview questions:  it defines the function name, the expected inputs, sometimes the expected output (type)
+- e.g., 
+```javascript
+function fibonacci(num) {
+  // implementation
+}
+```
+  - e.g., for statically typed languages might see: `function fibonacci(num: number): number`
+- don't change function signature unless agreed with interviewer
+- can use a *helper function* if you want to pass in additional parameters
+  - e.g., fibonacci solution with a cache for optimization
+  ```javascript
+  function fibonacci(num) {
+    return fibonacciHelper(num, {});
+  }
+
+  function fibonacciHelper(num, cache) {
+    // define base case and recursive case
+  }
+  ```
+  - the cache stores previously calculated fibonacci values preventing redundant calculations
+  - this kind of optimization is called *Dynamic programming*
+
+
 
 
 ## Divide and conquer algorithms
