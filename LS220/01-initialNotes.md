@@ -643,6 +643,26 @@ function fibonacci(num) {
   - this kind of optimization is called *Dynamic programming*
 
 
+### Solving problems
+- define base case first
+- define recursive definition of problem
+  - need to use *declarative language* (explain what should happen, rather than *how* it should happen)
+- **template for declarative statement** 
+  - A [data structure] is a [problem definition] if [some condition is true], and the rest of the [data structure] is [problem definition]
+    - [data structure]: the data structure of the problem
+    - [problem description]: the name of the problem
+    - [some condition is true]: can be the most difficult part, will vary for each problem
+
+- e.g., valid palindrome problem:
+  - A string is a valid palindrome if [the first and last characters of the string are the same], and the rest of the string is a valid palindrome
+
+  - solution using `slice` to test inner substrings:
+    - reasonable to assume that `slice` has time complexity O(n) and may also allocate new memory for substrings
+    - time and space complexity becomes O(N^2) : worst case we create a new substring that is almost the same length as original string
+  - solution using pointers (instead of `slice`):
+    - time and space complexity of O(N) : no new string being created
+    - in coded solution, note use of helper function to pass in `start` / `end` pointer as arguments
+
 
 
 ## Divide and conquer algorithms
