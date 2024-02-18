@@ -666,7 +666,40 @@ function fibonacci(num) {
 
 
 ## Divide and conquer algorithms
+- divide and conquer is a problem-solving technique that involves breaking down a complex problem into smaller sub-problems that are easier to solve individually, then combining those solutions to obtain the final answer
+- three main steps:
+  - divide :  divide the problem into sub-problems that have a similar structure, allowing algorithm to be applied recursively
+  - conquer : solve the sub-problems recursively and work towards the base case
+  - combine : aggregate individual solutions to derive the desired result
 
+
+### Quicksort
+- a popular sorting algorithm used by many programming languages
+- when dealing with average scenarios, has exceptional speed and efficiency
+  - when dealing with worst-case scenario (inversely sorted array), performs similarily to insertion sort and selection sort
+
+#### Partitioning
+- a fundamental step in quicksort
+  - selecting a pivot point which is used to arrange elements (either to the left or the right)
+  - pivot is selected somewhat randomly
+  - arranging elements on either side must be done consistently (e.g., elements equal to the pivot must always go on the same side)
+  - the choice of the pivot can affect the algorithm's performance
+  - desired outcome of partitioning is for all elements that are smaller than pivot to be on its *left* side and all elements that are greater than (and equal, in assumed case) to be on the *right* side, in the order in which they appear in the original array
+    - e.g., `[ 7, 3, 9, 8, 5, 1]` : if `7` is the partition, then result should be: `[ 3, 5, 1, 7, 9, 8 ]`
+
+- steps in partitioning:
+  - choose a pivot element
+  - assign `left` pointer to left-most element in remaining array
+  - increment `left` pointer until it reaches an element that is greater than or equal to the pivot element OR becomes greater than the `right` index
+  
+  - assign `right` pointer to right-most element in remaining array
+  - decrement the `right` pointer until it reaches an element that is less than the pivot OR until it becomes smaller than the `left` index
+
+  - if the above can be achieved, swap the value at pivot index with the value at the `right` index
+  - OR: swap the values at the `left` and `right` indexes and then continue moving the indexes inwards as above
+
+- **need to confirm desired order and outcome of partitioned elements in example**
+  - i.e., should [7, 3, 9, 8, 5, 1] result in [3, 5, 1, 7, 9, 8] OR [5, 3, 1, 7, 8, 9]
 
 
 # Questions
