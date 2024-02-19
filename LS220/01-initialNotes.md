@@ -678,6 +678,30 @@ function fibonacci(num) {
 - when dealing with average scenarios, has exceptional speed and efficiency
   - when dealing with worst-case scenario (inversely sorted array), performs similarily to insertion sort and selection sort
 
+- quicksort can be implemented using the first element in the (sub-)array, but this is not that efficient
+  - once the array has been partitioned once, treat all elements to the left of subarry as another array
+  - treat all elements to the right of the partition (pivot) element as another subarray
+  - then partition / sort each of the sub-arrays
+  - base case is when there are no elements or 1 element to be partitioned
+
+  - worst-case performance occurs when the array is nearly / already sorted
+    - if the first element is picked as pivot, partitioning will be inefficient (left and right partition are in-equal), resulting in time complexity of O(n^2)
+    - assume only 1 element in the partition (worst-case scenario), then N-1 elements are greater than the pivot
+      - each recursive call processes only 1 element, resulting in N recursive calls
+      - the total number of comparisons will be 1 + 2 + 3 + ... N, which is proportional to N^2
+  - `left` and `right` pointers will generally not include the pivot element with first-element pivots being selected
+    - thus, an additonal step is needed to ensure the correct placement / swapping of the pivot element
+
+- picking the middle element of the array for pivot is most effective: reduces risk of worst-case scenario
+  - partitions are even, letting each recursive call process more unsorted elements
+  - with middle-element partitions, `left` and `right` will include the pivot position, the pivot is in its correct sorted position (eliminates need for extra swaps)
+
+- note: the `combine` step of quicksort happens implicitly during partitioning
+  - by placing the pivot element at its correct position it combines the sorted subarrays
+  - this does not significantly alter overall time complexity
+
+
+
 #### Partitioning
 - a fundamental step in quicksort
   - selecting a pivot point which is used to arrange elements (either to the left or the right)
@@ -698,10 +722,11 @@ function fibonacci(num) {
   - if the above can be achieved, swap the value at pivot index with the value at the `right` index
   - OR: swap the values at the `left` and `right` indexes and then continue moving the indexes inwards as above
 
-- **need to confirm desired order and outcome of partitioned elements in example**
-  - i.e., should [7, 3, 9, 8, 5, 1] result in [3, 5, 1, 7, 9, 8] OR [5, 3, 1, 7, 8, 9]
 
 
 # Questions
 - [ ] why is an array deletion operation O(N) complexity? (i.e., from Anchor/runner example - lesson 3 assignment 3)
+- [ ] divide and conquer lesson 2 :  partitioning
+      - **need to confirm desired order and outcome of partitioned elements in example**
+        - i.e., should [7, 3, 9, 8, 5, 1] result in [3, 5, 1, 7, 9, 8] OR [5, 3, 1, 7, 8, 9]
 
