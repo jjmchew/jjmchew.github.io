@@ -700,6 +700,16 @@ function fibonacci(num) {
   - by placing the pivot element at its correct position it combines the sorted subarrays
   - this does not significantly alter overall time complexity
 
+#### Time Complexity
+- time complexity in quicksort is primarily affected by partitioning step and recursion step
+  - partitioning step: on average, this is O(N), where N is the number of elements in the array
+    - exact implementation may vary, but generally remains linear O(N)
+  - recursion step: on average, this step is log (N) times since each recursive call roughly divides the array into 2 parts
+  - combining partitioning and recursion:  multiply the complexities together to get O(NlogN) which represents the average case scenario when the input is randomly arranged in no order
+
+  - worst-case scenario time complexity degrades to O(N^2)
+
+
 
 
 #### Partitioning
