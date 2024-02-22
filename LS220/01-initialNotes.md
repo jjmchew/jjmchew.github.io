@@ -17,10 +17,12 @@
 ## choosing algorithms
 - **algorithm**:  a set of instructions that outline a specific sequence of steps to solve a problem or perform a task
   - a systematic approach to accomplishing a desired outcome
-- example:  linear search vs binary search
+
+- example:  **linear search vs binary search**
   - linear search:  search each element 1-by-1 until the desired element is found
   - binary search: if the collection is sorted, check at the halfway point first, if number is > than the halfway element, discard the lower half; then check the halfway point of the remaining half
     - generally faster than linear search for sorted collections
+
   - for a collection of 8 elements, linear search needs up to 8 steps; binary search needs up to 3
   - for a collection of 1000 elements, linear search may need 1000 elements; binary might need 10
 
@@ -44,35 +46,37 @@
   - sometimes the average-case and best-case scenarios may also be considered, but worst-case is typically the most critical consideration (algorithm won't perform worse than this)
 - linear search has a time complexity of O(N) ("oh of N") where N is the size of the input
 
-#### O(1)
+#### O(1) : constant
 - the number of steps required by the algorithm is constant, regardless of input size
   - time complexity is constant : algorithm performance does *not* degrade as input size increases
   - does not necessarily mean it takes only 1 step, just that the number of steps does not vary with input size
 - e.g., retrieving a value from a hash table (accessing a key-value pair always takes the same time - direct access, no need to iterate through the entire data structure)
 - e.g., accessing an array item via index (location in memory is calculated based on index)
 
-#### O(logN)
+#### O(logN) : increasing in proportion to log of input size
 - the number of steps grows proportionally to the *logarithm of the input size*
   - this scales very well, even for larger input sizes
 - e.g., binary search algorithm : at each step, divide the problem space in half by comparing the middle element
   - since we divide in half, the number of steps grows logarithmically with the size of the input
   - e.g., we have a sorted array of 1000 elements:  worst-case, need ~10 steps to locate the value.  If we double the number of elements to 2000, need only +1 steps (~11 steps)
 
+- proportional to log2 is roughly the same as log, hence O(log2 N) is O(logN)
+
 - **logarithm** : a mathematical operation indicating the exponent to which a fixed value (the base) must be raised to obtain that number
   - "logarithm base 2" is `log2` : log2 of 8 is 3 (2 ^ 3 = 8) : also the number of times we can divide 8 by 2 (to get 1)
 
-#### O(N)
+#### O(N) : increasing linearly with input size
 - the number of steps grows linearly with the size of the input
   - as N increases, the time taken by the algorithm increases proportionally
 - e.g., linear search (checking every element)
 
-#### O(NlogN)
+#### O(NlogN) : typically perform a LogN operation on each of N elements (e.g., quicksort)
 - the number of steps grows proportionally to product of N and logN (NlogN)
 - e.g., collection of N elements, need to perform a task on each element;  time to perform this task increases at a rate that is proportional to NlogN
   - e.g., Merge sort or Quick sort:  both algorithms divide the collection into smaller collections, sort them individually, merge or combine back together
     - Merge sort:  merging takes O(N) for each iteration, total number of iterations is logN
 
-#### O(N^2)
+#### O(N^2) : quadratic
 - the number of steps is proportional to the square of the input size
   - "quadratic time complexity"
 - e.g., 2 nested loops iterating over an array of size N
@@ -80,20 +84,25 @@
   - since each element needs to be compared with every other element, end up with N * N = N^2
 - e.g., bubble sort or selection sort
 
-#### O(2^N)
+#### O(2^N) : exponential
 - the number of steps (exeuction time) grows exponentially with the size of the input
   - for each additional element in the input, the execution time of the algorithm doubles
   - this exponential growth occurs since the algorithm generates an increasing number of subproblems or recursive calls with each input element
 - generally considered highly inefficient - alternative approaches are usually sought
+  - not suitable for large-scale problems
 - e.g., non-memoized recursion : the algorithm repeatedly performs redundant calculations
   - results in exponential increase in number of recursive calls and consequently, execution time
+  - e.g., non-memoized fibonacci function
 
-#### O(N!)
+#### O(N!) : factorial
 - the number of steps grows at a factorial rate with the size of the input
   - "factorial time complexity"
   - **factorial** : the produce of all positive integers from 1 to N
 - e.g., pathfinding algorithms:  finding the shortest path between all N cities - each permutation of paths needs to be explored
   - the number of paths grows factorially
+- factorial time complexity grows more quickly than exponential complexity
+  - less suitable for large-scale problems than exponential complexity
+
 
 ### Big-O Complexity chart
 - can google this
@@ -153,6 +162,22 @@
   } // overall O(U) + O(T)
   ```
 
+- example problem:
+```javascript
+function test(n) {
+  let result = [];
+  for (let i = 0; i < n; i++) {
+    result.push(new Array(n).fill(0));
+  }
+  return result;
+}
+```
+  - time complexity O(N^2) : n arrays of size 'n' are created
+    - typically the creation of an array (`new Array(n)` would be an O(1) operation, memory allocated, but not filled)
+      - however, `.fill(0)` is linear O(N) since each element in array is set
+  - space complexity O(N^2) : variable `result` contains `n` arrays of size `n`
+
+
 ## Sorting algorithms
 - sorting is a fundamental operation in computer science to make data more manageable and accessible
   - sorting enables faster search, data analysis, optimizes performance of other algorithms that rely on ordered data
@@ -168,6 +193,17 @@
   - size of dataset
   - degree of order of the dataset
   - cost association with comparisons and swaps
+
+- overview of various sorting algorithms:
+  - bubble sort: compare and swap adjacent elements (builds right to left)
+    - performs well on nearly sorted arrays
+  - selection sort: look for smallest element and build sorted array from left to right
+    - generally performs fewer swaps than bubble sort, can be a good choice when cost of swapping is high
+  - insertion sort: pull out each element and shift them to the right if they are larger than the 'pulled' element
+    - for partially / nearly sorted arrays, can be better than merge or quick sort
+    - typically performs less comparisons than bubble sort - good if comparisons are costly in time/resources
+
+ 
 
 ### Bubble sort
 - algorithm
@@ -301,6 +337,7 @@ console.log(insertionSort(array)); // Output: [1, 2, 3, 4]
   - also known as slow/fast pointers
   - often used to find midpoint of an array, determining if duplicates exist
   - also good for removing duplicates or paritioning elements based on specific conditions
+  - reader/writer variation is great for linked lists (swapping is hard with linked lists)
 
 - K-window slide: process elements within a sliding window of size "K"
   - maintain a fixed window and slide it through the list, updating boundaries as you iterate
@@ -704,6 +741,7 @@ function fibonacci(num) {
 - time complexity in quicksort is primarily affected by partitioning step and recursion step
   - partitioning step: on average, this is O(N), where N is the number of elements in the array
     - exact implementation may vary, but generally remains linear O(N)
+    - algorithm scans through the array once and partitions elements
   - recursion step: on average, this step is log (N) times since each recursive call roughly divides the array into 2 parts
   - combining partitioning and recursion:  multiply the complexities together to get O(NlogN) which represents the average case scenario when the input is randomly arranged in no order
 
