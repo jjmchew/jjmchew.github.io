@@ -898,7 +898,7 @@ request.send(json);
 - HTTPie : linux command line tool
   - to check version / installation: `http --version`
   - `http --print HBhb` : show submitted headers, request, etc. and response headers, body, etc.
-  - `http Authorization:"token AUTH_TOKEN` : was required to submit a request header "Authorization" with value "token AUTH_TOKEN" to authenticate on heroku app
+  - `http Authorization:"token AUTH_TOKEN"` : was required to submit a request header "Authorization" with value "token AUTH_TOKEN" to authenticate on heroku app
   - `http [url] name="Purple Pen 2.0"` : submits json body key-value pairs in request
   - `http --form` : submits POST request with header/content-type as HTML form data (e.g., `name=purple+Pen+2.0&sku=purp101`)
 

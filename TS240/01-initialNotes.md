@@ -655,6 +655,13 @@ jsonData = {
   }
   ```
 
+- can also use `Record` TS utility
+```typescript
+const dictionary: Record<string, string> = { // equivalent to { [key: string]: string }
+  hello: "world",
+  goodbye: "moon",
+};
+```
 
 ## keyof operator
 - used to dynamically create a new type based on the properties of an existing interface
@@ -866,9 +873,186 @@ async function handleError(): Promise<string> {
   });
   ```
 
+
+- if creating a function to throw an error (e.g., for exhaustiveness checking)
+  - this function should return `never`
+```typescript
+function assertNever(value: never): never {  // note the return of this function is `never`
+  throw new Error(`Unhandled value: ${value}`);
+}
+
+function getArea(shape: Shape): number {  // return for this function doesn't need to include `never` (or `Error`)
+  switch (shape.kind) {
+    case "circle":
+      return Math.PI * shape.radius ** 2;
+    case "square":
+      return shape.sideLength ** 2;
+    default:
+      return assertNever(shape);
+    // Compiler checks for exhaustiveness
+  }
+}
+```
+
+
+
+## TS Utility functions
+
+### Pick / Omit
+- e.g., `type propOnly = Pick<myInterface, "prop">` where,
+  - `propOnly` will be the name of a new type alias created from `myInterface`
+  - `myInterface` is a defined interface
+  - `prop` is some property defined within `myInteface`
+
+- useful to define a subset of properties from a larger type that is specific to a particular function:
+```typescript
+// Full product type with all properties
+type Product = {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  color: string[];
+  size: string[];
+  image: string;
+};
+
+// Using Pick to select only the properties needed for the product listing page
+type ProductListing = Pick<Product, "name" | "price" | "image">;
+
+// Using Pick to select only the properties needed for the product detail page
+type ProductDetail = Pick<Product, "description" | "size" | "color">;
+
+function displayProductListing(product: ProductListing) {
+  console.log(`Name: ${product.name}`);
+  console.log(`Price: ${product.price}`);
+  console.log(`Image: ${product.image}`);
+}
+
+function displayProductDetail(product: ProductDetail) {
+  console.log(`Description: ${product.description}`);
+  console.log(`Size options: ${product.size.join(", ")}`);
+  console.log(`Color options: ${product.color.join(", ")}`);
+}
+
+const products: Array<Product> = fetchProductsFromServer(); // Returns an array of products from the server
+
+products.forEach((product) => {
+  displayProductListing(product);
+  displayProductDetail(product);
+});
+```
+
+- implementation of `Pick` uses "mapped types" (advanced TypeScript feature):
+```typescript
+type Pick<T, K extends keyof T> = {
+  [P in K]: T[P];   // P in K is a mapped type: see 1 below
+};
+```
+- 1:  a new type will be created that has the same properties:  property `P` in set of keys `K`
+    - each of those keys will have a value with type `T[P]` (i.e,. same type as the value in original type `T`)
+
+
+#### Omit
+- similar to `Pick`, but omits the defined properties from the existing interface
+- Note:  omitting a key that is not a defined property will NOT raise a compile error
+
+
+### ReturnType
+- a function which extracts the return type from a given function type signature
+  - i.e., `typeof inputFunction`, not `inputFunction`
+
+```typescript
+function createPerson(name: string, age: number) {
+  return { name, age };
+}
+
+type CreatePersonFunction = typeof createPerson; // (name: string, age: number) => { name: string; age: number; }
+type Person = ReturnType<CreatePersonFunction>; // { name: string; age: number; }
+
+// alternative:
+type Person = ReturnType<typeof createPerson>;
+
+
+function greetPerson(person: Person) {
+  console.log(`Hello, ${person.name}! You are ${person.age} years old.`);
+}
+```
+- if `createPerson` is later changed, the type definition for `Person` will remain up-to-date
+- note: `typeof` here is a TS operator used on TS types, not the JS operator (which only returns primitives)
+
+### Parameters
+- extracts the types of parameters from a function type signature
+  - provides types as a tuple
+  - similar to `ReturnType` : takes `typeof inputFunction` as input, not `inputFunction`
+
+```typescript
+function sum(prefix: string, ...numbers: number[]): string {
+  const total = numbers.reduce((total, n) => total + n, 0);
+  return `${prefix}${total}`;
+}
+
+type SumParameters = Parameters<typeof sum>;
+
+const input: SumParameters = ["The total is: ", 1, 2, 3, 4];
+const result = sum(...input);
+
+console.log(result); // Output: The total is: 10
+```
+
+### Partial
+- a TS function that creates a new type where all properties of the base type are optional
+  - good for optional properties (e.g., used in configuration)
+
+
+```typescript
+type ApiConfig = {
+  page: number;
+  pageSize: number;
+  sort: "asc" | "desc";
+};
+
+const defaultConfig: ApiConfig = {
+  page: 1,
+  pageSize: 10,
+  sort: "asc",
+};
+
+async function fetchUsers(config: Partial<ApiConfig> = {}): Promise<void> {
+  const finalConfig = { ...defaultConfig, ...config };
+
+  const response = await fetch(
+    `/api/users?page=${finalConfig.page}&pageSize=${finalConfig.pageSize}&sort=${finalConfig.sort}`
+  );
+  const data = await response.json();
+
+  console.log(data);
+}
+
+// Fetch users with default config
+fetchUsers();
+
+// Fetch users with custom config
+fetchUsers({ page: 2, sort: "desc" });
+```
+
+### Be aware of actual runtime properties of objects
+- TS and type-safety is an added layer of error checking over the underlying JS code
+  - even if TS raises an error that a property is not accessible (based on type definitions), that property may still exist in the actual JS object
+  - if that object is "stringified" and then snet over the network, **all** properties, not just the valid defined type properties are sent over the network - this can create security hazards or performance issues
+  - libraries like `io-ts`, `runtypes`, or `zod` help to ensure types are enforced at runtime and prevent extra properties from being included in serialized objects
+
+```typescript
+const person = { name: "Jane", age: 45 };
+const personName: { name: string } = person; // TS will limit access to 'age' based on object literal type definition
+console.log(personName.age); // Type error: Property 'age' does not exist on type 'PersonName'.
+
+const json = JSON.stringify(personName);
+console.log(json); // Output: {"name":"Jane","age":45}  'age' is still included!
+```
+
+
 ##
-
-
 
 
 ## Misc
