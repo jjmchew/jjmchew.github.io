@@ -156,7 +156,8 @@
     - `String([undefined])` returns `''`
     - `String([false])` returns `'false'`
 
-- `Boolean(value)` or `!!(value)` : converts `value` to `true` or `false` (EFUNNZZZ)
+- `Boolean(value)` or `!!(value)` : converts `value` to `true` or `false`
+    - Falsy values in JS:  EFUNNZZZ  (Empty, False, Undefined, Null, NaN, 0, -0, 0n)
 
 
 ## Object properties and mutation

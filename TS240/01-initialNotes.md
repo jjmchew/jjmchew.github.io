@@ -92,6 +92,16 @@
 - `undefined` : an uninitialized variable
 - e.g., `number[]` (array) OR `Array<number>` (equivalent)
 - `any` (indicates no type-checking)
+- `unknown`
+- `object` : used for non-primitives
+    - typically not that useful (provides no info on properties available in an object)
+    - a custom-defined index signature is better for objects with properties (properties can be logged)
+      - to do anything with properties, need to narrow type first
+    ```typescript
+    interface CustomObject {
+      [key: string]: unknown;
+    }
+    ```
 - `void` : a type that represents the absence of a value; typically used as return type for functions that don't return a value
 - e.g., `let nyName: string = 'Alice';`
 - e.g., `function getNum(): number {}`  (indicates `getNum` returns a number)
@@ -285,6 +295,25 @@ class Point {
   - `#` is a true private method/property
 
 
+- using the keyword `public` automatically creates properties with the same names / types
+```typescript
+class Person {
+  constructor(public name:L string, public age: number) {}
+}
+
+// is equivalent to
+class Person {
+  name: string;
+  age: number;
+
+  constructor(name: string, age: number) {
+    this.name = name;
+    this.age = age;
+  }
+}
+```
+
+
 ## Union types
 - **narrow type** : a type that is more specific and represents a smaller set of possible values
 - **wide type** : a type that is more general and represents a larger set of possible values
@@ -373,6 +402,7 @@ const user2: User<string, number> = { name: 'Jane', age: 'thirty' , id: 222938 }
 
 - **type predicate**
   - a function which returns true or false to indicate whether a object belongs to a specific type
+  - return type of this function must include `param is [some type]`
   - can be used as a custom "type guard"
   - note: TS cannot validate that the logic within the function is correct
 
@@ -475,6 +505,187 @@ function describeShape(shape: Shape) {
 
 - type validations can be managed using external libraries:  e.g., io-ts, runtypes, zod
 
+## Declaration Merging
+- only works for **interfaces**
+- if an interface is defined more than once, TS will merge all definitions into a single definition containing all the properties/methods
+  - if any of the properties/methods conflict, an error will be raised
+  - also works for imported interfaces (e.g., `import {Mammal} from './animals'` where `interface Mammal { name: string; legs: number; }`)
+- an error "Duplicate identifier" will be raised if this is attempted with type aliases
+
+
+## Extending interfaces
+- e.g., `interface Elephant extends Mammal {}` where `Mammal` is a previously-defined interface
+  - `Elephant` will take all properties/methods of `Mammal` and additional properties/methods can be defined
+- e.g., `interface Elephant extends Mammal, Tusked {}` where `Mammal` is a previously-defined interface, `Tusked` is a previously defined type alias OR interface
+- cannot use `extends` to create a type alias (i.e., `type Walrus extends Tusked {}` will NOT work)
+- an error will be raised if any methods/properties conflict (i.e., are not assignable from child to parent)
+  - need to make parent wider, or child narrower to accommodate
+
+- `extends` is also used for **generic constraints** (i.e., ensuring that any type passed in possesses a specific property)
+```typescript
+function describeItem<T extends { age: number }>(item: T) { // all types 'T' must (at minimum) have property `age` as `number`
+  if (item.age < 10) {
+    console.log(
+      `This item is ${item.age} years old. It's still got that fresh style!`
+    );
+  } else if (item.age < 100) {
+    console.log(
+      `This item is ${item.age} years old, giving it that touch of character!`
+    );
+  } else {
+    console.log(
+      `Wow! This item is ${item.age} years old. This is a true antique, with a history that speaks volumes!`
+    );
+  }
+}
+```
+
+
+
+## Type intersections
+- analogous to extending interfaces
+- uses the `&` operator
+- e.g., `type Elephant = Mammal & TrunkedAnimal`, where `Mammal` is a type alias, and `TrunkedAnimal` is another type alias
+- e.g., 
+  ```typescript
+  type ProductWithReview = Product & {  // Product is a previously defined type alias
+    reviews: Review[];                  // Review is another previously defined type alias
+  }
+  ```
+- if there are conflicting properties, TS will take the intersection of those 2 properties
+  - if there are no overlapping properties, type `never` will be assigned
+  - Note:  NO error will be raised when types are defined / intersected - will only raise an error once a type is assigned to `never` (e.g., when defining an object of the intersecting type)
+
+- using `extends` may be preferable since it will raise errors
+
+
+## Interfaces vs Type Aliases
+- intefaces define *objects*;  type aliases define *all* types
+  - type aliases can also be used for primitives, tuples, unions, etc.
+
+- interfaces are considered "open" - can be extended, later defined again and automatically merged
+- type aliases are considered "closed" - once defined, cannot be re-declared or changed
+
+- both intefaces and type aliases can be used to create new interfaces/types
+  - interfaces use `extends` : more expressive of hierarchies, better error messages, allows better code reusuability and modularity
+  - type aliases use `&` : better for more complex types
+
+
+## Index Signatures
+- used to define a pattern for objects keys-values
+```typescript
+interface UserProfile {
+  name: string,
+  age: number,
+  email: string,
+}
+
+interface Accounts {
+  readonly [username: string]: UserProfile, // defines pattern for key-value properties defined in 'Accounts' object
+  admin: UserProfile,              // "named properties" can also be added, but key-value must be consistent with index signature
+                                   //  - otherwise, error will be raised
+                                   //  - can also define readonly properties
+}
+
+const userAccounts: Accounts = {
+  admin: {
+    name: 'admin',
+    age: 25,
+    email: 'admin@admin.com',
+  },
+  user1: {
+    name: 'real name',
+    age: 23,
+    email: 'j@j.com',
+  },
+  crazyhandle: {
+    name: 'jim bo',
+    age: 21,
+    email: 'jim@bo.com',
+  }
+};
+```
+- example index signature for JSON data:
+```typescript
+interface MyJSONData {
+  [key: string]:
+    | string
+    | number
+    | boolean
+    | null
+    | MyJSONData                                              // note nesting of this type
+    | Array<string | number | boolean | null | MyJSONData>;
+}
+
+const jsonData: MyJSONData = JSON.parse(
+  '{ "name": "John", "age": 30, "address": { "street": "123 Main St", "city": "Anytown", "state": "CA" }, "hobbies": ["reading", "music"] }'
+);
+
+/*
+Note that the shape of jsonData matches the index signature: 
+
+jsonData = {
+  name: "John",
+  age: 30,
+  address: { street: "123 Main St", city: "Anytown", state: "CA" },
+  hobbies: ["reading", "music"],
+};
+
+*/
+```
+
+- Note:  JS automatically converts all object keys to strings
+        - even if index signature indicates `number`, index will be converted to a string
+
+- working with arrays:
+  - remember arrays are type `object` (i.e., `typeof myArray === 'object'`)
+  - use `Array.isArray(someVar)` to determine if it is an array
+  - where a parameter requires an object, an array will also be valid
+  - the index signature for arrays will be:
+  ```typescript
+  interface CustomArray<T> {
+    length: number,
+    [index: number]: T,
+  }
+  ```
+
+
+## keyof operator
+- used to dynamically create a new type based on the properties of an existing interface
+- e.g.
+  ```typescript
+  type Animal = {
+    name: string;
+    species: string;
+    age: number;
+    isEndangered: boolean;
+  };
+
+  const tiger: Animal = {
+    name: "Felix",
+    species: "Panthera tigris",
+    age: 7,
+    isEndangered: true,
+  };
+
+  function getAnimalProp(animal: Animal, key: keyof Animal): unknown {
+    return animal[key];
+  }
+
+  getAnimalProp(tiger, "species"); // Returns 'Panthera tigris'
+
+  // alternative (wrong) approach
+  function getAnimalProp(animal: Animal, key: string): unknown {
+    return animal[key]; // Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'Animal'.
+    // No index signature with a parameter of type 'string' was found on type 'Animal'
+  }
+  ```
+  - using an index signature is too generic (doesn't limit keys to specific values)
+  - using `key: 'name' | 'species' | 'age' | 'isEndangered'` isn't scalable and is error-prone
+  - using `keyof` automatically uses key properties of `Animal` to limit potential key strings to literal types
+
+
+
 
 ## Misc
 - **"magic strings"** - the use of a string to affect the behaviour (execution) of a function which is not otherwise defined
@@ -503,5 +714,14 @@ function describeShape(shape: Shape) {
       - confirm understanding of type narrowing and when it is / isn't possible
 - [ ] lesson 4 assignment 18 : https://launchschool.com/lessons/edc1804c/assignments/09797d35
       - unknown vs any : validating type - how much is sufficient, compile errors vs runtime errors
+
+- [ ] lesson 5 assignment 10 problem 2:  https://launchschool.com/lessons/18156389/assignments/39894170
+      - use of `Map` raises a TS compile error - "Cannot find name 'Map'"  (using node v21.6.2, typescript v5.3.3)
+
+- [ ] lesson 5 assignment 12 problem 1:  https://launchschool.com/lessons/18156389/assignments/7aa69c34
+      - I confirm that the input object was actually an array - does it matter?
+
+- [ ] problems "narrowing", problem 2:  https://launchschool.com/exercises/a2c7b933
+      - could review implementing type predicates
 
 
