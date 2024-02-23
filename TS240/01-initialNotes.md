@@ -81,6 +81,9 @@
   ```
 - create folder `src` for TS code (common convention)
 - `npx tsc` : runs TS compiler (from local `node_modules` package)
+  - this runs tsc based on `tsconfig.json` (i.e,. will convert all ts files in /src and place js files in /dist)
+  - can also run `npx tsc file.ts` which will just convert `file.ts` to `file.js` within the current directory
+
 
 ## Common Types
 - don't use capitalized types (these are special built-in types)
@@ -237,6 +240,9 @@ greet(8); // Argument of type 'number' is not assignable to parameter of type 's
   - a type `Student` can be assigned to `Engineer` as long as `Student` has at least the same members and properties as `Engineer`
   - Note:  if an object with additional properties is assigned to another type with *less* properties, those extra properties will not be accessible in the new type (according to TS compiler)
   - Note:  when using literal object type annotations, extra properties *cannot* be added - TS will raise a compile-time error
+
+- type A is **assignable** to type B if A contains (at minimum) all of B's properties (A can have more properties)
+  - EXCEPTION in TS:  if passing an object literal, additional properties are NOT allowed
 
 
 ## Working with Classes
@@ -683,6 +689,184 @@ jsonData = {
   - using an index signature is too generic (doesn't limit keys to specific values)
   - using `key: 'name' | 'species' | 'age' | 'isEndangered'` isn't scalable and is error-prone
   - using `keyof` automatically uses key properties of `Animal` to limit potential key strings to literal types
+
+
+## Promises and async/await
+- in TS, promises return `Promise<T>` where `T` is the type of the expected result
+  - technically, promises may resolve to `T | PromiseLike<T>`, where `PromiseLike<>` is a generic type for promises which don't use the JS Promise API (e.g., from 3rd party libraries which were more common before ES2015)
+  - where `.then` is chained, `T` must be the type of the final result after all `.then` callbacks
+
+```typescript
+const promise3: Promise<Array<boolean>> = new Promise((resolve) => {
+  setTimeout(() => {
+    resolve(7);
+  }, 1000);
+})
+  .then((result) => {
+    return `The answer is ${result}`;
+  })
+  .then((result) => {
+    return [true, false, false];
+  });
+
+// another example (async/await)
+async function retrieveString(): Promise<string> {
+  const stringPromise: Promise<string> = new Promise((resolve) =>
+    setTimeout(() => resolve("Launch School"), 1000)
+  );
+  const stringResult: string = await stringPromise;
+  return stringResult;
+}
+```
+
+
+- catching errors (also see section below on 'Handling Errors')
+```typescript
+async function handleError(): Promise<string> {
+  try {
+    const rejectedPromise: Promise<string> = Promise.reject("error");
+    const result: string = await rejectedPromise;
+    return result;
+  } catch (error: unknown) {
+    if (typeof error === "string") {
+      return error;
+    }
+    throw new Error("We can't handle that type of error!");
+  }
+}
+```
+
+
+## Best Practices
+
+### Common properties
+- If multiple types contain common properties
+  - generally best to create a "common" type to contain all common properties
+  - then use `extends` or `&` to create specific types
+  - then explicitly create union types to communicate options / commonalities
+  - this makes types easier to understand and maintain - communicates better to other devs
+  ```typescript
+  type VehicleCommon = {
+    make: string;
+    model: string;
+    year: number;
+  };
+
+  type Car = VehicleCommon & {
+    bodyType: "sedan" | "hatchback" | "coupe" | "convertible" | "wagon";
+    numDoors: 2 | 4;
+  };
+
+  type Truck = VehicleCommon & {
+    bodyType: "pickup" | "box";
+    numWheels: 4 | 6 | 8;
+    payloadCapacity: number;
+  };
+
+  type Vehicle = Car | Truck;
+  ```
+
+### Spread operator (`...obj`)
+- can be used to copy properties of 1 object into another
+- note order when listing properties:  properties listed later will be overwritten
+- note TS will enforce type constraints - cannot add (or remove required) properties when using spread operator
+  - e.g., `const newPerson: Person = { age: 31, ...oldPerson }` : if `oldPerson.age` exists, it will overwrite the defined age of `31`
+  - e.g., `const newPerson: Person = { ...oldPerson, age: 31}` : age `31` will overwrite age of `oldPerson`
+
+
+### Options patterns
+- Best (most readable and extensible):
+  - define an "Options" interface with optional properties
+  - define an empty object as default parameter
+  - use `??` (nullish coalescing operator) to specific default values in function
+    - will look at operand on the left - if it's `null` or `undefined` will display operand on the right
+
+  ```typescript
+  interface RectangleOptions {
+    unit?: string;
+  }
+
+  function calculateRectangleArea(
+    width: number,
+    height: number,
+    options: RectangleOptions = {}
+  ): string {
+    const unit = options.unit ?? "sq. units";
+    const area = width * height;
+    return `${area} ${unit}`;
+  }
+  ```
+
+- Not bad (inline):
+  - define the options object inline in parameter definition:  immediately destructure and provide default value
+  ```typescript
+  function calculateRectangleArea(
+    width: number,
+    height: number,
+    { unit = "sq. units" }: { unit?: string } = {}
+  ): string {
+    const area = width * height;
+    return `${area} ${unit}`;
+  }
+  ```
+
+- can also use some combination of the above:
+  ```typescript
+  function calculateRectangleArea(
+    width: number,
+    height: number,
+    options: { unit?: string } = {}
+  ): string {
+    const area = width * height;
+    return `${area} ${options.unit ?? "sq. units"}`;
+  }
+  ```
+
+
+
+### Handling errors
+- TS default behaviour (non-strict mode) allows variables in catch blocks to be type `any`
+- TS default behaviour (strict mode) requires variables in catch blocks to be type `unknown`
+  - best practice is to define a custom error class (thus it will be known), narrow the type in the catch block, and issue a new error if something unknown occurs
+  ```typescript
+  class MyCustomError extends Error {
+    constructor(message: string) {
+      super(message);
+    }
+  }
+
+  let error: MyCustomError;
+  try {
+    throw new MyCustomError("My custom error message");
+  } catch (e: unknown) {
+    if (e instanceof MyCustomError) {
+      error = e;
+    } else {
+      throw new Error("Unexpected error occurred");
+    }
+  }
+  console.log(error.message);
+  ```
+
+- consider whether to throw a new error (as above), or throw the same error (which may be an unexpected exception from elsewhere in the call stack)
+- always best to confirm if the error you catch is the expected error
+
+- handling errors in catch blocks or catch methods is the same:
+  - best to type errors as `unknown`, then use type guards to specify and manage errors
+  - Note:  with rejected promises: these may be either strings or errors, so always best to assume type `unknown` and confirm if type is `string` or `Error`
+  ```typescript
+  Promise.reject("rejected").catch((error: unknown) => {
+    if (typeof error === "string") {
+      return error;
+    } else if (error instanceof Error) {
+      return error.message;
+    } else {
+      throw new Error("We can't handle that type of error!");
+    }
+  });
+  ```
+
+##
 
 
 
