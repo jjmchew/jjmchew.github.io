@@ -354,6 +354,128 @@ const user2: User<string, number> = { name: 'Jane', age: 'thirty' , id: 222938 }
   - e.g., `const numbers: number[] = [1, 2, 3];`
 
 
+
+## Narrowing
+- the process of refining a value from a larger set of possible types to a smaller set of types (or single type)
+
+- TS uses "control flow analysis" to understand if types are being narrowed through conditional `if/else` or `switch` statements
+  - can use `in` : e.g., `if ('radius' in shape) // etc.`
+  - can use `typeof` : e.g., `if (typeof value === 'string') // etc.` :  note only primitive JS types will be returned
+  - can use "truthiness" : e.g., `if (circle) // etc.` (would remove `undefined` from possible type options)
+  - can use `instanceof` : e.g., `if (shape instanceof Circle) // etc`
+
+  - can use type predicate (special function)
+  - can use short circuiting : e.g., `'opacity' in shape && console.log('this shape has opacity ', shape.opacity)`
+  - can use discriminated unions : i.e., a common property between types used to identify the type
+
+
+- **predicate**:  a function that takes 1 items as input and returns true or false based on whether that function satisfies some condition
+
+- **type predicate**
+  - a function which returns true or false to indicate whether a object belongs to a specific type
+  - can be used as a custom "type guard"
+  - note: TS cannot validate that the logic within the function is correct
+
+  ```typescript
+  function isFish(pet: Fish | Bird): pet is Fish {
+    return (pet as Fish).swim !== undefined;
+  }
+
+  // another example
+  function isCircle(shape: Shape): shape is Circle {
+    return 'radius' in shape;
+  }
+  ```
+
+- **discriminated union** : union types where each type within the union has a common *discriminant property* which helps to identify the specific type an object may belong to
+  - e.g., `type Circle = { kind: 'circle'; radius: number}` and `type Square = { kind: 'square'; sideLength: number}`
+    - property `kind` is the discriminant property and can be used for narrowing
+  - typically a `switch` statement is used on that property to define specific actions for each type
+  - these are helpful for:
+    - distinguishing variants of a similar structure
+    - modelling workflows or processes (i.e., each state can have a distinct 'status')
+    - error handling : as above, define distinct status states for 'success' or 'failure'
+
+  - using `in` is better when there is no discriminant property available
+  - all you care about is a specific property within a wide range of types
+      - e.g., `email` property could be part of `Student`, `Store`, `Employee` types
+
+## Exhaustiveness Check
+- a feature of many typed languages that helps guarantee all possible cases have been handled 
+  - e.g., in discriminated unions, ensure that all possible shape types have been addressed using `switch` statements
+- in TS:  use the `never` type
+  - any type assigned to `never` will raise a compile error
+```typescript
+// Shape definitions above
+
+type Shape = Circle | Square | Triangle;
+
+function describeShape(shape: Shape) {
+  let area: number;
+
+  switch (shape.kind) {
+    case "circle":
+      area = Math.PI * shape.radius ** 2;
+      break;
+    case "square":
+      area = shape.sideLength ** 2;
+      break;
+    default:
+      const _exhaustiveCheck: never = shape;
+      // Type 'Triangle' is not assignable to type 'never'.
+      throw new Error(`Invalid shape: ${JSON.stringify(_exhaustiveCheck)}`); // additional safeguard to identify error at runtime
+  }
+
+  console.log("The area is " + area);
+}
+```
+
+
+## Any
+- use of type `any` essentially turns off type-checking for anything related to that variable / function / etc.
+- this can cascade throughout a code base (i.e., type `any` variables can be assigned to any other type, passed to functions, etc.)
+- this is likely to prevent compile errors, but will result in runtime errors
+- using `any` may be good for:
+  - working with 3rd party libraries, especially when no type definitions are available
+    - use type guards to narrow `any` types to expected types
+  - an initial step when migrating a JS codebase to TS
+
+
+## Type unsoundness
+- **type unsoundness** : occurs when the type system (e.g., TS) fails to prevent type errors, resulting in runtime errors
+- may be caused by:
+  - use of `any` (and assignment of variables with type `any` to specific types - this won't be checked because of `any`)
+  - use of `as` (type assertions)
+    - e.g., 
+    ```typescript
+    let x: any = "Launchschool";
+    const y: number = x as number;  // this assertion will allow a string to be assigned to a number type variable
+    ```
+  - indexed access of arrays
+    - TS allows assignment of index array element to type string since arrays can be unbounded in JS (no way of knowing whether element exists)
+    ```typescript
+    const names: string[] = ["John", "Jane"];
+    const name: string = names[2];
+    name; // undefined
+    ```
+
+
+## Unknown
+- type `unknown` is a safer alternative to `any` (introduced in TS v3.0)
+- `unknown` types:
+  - cannot be assigned to any other type
+  - properties on this type cannot be accessed
+  - must be narrowed to more specific types with type guards to re-assign or use these types
+  - accessing properties or using the `unknown` objects is likely to require rigourous type guards / type predicates
+
+- general best practice if type assertions are used:
+  - use `unknown` type to initially indicate that objects come from external sources and may be uncertain
+  - initially declaring type as `unknown` allows TS to enforce type checks and validations which would not be present if the variable was initially asserted to be a specific type;  this helps to prevent runtime errors
+  - best to do initial basic validations on unknown type, then make assertions
+
+- type validations can be managed using external libraries:  e.g., io-ts, runtypes, zod
+
+
 ## Misc
 - **"magic strings"** - the use of a string to affect the behaviour (execution) of a function which is not otherwise defined
   - generally NOT recommended, can be unreliable
@@ -375,3 +497,11 @@ const user2: User<string, number> = { name: 'Jane', age: 'thirty' , id: 222938 }
     }
   }
   ```
+
+# to review
+- [ ] lesson 4 assignment 8 : https://launchschool.com/lessons/edc1804c/assignments/5af3f807
+      - confirm understanding of type narrowing and when it is / isn't possible
+- [ ] lesson 4 assignment 18 : https://launchschool.com/lessons/edc1804c/assignments/09797d35
+      - unknown vs any : validating type - how much is sufficient, compile errors vs runtime errors
+
+
