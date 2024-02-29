@@ -235,7 +235,7 @@ greet(8); // Argument of type 'number' is not assignable to parameter of type 's
 
 
 ## Structural typing
-- structural typing is where the compiler compares two types by looking the properties and types of properties (not the names of the types)
+- structural typing is where the compiler compares two types by looking at the properties and types of properties (not the names of the types)
   - i.e., `type Student = {name: string, age: number}` is the same as `type Engineer = {name: string, age: number}`
   - a type `Student` can be assigned to `Engineer` as long as `Student` has at least the same members and properties as `Engineer`
   - Note:  if an object with additional properties is assigned to another type with *less* properties, those extra properties will not be accessible in the new type (according to TS compiler)
@@ -1083,13 +1083,16 @@ console.log(json); // Output: {"name":"Jane","age":45}  'age' is still included!
 - [ ] lesson 4 assignment 18 : https://launchschool.com/lessons/edc1804c/assignments/09797d35
       - unknown vs any : validating type - how much is sufficient, compile errors vs runtime errors
 
-- [ ] lesson 5 assignment 10 problem 2:  https://launchschool.com/lessons/18156389/assignments/39894170
+- [X] lesson 5 assignment 10 problem 2:  https://launchschool.com/lessons/18156389/assignments/39894170
       - use of `Map` raises a TS compile error - "Cannot find name 'Map'"  (using node v21.6.2, typescript v5.3.3)
 
 - [ ] lesson 5 assignment 12 problem 1:  https://launchschool.com/lessons/18156389/assignments/7aa69c34
       - I confirm that the input object was actually an array - does it matter?
 
-- [ ] problems "narrowing", problem 2:  https://launchschool.com/exercises/a2c7b933
+- [X] problems "narrowing", problem 2:  https://launchschool.com/exercises/a2c7b933
       - could review implementing type predicates
 
+- [X] review terms wider / narrower / member (is a member used for types when they aren't yet properties / methods)
+- [X] review use of term "member"
 
+- [X] function signature?  use of the term constructs?
