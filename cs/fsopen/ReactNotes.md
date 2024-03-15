@@ -54,3 +54,19 @@
 - make sure `db.json` file is in project root directory
 - run with `npm run server`
 - object in `db.json` will be served at `localhost:3001/persons`
+
+
+## misc
+- updating state for a collection:
+  - e.g., `setPersons(persons.map(obj => obj.name === person.name ? newObj : obj));`, where `newObj` might be a response from an API, etc.
+  - `map` returns a new collection, that collection will contain the updated object in place of the old object in the existing collection
+
+- notification messages:
+  - I tried having state within the component to manage a timeout, however the re-draw and update didn't seem to work
+  - it was definitely more straightforward with state in the main app which also managed the timeout with a helper function
+
+
+
+## npm
+- `npm update` : updates the dependencies of the project 
+- `npm install` : installs the dependencies listed in the `package.json` file

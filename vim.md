@@ -13,6 +13,7 @@
   - use arrow keys or `h`: left, `k`: up, `j`: down, `l`: right to navigate
   - `$` : move to end of line (including last character)
   - `w` : move to start of (next) word (excluding first character)
+  - `b` : move back a word
   - `e` : move to end of (current or next) word (including last character)
   - `0` : move to start of a line
   - `8e` : move to 8th (next) word, end of word
@@ -23,7 +24,7 @@
   - `[[` : first line of file
   - `]]` : last line of file
   - `ctrl-i` : next edit location
-  - `ctrl-o' : last edit location
+  - `ctrl-o` : last edit location
   - `507G` : goes to line 507
 
 #### tabs
@@ -141,3 +142,6 @@
   - `:set hlsearch` : enable highlighting of search terms
   - `:set scrolloff=999` : (or `so=999`) keeps cursor in the centre of the screen (default is so=0)
 
+  - `:highlight Comment ctermfg=darkgrey` : changes color of comments to dark grey instead of blue
+  - `:set bg=dark` or `:set bg=light` : changes VIM terminal to dark or light (adjusts color scheme for contrast)
+  ` `:colorscheme <tab>` : will allow pressing tab to cycle through color schemes available in vim
