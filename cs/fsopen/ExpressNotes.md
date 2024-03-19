@@ -1,6 +1,7 @@
 # Express notes
 
 - `npm install express`
+
 ```javascript
 const express = require('express');
 const app = express();
@@ -66,6 +67,12 @@ app.listen(PORT, () => {
   app.use(unknownEndpoint)
   ```
 
+## Cors
+- to run a backend server and a front-end react dev server concurrently and use differnt port numbers, need to install cors middleware
+
+- `npm install cors` : installs Node's cors middleware
+- `const cors = require('cors')`
+- `app.use(cors())`
 
 
 ## Misc
@@ -73,3 +80,34 @@ app.listen(PORT, () => {
 - **nodemon** : used to allow "auto-restart" of a dev server running on localhost ("hot reload")
   - e.g., `npm install --save-dev nodemon` (only required while doing dev)
   - add to `package.json`:  `"dev": "nodemon index.js"`
+
+### Debugging Express
+- can run files using `--inspect` and then use Chrome Developer Tools to debug (e.g., sources > breakpoints, console, etc.)
+  - e.g., `node --inspect index.js`
+  - then open Chrome > go to server URL/port > open dev tools > click on green node logo in top L of dev tools
+
+## Using Environment variables
+- should likely use a `.env` file to store all environment variables for local and prod (e.g., deployed URI / folder, etc.)
+- in `testNode` project, I hard-coded the options into the various files and let the `NODE_ENV` support selecting the appropriate "mode"
+  - this works, but since variables are hard-coded, is less ideal for deployment and quick changes / working with a group
+
+### Back end
+- for `testNode` project, used:
+  - `process.env.NODE_ENV = process.env.NODE_ENV || 'development'`
+  - `const ROOT = process.env.NODE_ENV === 'development' ? '' : '/testa'`
+
+### Front end
+- for `testNode` project, used:
+  - for `api.js`:  set `BASE_URL` with `process.env.NODE_ENV`
+  ```javascript
+  const BASE_URL = process.env.NODE_ENV === 'production'
+                   ? 'https://jjmchew.a2hosted.com/testa/api/persons'
+                   : 'http://localhost:3001/api/persons';
+  ```
+  - check Vite (if using Vite) resources on environment variables:
+    - https://vitejs.dev/guide/env-and-mode.html
+
+  - building (with Vite):
+    - for 'production':  run `vite build --base=/testa/`
+    - for 'development' (i.e., localhost): run `NODE_ENV=development vite build --mode development` 
+    - can still add longer scripts: e.g., `"rm -rf dist && rm -rf ../back/dist && npm run build && cp -r dist ../back"` (adjust `npm run build` to reference the appropriate script and build for prod vs dev)

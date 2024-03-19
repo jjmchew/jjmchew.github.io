@@ -65,8 +65,16 @@
   - I tried having state within the component to manage a timeout, however the re-draw and update didn't seem to work
   - it was definitely more straightforward with state in the main app which also managed the timeout with a helper function
 
-
+## new projects
+- using Vite:  `npm create vite@latest myProject --template react`;  `npm run dev`
+- using Create-React-App:  `npx create-react-app myApp`;  `npm start`
 
 ## npm
 - `npm update` : updates the dependencies of the project 
 - `npm install` : installs the dependencies listed in the `package.json` file
+
+- when creating scripts (e.g., `build:prod`), combine shell commands using `&&`
+  - e.g., `"build:prod": "rm -rf dist && rm -rf ../back/dist && npm run build && cp -r dist ../back"`
+    - will remove old dist files from `front` and `back`, build new `dist` files, copy them to `back` (to be served by `express.static` as part of front-end)
+  - see `testNode` project
+

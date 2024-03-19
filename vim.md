@@ -103,11 +103,24 @@
 
   - `%` : finds matching brackets (goes back and forth b/w the pair)
 
+  - `f`{char} : searches for the next instance of {char}
+  - `;` : repeats the last search
+
+  - `*` : searches for the word under the cursor
+
+
 ### recordings
   - `q` + [letter] : allows you to record keypresses into a register denoted by [letter]
     - press `q` again to stop recording
     - press `@` + [letter] : 'replay' keystrokes
 
+### commenting / uncommenting blocks
+- `ctrl-v` to select multiple lines
+- `:norm i#` (for ruby) or `:norm //` (for javascript)
+
+- `:norm x` (to remove 1 char) or `:norm xx` (to remove 2 chars) (uncomment)
+
+- `:norm` runs vim commands at each line in the specified range
 
 ---
 
@@ -129,8 +142,10 @@
 
 ## Settings
   - `:set number` : show line numbers (absolute)
-  - `:set nonumber` : hide line numbers
-  - `:set relative number` : show relative line numbers
+    - `:set nu!` : toggle show absolute line numbers
+    - `:set nonumber` : hide line numbers
+  - `:set relativenumber` : show relative line numbers
+    - `:set rnu!` : toggle relative line numbers 
 
   - `:set list` : display eol characters
   - `:set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<` : show eol, tab, trailing spaces, ?, ?
@@ -143,5 +158,21 @@
   - `:set scrolloff=999` : (or `so=999`) keeps cursor in the centre of the screen (default is so=0)
 
   - `:highlight Comment ctermfg=darkgrey` : changes color of comments to dark grey instead of blue
+  - `:hi LineNr ctermfg=darkgrey` : changes color of line numbers (hi is short for highlight)
   - `:set bg=dark` or `:set bg=light` : changes VIM terminal to dark or light (adjusts color scheme for contrast)
-  ` `:colorscheme <tab>` : will allow pressing tab to cycle through color schemes available in vim
+  - `:colorscheme <tab>` : will allow pressing tab to cycle through color schemes available in vim
+
+  - `:set foldmethod=indent` : folds all code based on indent
+    - `zo` : open immediate fold under cursor
+    - `zO` : open ALL nested folds under cursor
+
+    - `zc` : close immediate fold under cursor
+    - `zC` : close ALL nested folds under cursor
+
+
+### backup nvim config
+- mv ~/.config/nvim{,.bak}
+
+- mv ~/.local/share/nvim{,.bak}
+- mv ~/.local/state/nvim{,.bak}
+- mv ~/.cache/nvim{,.bak}
