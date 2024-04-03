@@ -178,6 +178,11 @@
 - mv ~/.cache/nvim{,.bak}
 
 
+### Alternate NVIM config
+- installed LazyVim into `~/.config/LazyVim`
+  - ran `alias nvim-lazy='NVIM_APPNAME="LazyVim" nvim'`
+    - run `nvim-lazy` to use LazyVim config stored in `~/.config/LazyVim`
+
 
 
 # Additional Resources:
