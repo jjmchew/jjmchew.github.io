@@ -169,6 +169,9 @@
     - `zc` : close immediate fold under cursor
     - `zC` : close ALL nested folds under cursor
 
+  - `:set wrap` : to visually display long lines with wrap
+
+
 
 ### backup nvim config
 - mv ~/.config/nvim{,.bak}
@@ -180,7 +183,7 @@
 
 ### Alternate NVIM config
 - installed LazyVim into `~/.config/LazyVim`
-  - ran `alias nvim-lazy='NVIM_APPNAME="LazyVim" nvim'`
+  - ran `alias nvl='NVIM_APPNAME="LazyVim" nvim'`
     - run `nvim-lazy` to use LazyVim config stored in `~/.config/LazyVim`
 
 

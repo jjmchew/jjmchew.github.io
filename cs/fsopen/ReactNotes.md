@@ -267,6 +267,10 @@ const Note = ({ notes }) => {
 
 - `npm audit` : compares list of dependencies against known security risks
 
+- when running npm scripts, all arguments before `--` are for `npm`, arguments afterwards are for commands being run
+  - e.g., `npm run tsc -- --init`, where `"tsc" : "tsc"` is a script in `package.json`
+  - is equivalent to running `tsc --init` from the command line
+
 
 
 ## Prop-types

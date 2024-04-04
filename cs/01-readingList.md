@@ -25,7 +25,7 @@
 
 ## Articles
 - [X] [Becoming a 10X Developer](https://www.kateheddleston.com/blog/becoming-a-10x-developer)
-- [X] [Be Kind](https://boz.com/articles/be-kind)]
+- [X] [Be Kind](https://boz.com/articles/be-kind)
       - Andrew Bosworth (CTO Meta) sharing thoughts - other interesting content here
 - [X] [How to communicate when trust is low](https://charity.wtf/2023/08/17/how-to-communicate-when-trust-is-low-without-digging-yourself-into-a-deeper-hole/)
 
@@ -46,6 +46,11 @@
     - Part 9
 
 
+## Additional resources
+
+### User guide for me
+- https://lg.substack.com/p/the-looking-glass-a-user-guide-to
+- https://review.firstround.com/the-indispensable-document-for-the-modern-manager/
 
 
 
