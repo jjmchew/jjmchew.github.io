@@ -283,7 +283,7 @@ Togglable.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
 };
 ```
-
+- Note:  if using TypeScript, don't need to use propTypes - can define TS interfaces to define types for props
 
 
 ## Front-end Testing
@@ -416,6 +416,30 @@ test('clicking the button calls event handler once', async () => {
   app.use(middleware.unknownEndpoint);
   // etc.
   ```
+
+
+## React TS
+- `npm create vite@latest appName -- --template react-ts`
+
+```javascript
+import ReactDOM from 'react-dom/client'
+
+interface WelcomeProps {
+  name: string;
+}
+
+const Welcome = (props: WelcomeProps): JSX.Element => {
+  return <h1>Hello, {props.name}</h1>;
+};
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <Welcome name="Sarah" />
+)
+```
+- note: defining return type of react component (`JSX.Element`) is optional - can be inferred by TS compiler
+
+
+
 
 
 # Things to practice
