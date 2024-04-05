@@ -438,6 +438,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 ```
 - note: defining return type of react component (`JSX.Element`) is optional - can be inferred by TS compiler
 
+- https://react-typescript-cheatsheet.netlify.app/
+
+
 
 
 
