@@ -243,6 +243,9 @@ const Note = ({ notes }) => {
   - I tried having state within the component to manage a timeout, however the re-draw and update didn't seem to work
   - it was definitely more straightforward with state in the main app which also managed the timeout with a helper function
 
+- see Part7-3 front end for custom hooks for API usage, input fields
+- see Part9-4 front end for TS versions
+
 
 
 
@@ -440,7 +443,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 
 - https://react-typescript-cheatsheet.netlify.app/
 
+- onSubmit event:  use type `React.SyntheticEvent`
 
+- for `label` elements use `htmlFor` instead of `for`
+  - e.g.,  `<label htmlFor={props.val}>{props.val}</label>`
 
 
 
