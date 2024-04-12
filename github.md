@@ -62,3 +62,15 @@ Delete a branch
 - `git remote add origin [repo url]`
 - `git fetch origin`
 - `git checkout -b main --track origin/main`
+
+### git clone
+https://docs.github.com/en/get-started/using-git/getting-changes-from-a-remote-repository
+
+- `git clone [repo url]` : will create a new folder for the repo (named according to the repo) and clone into that folder
+- `git fetch` will fetch any additional work from remote repo
+- `git merge remotes/origin/branch-name` will merge work from remote repo with local work
+
+- `git pull` : is a shortcut which combines `git fetch` and `git merge`
+
+- use `git status` to check what is happening, follow-up commands may be given (e.g., `git commit --amend` or `git rebase --continue`)
+
