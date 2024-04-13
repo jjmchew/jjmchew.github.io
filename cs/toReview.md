@@ -12,3 +12,14 @@
 
 - [ ] Part 5b : implement a `Togglable` component
                 - implement `prop-types' library
+
+## vps
+- [ ] using SSH (need to save keys) to login to droplet 
+      - see video tutorial here: https://launchschool.com/gists/79b8e672
+      - should be able to use ubuntu terminal to ssh directly rather than using PuTTY
+
+- [ ] deploy a more complicated app using a database, etc.
+- [ ] deploy into a sub-domain (e.g., `app.77345.site` or `api.77345.site`)
+
+
+
