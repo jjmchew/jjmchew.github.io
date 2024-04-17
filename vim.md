@@ -188,7 +188,18 @@
 
 
 
+
+
+
+
+
+
+
+
+
 # Additional Resources:
 - https://medium.com/@shaikzahid0712/the-neovim-series-32163eb1f5d0
 - Auto Pairs:  https://medium.com/@shaikzahid0713/auto-pairs-for-neovim-60f20ae94387
+- disable `cmp` autocompletion:  https://www.reddit.com/r/neovim/comments/rh0ohq/nvimcmp_temporarily_disable_autocompletion/
+
 

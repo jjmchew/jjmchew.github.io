@@ -22,4 +22,8 @@
 - [ ] deploy into a sub-domain (e.g., `app.77345.site` or `api.77345.site`)
 
 
+## DSA
+- [ ] Ch7 ex 2:  is O(N+M) accurate?  It doesn't run through both sets of array elements in sequence, it's O(N) where N is the greater number of elements?  It total steps, it's O(N+M), but Big O is slightly different?
+
+
 

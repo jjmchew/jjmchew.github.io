@@ -162,6 +162,10 @@ https://peps.python.org/pep-0008/ (style guide for Python code)
   - keys must be hashable (consistent hash values can be computed)
     - e.g., lists are non-hashable
 
+  - best to use `dict.get("keyName")` to retrieve values
+      - if `keyName` doesn't exist in the hash, then `None` is returned
+      - if using `dict['keyName']`, a non-existent key will throw an error
+
   - `len(my_dictionary)` : returns the number of key-value pairs
   - `for k, v in my_dictionary.items():` : allows iterating through key-value pairs
   - `for value in my_dictionary.values()` : allows interating through values
