@@ -87,3 +87,121 @@
 | Quicksort      | O(N logN) | O(N log N) | O(N^2)     |
 +----------------+-----------+------------+------------+
 
+## Linked Lists / Nodes
+- basic operations for lists / arrays:
+  - reading
+  - searching  - insertion
+  - deletion
+
+
+- connected data that is dispersed throughout memory are known as nodes
+  - each node also contains info on where the next node in the list is (in memory)
+  - to store 4 pieces of data, 8 cells of memory are required
+
+- **head**:  first node of a linked list
+- **tail**: last node of a linked list
+
++-----------+-------------------+-------------------------+
+| Operation | Array             | Linked list             |
++-----------+-------------------+-------------------------+
+| Reading   | O(1)              | O(N)                    |
+| Search    | O(N)              | O(N)                    |
+| Insertion | O(N), O(1) at end | O(N), O(1) at beginning |
+| Deletion  | O(N), O(1) at end | O(N), O(1) at beginning |
++-----------+-------------------+-------------------------+
+
+- note:  for linked lists, actual insertion and deletion steps are just O(1)
+- linked lists are good for moving through an existing list and adding/deleting data as we "comb"
+
+- doubly linked lists are perfect for queues:
+  - they insert data at the end in O(1)
+  - they delete data from the front in O(1)
+
+
+## Trees
+- **tree** : a node-based structure when each node can have links to multiple nodes
+
+- **root** (of a tree): is the uppermost node (at the "top")
+  - the root has no parents (ancestors), only children (descendants)
+- **level** (of a tree): a "row" within a tree (i.e., common descendant level)
+- **balanced tree**: when each nodes' sub-trees have the same number of nodes in it
+
+- **binary tree** : a tree in which each node has 0, 1, or 2 children
+- **binary *search* tree** : a binary tree that also follows:
+    - each node can have at most 1 *left* child and 1 *right* child
+    - a node's *left* descendants can only contain values that are less than the node
+    - a node's *right* descendants can only contain values that are greater than the node itself
+
+- a balanced tree with N nodes will require logN levels to hold all of the nodes
+- adding a new level will roughly double the size of the tree (add N + 1 nodes)
+- searching a binary tree is O(log N)  (same as an ordered array)
+  - however, insertion in a binary tree is more efficient: O(log N) + 1 steps which is O(log N)
+
+- inserting RANDOM data into a binary search tree results in a well-balanced tree
+- inserting sorted data into a binary search tree results in linear tree so searching would be O(N)
+
+- rules for deleting nodes:
+  - if a node being deleted has no children, just delete it
+  - if the node being deleted has 1 child, delete the node and replace it with it's child
+  - if the node being deleted has 2 children:
+      - replace the deleted node with the *successor node*
+          - the successor node is the node whose value is the least of all values greater than the deleted node
+            (i.e., take the right branch and then follow all subsequent left branches to the bottom)
+    
+      - if the deleted node's right child has no left children then it IS the successor
+      
+      - if the successor node was previously a left child AND it has a right child:
+        - the successor node will replace the deleted node
+        - the (former) right child of the successor node will become the *left* child of the former parent of the successor node
+
+- deletion from trees is typically O(log N)
+  - it involves search plus a few extra steps to deal with children
+
+- example:  book list
+  - with millions of titles and constant changes to the list, a binary search tree may be better than an array
+
+- **inorder traversal** (of a binary search tree) : visiting every node in the tree in ascending order so that the data can be printed in order
+    - call traverse on the left child recursively until there is no more left child
+    - do something (e.g., print the data)
+    - call traverse recursively on the right child until there is no right child
+
+
+## Graphs
+- all trees are graphs (trees are a type of graph)
+- not all graphs are trees
+  - to be a tree, a graph:
+      - cannot have *cycles* (nodes connected in a "circle")
+      - all nodes must be *connected* (directly or indirectly, graphs can have unconnected nodes)
+
+- graph terminology:
+  - "node" is called a **vertex**
+  - lines connected "verticies" are called **edges**
+  - verticies that are connected by an edge are called **adjacent** (or are "neighbours")
+  - if all verticies are connected, the graph is called **connected**
+  - **search** : if we have access to 1 vertex and we search for another, we are trying to find a path to another vertex
+    - in a connected graph, searching is used to find any other vertex from a given vertex
+    - search is also used to traverse a graph
+  - **path**: the specific sequence of edges to get from 1 vertex to another
+
+- **directed graph** : a graph where arrows on the edges indicate the *direction* of a relationship
+
+- hash tables can be used to represent (directed) graphs:
+```python
+followees = {
+  'Alice': ['Bob', 'Cynthia'],
+  'Bob': ['Cynthina'],
+  'Cynthia' : ['Bob']
+}
+```
+### Depth-first Search (DFS)
+- need to keep track of visited verticies (in case there are cycles)
+- easiest with a recursive implementation to keep calling itself on adjacent (unvisited) vertices
+
+### Breadth-first Search (BFS)
+- BFS does *not* use recursion
+- BFS uses a queue (FIFO) 
+- also need to keep track of visited vertices
+
+
+
+

@@ -27,5 +27,7 @@
 - [ ] Ch11 ex 5: couldn't figure this out on my own;  couldn't quite figure out the "sub-problem"
 - [ ] Ch 12 fibonacci example:  the book version of memoization is less efficient than my version
       - is this b/c there are 2 calls to `fib` in the function?
+- [ ] Ch 14 ex 5:  couldn't do this on my own - was circling around the answer, but didn't put it together
+
 
 
