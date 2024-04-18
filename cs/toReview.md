@@ -24,6 +24,8 @@
 
 ## DSA
 - [ ] Ch7 ex 2:  is O(N+M) accurate?  It doesn't run through both sets of array elements in sequence, it's O(N) where N is the greater number of elements?  It total steps, it's O(N+M), but Big O is slightly different?
-
+- [ ] Ch11 ex 5: couldn't figure this out on my own;  couldn't quite figure out the "sub-problem"
+- [ ] Ch 12 fibonacci example:  the book version of memoization is less efficient than my version
+      - is this b/c there are 2 calls to `fib` in the function?
 
 

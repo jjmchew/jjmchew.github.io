@@ -60,3 +60,30 @@
 - recursion is best way to replace looping when you don't know how many layers / levels you will need to "dig"
   - e.g., searching a directory tree
 
+- calculating the result of a problem by computing the solution to a *subproblem* is a *top-down* approach to recursion
+  - a *bottom-up* approach requires the use of additional parameters passed in to keep track of the successive result of computation (similar to a traditional looping approach)
+  - see Ch. 11, example of calculating factorials
+
+- finding all of the anagrams of a given string:
+  - if there are `N` characters in the string, there are N! (N factorial) possible anagrams
+  - at minimum, this must take O(N!) time complexity (you must iterate through each anagram)
+  - O(N!) is extremely slow : slower than O(2^N) and O(N^2)
+
+- **dynamic programming** : the process of optimizing recursive problems that have overlapping subproblems
+  - e.g., through memoization
+
+## Quicksort / Quickselect
+- Quicksort:  has O(N logN) time complexity in the average case; O(N^2) in the worst case (i.e., elements sorted inverse-ly)
+  - worst case requires an increeased number of comparisons (pivot is not in the middle of the array)
+
+- Quickselect: has time efficiency O(N)
+
+
+### Comparison w/ Insertion Sort
++----------------+-----------+------------+------------+
+| Sort           | Best case | Avg case   | Worst case |
++----------------+-----------+------------+------------+
+| Insertion sort | O(N)      | O(N^2)     | O(N^2)     |
+| Quicksort      | O(N logN) | O(N log N) | O(N^2)     |
++----------------+-----------+------------+------------+
+
