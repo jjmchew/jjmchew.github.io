@@ -196,12 +196,17 @@ followees = {
 ### Depth-first Search (DFS)
 - need to keep track of visited verticies (in case there are cycles)
 - easiest with a recursive implementation to keep calling itself on adjacent (unvisited) vertices
+- DFS is best for diving deep and moving farther away from the starting vertex quickly
 
 ### Breadth-first Search (BFS)
 - BFS does *not* use recursion
 - BFS uses a queue (FIFO) 
 - also need to keep track of visited vertices
+- as differing from DFS, BFS will check all adjacent vertices of the current vertex before checking deeper (i.e., adjacent vertices of adjacent vertices)
+- BFS is best for checking all direct connections of the starting vertex first
 
-
-
+### Big O
+- efficiency of graph search is dependant upon V (number of vertices) and E (number of edges):
+  - O(V + E)
+  - number of steps is actually V + 2E, but constants are dropped for big O
 
