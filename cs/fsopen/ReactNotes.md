@@ -440,6 +440,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 )
 ```
 - note: defining return type of react component (`JSX.Element`) is optional - can be inferred by TS compiler
+  - could also define type as: `const Welcome: React.FC<PropTypes> = ({ prop1, prop2 }) => {};`
 
 - https://react-typescript-cheatsheet.netlify.app/
 
@@ -450,13 +451,3 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 
 
 
-
-# Things to practice
-- [ ] Part 3c : setup MongoDB for phone app, connect to project with modules
-- [ ] Part 3d : implement validators to back-end and deploy
-- [ ] Part 3d : implement eslint as part of package.json w/ scripts
-                - install stylistic plugin
-                - Note front-end use of eslint is covered in Part 5b
-
-- [ ] Part 5b : implement a `Togglable` component
-                - implement `prop-types' library

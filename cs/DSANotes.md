@@ -75,9 +75,9 @@
 ## Quicksort / Quickselect
 - Quicksort:  has O(N logN) time complexity in the average case; O(N^2) in the worst case (i.e., elements sorted inverse-ly)
   - worst case requires an increeased number of comparisons (pivot is not in the middle of the array)
+  - Note:  (from Chapter 19), quicksort has space complexity O(log N) since it makes logN recursive calls
 
 - Quickselect: has time efficiency O(N)
-
 
 ### Comparison w/ Insertion Sort
 +----------------+-----------+------------+------------+
@@ -210,3 +210,41 @@ followees = {
   - O(V + E)
   - number of steps is actually V + 2E, but constants are dropped for big O
 
+### Dijkstra's algorithm
+- used on **directional weighted graphs** : each edge of the graph carries a numeric value representing some aspect of the relationship between vertices (e.g., price, distance, etc.)
+- solves the "shortest path problem" - i.e, what is the lowest possible total weighting to traverse from 1 vertex to another within a graph
+- iterate from starting vertex to all connected vertices and keep track of:
+    - shortest total path (e.g., cheapest price) to another city
+    - required vertex *before* the destination city to achieve the shortest total path (e.g., cheapest price)
+- at each iteration, start searching from the vertex with the current shortest total path
+    - when updating data tables, ensure that the updated data reflects the originally defined starting vertex to the vertex currently being assessed as part of iterationo
+
+## Space constraints
+- **space complexity** : a measure of how much memory an algorithm consumes
+- typical trade-offs in algorithms are speed vs memory
+- Big O for space complexity answers the key question:
+  - **if there are N data elements, how many units of memory will the algorithm consume?**
+  - only consider the amount of *new data* (**auxiliary space**) required (not the original data passed into the algorithm)
+  - Note:  this may VARY in different books, etc. - some resources may include original input as part of calculating space complexity (DSA book does not)
+
+- O(1) : means the memory consumed by the algorithm is constant no matter how large the data
+        - e.g., modifying an array in-place (not creating another new array with modified values)
+- O(N): means an additional N data elements will be generated
+        - e.g., creating an entirely new array to store modified values
+
+- recursive functions take up 1 unit of memory for each recursive call they make (the call stack is stored in memory)
+  - in python, maximum recursion depth is about 1000 calls
+
+
+## Optimizing code
+- always determine Big O of current code first
+- then determine ideal (best possible) Big O
+- if these aren't the same, then optimization is possible
+
+- consider the following techniques (possibly in combination):
+  - use "magical" lookups (i.e., hash tables with O(1) lookups)
+  - look for a pattern (i.e., a formula) between inputs and outputs (e.g., coin game)
+  - write "greedy algorithms" (an algorithm that chooses the best option at that moment in time)
+      - i.e., assume a max, or a lowest number, or a max sum, etc.
+  - change data structures
+      - e.g., convert input strings to hash table of letter count

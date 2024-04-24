@@ -28,6 +28,11 @@
 - [ ] Ch 12 fibonacci example:  the book version of memoization is less efficient than my version
       - is this b/c there are 2 calls to `fib` in the function?
 - [ ] Ch 14 ex 5:  couldn't do this on my own - was circling around the answer, but didn't put it together
+- [ ] Ch 18, ex 5:  didn't do dijkstra - related question since Nick indicated on slack that we won't cover dijkstra's in capstone
 
+
+## Async JS
+- [ ] custom generator code examples
+- [ ] resolving promises code examples
 
 

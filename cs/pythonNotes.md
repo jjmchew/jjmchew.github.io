@@ -90,6 +90,15 @@ https://peps.python.org/pep-0008/ (style guide for Python code)
   - Note:  characters in a string aren't objects
     - strings aren't actual collections since the characters in a string aren't objects
 
+  - string (array) slicing:
+    - `myString[start:stop:step]`, where `start`, `stop`, `step` are indexes
+      - `stop` is NOT inclusive
+      - `[start:]` : goes from start to end of string
+      - `[:stop]` : goes from 0 to `stop`
+      - `[:]` : copies the str (array)
+      - negative indices count from the end
+        - e.g., `[-1]` is last item in the string / array
+
 - multi-line strings:  `"""` to start and end
   - or use `\n` (newline, linux) `\r` (carriage return), `\t` (tab), `\\` escaped slash
   - note:  windows newline is `\r\n`
@@ -171,6 +180,8 @@ https://peps.python.org/pep-0008/ (style guide for Python code)
   - `for value in my_dictionary.values()` : allows interating through values
   - `.keys()` allows iterating over keys
   - `my_dict.get('key_name', 'some value')` : returns 'some value' if `my_dict['key_name']` doesn't exist
+
+  - `del myDict[key]` : delete key from dictionary
 
   - from Python v3.7 and up,  key-value pairs are stored int he same order they are inserted into a dictionary
     - prior to v3.7 key-value order is unpredictable
