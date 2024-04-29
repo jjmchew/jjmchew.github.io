@@ -183,5 +183,3 @@
     - be trustworthy, be authentic
 
 
-
-

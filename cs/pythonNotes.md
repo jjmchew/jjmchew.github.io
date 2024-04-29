@@ -206,7 +206,7 @@ https://peps.python.org/pep-0008/ (style guide for Python code)
   - `False`
   - `None`
 
-- conditionals
+- **conditionals**
   - ternary:  e.g., `print('Yes') if True else print('No')`
       - "value1 if condition else value2"
 
