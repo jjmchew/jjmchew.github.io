@@ -148,3 +148,35 @@
     - this port (e.g., `44.213.117.189:80` is the internet IP address that can be used in a browser to access the now deployed application)
 
 - `ecs-cli down --force` : turn down deployed cluster
+
+
+
+## Postgres
+- `docker pull postgres:12.16`
+- `docker run --name contName -e POSTGRES_PASSWORD=mypw -d -p 3030:5432 postgres:12.16`
+  - note: ports are mapped from default 5432 (in container) to localhost:3030 to avoid conflict with existing local instance of postgres / psql
+
+- `docker exec -it contName psql -U postgres`, where `postgres` is the default user
+  - this opens an interactive psql terminal
+
+- to check connection to postgres db from terminal window:
+  - `psql -h localhost -p 3030 -U postgres` : assuming db has been mapped to port 3030
+
+- see test proj `/docker/03psql`:
+  - need to make sure container db is properly initialized, setup
+  - need to ensure container port is mapped and exposed to a DIFFERENT port than my local instance of postgresql (default is port 5432)
+  - need to ensure `pg` connection details within my app are defined correctly (i.e., user, host, database, password, port)
+  - can include `--mount type=bind,source="$(pwd)",target=/app` to gain access to local sql files
+  - within psql, can run `\i setup.sql` (this is a manual step)
+
+
+
+
+### Creating users in psql
+- `create user userName with password 'mypassword';`
+- `grant all privileges on database myDb to userName;`
+
+
+## MISC
+- in bash, to make script files executable:
+  - `chmod +x filename.sh`

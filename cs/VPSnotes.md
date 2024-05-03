@@ -20,6 +20,9 @@
   - could limit root login in SSH by altering the `/etc/ssh/sshd_config` file
       - `PermitRootLogin no`
 
+  - to change users once logged in:
+      - `su - userName`
+
 #### install / configure nginx
 - `sudo apt install nginx`
     (https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-22-04)
@@ -103,4 +106,59 @@ server {
       - then copy and paste the provided sudo env line
   - `pm2 save`
   - `systemctl start pm2-jjmchew`  or  `systemctl status pm2-jjmchew`
+
+### Using SSH
+- followed instructions on Digital Ocean web interface when creating the droplet and creating SSH keys
+  - i.e., run `ssh-keygen`, etc.
+  - do NOT enter a filename (it didn't seem to work when I did)
+  - keys were stored in `/home/jjmchew/.ssh`
+
+- from ubuntu terminal:
+  - `ssh -i /home/jjmchew/.ssh/id_rsa root@209.38.130.75`
+  - this will prompt for passphrase (e.g., `dockerTest`) entered during creation
+  - should then connect to remote server
+
+### Install docker desktop on VPS
+- https://docs.docker.com/desktop/install/ubuntu/
+- https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository
+
+
+- `sudo apt install gnome-terminal`
+- `sudo apt-get update`
+- `sudo apt-get install ca-certificates curl`
+- `sudo install -m 0755 -d /etc/apt/keyrings`
+- `sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc`
+- `sudo chmod a+r /etc/apt/keyrings/docker.asc`
+  ```bash
+  echo \
+    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+    $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+    sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  ```
+- `sudo apt-get update`
+- `sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin`
+- test with `sudo docker run hello-world`
+
+### Deploy docker container on VPS
+- ensure desired container has been pushed to remote repo (e.g., `docker push jjmchew/imageName:tag`)
+- use `docker pull jjmchew/imageName:tag`
+- use `docker run ...` to run the container:
+  - ensure correct port mappings:  i.e., [host port]:[container port]
+  - ensure nginx has been configured properly:
+      - need to edit `/etc/nginx/sites-available/default` to add reverse_proxy entries
+      - ensure symlink to /etc/nginx/sites-enabled/ exists
+      - `sudo nginx -t` to test nginx config
+  - note that you must use the same port exposed on the container to access the server
+    - e.g., if port 5678 is exposed in the container (i.e., `localhost:5678`)
+    - access the website at e.g., `209.38.130.75:5678`
+
+  - note:  in my experiment, I manually started the docker container - I should have used a process manager to ensure that the container is run if the server is restarted
+
+
+
+
+#### user management for docker
+- https://docs.docker.com/engine/install/linux-postinstall/
+- `sudo usermod -aG docker userName`
+- `newgrp docker`
 
