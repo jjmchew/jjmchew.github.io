@@ -450,4 +450,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   - e.g.,  `<label htmlFor={props.val}>{props.val}</label>`
 
 
-
+## Misc
+- `setInterval` does funny things:  https://overreacted.io/making-setinterval-declarative-with-react-hooks/

@@ -14,7 +14,7 @@
                 - implement `prop-types' library
 
 ## vps
-- [ ] using SSH (need to save keys) to login to droplet 
+- [X] using SSH (need to save keys) to login to droplet 
       - see video tutorial here: https://launchschool.com/gists/79b8e672
       - should be able to use ubuntu terminal to ssh directly rather than using PuTTY
 
