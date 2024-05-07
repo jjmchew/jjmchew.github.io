@@ -111,6 +111,9 @@ https://peps.python.org/pep-0008/ (style guide for Python code)
       - **always write checking code**
   - last element of list is `list[-1]` (note use of negative index)
   - `for word in word_list:`  (iterates each `word` in `word_list`)
+  - can also iterate using:
+    - `for idx, x in enumerate(myList):`
+
   - `==` (equality of arrays) is based upon their values (not their identity / memory location)
     ```python
     list1 = [2, 6, 4]
