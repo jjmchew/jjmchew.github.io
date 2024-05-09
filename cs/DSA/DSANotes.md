@@ -73,3 +73,16 @@
 
 
 
+## DSA Lessons learned from lectures and exercises
+- think about what the OBJECTIVE is (i.e, ideal case):
+    - this will help guide towards approaches
+    - e.g., 11-Container with most water: box needs to be wide, so start wide (i.e, points to start/end pointers)
+
+- *don't hack and slash*
+- when encountering bugs:
+    - consider if the bug is ALGORITHM related or just CODE related
+    - if the algorithm is sound, fix the code
+    - if the algorithm is missing something, fix the algorithm
+        - understanding the algorithm deeply will help to assess the gap
+
+- Remember, negative indexes in Python count from the END of the array

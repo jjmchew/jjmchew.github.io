@@ -74,3 +74,8 @@ https://docs.github.com/en/get-started/using-git/getting-changes-from-a-remote-r
 
 - use `git status` to check what is happening, follow-up commands may be given (e.g., `git commit --amend` or `git rebase --continue`)
 
+
+## Resources
+- https://docs.github.com/en/authentication/connecting-to-github-with-ssh
+
+

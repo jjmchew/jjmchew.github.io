@@ -163,6 +163,9 @@
   - `:colorscheme <tab>` : will allow pressing tab to cycle through color schemes available in vim
 
   - `:set foldmethod=indent` : folds all code based on indent
+  - `:set foldmethod=marker` : folds code based on set fold markers
+      - highlight w/ C-v and set marker with `zf`
+
     - `zo` : open immediate fold under cursor
     - `zO` : open ALL nested folds under cursor
 

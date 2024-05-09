@@ -3,6 +3,7 @@
 ## Capstone prep
 - 242-**Valid Anagram**: https://leetcode.com/problems/valid-anagram/description/
     - may not have done this - review
+    - May 7, 2024:  did this - easy;  solution wasn't particularly quick, however
 
 - 13-**Roman to Integer**: https://leetcode.com/problems/roman-to-integer/description/
     - managed this one, had some trouble with modified numbers (like 4)
@@ -57,17 +58,85 @@
 
 ## Mon May 6, 2024
 
-- **Spiral Matrix**: https://leetcode.com/problems/spiral-matrix/description/
+- 54-**Spiral Matrix**: https://leetcode.com/problems/spiral-matrix/description/
     - slow on first pass - wasn't able to implement properly within 50 mins, had working approach
+    - need to code
 
-- **Merge Intervals**: https://leetcode.com/problems/merge-intervals/description/
+
+- 56-**Merge Intervals**: https://leetcode.com/problems/merge-intervals/description/
     - implemented a solution assuming a sorted array, but had some implementation details that were incorrect
     - of the 3 problems in this set, probably the most comfortable
+    - need to code
 
-- **Product of array except self**: https://leetcode.com/problems/product-of-array-except-self/description/
+- 238-**Product of array except self**: https://leetcode.com/problems/product-of-array-except-self/description/
     - conceptually very difficult
-    - implemented a working O(N^2) solution, but could not come up with the conceptual O(N)
-    - mostly understand the given solution in O(N) and O(1), but could definitely use review
+      - implemented a working O(N^2) solution, but could not come up with the conceptual O(N)
+      - mostly understand the given solution in O(N) and O(1), but could definitely use review
+    - need to code
+
+
+
+## Tues May 7, 2024
+
+- 1010-**Pairs of songs with total durations divisible by 60**: https://leetcode.com/problems/pairs-of-songs-with-total-durations-divisible-by-60/description/
+  - solved this as a group, had some good intuition, but had some challenges with implementing
+    - worth reviewing to ensure I can implement this (e.g., think about combos, etc.)
+    - should code this again with a simplified approach than the group version (very convoluted, dealt with extra cases)
+  - need to code
+
+- 209-**Minimum size subarry sum**: https://leetcode.com/problems/minimum-size-subarray-sum/description/
+  - after much grief, kind of lucked into a solution to this problem which passed leetcode
+  - need to code O(NlogN) solution
+
+
+- 15-**3sum**: https://leetcode.com/problems/3sum/description/
+  - had trouble developing a functional algorithm, my attempt was a bit convoluted
+    -  sorted input array would have definitely helped (manage 2-sum)
+    - was on the right track with fixing the first pointer
+    - my implementation, even after looking at a solution, was still a bit off
+        - needed to how / when to increment pointers j and k
+  - 2nd attempt also never worked.  reached out to Srdjan for help
+
+
+- 3-**Longest substring without repeating characaters**: https://leetcode.com/problems/longest-substring-without-repeating-characters/description/
+  - got *very* close to solving this, but felt like I confused the order of operations a bit
+    - after looking at the solution (based on time spent), realized my moving condition on anchor was off
+      - needed to move anchor until there was no repeating char at runner
+      - solution ultimately worked and looks clean, but I needed to look at the solution
+  - worth reviewing to solidify
+
+
+### warm up problems
+- 392-**is subsequence**: https://leetcode.com/problems/is-subsequence/description/
+  - had some trouble with edge cases, but otherwise, strong logic and easy to step through
+
+
+### optional problem
+- rooms:  https://gist.github.com/SrdjanCoric/d4088f0b1154fccabe49e232130b4528
+          https://gist.github.com/SrdjanCoric/a1db45b57f9bff74535529758793c144 (updated link in python)
+  - need to code
+
+
+
+
+## Wed May 8, 2024
+
+- 11-**Container with most water**: https://leetcode.com/problems/container-with-most-water/description/
+  - worked on as a group;  went in the wrong direction entirely w/ Thomas
+    - walkthrough in class seemed to make sense
+  - tried this after class and had no trouble
+
+- 162-**Find Peak Element**: https://leetcode.com/problems/find-peak-element/description/
+  - got initial pass MOST of the way (didn't account for case where max is at edge)
+  - code again from memory
+
+- 153-**Find Minimum in Rotated Sorted Array**: https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/description/
+
+### optional problem
+- 33-**Search in rotated sorted array**: https://leetcode.com/problems/search-in-rotated-sorted-array/description/
+  - feel like I understand the algo, but the details are fuzzy (i.e., how to check for left or right half and whether target is discovered)
+    - sank at least an hour trying to implement and was not able to in ver 01
+  - code again from memory
 
 
 
