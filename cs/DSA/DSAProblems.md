@@ -104,8 +104,8 @@
 
 - 209-**Minimum size subarry sum**: https://leetcode.com/problems/minimum-size-subarray-sum/description/
   - after much grief, kind of lucked into a solution to this problem which passed leetcode
-  - need to code O(NlogN) solution
   - consider as MED
+  - need to code O(NlogN) solution
 
 
 - 15-**3sum**: https://leetcode.com/problems/3sum/description/
