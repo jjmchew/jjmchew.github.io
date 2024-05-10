@@ -43,17 +43,22 @@
 
 - 83-**Remove duplicates**: https://leetcode.com/problems/remove-duplicates-from-sorted-list/description/
     - makes sense, but had trouble with implementing
-    - review with the goal of getting more fluid / familiar with linked lists and manipulation
+    - did this again as part of LS220 problems
+      - LS solution is cleaner, but otherwise, no problems
+
 
 - 21-**Merge two sorted lists**: https://leetcode.com/problems/merge-two-sorted-lists/description/
     - had trouble with keep head / curr sensible
     - had to implement this first with arrays (lists) and then work on linked lists since I had trouble keeping track of pointers, etc.
     - could review
 
+
 - 141-**Linked list cycle**: https://leetcode.com/problems/linked-list-cycle/description/
     - had some trouble with implementing a means of observing a linked list (i.e., printing the list could be infinite)
-    - final implementation seems straightforward
-    - could review with the goal of getting more familiar with linked lists
+      - final implementation seems straightforward
+    - did this a part of LS problems
+      - easy (but did not use fast/slow pointers)
+    - do this again to review fast/slow pointers
 
 
 ## Mon May 6, 2024
@@ -138,6 +143,28 @@
     - sank at least an hour trying to implement and was not able to in ver 01
   - code again from memory
 
+
+## Thu May 9, 2024
+
+- 92-**Reverse Linked list II**: https://leetcode.com/problems/reverse-linked-list-ii/description/
+  - walkthrough in lectures
+  - need to code
+
+
+- 19-**Remove Nth Node From End of List**: https://leetcode.com/problems/remove-nth-node-from-end-of-list/description/
+  - worked on this with Ben; solved most of it in 30 mins (needed to add a dummy node for case where head is removed)
+  - worked on this with the group afterwards and improved the approach to use 2 pointers instead of re-establishing a stick of length 'n + 1' each iteration
+  - coded this independently with some diagrams afterwards
+    - consider this easy, shouldn't need to review
+
+
+- 328-**Odd Even Linked List**: https://leetcode.com/problems/odd-even-linked-list/description/
+  - worked this one out on my own, seemed straightforward and no major issues coding
+    - don't forget to set last node to None (to prevent creating cycles)
+    - consider this easy, shouldn't need to review
+
+- 2-**Add Two Numbers**:  https://leetcode.com/problems/add-two-numbers/description/
+  - 
 
 
 

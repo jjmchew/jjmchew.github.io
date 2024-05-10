@@ -86,3 +86,14 @@
         - understanding the algorithm deeply will help to assess the gap
 
 - Remember, negative indexes in Python count from the END of the array
+
+- create functions that do 1 thing (i.e., look for zeros, or look for negatives)
+  - if they do many things (e.g., look for zeros or positives or negatives) managing the results will be very difficult
+
+### Linked Lists
+- generally, don't need a `prev` pointer unless I need to go backwards
+  - e.g., reverse a list, etc.
+- otherwise, can just use `curr.next`, `curr.next.next`, etc.
+- use a `dummy` to point to `head` when the `head` might change or there is a risk of losing `head`
+
+
