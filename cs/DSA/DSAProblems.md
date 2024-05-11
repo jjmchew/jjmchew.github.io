@@ -89,7 +89,9 @@
     - conceptually very difficult
       - implemented a working O(N^2) solution, but could not come up with the conceptual O(N)
       - mostly understand the given solution in O(N) and O(1), but could definitely use review
-    - need to code
+    - consider this as MED
+        - managed on my own, but a bit slow, took a lot of thinking, especially around iterations / indexes
+        - worked on optimized solution from SC - all understandable, but may not be able to re-creaete
 
 
 
@@ -100,9 +102,11 @@
     - worth reviewing to ensure I can implement this (e.g., think about combos, etc.)
     - should code this again with a simplified approach than the group version (very convoluted, dealt with extra cases)
   - consider as MED:  still had some trouble with this when trying to code it up (got the algo wrong initially and was getting multiple counts for each key)
+      - don't do this in 2 passes, use the 'seen' hash to do it in ONE pass
+      - just need to store / access hashes in slightly different way (% 60)
 
 
-- 209-**Minimum size subarry sum**: https://leetcode.com/problems/minimum-size-subarray-sum/description/
+- 209-**Minimum size subarray sum**: https://leetcode.com/problems/minimum-size-subarray-sum/description/
   - after much grief, kind of lucked into a solution to this problem which passed leetcode
   - consider as MED
   - need to code O(NlogN) solution
@@ -168,8 +172,10 @@
 ## Thu May 9, 2024
 
 - 92-**Reverse Linked list II**: https://leetcode.com/problems/reverse-linked-list-ii/description/
-  - walkthrough in lectures
-  - need to code
+  - consider as HARD
+    - even after seeing in lectures, when trying on my own, could not remember the details
+    - had to look again at walkthrough (need a "temp" pointer), implementing was difficult and I still ran into problems (had to look at coded solution)
+
 
 
 - 82-**Remove Duplicates from Sorted List II**: https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/description/
@@ -220,6 +226,12 @@
 - 680-**Valid Palindrome II**: https://leetcode.com/problems/valid-palindrome-ii/description/
   - consider this MED:  had some trouble implementing, my original solution was more complicated
     - however, understanding it now, assume it should be no problem the next time
+
+
+- 49-**Group Anagrams**: https://leetcode.com/problems/group-anagrams/description/
+  - given to me for my interview
+  - consider this as EASY: figured out the majority of it in 40 mins (had a few minor hints, e.g., steered away from hash as dict)
+      - had a bit of issue with falsy values in Python (check existence of key directly)
 
 
 
