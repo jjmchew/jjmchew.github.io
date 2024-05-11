@@ -76,14 +76,14 @@
 
 - 54-**Spiral Matrix**: https://leetcode.com/problems/spiral-matrix/description/
     - slow on first pass - wasn't able to implement properly within 50 mins, had working approach
-    - need to code
-
+    - consider as MED
+        - managed, but had some trouble with guard clauses, required patient debugging
 
 - 56-**Merge Intervals**: https://leetcode.com/problems/merge-intervals/description/
     - implemented a solution assuming a sorted array, but had some implementation details that were incorrect
     - of the 3 problems in this set, probably the most comfortable
-    - need to code
-
+    - consider as MED
+        - still some details with implementing and debugging
 
 - 238-**Product of array except self**: https://leetcode.com/problems/product-of-array-except-self/description/
     - conceptually very difficult
@@ -99,7 +99,7 @@
   - solved this as a group, had some good intuition, but had some challenges with implementing
     - worth reviewing to ensure I can implement this (e.g., think about combos, etc.)
     - should code this again with a simplified approach than the group version (very convoluted, dealt with extra cases)
-  - need to code
+  - consider as MED:  still had some trouble with this when trying to code it up (got the algo wrong initially and was getting multiple counts for each key)
 
 
 - 209-**Minimum size subarry sum**: https://leetcode.com/problems/minimum-size-subarray-sum/description/
@@ -155,14 +155,14 @@
 
 
 - 153-**Find Minimum in Rotated Sorted Array**: https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/description/
-
+  - need to code
 
 
 ### optional problem
 - 33-**Search in rotated sorted array**: https://leetcode.com/problems/search-in-rotated-sorted-array/description/
   - feel like I understand the algo, but the details are fuzzy (i.e., how to check for left or right half and whether target is discovered)
     - sank at least an hour trying to implement and was not able to in ver 01
-  - code again from memory
+  - consider as HARD
 
 
 ## Thu May 9, 2024
@@ -188,9 +188,8 @@
 - 328-**Odd Even Linked List**: https://leetcode.com/problems/odd-even-linked-list/description/
   - worked this one out on my own, seemed straightforward and no major issues coding
     - don't forget to set last node to None (to prevent creating cycles)
-    - consider this EASY, shouldn't need to review
     - after seeing walkthrough, could have done this more easily / cleanly (by swapping even/odd)
-
+    - consider this as MED
 
 - 2-**Add Two Numbers**:  https://leetcode.com/problems/add-two-numbers/description/
   - this went relatively smoothly taking about an hour total over 2 sessions
@@ -203,13 +202,18 @@
 ## Fri May 10, 2024
 
 - 70-**Climbing Stairs**: https://leetcode.com/problems/climbing-stairs/description/
-  - need to code myself
+  - recursive solution (w/ cache) would be EASY
+    - iterative solution is MED (had to look to clarify)
+
 
 - 62-**Unique Paths**: https://leetcode.com/problems/unique-paths/description/
-  - need to code myself
+  - recursive solution was easy
+    - iterative solution was MED (had to look to clarify again)
 
 - 63-**Unique Paths II**: https://leetcode.com/problems/unique-paths-ii/description/
-  - need to code myself
+  - had some trouble with getting the recursive solution right
+    - manage details:  guard clause, base case
+    - consider this as MED
 
 
 ## Mock Interview

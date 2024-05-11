@@ -96,4 +96,8 @@
 - otherwise, can just use `curr.next`, `curr.next.next`, etc.
 - use a `dummy` to point to `head` when the `head` might change or there is a risk of losing `head`
 
+### Dynamic Programming
+- in iterative approaches you don't LOOK-UP values from the cache - the values need to be POPULATED
+  - it's iteratively building up the recursive values that will be used to calculate the final desired number
+
 
