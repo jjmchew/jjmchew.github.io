@@ -216,6 +216,8 @@
   - recursive solution was easy
     - iterative solution was MED (had to look to clarify again)
 
+
+
 - 63-**Unique Paths II**: https://leetcode.com/problems/unique-paths-ii/description/
   - had some trouble with getting the recursive solution right
     - manage details:  guard clause, base case
@@ -224,11 +226,15 @@
 
 
 - 64-**Minimum Path Sum**: https://leetcode.com/problems/minimum-path-sum/description/
-  - need to code this
+  - consider this as MED
+    - managed fairly quick, but was hacking and slashing a bit with guard clauses, limits, initial cache values
+
 
 
 - 120-**Triangle**: https://leetcode.com/problems/triangle/description/
-  - need to code this
+  - consider this as MED
+    - based on my approach, was able to make it work, but required looking at solution to figure out an improved implementation approach
+    - definitely needs practice to improve this
 
 
 
@@ -265,10 +271,26 @@
   - set 20 mins to try this - had some good ideas, but didn't solve it
   - consider this HARD
 
+- 1143-**Longest Common Subsequence**: https://leetcode.com/problems/longest-common-subsequence/description/
 
 
 
+## Tues May 14, 2024
 
+- 20-**Valid Parentheses**: https://leetcode.com/problems/valid-parentheses/description/
+  - need to code
+
+- 71-**Simplify Path** https://leetcode.com/problems/simplify-path/
+  - need to code
+
+- 98-**Validate Binary Search Tree**: https://leetcode.com/problems/validate-binary-search-tree/description/
+  - need to code
+
+- 100-**Same Tree**:  https://leetcode.com/problems/same-tree/
+  - need to code
+
+- 104-**Maximum Depth of Binary Tree**: https://leetcode.com/problems/maximum-depth-of-binary-tree/
+  - need to code
 
 
 
