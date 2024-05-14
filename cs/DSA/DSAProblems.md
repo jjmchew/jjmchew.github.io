@@ -222,7 +222,17 @@
     - consider this as MED
 
 
-## Mock Interview
+
+- 64-**Minimum Path Sum**: https://leetcode.com/problems/minimum-path-sum/description/
+  - need to code this
+
+
+- 120-**Triangle**: https://leetcode.com/problems/triangle/description/
+  - need to code this
+
+
+
+## Sat May 11, 2024:  Mock Interview
 - 680-**Valid Palindrome II**: https://leetcode.com/problems/valid-palindrome-ii/description/
   - consider this MED:  had some trouble implementing, my original solution was more complicated
     - however, understanding it now, assume it should be no problem the next time
@@ -233,6 +243,27 @@
   - consider this as EASY: figured out the majority of it in 40 mins (had a few minor hints, e.g., steered away from hash as dict)
       - had a bit of issue with falsy values in Python (check existence of key directly)
 
+
+
+
+## Mon May 13, 2024
+
+- 198-**House Robber** - walkthrough
+  - https://leetcode.com/problems/house-robber/description/
+  - managed this independently
+  - my solution is roughly in line with the given iterative walkthrough
+  - consider this EASY
+
+
+- 55-**Jump Game**: https://leetcode.com/problems/jump-game/description/
+  - consider this HARD:
+      - tried this on my own, my thinking was not sound
+      - solution developed w/ Ben was workable, but I never coded it or saw it through to completion
+
+
+- 322-**Coin Change**: https://leetcode.com/problems/coin-change/description/
+  - set 20 mins to try this - had some good ideas, but didn't solve it
+  - consider this HARD
 
 
 
