@@ -159,7 +159,9 @@
 
 
 - 153-**Find Minimum in Rotated Sorted Array**: https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/description/
-  - need to code
+  - consider this as MED-EASY:
+    - basically had the algo and the implementation, but could be faster if I didn't test so many test cases and try to come up with a "clever" way to solve it
+
 
 
 ### optional problem
@@ -265,13 +267,15 @@
   - consider this HARD:
       - tried this on my own, my thinking was not sound
       - solution developed w/ Ben was workable, but I never coded it or saw it through to completion
-
+  - Tried again after seeing the solution described by Srdjan
+    - consider as MED (not convinced I could do it again)
 
 - 322-**Coin Change**: https://leetcode.com/problems/coin-change/description/
   - set 20 mins to try this - had some good ideas, but didn't solve it
   - consider this HARD
 
 - 1143-**Longest Common Subsequence**: https://leetcode.com/problems/longest-common-subsequence/description/
+  - need to code
 
 
 
@@ -291,6 +295,26 @@
 
 - 104-**Maximum Depth of Binary Tree**: https://leetcode.com/problems/maximum-depth-of-binary-tree/
   - need to code
+
+- 266-**Invert Binary Tree**: https://leetcode.com/problems/invert-binary-tree/description/
+  - consider as EASY:  worked first try, seemed straightforward
+
+- 110-**Balanced Binary Tree**:  https://leetcode.com/problems/balanced-binary-tree/description/
+  - consider as HARD: need to review
+
+- 101-**Symmetric Tree**: https://leetcode.com/problems/symmetric-tree/
+  - consider as HARD: need to review
+
+- 227-**Basic Calculator II**: https://leetcode.com/problems/basic-calculator-ii/description/
+  - consider as HARD:  tried to solve with group, created a good foundation, but never really got it to work, even after 1.5 hrs
+      - principles are understood, but need to work on simplifying and implementing cleanly
+
+
+
+
+
+
+
 
 
 
