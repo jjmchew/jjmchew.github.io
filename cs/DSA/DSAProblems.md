@@ -310,6 +310,11 @@
       - principles are understood, but need to work on simplifying and implementing cleanly
 
 
+**Note**
+- this list of problems in incomplete
+- check Google Drive JC-DSAProblemTracker for most update to list and assessment of problem difficulty
+
+
 
 
 
