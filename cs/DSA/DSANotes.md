@@ -100,4 +100,10 @@
 - in iterative approaches you don't LOOK-UP values from the cache - the values need to be POPULATED
   - it's iteratively building up the recursive values that will be used to calculate the final desired number
 
+### Backtracking
+- need to remember to append a COPY of the candidate (otherwise, this list gets mutated later)
+- need to remember to *return results* (I often forget this and the output is - of course - incorrect)
+- need to remember to *return* once a result is added to `results` : otherwise, iterations will continue to add values to candidates
+
+
 
