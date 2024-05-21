@@ -99,3 +99,22 @@ Note.find({}).then(result => {
 
 
 - use `.populate` method to simulate "joins" from a relational db
+
+
+# MongoDB "Local" notes
+
+- see scripts to setup docker contains for mongoDB container and connect to it with mongosh
+
+- `db.getMongo()` to get connection string (note: credentials are hidden)
+
+## commands
+- simplified reference:  https://www.w3schools.com/mongodb/index.php
+
+- `show dbs` : shows databases
+  - remember: empty databases are non-existant
+- `use blog` : creates a new db called 'blog'
+- `db.createCollection('posts')` : creates a collection called 'posts'
+- `db.posts.insertOne(object)` : insert 1 object (will also create the collection 'posts' if it doesn't exist)
+  - `.insertMany([arrayOfObjects])`
+- `db.posts.find()`
+  - `db.posts.find( {category: 'news'} )` : includes a query object
