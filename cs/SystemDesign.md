@@ -37,7 +37,42 @@
       - dbs are typically "de-normalized" to perform queries in a single table
 
 
+# Chapter 2
+- 1 byte = 8 bits
+  - an ASCII char is 8 bits
+- KB:  kilobyte:                  1,000 bytes
+- MB:  megabyte:              1,000,000 bytes (million)
+- GB:  gigabyte:          1,000,000,000 bytes (billion)
+- TB:  terabyte:      1,000,000,000,000 bytes (trillion)
+- PB:  petabyte:  1,000,000,000,000,000 bytes (quadrillion)
+
+
+- latency numbers (2020):
+  - L1 cache:  1 ns
+  - L2 cache:  4 ns
+  - main memory reference:  100 ns
+  - compress 1K bytes with Zippy: 2 microseconds
+  - send 2k bytes over 1 Gbps netwtork:  44 nanoseconds
+  - read 1 mb sequentially from memory: 3 microseconds
+  - round trip within the same data center: 500 microseconds
+  - disk seek: 2 ms
+  - read 1 mb sequentially from disk:    825 microseconds
+  - send packet from california > netherlands > california: 150 ms
+
+- memory is fast, disk is slow
+- avoid disk seeks
+- simple compression algos are fast
+- compress data before sending it over the internet, if possible
+- it takes time to send data between data centers
+
+- 99% availability: 3.65 days / year downtime
+- 99.9% : 8.77 hours / yr downtime
+- 99.99% : 52.60 mins / yr
+- 99.999% : 5.26 mins / yr
+- 99.9999% : 31.56 seconds
 
 ## Questions
 - [ ] setting cache TTL (time-to-live) (db cache, cdn) i.e., when to expire assets
       - system design interview states "not too long, not too short" - how best to determine?
+- [ ] ch 2 example (estimate twitter QPS) (pg 51):
+      - why is peak QPS = 2 * QPS?   is this commonly accepted?
