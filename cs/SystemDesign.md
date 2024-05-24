@@ -40,11 +40,11 @@
 # Chapter 2
 - 1 byte = 8 bits
   - an ASCII char is 8 bits
-- KB:  kilobyte:                  1,000 bytes
-- MB:  megabyte:              1,000,000 bytes (million)
-- GB:  gigabyte:          1,000,000,000 bytes (billion)
-- TB:  terabyte:      1,000,000,000,000 bytes (trillion)
-- PB:  petabyte:  1,000,000,000,000,000 bytes (quadrillion)
+- KB:  kilobyte: 10^3                    1,000 bytes
+- MB:  megabyte: 10^6                1,000,000 bytes (million)
+- GB:  gigabyte: 10^9            1,000,000,000 bytes (billion)
+- TB:  terabyte: 10^12       1,000,000,000,000 bytes (trillion)
+- PB:  petabyte: 10^15   1,000,000,000,000,000 bytes (quadrillion)
 
 
 - latency numbers (2020):
@@ -70,6 +70,11 @@
 - 99.99% : 52.60 mins / yr
 - 99.999% : 5.26 mins / yr
 - 99.9999% : 31.56 seconds
+
+
+- typical to round seconds / day (86,400 s / day) to 100,000 (or 1 x 10^5)
+
+
 
 ## Questions
 - [ ] setting cache TTL (time-to-live) (db cache, cdn) i.e., when to expire assets
