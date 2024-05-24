@@ -1,5 +1,7 @@
 # basecamp webhook sample
 
+## POST request
+
 ## headers
 
 host
