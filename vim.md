@@ -205,4 +205,5 @@
 - Auto Pairs:  https://medium.com/@shaikzahid0713/auto-pairs-for-neovim-60f20ae94387
 - disable `cmp` autocompletion:  https://www.reddit.com/r/neovim/comments/rh0ohq/nvimcmp_temporarily_disable_autocompletion/
 
+- Using VIM for note-taking and syncing with web / phone:  https://jamesbvaughan.com/markdown-pandoc-notes/
 

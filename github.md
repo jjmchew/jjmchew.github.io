@@ -53,6 +53,14 @@ Delete a branch
 - `git merge [branch name] --no-ff` (could also use ` --squash ` ) 
 - `git push`
 
+- always be sure you haved checked out the branch you want to merge **into**
+  - then run `git merge [branchName]`, where `branchName` is the other branch
+
+- `git merge --abort` : if there are conflicts, just abort the merge
+- after resolving conflicts i.e., editing the file(s) that have conflicts:
+  - need to `git add [conflicting files]`
+  - then `git commit -m "commitMessage"`
+
 
 
 ## Replicating an online repo
@@ -62,6 +70,7 @@ Delete a branch
 - `git remote add origin [repo url]`
 - `git fetch origin`
 - `git checkout -b main --track origin/main`
+
 
 ### git clone
 https://docs.github.com/en/get-started/using-git/getting-changes-from-a-remote-repository
@@ -77,5 +86,5 @@ https://docs.github.com/en/get-started/using-git/getting-changes-from-a-remote-r
 
 ## Resources
 - https://docs.github.com/en/authentication/connecting-to-github-with-ssh
-
+- [How to resolve merge conflicts in git](https://www.youtube.com/watch?v=xNVM5UxlFSA)
 
