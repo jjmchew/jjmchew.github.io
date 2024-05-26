@@ -19,7 +19,7 @@
 - [X] [System Design Interview - An insider's guide](https://www.amazon.com/System-Design-Interview-Insiders-Guide-ebook/dp/B08B3FWYBX)
   - found PDF
 
-- [ ] [Modern Asynchronous JavaScript](https://pragprog.com/titles/fkajs/modern-asynchronous-javascript/)
+- [X] [Modern Asynchronous JavaScript](https://pragprog.com/titles/fkajs/modern-asynchronous-javascript/)
   - relatively cheap ebook ($9.99 USD)
   - may have to buy
 
@@ -44,6 +44,40 @@
     - 3 a/b
     - 7 a/b
     - Part 9
+
+
+## System Design Additional Readings
+
+### Critiques of CAP
+- from Week 3 Day 5 (May 24, 2024) CAP basecamp notes
+
+- [ ] https://www.cl.cam.ac.uk/research/dtg/www/files/publications/public/mk428/cap-critique.pdf
+- [ ] https://martin.kleppmann.com/2015/05/11/please-stop-calling-databases-cp-or-ap.html
+
+
+### AP databases
+- from Week 3 Day 5 (May 24, 2024) BASE(AP, weak consistency) basecamp notes
+
+- [ ] https://www.theregister.co.uk/2017/10/06/10_years_on_amazons_cloud_chief_reflects_on_dynamodb_launch/
+  - on DynamoDB/Riak
+
+### Distributed systems
+- [ ] https://www.somethingsimilar.com/2013/01/14/notes-on-distributed-systems-for-young-bloods/
+- [ ] https://martin.kleppmann.com/archive.html
+
+
+
+
+### LRU Cache
+- from Week 3 Day 5 (May 24, 2024) LRU Cache basecamp notes
+- Note: these readings are important since "build an LRU cache" has been an interview question in the past
+
+- [ ] https://corvostore.github.io/
+- [ ] https://www.interviewcake.com/concept/java/lru-cache
+- [ ] https://www.geeksforgeeks.org/lru-cache-implementation/
+- [ ] https://betterprogramming.pub/how-to-build-an-lru-cache-in-less-than-10-minutes-and-100-lines-of-code-fddad56d7af5
+
+
 
 
 ## Additional resources
