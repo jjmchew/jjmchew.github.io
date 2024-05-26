@@ -118,3 +118,8 @@ Note.find({}).then(result => {
   - `.insertMany([arrayOfObjects])`
 - `db.posts.find()`
   - `db.posts.find( {category: 'news'} )` : includes a query object
+
+## using node.js
+- https://www.mongodb.com/developer/languages/javascript/node-connect-mongodb/
+
+- `npm install monogodb`

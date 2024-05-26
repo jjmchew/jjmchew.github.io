@@ -101,12 +101,12 @@
 - is used for setting-up multiple containers that are associated with 1 app
 
 - create `docker-compose.yml` file : defines images / containers with various config options
-- then run `docker-compose up` in the directory with the `docker-compose.yml` file : should spin up the app and run it
-    - can run `docker-compose up -d` for 'detached' mode (background)
+- then run `docker compose up` in the directory with the `docker-compose.yml` file : should spin up the app and run it
+    - can run `docker compose up -d` for 'detached' mode (background)
 
-- `docker-compose down -v` : destroy cluster and data volumes
+- `docker compose down -v` : destroy cluster and data volumes
 
-- `docker-compose run web bash` : runs a container with a bash terminal
+- `docker compose run web bash` : runs a container with a bash terminal
 
 
 ## ECS
@@ -175,6 +175,62 @@
 ### Creating users in psql
 - `create user userName with password 'mypassword';`
 - `grant all privileges on database myDb to userName;`
+
+
+
+
+
+
+## Docker commands (from my tutorial)
+docker run -d --name contName -p local:cont imageName:tag
+docker logs
+docker logs contName
+docker images -a
+docker ps -a
+docker build -t imageName:tag .
+
+docker container start contName
+docker container stop contName
+docker container rm contName
+
+### Demo 1: dev environment
+docker run ubuntu:22.04
+
+docker run -it ubuntu:22.04
+docker ps -a
+docker exec -it containerName bash
+------------
+apt-get update
+apt-get install curl
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+source /root/.bashrc
+nvm install 20.11.0
+npm install -g npm@10.4.0
+------------
+npm init
+npm install express
+apt-get install vim
+apt-get install git-all
+
+exit
+docker commit containerName newImageName:tag
+
+docker run -p 3000:3000 -d newImageName:tag
+
+### Demo 2: mount local code
+docker run -d -it --name testDev --mount type=bind,source=”$(pwd)”,target=/app ubuntu:22.04
+
+docker exec -it testDev bash
+
+### Demo 3:  Create runtime environment
+
+**build.sh:**
+docker build -t testdev:1.0 .
+
+**run.sh:**
+docker run -d -it --name testDev -p 3000:3000 --mount type=bind,source=”$(pwd)”,target=/app testdev:1.0
+
+docker exec -it testDev bash
 
 
 ## MISC
