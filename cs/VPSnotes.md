@@ -71,6 +71,11 @@ server {
 }
 ```
 
+#### Additional notes on nginx
+- https://www.plesk.com/blog/various/nginx-configuration-guide/
+- https://serverfault.com/questions/932628/how-to-handle-relative-urls-correctly-with-a-nginx-reverse-proxy
+
+
 
 #### install / configure postgresql
 - https://www.digitalocean.com/community/tutorials/how-to-install-postgresql-on-ubuntu-22-04-quickstart

@@ -61,6 +61,8 @@
 - [ ] https://www.theregister.co.uk/2017/10/06/10_years_on_amazons_cloud_chief_reflects_on_dynamodb_launch/
   - on DynamoDB/Riak
 
+
+
 ### Distributed systems
 - [ ] https://www.somethingsimilar.com/2013/01/14/notes-on-distributed-systems-for-young-bloods/
 - [ ] https://martin.kleppmann.com/archive.html
@@ -76,6 +78,21 @@
 - [ ] https://www.interviewcake.com/concept/java/lru-cache
 - [ ] https://www.geeksforgeeks.org/lru-cache-implementation/
 - [ ] https://betterprogramming.pub/how-to-build-an-lru-cache-in-less-than-10-minutes-and-100-lines-of-code-fddad56d7af5
+
+
+
+
+### Message Queues
+- [ ] [Gently Down the Stream - A gentle introduction to Apache Kafka](https://www.gentlydownthe.stream/)
+- [ ] [Queueing - An interactive study of queueing strategies](https://encore.dev/blog/queueing)
+
+### Misc from lectures:
+- [ ] OAuth:  https://www.linkedin.com/posts/alexxubyte_oauth-20-explained-with-simple-terms-activity-7167560207580016640-AoCu/
+
+- [ ] capstone project to implement a "waiting room" : https://beekeeper-cli.github.io/
+    - Ryan Schaul project (now eng mgr at SwipeSense)
+
+
 
 
 

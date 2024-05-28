@@ -118,6 +118,10 @@ Note.find({}).then(result => {
   - `.insertMany([arrayOfObjects])`
 - `db.posts.find()`
   - `db.posts.find( {category: 'news'} )` : includes a query object
+  - Note:  if return multiple objects (e.g., using `find()`), mongoDb returns a "cursor" object (which is chainable for other functions like `sort()`, etc.)
+    - to just return the results from the query, use `.toArray()` on the cursor to return an array of results
+    - e.g., `client.db('projdb').collection('requests').find().toArray()`
+
 
 ## using node.js
 - https://www.mongodb.com/developer/languages/javascript/node-connect-mongodb/

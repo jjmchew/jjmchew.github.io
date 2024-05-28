@@ -72,7 +72,7 @@ Delete a branch
 - `git checkout -b main --track origin/main`
 
 
-### git clone
+t f### git clone
 https://docs.github.com/en/get-started/using-git/getting-changes-from-a-remote-repository
 
 - `git clone [repo url]` : will create a new folder for the repo (named according to the repo) and clone into that folder

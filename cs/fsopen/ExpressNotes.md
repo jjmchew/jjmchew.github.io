@@ -148,6 +148,15 @@ app.listen(PORT, () => {
     - can still add longer scripts: e.g., `"rm -rf dist && rm -rf ../back/dist && npm run build && cp -r dist ../back"` (adjust `npm run build` to reference the appropriate script and build for prod vs dev)
 
 
+### Other
+- can load `.env` files with `node --env-file=.env myApp.js`
+  - https://medium.com/@tony.infisical/stop-using-dotenv-in-node-js-v20-6-0-8febf98f6314
+- https://www.digitalocean.com/community/tutorials/how-to-read-and-set-environmental-and-shell-variables-on-linux
+
+
+
+
+
 ## Testing
 - test expects all tests to be named with "extension" `.test.js`
   - e.g., `reverse.test.js`

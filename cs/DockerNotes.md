@@ -233,6 +233,38 @@ docker run -d -it --name testDev -p 3000:3000 --mount type=bind,source=”$(pwd)
 docker exec -it testDev bash
 
 
+## Dockerfile example
+- to create a node/npm ready image from Ubuntu 22.04 base image
+- see ~/projs/DockerTest project (associated with github repo "simple")
+
+```
+FROM ubuntu:22.04
+
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+RUN apt-get update
+RUN apt-get install curl -y
+
+ENV NVM_DIR /root/.nvm
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash \
+  && . $NVM_DIR/nvm.sh \
+  && nvm install 20.11.0 \
+  && npm install -g npm@10.4.0
+
+```
+
+
 ## MISC
 - in bash, to make script files executable:
   - `chmod +x filename.sh`
+
+- multi-container apps with docker-compose:
+  - https://medium.com/@xiaominghu19922/multi-container-applications-with-docker-compose-b0c0a4a91f7a
+
+- deploying on remote hosts w/ Docker:
+  - https://www.docker.com/blog/how-to-deploy-on-remote-docker-hosts-with-docker-compose/
+
+
+## TODOs
+- Deploying on remote host:
+  - [ ] need to try -network=host for both mongo and postgres
+  - [ ] work on just postgres first, then mongo
