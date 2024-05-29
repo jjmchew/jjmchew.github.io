@@ -82,6 +82,11 @@ server {
 - `sudo apt install postgresql postgresql-contrib`
 - to access the `postgres` user:  `sudo -i -u postgres`
     - `exit` to logout `postgres` user
+- may need to create a role:
+  `create role root with login superuser password 'password';`
+
+
+
 
 #### install / configure mongodb
 - https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-20-04 (note version difference)

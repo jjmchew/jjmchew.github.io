@@ -92,7 +92,10 @@
 - [ ] capstone project to implement a "waiting room" : https://beekeeper-cli.github.io/
     - Ryan Schaul project (now eng mgr at SwipeSense)
 
+- [ ] database performance optimization: [Use the Index, Luke!](http://use-the-index-luke.com/)
+    - a great resource for after Capstone
 
+- [ ] fun detour (storing passwords in a db) https://twitter.com/alexxubyte/status/1522242694004674560
 
 
 
