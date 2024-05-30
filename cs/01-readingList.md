@@ -86,6 +86,25 @@
 - [ ] [Gently Down the Stream - A gentle introduction to Apache Kafka](https://www.gentlydownthe.stream/)
 - [ ] [Queueing - An interactive study of queueing strategies](https://encore.dev/blog/queueing)
 
+
+### NoSQL Dbs:
+- [ ] http://highscalability.com/blog/2010/12/6/what-the-heck-are-you-actually-using-nosql-for.html
+
+- understand:
+  - data model
+  - biggest use cases
+  - Does it handle scaling and replication easily?
+  - Does it prefer consistency or availability?
+  - what are drawbacks and shortcomings?
+
+- [ ] review MongoDB
+- [ ] review Redis
+- [ ] review Timescale DB
+- [ ] review Cassandra
+- [ ] review Neo4j
+- [ ] review NewSQL (spanner-based)
+- [ ] review vector Dbs
+
 ### Misc from lectures:
 - [ ] OAuth:  https://www.linkedin.com/posts/alexxubyte_oauth-20-explained-with-simple-terms-activity-7167560207580016640-AoCu/
 
@@ -96,6 +115,8 @@
     - a great resource for after Capstone
 
 - [ ] fun detour (storing passwords in a db) https://twitter.com/alexxubyte/status/1522242694004674560
+
+- [ ] github collaboration:  https://docs.github.com/en/pull-requests/committing-changes-to-your-project/creating-and-editing-commits/creating-a-commit-with-multiple-authors
 
 
 
