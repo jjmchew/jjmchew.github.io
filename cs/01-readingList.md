@@ -118,6 +118,22 @@
 
 - [ ] github collaboration:  https://docs.github.com/en/pull-requests/committing-changes-to-your-project/creating-and-editing-commits/creating-a-commit-with-multiple-authors
 
+- [ ] Database optimization strategies:
+    - https://www.linkedin.com/posts/alexxubyte_systemdesign-coding-interviewtips-activity-7201247172854431744-hDKt/
+
+- [ ] using github (from Tony/Sean):
+    - https://profy.dev/project/github-minesweeper/intro-overview
+
+- [ ] microservices (jk):
+    - https://www.youtube.com/watch?v=y8OnoxKotPQ
+
+- [ ] time / date challenges:
+    - https://www.youtube.com/watch?v=-5wpm-gesOY
+
+- [ ] strangler / fig pattern:  https://dzone.com/articles/monolith-to-microservices-using-the-strangler-patt
+
+- [ ] https://www.cncf.io/phippy/the-childrens-illustrated-guide-to-kubernetes/
+
 
 
 

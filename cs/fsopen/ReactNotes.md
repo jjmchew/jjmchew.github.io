@@ -452,3 +452,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 
 ## Misc
 - `setInterval` does funny things:  https://overreacted.io/making-setinterval-declarative-with-react-hooks/
+
+- using React Router with a nginx:
+  - https://gist.github.com/huangzhuolin/24f73163e3670b1cd327f2b357fd456a
+  - https://www.barrydobson.com/post/react-router-nginx/
+  - https://stackoverflow.com/questions/46820682/how-do-i-reload-a-page-with-react-router
+  - https://ui.dev/react-router-cannot-get-url-refresh

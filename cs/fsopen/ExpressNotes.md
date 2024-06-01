@@ -311,3 +311,6 @@ app.listen(5000, () => console.log('Server running'));
 
 - recommended library for backend express servers:  https://helmetjs.github.io/
 
+- great resource for organizing routes:
+    - https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/routes
+    - see structure of code using exports and then imports to list all routes in a single index

@@ -49,7 +49,7 @@
 - after changes to nginx config:
   - `sudo systemctl reload nginx`
 
-- `sites-available/[domain]` (config file):
+- `sites-available/[domain]` (config file) below:
 ```
 server {
 
@@ -90,11 +90,14 @@ server {
 
 #### install / configure mongodb
 - https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-20-04 (note version difference)
-- from alternate source (https://www.mongodb.com/community/forums/t/installing-mongodb-over-ubuntu-22-04/159931):
-  - `wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc |  gpg --dearmor | sudo tee /usr/share/keyrings/mongodb.gpg > /dev/null`
-  - `echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list`
-  - `sudo apt update`
-  - `sudo apt install mongodb-org`
+
+- CAUTION - digital ocean links above may be better
+  - from alternate source (https://www.mongodb.com/community/forums/t/installing-mongodb-over-ubuntu-22-04/159931):
+    - `wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc |  gpg --dearmor | sudo tee /usr/share/keyrings/mongodb.gpg > /dev/null`
+    - `echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list`
+    - `sudo apt update`
+    - `sudo apt install mongodb-org`
+
 
 #### install node js (via NVM)
 - from https://github.com/nvm-sh/nvm
@@ -107,15 +110,25 @@ server {
 
 #### Certbot (for SSL certificates from let's encrypt)
 - https://certbot.eff.org/instructions?ws=nginx&os=ubuntufocal (these worked for ubuntu 22.04 although the version was different)
+- some assistance on getting ssl for wildcard domains:  https://dev.to/hamishclulee/wildcard-subdomains-on-digitalocean-using-express-and-nginx-with-let-s-encrypt-for-ssl-415b
 
 #### install PM2 (process manager for node.js applications)
 - https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-22-04
   - `npm install pm2@latest -g`
   - `pm2 start [serverfile.js]`
+    - to run an npm script file:  `pm2 start npm --name "app name" -- run prod` where `prod` is the npm script you want to run
+
   - `pm2 startup systemd`
       - then copy and paste the provided sudo env line
   - `pm2 save`
   - `systemctl start pm2-jjmchew`  or  `systemctl status pm2-jjmchew`
+
+  - `pm2 restart app_name`
+  - `pm2 reload app_name`
+  - `pm2 stop app_name`
+  - `pm2 delete app_name`
+
+
 
 ### Using SSH
 - followed instructions on Digital Ocean web interface when creating the droplet and creating SSH keys
@@ -172,3 +185,10 @@ server {
 - `sudo usermod -aG docker userName`
 - `newgrp docker`
 
+## Misc
+- setting up wildcard domains on nginx and SSL:
+  - https://dev.to/hamishclulee/wildcard-subdomains-on-digitalocean-using-express-and-nginx-with-let-s-encrypt-for-ssl-415b
+
+- deploying a react app to Digital Ocean:  https://www.digitalocean.com/community/tutorials/deploy-react-application-with-nginx-on-ubuntu
+
+https://serverfault.com/questions/929808/nginx-reverse-proxy-to-pass-subdomain-in-url-to-backend

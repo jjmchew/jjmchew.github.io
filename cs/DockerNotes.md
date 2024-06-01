@@ -264,6 +264,16 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | b
   - https://www.docker.com/blog/how-to-deploy-on-remote-docker-hosts-with-docker-compose/
 
 
+
+
+## Deploying Docker dbs on VPS
+- deploying '~/projs/miniProj' with a postgres container and a mongodb container to a vps with 512 MB ram did NOT work
+  - this may be because the images combined (~800 mb + 400 mb) are larger than ram
+- upgrading the vps instance to 2 gb ram WORKED!
+  - lesson:  be wary of system requirements when choosing vps specs
+
+
+
 ## TODOs
 - Deploying on remote host:
   - [ ] need to try -network=host for both mongo and postgres
