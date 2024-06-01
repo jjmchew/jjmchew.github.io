@@ -449,12 +449,31 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 - for `label` elements use `htmlFor` instead of `for`
   - e.g.,  `<label htmlFor={props.val}>{props.val}</label>`
 
+## React.createElement
+- creates virtual React elements (instead of using JSX)
+- in order to be displayed, these elements must be associated with a root (see below)
+
+## React.createRoot
+- connects the virtual React dom with an actual DOM element (typically with id 'root')
+
+
+## React library vs framework
+- why React is a library?
+  - no "batteries included" : doesn't include everything you'll need for a complete SPA
+  - React is focused on building user interfaces with JSX, state management, hooks, etc.
+  - you need to have good knowledge of 3rd party react libraries:
+    - e.g., react-router, axios, jest, react hook form, react query
+  - it's not "opinionated" - you can use any libraries you choose for other stuff
+
+- there are many react-based frameworks:
+  - next.js, gatsby, redwood.js
+
 
 ## Misc
 - `setInterval` does funny things:  https://overreacted.io/making-setinterval-declarative-with-react-hooks/
 
 - using React Router with a nginx:
-  - https://gist.github.com/huangzhuolin/24f73163e3670b1cd327f2b357fd456a
+  - deploy-create-react-app-with-nginx: https://gist.github.com/huangzhuolin/24f73163e3670b1cd327f2b357fd456a
   - https://www.barrydobson.com/post/react-router-nginx/
   - https://stackoverflow.com/questions/46820682/how-do-i-reload-a-page-with-react-router
   - https://ui.dev/react-router-cannot-get-url-refresh
