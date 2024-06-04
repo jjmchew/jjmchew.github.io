@@ -24,6 +24,7 @@
     - can define a name using: `docker run --name myName nginx:1.23`
   - can use `docker run` without first doing `docker pull` : docker will check locally, and if it doesn't find an image, will dl it from docker hub automatically
   - `docker run -p 9000:80 nginx:1.23` : binds container port 80 to localhost port 9000
+
   - `docker run -it myContainer bash` : `it` runs an 'interactive terminal' in the container, `bash` defines the terminal
   - `docker run --rm ...` : removes container once it's exited from
   - `docker run --net netname ...` : runs a container with a network called `netname` specified
@@ -107,6 +108,24 @@
 - `docker compose down -v` : destroy cluster and data volumes
 
 - `docker compose run web bash` : runs a container with a bash terminal
+
+### Exposing ports
+- when exposing ports in using a `docker-compose.yml` file (e.g., see `miniProj` project - my own requestbin):
+  - exposing ports (using just the ports) as in the below on a vps will expose that port to the outside server IP (i.e., that port will be available at server address 209.38.130.75:27017), which can be a security concern:
+    ```
+      ports:
+        - "27017:27017"
+    ```
+  - if public access to that db is NOT desired, it's better to define the localhost explicitly when ports are exposed:
+    ```
+    ports:
+      - "127.0.0.1:27017"
+    ```
+  - to test whether or not ports are exposed to the outside server IP:
+    - `telnet 209.38.130.75 27017`
+    - if the response contains "Connected to 209.38.130.75. Escape character is '^]'" then the system is exposed
+    - if the response indicates "Unable to connect to remote host: Connection refused" then the port is not exposed
+
 
 
 ## ECS

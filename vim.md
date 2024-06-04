@@ -29,10 +29,12 @@
 
 #### tabs
   - `:tabe file1` : open a new tab, open 'file1'
-  - `:Te` : open a file explorer window and open file in new tab
+  - `:tabf[ind] .` : open a new tab and the file explorer
+    - `:Te` : open a file explorer window and open file in new tab (vim only, not nvim)
   - `:clo` : close tab / window
   - `gt` : next tab
   - `gT` : previous tab
+  - `g<Tab>` : goto last opened tab
   - `2gt` : 2nd tab
 
 #### windows

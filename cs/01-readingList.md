@@ -134,6 +134,14 @@
 
 - [ ] https://www.cncf.io/phippy/the-childrens-illustrated-guide-to-kubernetes/
 
+- [ ] system design interview guide:  https://interviewing.io/guides/system-design-interview
+- [ ] system design introduction for interviews: https://www.youtube.com/watch?v=UzLMhqg3_Wc
+- [ ] system design primer:  https://github.com/donnemartin/system-design-primer
+- [ ] design twitter's api:  https://www.youtube.com/watch?v=k-E4YdEs8qM
+- [ ] from Heroku to Digital Ocean to AWS:  https://ghiculescu.substack.com/p/11-years-of-hosting-a-saas
+- [ ] migrating off AWS to on-prem:  https://world.hey.com/dhh/we-have-left-the-cloud-251760fb
+
+
 
 
 

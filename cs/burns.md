@@ -33,3 +33,6 @@
   - nginx does a better job of serving static files (hence addition of pattern match to nginx config to serve static files from usual root folder in vps)
 
 
+## React
+- when using `React.createElement`: listing children within an array creates a mutable list which is why each child requires a KEY
+  - if you just list the children as comma-separated parameters, then no key is necessary since the order of those children will be fixed
