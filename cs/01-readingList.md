@@ -142,7 +142,21 @@
 - [ ] migrating off AWS to on-prem:  https://world.hey.com/dhh/we-have-left-the-cloud-251760fb
 
 
-
+## React assigned readings
+- [ ] [Story of React](https://www.youtube.com/watch?v=Wm_xI7KntDs)
+- [ ] [React without JSX](https://reactjs.org/docs/react-without-jsx.html)
+- [ ] [React createElement](https://react.dev/reference/react/createElement)
+- [ ] [React createRoot](https://react.dev/reference/react-dom/client/createRoot)
+- [ ] [Client-side toolchains](https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Introducing_complete_toolchain)
+- [ ] [Why react is a library](https://www.freecodecamp.org/news/is-react-a-library-or-a-framework/)
+- [ ] [Extracing large components into multiple](https://kentcdodds.com/blog/when-to-break-up-a-component-into-multiple-components)
+- [ ] [Thinking in react](https://react.dev/learn/thinking-in-react)
+- [ ] [Rendering lists](https://react.dev/learn/rendering-lists)
+- [ ] [State - a component's memory](https://react.dev/learn/state-a-components-memory)
+- [ ] [Render and Commit](https://react.dev/learn/adding-interactivity#render-and-commit)
+- [ ] [use state lazy initialization and function updates](https://kentcdodds.com/blog/use-state-lazy-initialization-and-function-updates#usestate-lazy-initialization)
+- [ ] [React forms tutorial](https://dmitripavlutin.com/react-forms-tutorial/)
+- [ ] [Synchronizing with effects](https://react.dev/learn/synchronizing-with-effects)
 
 
 ## Additional resources

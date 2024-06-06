@@ -477,3 +477,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   - https://www.barrydobson.com/post/react-router-nginx/
   - https://stackoverflow.com/questions/46820682/how-do-i-reload-a-page-with-react-router
   - https://ui.dev/react-router-cannot-get-url-refresh
+
+- https://react.dev/learn/queueing-a-series-of-state-updates
