@@ -479,3 +479,15 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   - https://ui.dev/react-router-cannot-get-url-refresh
 
 - https://react.dev/learn/queueing-a-series-of-state-updates
+
+
+- Remember - db updates can be slow
+  - the since the front-end can be fast, it can be used to prevent more requests going to the back-end than should occur
+    - e.g., "Add to cart" spamming for react "shopping" exercise in Capstone
+    - the backend did not implement "transactions" so that adding an item to cart required that an item also be removed from the product quantities together
+    - as a result, spamming the button would allow more items to be added to cart than existed in the product quantities
+    - optimistically updating the front-end prevented too many requests from going to the back-end
+  - Note:
+    - use of dispatch functions to update state were critical
+    - timing and flow of when to check for existing items to ensure the cart was updated properly was also critical (i.e., within the dispatch function, NOT outside of it, which would assume a syncronous execution - which it isn't)
+

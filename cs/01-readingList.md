@@ -157,7 +157,13 @@
 - [ ] [use state lazy initialization and function updates](https://kentcdodds.com/blog/use-state-lazy-initialization-and-function-updates#usestate-lazy-initialization)
 - [ ] [React forms tutorial](https://dmitripavlutin.com/react-forms-tutorial/)
 - [ ] [Synchronizing with effects](https://react.dev/learn/synchronizing-with-effects)
-
+- [ ] [Vitetest fsopen ch 5](https://fullstackopen.com/en/part5/testing_react_apps)
+- [ ] [video - react-testing-library intro](https://javascript.plainenglish.io/quick-intro-to-react-testing-library-4e1fdd3e1103)
+- [ ] [Mocking in vitest](http://d30l2an5huagqb.cloudfront.net/videos/vitest.mp4)
+- [ ] [LS crypto app boilerplate](https://github.com/launchschool/crypto_app)
+- [ ] [LS crypto app solution](https://github.com/launchschool/crypto_solution)
+- [ ] [Avoid nesting when testing](https://kentcdodds.com/blog/avoid-nesting-when-youre-testing)
+- [ ] [Common mistakes w/ react-testing-library](https://kentcdodds.com/blog/common-mistakes-with-react-testing-library)
 
 ## Additional resources
 
