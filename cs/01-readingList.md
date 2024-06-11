@@ -164,6 +164,17 @@
 - [ ] [LS crypto app solution](https://github.com/launchschool/crypto_solution)
 - [ ] [Avoid nesting when testing](https://kentcdodds.com/blog/avoid-nesting-when-youre-testing)
 - [ ] [Common mistakes w/ react-testing-library](https://kentcdodds.com/blog/common-mistakes-with-react-testing-library)
+- [ ] [Reducers](https://react.dev/learn/extracting-state-logic-into-a-reducer)
+- [ ] [Context](https://react.dev/learn/passing-data-deeply-with-context)
+- [ ] [Context + Reducers](https://react.dev/learn/scaling-up-with-reducer-and-context)
+- [ ] [useState + useReducer](https://kentcdodds.com/blog/how-to-implement-usestate-with-usereducer)
+- [ ] [useState or useReducer](https://kentcdodds.com/blog/should-i-usestate-or-usereducer)
+- [ ] [Redux vs Context](https://www.upbeatcode.com/react/when-to-use-context-api-vs-redux/)
+- [ ] [React query](https://www.youtube.com/watch?v=seU46c6Jz7E&t&ab_channel=ReactConferencesbyGitNation)
+- [ ] [Rendering modes](https://kirillibrahim.medium.com/gray-area-on-when-to-use-different-rendering-modes-csr-ssr-ssg-214a636a24a4)
+- [ ] [Intermediate React patterns](https://react.dev/learn/you-might-not-need-an-effect)
+
+
 
 ## Additional resources
 
