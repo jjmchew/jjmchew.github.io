@@ -36,3 +36,8 @@
 ## React
 - when using `React.createElement`: listing children within an array creates a mutable list which is why each child requires a KEY
   - if you just list the children as comma-separated parameters, then no key is necessary since the order of those children will be fixed
+
+
+## Testing (React)
+- when using `.getByRole` for inputs, the `name` property is actually the value of the `label` property on the input, not the actual value of the `<label>` tag (i.e., the text value between the tags)
+
