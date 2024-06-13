@@ -173,6 +173,13 @@
 - [ ] [React query](https://www.youtube.com/watch?v=seU46c6Jz7E&t&ab_channel=ReactConferencesbyGitNation)
 - [ ] [Rendering modes](https://kirillibrahim.medium.com/gray-area-on-when-to-use-different-rendering-modes-csr-ssr-ssg-214a636a24a4)
 - [ ] [Intermediate React patterns](https://react.dev/learn/you-might-not-need-an-effect)
+- [ ] [Client-side routing](https://launchschool.com/gists/d6c907f0)
+    - [ ] [History API](https://developer.mozilla.org/en-US/docs/Web/API/History_API)
+    - [ ] [Tutorial to history api](http://blog.teamtreehouse.com/getting-started-with-the-history-api)
+- [ ] [react router](https://blog.webdevsimplified.com/2022-07/react-router/)
+- [ ] [Wouter](https://blog.logrocket.com/an-introduction-to-wouter-a-react-router-alternative/)
+
+
 
 
 
