@@ -182,11 +182,13 @@
 
 
 ### Example repos
-- [ ] [Srdjan's comments app](https://github.com/SrdjanCoric/comments-2405)
+- [ ] [Srdjan's comments app w/ tests](https://github.com/SrdjanCoric/comments-2405)
 - [ ] [Shopping cart app](https://github.com/launchschool/shopping_cart_solution-ts)
 - [ ] [Max's reducers/custom hooks](https://github.com/thinkybeast/2405-react-reducers-custom-hooks)
 - [ ] [Max's prop drilling-context](https://github.com/thinkybeast/2405-react-prop-drilling-context)
 
+
+- [ ] [typescript and express](https://blog.logrocket.com/how-to-set-up-node-typescript-express/)
 
 ## Capstone project
 - [ ] [MVPs](https://blog.crisp.se/2016/01/25/henrikkniberg/making-sense-of-mvp)
