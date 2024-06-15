@@ -33,9 +33,25 @@
   - nginx does a better job of serving static files (hence addition of pattern match to nginx config to serve static files from usual root folder in vps)
 
 
+
 ## React
 - when using `React.createElement`: listing children within an array creates a mutable list which is why each child requires a KEY
   - if you just list the children as comma-separated parameters, then no key is necessary since the order of those children will be fixed
+
+- routing (this bug cropped up when I was using "wouter", but is relevant to react router, as well):
+  - generally, don't use "navigate" - i.e., don't use a method to push the user to another page
+  - where any processing needs to be done before displaying that page, rather than doing it in a click handler in the PREVIOUS page, do it in a useEffect in the SUBSEQUENT page
+  - generally, anywhere a click results in a new page (i.e., anywhere you would use an <a> tag, you should put a <Link> tag)
+  - must use `navigate` to click outside of something (e.g., like closing a modal, on "blur")
+
+- when passing setters (and using Typescript) the proper type should be:
+  - `React.Dispatch<React.SetStateAction<T>>` where T is the type of the state variable
+    - this assumes `import React from 'react'`
+  - using the above allows you to set a "dummy" function for the setter if you're just defining initial types
+    - e.g., `() => {}` will be a valid React.Dispatch function
+
+
+
 
 
 ## Testing (React)

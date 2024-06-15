@@ -171,6 +171,7 @@
 - [ ] [useState or useReducer](https://kentcdodds.com/blog/should-i-usestate-or-usereducer)
 - [ ] [Redux vs Context](https://www.upbeatcode.com/react/when-to-use-context-api-vs-redux/)
 - [ ] [React query](https://www.youtube.com/watch?v=seU46c6Jz7E&t&ab_channel=ReactConferencesbyGitNation)
+- [ ] [Story of React Query](https://www.youtube.com/watch?v=OrliU0e09io)
 - [ ] [Rendering modes](https://kirillibrahim.medium.com/gray-area-on-when-to-use-different-rendering-modes-csr-ssr-ssg-214a636a24a4)
 - [ ] [Intermediate React patterns](https://react.dev/learn/you-might-not-need-an-effect)
 - [ ] [Client-side routing](https://launchschool.com/gists/d6c907f0)
@@ -178,6 +179,17 @@
     - [ ] [Tutorial to history api](http://blog.teamtreehouse.com/getting-started-with-the-history-api)
 - [ ] [react router](https://blog.webdevsimplified.com/2022-07/react-router/)
 - [ ] [Wouter](https://blog.logrocket.com/an-introduction-to-wouter-a-react-router-alternative/)
+
+
+### Example repos
+- [ ] [Srdjan's comments app](https://github.com/SrdjanCoric/comments-2405)
+- [ ] [Shopping cart app](https://github.com/launchschool/shopping_cart_solution-ts)
+- [ ] [Max's reducers/custom hooks](https://github.com/thinkybeast/2405-react-reducers-custom-hooks)
+- [ ] [Max's prop drilling-context](https://github.com/thinkybeast/2405-react-prop-drilling-context)
+
+
+## Capstone project
+- [ ] [MVPs](https://blog.crisp.se/2016/01/25/henrikkniberg/making-sense-of-mvp)
 
 
 
@@ -188,6 +200,11 @@
 ### User guide for me
 - https://lg.substack.com/p/the-looking-glass-a-user-guide-to
 - https://review.firstround.com/the-indispensable-document-for-the-modern-manager/
+
+## Misc readings (from LS slack) on business
+- [ ] [Why TripleByte failed - Otherbranch](https://www.otherbranch.com/blog/why-triplebyte-failed)
+- [ ] [Muse Retrospective](https://adamwiggins.com/muse-retrospective/)
+
 
 
 
