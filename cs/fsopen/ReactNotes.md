@@ -491,3 +491,71 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     - use of dispatch functions to update state were critical
     - timing and flow of when to check for existing items to ensure the cart was updated properly was also critical (i.e., within the dispatch function, NOT outside of it, which would assume a syncronous execution - which it isn't)
 
+
+
+## Quick Reference
+
+- `npm create vite@latest myProject --template react`;
+- `npm create vite@latest appName -- --template react-ts`
+
+## Setup testing
+- `npm i -D vitest jsdom @testing-library/react @testing-library/user-event @testing-library/jest-dom`
+
+- `package.json`:  add "test" script:
+  - `"test": "vitest"`
+
+- create `setupTests.ts` file:
+  ` import "@testing-library/jest-dom"; `
+
+- update `tsconfig.json`:
+  - under "compiler options" add:
+  ` "types": ["@testing-library/jest-dom/vitest", "vitest/globals"], `
+
+- update `vite.config.ts`:
+  ```typescript
+  /// <reference types="vitest" />
+
+  import { defineConfig } from "vite";
+  import react from "@vitejs/plugin-react";
+
+  // https://vitejs.dev/config/
+  export default defineConfig({
+    plugins: [react()],
+    test: {
+      globals: true,
+      environment: "jsdom",
+      setupFiles: ["./setupTests.ts"],
+    },
+    server: {
+      proxy: {
+        "/api": {
+          target: "http://localhost:3001",
+          changeOrigin: true,
+          secure: false,
+        },
+      },
+    },
+  });
+  ```
+
+- test file (e.g., `App.test.ts`)
+  ```typescript
+  import { render, screen } from '@testing-library/react';
+  import userEvent from '@testing-library/user-event';
+  import * as importedName from '../fileToMock.ts';
+
+  vi.mock('../fileToMock.ts');
+  const mockedImportedName = vi.mocked(importedName, true);
+
+  afterEach(() => {
+    vi.resetAllMocks();
+  });
+
+  it('describe test here', async () => {
+    mockedImportedName.specificFunction.mockResolvedValue(valueHere);
+    const user = userEvent.setup();
+
+    render(componentToTest);
+    await user.click(screen.getByRole('button', {name: /text to match/ }));
+  });
+  ```
