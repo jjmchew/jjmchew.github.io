@@ -84,7 +84,20 @@ https://docs.github.com/en/get-started/using-git/getting-changes-from-a-remote-r
 - use `git status` to check what is happening, follow-up commands may be given (e.g., `git commit --amend` or `git rebase --continue`)
 
 
+## Bringing main back into feature branches
+- `git rebase main` : integrates upstream changes into the local repository
+  - i.e., "base my changes on what everybody has already done"
+  - moves or combines a sequence of commits to a new base commit
+  - e.g., if commits were previously based on a prior version of main, we can make them branch off a later version of main
+    - this creates a linear commit history which makes it easier to debug
+  - https://www.atlassian.com/git/tutorials/rewriting-history/git-rebase
+
+
+
+
+
 ## Resources
 - https://docs.github.com/en/authentication/connecting-to-github-with-ssh
 - [How to resolve merge conflicts in git](https://www.youtube.com/watch?v=xNVM5UxlFSA)
+
 

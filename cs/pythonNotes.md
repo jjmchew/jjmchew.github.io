@@ -743,4 +743,25 @@ print(v1 + v2)   # Vector(18, 8)
     - etc.
   - search for the method ends once (the first) method with the corresponding name has been found (based on MRO)
   - if nothing is found, return `AttributeError`
-##
+
+
+## Virtual environments
+- `python3 -m venv [directoryName]`
+- activate:  `source [directorName]/bin/activate`
+- `deactivate`
+
+- Note:  virtual env must be activated in each terminal window
+
+- `pip freeze > requirements.txt`
+
+### Pipenv
+- `pipenv sync` (when inside a directory with a `Pipfile.lock`)
+- `pipenv shell` : activate the virtual environment for a project
+  - use `exit` to deactivate the shell
+
+
+## FastAPI
+- `pip install fastapi`
+- `fastapi dev main.py`
+
+
