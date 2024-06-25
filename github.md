@@ -99,5 +99,7 @@ https://docs.github.com/en/get-started/using-git/getting-changes-from-a-remote-r
 ## Resources
 - https://docs.github.com/en/authentication/connecting-to-github-with-ssh
 - [How to resolve merge conflicts in git](https://www.youtube.com/watch?v=xNVM5UxlFSA)
+- [LS cheatsheet github](https://gist.github.com/NickMiller11/b7bf08f40f712c59d42536df7ee1b299)
+
 
 

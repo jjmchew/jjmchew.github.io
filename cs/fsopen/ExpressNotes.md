@@ -317,3 +317,6 @@ app.listen(5000, () => console.log('Server running'));
 
 - using ts-node with .env file:
   - `node -r ts-node/register --env-file=.env ./src/index.ts'
+
+- Srdjan's boilerplate (TS express w/ testing):  https://github.com/SrdjanCoric/ts-express-boilerplate
+

@@ -498,6 +498,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 - `npm create vite@latest myProject --template react`;
 - `npm create vite@latest appName -- --template react-ts`
 
+- Srdjan's boilerplate (w/ testing):  https://github.com/SrdjanCoric/client-boilerplate
+
 ## Setup testing
 - `npm i -D vitest jsdom @testing-library/react @testing-library/user-event @testing-library/jest-dom`
 
