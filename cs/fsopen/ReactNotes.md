@@ -494,9 +494,12 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 
 
 ## Quick Reference
+- `npm create vite@latest`
+    - then follow along with settings
 
-- `npm create vite@latest myProject --template react`;
-- `npm create vite@latest appName -- --template react-ts`
+- OLD CLI:  the below created errors during build, something with the template
+  - `npm create vite@latest myProject --template react`;
+  - `npm create vite@latest appName -- --template react-ts`
 
 - Srdjan's boilerplate (w/ testing):  https://github.com/SrdjanCoric/client-boilerplate
 
