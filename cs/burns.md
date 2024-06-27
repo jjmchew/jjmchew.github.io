@@ -61,3 +61,13 @@
 
 ## Express
 - if I create a middleware, that middleware is re-loaded on each request
+
+
+## Research
+- from numDialer project research (how to send real-time updates to client)
+  - need to really dig, it can be helpful to use AI to assess ALL options
+  - from initial digging I found websockets and HTTP streaming, but didn't find SSE (server sent events)
+  - as a result, I almost went down the road of implementing websockets (which would likely have been more difficult and less ideal)
+  - make sure you try and do exhaustive research:
+    - need to write your query in different ways to see what is returned
+

@@ -85,4 +85,8 @@
   - use an OAuth server to issue / refresh tokens
 
 
+### General RAG / AI related research
+- see RAG google sheets
 
+### Skateboard
+- confirmed updated repo works locally (no errors in dev mode)
