@@ -12,7 +12,6 @@
 
 
 ## VPS
-
 - check container size before deploying to a VPS w/ containers
   - I tried to deploy 1.2 gb of db images to a VPS with only 512 mb of RAM - not ideal
 
@@ -59,8 +58,27 @@
 
 
 
+
+
+
+## JS
+- using *fetch*:
+  - when sending json data in body you *must* always set headers:
+    - i.e., `"Content-Type": "application/json"`
+  - otherwise, a receiving express server will not parse the data as JSON (it will receive nothing if JSON parser is enabled)
+
+
+
+
+
+
+
 ## Express
 - if I create a middleware, that middleware is re-loaded on each request
+
+
+
+
 
 
 ## Research
