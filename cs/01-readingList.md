@@ -190,10 +190,27 @@
 
 - [ ] [typescript and express](https://blog.logrocket.com/how-to-set-up-node-typescript-express/)
 
+
+
+
+
 ## Capstone project
 - [ ] [MVPs](https://blog.crisp.se/2016/01/25/henrikkniberg/making-sense-of-mvp)
 
+- [ ] [Anatomy of a good ticket](https://chromatichq.com/insights/anatomy-good-ticket/)
+- [ ] [Write better tickets](https://levelup.gitconnected.com/be-a-better-software-developer-write-better-tickets-75ccf9621c02)
 
+
+
+
+
+
+## Using Git
+  - https://gist.github.com/NickMiller11/b7bf08f40f712c59d42536df7ee1b299
+  - https://ohshitgit.com/
+
+  - [ ] [Conventional commits](https://www.conventionalcommits.org/en/v1.0.0/)
+  - [ ] [Conventional commits video](https://www.youtube.com/watch?v=OJqUWvmf4gg)
 
 
 

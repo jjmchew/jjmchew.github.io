@@ -57,3 +57,7 @@
 ## Testing (React)
 - when using `.getByRole` for inputs, the `name` property is actually the value of the `label` property on the input, not the actual value of the `<label>` tag (i.e., the text value between the tags)
 
+
+
+## Express
+- if I create a middleware, that middleware is re-loaded on each request

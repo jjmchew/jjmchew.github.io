@@ -192,3 +192,8 @@ server {
 - deploying a react app to Digital Ocean:  https://www.digitalocean.com/community/tutorials/deploy-react-application-with-nginx-on-ubuntu
 
 https://serverfault.com/questions/929808/nginx-reverse-proxy-to-pass-subdomain-in-url-to-backend
+
+
+
+
+- `du -ah <director name>` : list the size of a folder (with it's subdirectories)

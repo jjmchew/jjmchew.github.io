@@ -755,6 +755,8 @@ print(v1 + v2)   # Vector(18, 8)
 - `pip freeze > requirements.txt`
 
 ### Pipenv
+- `pipenv --python 3.12.2` : create a virtual environment using python 3.12.2
+
 - `pipenv sync` (when inside a directory with a `Pipfile.lock`)
 - `pipenv shell` : activate the virtual environment for a project
   - use `exit` to deactivate the shell

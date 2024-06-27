@@ -94,12 +94,41 @@ https://docs.github.com/en/get-started/using-git/getting-changes-from-a-remote-r
 
 
 
+## Conventional commits
+- <type>(scope): <description>
+
+- types:
+  - `fix` : patch a bug fix
+  - `feat` : introduce a new feature
+  - add `!` to type : introduces a breaking change
+      - could also add a footer `BREAKING CHANGE`
+  - `build`
+  - `chore`
+  - `docs`
+  - `style`
+  - `refactor`
+  - `perf`
+  - `test`
+  - `revert`
+      - when using this type, recommended to add commit SHAs that are being reverted
+
+    - e.g., `feat(api): send an email to customer when product is shipped` 
+
+- scope:
+  - must be a noun describing a section of the codebase
+- description:
+  - short summary
+
+- if a "body" is included, it must be delineated (i.e., separated from first commit line) with an empty line
+- if a "footer" is included, it must be delineated (i.e., separated from body) with an empty line
+
 
 
 ## Resources
 - https://docs.github.com/en/authentication/connecting-to-github-with-ssh
 - [How to resolve merge conflicts in git](https://www.youtube.com/watch?v=xNVM5UxlFSA)
 - [LS cheatsheet github](https://gist.github.com/NickMiller11/b7bf08f40f712c59d42536df7ee1b299)
+- [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/#summary)
 
 
 
