@@ -420,6 +420,77 @@ https://course.fast.ai/Lessons/lesson2.html
 - generally - wouldn't throw away data - they may be good predictors
   - could create another column which indicates if there is a value in a particular column (especially if the value is frequently missed)
 
+- can use histograms to show how frequently values appear
+- for long-tailed distributions (i.e., lots of small values) can use the log of those values
+  - log histogram of "fares" will be much better
+
+- ~19:32 - dummy variables
+  - necessary for data which isn't inherently numeric (e.g., "embarked", "sex")
+
+- pytorch does everything numpy can do, but allows use of GPU
+  - hence, could just use pytorch
+  - number type needs to be floats for pytorch
+
+- tables are rank 2 tensors
+  - scalars are rank 0
+  - rank is the length of the shape
+
+- need to set a seed to initially generate random coefficients
+- multiplying a matrix by a product ( `t_indep*coeffs`) - this is actually element-wise multiplication
+  - this is "broadcasting" and is done on the GPU - is done very quickly
+  - it was acutally written in C - this is fast, even tho Python is slow
+  - google "numpy broadcasting rules"
+
+- since age is very large relative to the other variables
+  - to optimize, change age to a percentage of max age
+  - could also subtract mean and divide by standard deviation
+
+- for titanic data, using random split is fine
+  - can use `from fastai.data.transforms import RandomSplitter`
+
+### sigmoid
+- ~48:32 - using sigmoid
+- sigmoid:  as numbers get larger they asymptote to 1, or smaller than 0 they asymptote to 0
+  - use `import sympy`
+  - can put `indeps*coeffs` through sigmoid
+  - using sigmoid - it allowed increase of the learning rate, improved accuracy
+
+
+~58:33 - matrix multiply  in python, `@` is the operator for matrix multiply (since `*` is for element-wise multiply)
+~1:09:36 - deep learning
+  - the last layer runs through sigmoid
+  - go through all layers and all constants
+  - creates about the same loss / accuracy
+
+- note that neural net and deep learning didn't create a better outcome with the titanic dataset
+  - generally, tabular data requires thinking to make it work well
+
+~1:15:47 - using a framework
+  - although you can build things on your own
+  - but it's often best to use a framework so you don't need to build it all from scratch
+  - pandas can do a lot of "feature engineering"
+    - it's worth looking at the sample code from jupyter notebook to see what can be done
+
+~1:23:30 - ensembling
+  - ensembling is creating multiple models and combine them to create a single prediction
+  - using mode may be better than mean - but not sure why
+    - may be best to just try it
+
+
+~1:27:02 - random forests
+  - can be very elegant, hard to mess up
+  - logistic regression - is very hard, outliers, etc.
+  - random forests: it's rare to mess this up in industry
+
+  - a random forest is an ensemble of trees
+    - a tree is an ensemble of binary splits
+
+  - a binary split - something that splits the rows into 2 groups
+    - e.g., titanic data set - male vs female
+      - the survival rate is very different among males vs females
+
+  - a 1-R model (a simple binary split)
+    - in a review in the 90s, ended up being of the best (if not the best) models for classifying real world data sets
 
 
 

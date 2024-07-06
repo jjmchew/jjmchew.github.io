@@ -137,7 +137,7 @@ server {
   - keys were stored in `/home/jjmchew/.ssh`
 
 - from ubuntu terminal:
-  - `ssh -i /home/jjmchew/.ssh/id_rsa root@209.38.130.75`
+  - `ssh -i /home/jjmchew/.ssh/id_rsa root@143.110.130.75`
   - this will prompt for passphrase (e.g., `dockerTest`) entered during creation
   - should then connect to remote server
 
