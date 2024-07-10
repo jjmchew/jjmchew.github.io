@@ -745,7 +745,7 @@ print(v1 + v2)   # Vector(18, 8)
   - if nothing is found, return `AttributeError`
 
 
-## Virtual environments
+## Virtual environments (using venv)
 - `python3 -m venv [directoryName]`
 - activate:  `source [directorName]/bin/activate`
 - `deactivate`
@@ -761,6 +761,7 @@ print(v1 + v2)   # Vector(18, 8)
 - `pipenv shell` : activate the virtual environment for a project
   - use `exit` to deactivate the shell
 
+- `pipenv requirements > requirements.txt`
 
 ## FastAPI
 - `pip install fastapi`
