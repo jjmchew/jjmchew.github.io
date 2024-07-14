@@ -767,4 +767,13 @@ print(v1 + v2)   # Vector(18, 8)
 - `pip install fastapi`
 - `fastapi dev main.py`
 
+## .env variables
+- use `python-dotenv`
+- `pipenv install python-dotenv`
+- in file:
+  ```python
+  from dotenv import load_dotenv
+
+  load_dotenv()
+  ```
 
