@@ -1,9 +1,13 @@
 # llamaindex notes
+- majority of notes from book "Building Data Driven Applications"
+  - https://learning.oreilly.com/library/view/building-data-driven-applications/9781835089507/B21861_11.xhtml
 
 - created in 2022 by Princeton graduate Jerry Liu
 - LlamaIndex (LI) guides the responses based on real data rather than just making up vague answers
 - LI reveals complexity "progressively"
   - looks simple to start, but allows deeper tweaking if required
+
+
 
 ## Classes
 - `Document`
@@ -23,6 +27,9 @@
 import loggin
 logging.basicConfig(level=logginng.DEBUG)
 ```
+
+
+
 
 
 ## Readers
@@ -46,6 +53,9 @@ logging.basicConfig(level=logginng.DEBUG)
     print(doc.metadata)
   ```
 
+
+
+
 ## Parse
 - `from llama_parse import LlamaParse` : paid service with free tier - hosted and provides advanced parsing capabilities for documents
 - `NodeParser` (a generic class for parsers)
@@ -64,6 +74,9 @@ logging.basicConfig(level=logginng.DEBUG)
   - leverages `Unstructured` library
   - creates text nodes and table nodes
     - table nodes can be loaded into pandas DataFrame or structure DBs for SQL
+
+
+
 
 
 ## Splitters
@@ -89,6 +102,9 @@ logging.basicConfig(level=logginng.DEBUG)
   - requires `tree_sitter` and `tree_sitter_languages` (use `pipenv install`)
 
 
+
+
+
 ## Extractors
 - used to extract metadata which parsing / splitting
   - remember, an LLM is used to extract metadata - could result in privacy / regulatory / security / legal issues
@@ -106,6 +122,8 @@ logging.basicConfig(level=logginng.DEBUG)
 - can hide metadata when submitted to LLM using
   - e.g., `document.excluded_llm_metadata_keys = ["file_name"]` : hides metadata "file_name"
   - enum: `MetadataMode` : can be `ALL`, `LLM`, `EMBED`
+
+
 
 
 
@@ -195,7 +213,118 @@ logging.basicConfig(level=logginng.DEBUG)
 
 - `ComposableGraph` : allows stacking of indexes
   - e.g., doc 1 could have a TreeIndex, doc2 could have a TreeIndex
-    - Doc1 and Doc2 could also be sequentially linked
+    - Doc1 and Doc2 could also be sequentially linked via SummaryIndex
+
+
+
+
+
+
+## Retrievers
+- return a `NodeWithScore` object
+  - note: all retrievers return this object, but not all retrievers associate a specific node score
+
+- all retrievers accept a query directly or a `QueryBundle`, accept `callback_manager` argument
+  - all are subclasses of `BaseRetriever`
+    - all have `retrieve()` and `aretrieve()` (async retrieve)
+
+- retrieval can be 
+  - dense: uses vector embedding with semantic understanding
+    - can have difficulty with long documents
+    - cannot manage logical reasoning
+    - depends on model quality
+
+  - sparse
+    - associates documents with keywords based on exact keyword matching or overlaps between query and document
+    - typically TF-IDF (term frequency, inverse document frequency)
+    - good for large datasets, high precision, simpler and more interpretable than dense methods, less resource intensive
+
+- `SummaryIndexRetriever` for `SummaryIndex`
+  - "direct construction"
+    ```python
+    from llama_index.core import SummaryIndex, SimpleDirectoryReader
+    summary_index = SummaryIndex.from_documents(documents)
+    retriever = summary_index.as_retriever( retriever_mode='embedding' )
+    result = retriever.retrieve("Tell me about ancient Rome")
+    ```
+
+  - "direct instantiation"
+    ```python
+    from llama_index.core import SummaryIndex, SimpleDirectoryReader
+    from llama_index.core.retrievers import SummaryIndexEmbeddingRetriever
+    summary_index = SummaryIndex.from_documents(documents)
+    retriever = SummaryIndexEmbeddingRetriever( index=summary_index )
+    ```
+
+- `VectorIndexRetriever`:  `VectorStoreIndex.as_retriever()`
+  - uses similarity-based searches in vector space
+- `VectorIndexAutoRetriever`
+  - more advanced retriever
+  - uses LLM to automatically set query parameters in a vector store based on natural language description of content and supporting metadata
+  - retriever will transform vague or unclear queries into more structured queries
+  - https://docs.llamaindex.ai/en/stable/examples/vector_stores/elasticsearch_auto_retriever.html
+
+- `SummaryIndexLLMRetriever`
+  - `SummaryIndex.as_retriever(retriever_mode='llm')`
+
+- `DocumentSummaryIndexLLMRetriever`
+  - `DocumentSummaryIndex.as_retriever(retriever_mode='llm')`
+  - also returns relevance score associated with each node
+    - note relevance scores all seemed to be returned as high
+    - if nuanced distribution of scores is important, may need to adjust prompt or apply post-processing to LLM responses
+
+- `DocumentSummaryIndexEmbeddingRetriever`
+  - `DocumentSummaryIndex.as_retriever(retriever_mode='embedding')`
+
+- `TreeSelectLeafRetriever`
+  - note:  Tree indexes in llamaIndex always contain summaries about the data at each level of the tree, hence they are computationally expensive
+  - `TreeIndex.as_retriever(retriever_mode='select_leaf')`
+  - will recursively navigate index structure to identify most relevant leaf nodes to query
+  - setting `Verbose` to `True` will display the selection process used to select child nodes
+  - no relevance score is returned
+- `TreeSelectLeafEmbeddingRetriever`
+  - uses similarity of the embeddings between query and node text
+- `TreeAllLeafRetriever`
+  - essentially returns all nodes, like a bulk retrieval
+- `TreeRootRetriever`
+  - retrieves responses directly from root nodes
+  - asumes that the index tree already stores the response
+  - does not return relevance scores
+
+
+- `KeywordTableGPTRetriever`
+  - `KeywordTableIndex.as_retriever(retriever__mode='default')`
+  - uses LLM query to identify relevant keywords, returns nodes associated with those keywords
+- `KeywordTableSimpleRetriever`
+  - does not use LLM - faster
+  - may be less efficient at identifying complex or contextual keywords
+  - uses regex
+- `KeywordTableRAKERetriever`
+
+
+- `KGTableRetriever`
+  - the default retriever for `KnowledgeGraphIndex`
+  - there are 3 retrieval modes:
+    - keyword only : `KnowledgeGraphIndex.as_retriever(retriever_mode='keyword')`
+      - case sensitive
+      - extracts keywords from query to find relevant nodes
+    - embedding only : `KnowledgeGraphIndex.as_retriever(retriever_mode='embedding')`
+      - finds nodes in graph whose vector representation is similar to query embedding
+    - hybrid (combo) : `KnowledgeGraphIndex.as_retriever(retriever_mode='hybrid')`
+
+- `KnowledgeGraphRAGRetriever`
+  - identifies key entries within a query and uses these to navigate the knowledge graph
+  - uses `extraction entity_extract_fn` and `entity_extract_template`
+  - also uses `synonym_expand_fn` and `synonym_expand_template`
+  - retriever also uses `with_nl2graphquery` which converts natural language queries into graph-based query languages
+
+
+
+
+
+
+
+
 
 ## Misc
 - `from llama_index.core.llms.mock import MockLLM` : can be used to estimate cost and not submit to LLM API
@@ -220,3 +349,280 @@ logging.basicConfig(level=logginng.DEBUG)
 - ingestion pipelines
   - are cached - so if 1 part of the pipeline changes, cached data can be used for all parts prior to the change
   - use `CustomTransformation`
+
+- `QueryTransform` : can rewrite and modify a query before using it to interrogate an index
+  - `IdentityQueryTransform` (does NOT transform - good for default or basic behaviour)
+  - `HyDEQueryTransform` : for HyDE
+  - `DecomposeQueryTransform` : transfosm to simpler and more focused subquery
+  - `ImageOutputQueryTransform` : adds instructions for formatting results as images (e.g., adding <img> tags)
+  - `StepDecomposeQueryTransform` : adds an additional layer by taking previous reasoning or context into account when decomposing the query
+
+- `OpenAIQuestionGenerator` / `LLMQuestionGenerator` (uses special parser to structure output)
+
+
+
+
+
+
+## Metadata filters
+```python
+from llama_index.core.vector_stores.types import MetadataFilter, MetadataFilters
+# ...
+filters = MetadataFilters(
+  filters=[
+    MetadataFilter(key="department", value=user_department)
+  ]
+)
+retriever = index.as_retriever(filters=filters)
+```
+
+- note: default vector store (`VectorStoreIndex`) only supports `FilterOperator.EQ` (equal to) as metadata operator
+  - need to use more sophisticated vector store (e.g., pinecone or chroma) to get additional metadata operators
+    - e.g., > `GT`, < `LT`, != `NE`, >= `GTE`, <= `LTE`, in `in`, `nin` (not in)
+
+
+
+
+## Selectors
+- can be used for any conditional logic in an application
+  - e.g., choose from a list of parsers, indexers, retrievers, tools, etc.
+
+- commonly used for selecting retrievers
+- allows the choice of retriever to be used to be based upon the query
+- `LLMSingleSelector` : LLM makes decision
+- `LLMMultiSelector`
+- `EmbeddingSingleSelector` : decision based on similarity calculation
+- `PydanticSingleSelector` : decision based on pydandic objects
+- `PydanticMultiSelector`
+
+- "SingleSelector" returns 1 selection
+- "MultiSelector" returns multiple selections
+
+
+
+
+
+## Tools
+- a generic container with some functionality that an agent can use
+- e.g., composing and sending emails, querying APIs, interacting with the file system, etc.
+
+- could also encapsulate a retriever in a tool container and then use selectors to implement adaptive retrieval
+  - `RetrieverTool` class
+  - `RouterRetriever`
+
+
+
+## Postprocessing
+- typically for filtering, transforming, or re-ranking nodes
+- after retrieval, but before prompt context injection
+
+- `SimilarityPostprocessor` : filters out nodes below a specified similarity score
+- `KeywordNodePostprocessor` : keeps only nodes with require keywords, or filters out nodes with unwanted keywords
+  - e.g., could be setup to exclude confidential or restricted information
+  - requires spacy library
+  - note: keywords are processed in case-sensitive way
+- `PrevNextNodePostprocessor` : can retrieve previous, next, or both nodes based on position relationship within a document
+  - e.g., could be useful in legal context for retrieving preceding and suceeding notes which could contain related precedents or subsequent rulings
+  - also `AutoPrevNextNodePostprocessor`
+
+- `MetadataReplacementPostprocessor` : replaces content of a node with a specific field from that node's metadata
+  - used in situations where full surrounding sentences may be stored in metadata during parsing and after retrieval based on a more specific sentence, a larger text chunk is submitted as context
+
+- `SentenceEmbeddingOptimizer` : optimizes longer text passages by selecting most relevant sentences within a node based on semantic similarity
+
+- can also filter on:
+  - time (date)
+  - embedding recency : also used to find similar nodes and filter them out (e.g., for a news aggregation service)
+  - most recently accessed
+  - 
+- re-ranking
+  - doesn't change or remove nodes, just re-order
+  - required to overcome limitations of LLMs in handling long or complex queries
+
+- need to measure effectiveness of LLM-based re-ranking
+  - manually
+  - use benchmark datasets
+  - user feedback
+  - A/B testing
+  - domain expert evaluation
+
+- model drift:
+  - occurs when new concepts emerge that were not included in model training data, or data may shift in distribution
+  - data drift : properties/distribution of input data changes over time
+  - concept drift : relationships between input features and target variable evolve (i.e., model's understanding of domain becomes outdated and performance degrades)
+  - upstream data changes : training data is different than production data
+  - feedback loops : if outputs of model can influence future inputs, model may become biased towards its previous outputs and narrow information provided over time
+  - domain shift : a model is applied to a different domain or context than originally trained for
+  - temporal drift : includes both data and concept drift
+
+
+## Response synthesizers
+- responsible for generating a response from LLM using user query and retrieved context
+- will iteratively "send" a prompt using each node of returned context
+  - will "aggregate" answers depending on defined behaviour, e.g.:
+  - `refine` : considers each piece of info
+  - `compact` : similar as above, but concatenates responses
+  - `tree_summarize` : uses recursive summarization and concatenates each node
+  - `simple_summarize` : truncates nodes to fit into 1 LLM query for basic summarization
+  - `accumulate` : applies query to each node and accumulates the responses
+  - etc.
+
+
+
+## Structured output
+- critical in automated processes
+- options:
+  - `guardrails` library to check output format and re-submit to LLM
+  - `LangchainOutputParser`
+  - `OpenAIPydanticProgram`
+
+
+
+## Query engine
+- combines retriever, synthesizer, postprocessor into a `QueryEngine`
+  - e.g., `CitationQueryEngine`, `MultiStepQueryEngine`, `SQLJoinQueryEngine`
+  
+- `RouterQueryEngine` : will choose the appropriate `QueryEngine` then sythesize responses
+- `SubQuestionQueryEngine` : if different questions need to be sent to different document stores
+
+
+
+
+
+
+## Chatbots
+- *ChatOps* - the ability to integrate chat platforms with operational workflows, facilitating transparent collaboration among people, processes, tools, bots to enhance service dependability, accelerate recovery, boost productivity
+
+- current limitations are often how the chatbot integrates with organizational knowledge bases
+  - interface has recently been primarily addressed via NLP technologies
+
+- LlamaIndex `ChatEngine` class
+  - `ChatMemoryBuffer` class : specialized memory buffer stores chat history efficiently and manages token limits of LLM
+  - note:  `chat_repl()` resets the conversation history during initialization
+  - `ContextChatEngine` : leverages proprietary knowledge base (retriever, llm, etc.)
+  - `CondensePlusContextChatEngine` : condenses chat history and leverages proprietary knowledge base
+
+
+
+
+## Agents
+- agents operate with a reasoning loop and has tools at its disposal
+  - i.e., can do more than just answer questions, can execute tools
+
+- tools:
+  - `QueryEngineTool` : can only provide read-only access to data
+  - `FunctionTool` : leverages a user-defined function as a tool
+    - uses a *docstring* (`__doc__` attribute) to help agent understand the tool
+    - can also use `ToolSpec`, see LlamaHub
+
+- reasoning loops:
+  - how agents make decisions: evaluate context, understand requirements, selects appropriate tool
+  - implementation of reasoning loop will vary based on agent
+  - e.g., `OpenAIAgent` : uses function calling API to make decisions
+    - tool selection logic is "hard-coded" into the OpenAI LLM
+  - e.g., `ReActAgent` : relies on chat or text completion endpoints
+    - performance is heavily dependent on quality of underlying LLM
+    - see paper on ReAct (uses strategic prompting for tool orchestration)
+
+- agents that enter an infinite loop are called "rogue agents"
+
+- agents may need `LoadAndSearchToolSpec` utility : return only needed output to LLM and not ALL returned info (e.g., from a SQL query)
+- `OnDemandLoaderTool` : a wrapper for any existing data loader
+  - allows agent to fetchm, index, query data on demand
+- `LLMCompilerAgentPack` : allows creation of LLM Compiler Agent - can orchestrate parallel function calls
+  - uses three-part system to plan, dispatch, execute tasks
+  - planner creates a DAG (directed acyclic graph) : determines which tasks are sequential and which can be in parallel
+
+### Agent protocol
+- see https://agentprotocol.ai
+- in LlamaIndex, uses `AgentRunner` and `AgentWorker`
+  - `AgentRunner` orchestrates tasks and stores conversational memory
+  - `AgentWorker` control execution of each task step without storing state themselves
+  - can use `chat()` or `create_task()` (more granular control)
+
+
+
+## Custom / Local models
+- can use LMStudio (for non-commercial uses)
+  - green models:  enough GPU / video memory to load / execute inference
+  - blue: not deal, but okay
+  - gray: may or may not work
+  - red: won't be able to run
+
+  - will create a localhost server with an "OpenAI API"
+
+
+
+- Zephyr-7B : a compact model, manageable size, popular
+  - derived from Mistral-7B
+  - surpasses llama2-chat-70b on lmsys leaderboard
+
+- quantization : reduces model parameters (typically 32-bit float) to lower-bit representations (e.g., 8-bit integers)
+
+
+- LLM routers:
+  - neutrino
+  - OpenRouter
+
+  - both are supported as integration packages in llamaIndex
+
+
+
+
+
+## Eval
+- key aspects:
+  - retrieval quality
+  - generation quality : final output correctness, coherence, adherence
+  - faithfulness : output is consistent with retrieved info
+  - efficiency : computational efficiency, scalability (e.g., size of dataset)
+  - robustness : diverse queries, edge cases, adversarial inputs
+
+
+
+
+
+## Prompt engineering
+- in llamaindex, use the `get_prompts()` method
+  - allows you to identify templates used by specific components
+  ```python
+  prompts = summary_index.as_query_engine().get_prompts()
+  for k, p in prompts.items():
+    print(f"Prompt key: {k} text {p.get_template()}")
+  ```
+
+- use `update_prompts()` to customize prompts
+
+- advanced prompting techniques:  https://docs.llamaindex.ai/en/stable/examples/prompts/advanced_prompts.html
+
+- will depend on model types
+  - BERT:  encoder-only
+  - BART: encoder-decoder
+  - decoder-only:  GPT, Mistral, Claude, LLaMa
+  - Mixture-of-Experts (MoE):  e.g., Mixtral 8x7B
+
+  - model size (# of parameters), e.g., 10bn parameters are medium sized
+  - chat models:  optimized for conversational interactions
+  - instruct models: fine tuned to execute specific instructions or queries
+  - codex models: understanding / generating code
+  - summarization models
+  - translation models
+  - QA models
+
+
+
+## Misc2
+- llamaIndex slack data connector (ingestion):  https://docs.llamaindex.ai/en/stable/examples/data_connectors/SlackDemo/
+- discord chat data ingestion: https://docs.llamaindex.ai/en/stable/examples/discover_llamaindex/document_management/Discord_Thread_Management/
+- multi-tenancy example: https://docs.llamaindex.ai/en/stable/examples/multi_tenancy/multi_tenancy_rag/
+- CitationQueryEngine example:  https://docs.llamaindex.ai/en/stable/examples/query_engine/citation_query_engine/
+
+- Stanford AI ethics:  https://plato.stanford.edu/entries/ethics-ai
+- Corporate controls on AI (for boards):  https://corpgov.law.harvard.edu/2023/10/07/ai-and-the-role-of-the-board-of-directors/
+- IEEE:  ethically aligned design:  https://standards.ieee.org/industry-connections/ec/ead-v1/
+- EU AI Act:  https://artificialintelligenceact.eu
+- article on evolution of human cognition with LLMs:  https://www.psychologytoday.com/us/blog/the-digital-self/202403/llms-and-the-specter-of-the-cognitive-black-hole
+
+
+
+

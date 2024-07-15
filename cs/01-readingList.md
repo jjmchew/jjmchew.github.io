@@ -200,6 +200,8 @@
 - [ ] [Anatomy of a good ticket](https://chromatichq.com/insights/anatomy-good-ticket/)
 - [ ] [Write better tickets](https://levelup.gitconnected.com/be-a-better-software-developer-write-better-tickets-75ccf9621c02)
 
+- [ ] read all security links in `240715-security.md`
+
 
 
 
