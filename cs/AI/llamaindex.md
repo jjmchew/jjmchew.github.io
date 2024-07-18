@@ -626,3 +626,7 @@ retriever = index.as_retriever(filters=filters)
 
 
 
+## AWS DocumentDB integration
+- https://docs.llamaindex.ai/en/stable/api_reference/storage/vector_store/awsdocdb/
+  - check code at this link - critical to understanding options (e.g., collection name, db name, etc.)
+  - VERY helpful

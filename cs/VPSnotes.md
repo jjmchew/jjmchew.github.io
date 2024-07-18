@@ -195,5 +195,39 @@ https://serverfault.com/questions/929808/nginx-reverse-proxy-to-pass-subdomain-i
 
 
 
-
+### Checking directory tree sizes in Linux
 - `du -ah <director name>` : list the size of a folder (with it's subdirectories)
+
+### Copying files over SSH
+- use `scp [option] [origin] [destination]`
+- example:  `scp -i $HOME/.ssh/id_rsa $HOME/Desktop/webapp.zip johndoe@184.34.232.90:~/production`
+
+
+
+
+## AWS (EC2 instance)
+
+### install Python
+- `curl https://pyenv.run | bash`
+- then cut, paste, execute the following 3 lines
+  - `export PYENV_ROOT="$HOME/.pyenv"`
+  - `[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"`
+  - `eval "$(pyenv init -)"`
+
+  - note:  these commands can be added to `~/.bashrc` - see installation instructions for pyenv
+
+- `sudo apt install build-essential libssl-dev zlib1g-dev \
+libbz2-dev libreadline-dev libsqlite3-dev curl \
+libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev`
+
+- `pyenv install 3.10.4`
+- `pyenv global 3.10.4`
+
+- `pip install pipenv --user`
+- `source ~/.profile`  :  to ensure path and new binaries are updated
+
+
+### Connecting to DocumentDB instance
+- go to DocumentDB instance, check "Connectivity & Security"
+- copy CA certificate to authenticate cluster (i.e., `wget https://truststore.pki...`)
+  - note:  this file needs to be accessible to any connection code that's run and needs it (e.g., mongoDB client, pymongo code, etc.)
