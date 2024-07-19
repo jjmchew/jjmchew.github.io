@@ -26,6 +26,17 @@
 
 
 
+## New repo
+- after creating repo online
+- locally:
+  - `git init`
+  - `git add .`
+  - `git commit -m "first commit"`
+  - `git branch -M main`
+  - `git remote add origin https://github.com/...`
+  - `git push -u origin main`
+
+
 ## Connect to a remote repo
 - `git remote add [nickname] [project-url]`
 >
@@ -72,7 +83,7 @@ Delete a branch
 - `git checkout -b main --track origin/main`
 
 
-t f### git clone
+### git clone
 https://docs.github.com/en/get-started/using-git/getting-changes-from-a-remote-repository
 
 - `git clone [repo url]` : will create a new folder for the repo (named according to the repo) and clone into that folder
