@@ -28,7 +28,7 @@
     (https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-22-04)
     - follow instructions above to setup nginx to serve separate resources at separate folders
       - having a temporary static site helps to confirm if the DNS / webserver is working
-      - be sure to run `nginx -t` to test config files after making changes
+      - be sure to run `sudo nginx -t` to test config files after making changes
 
     - https://kuldipmori.medium.com/nginx-for-managing-multiple-websites-via-subdomains-ddf1fdbd336b
     - domain files are in `/var/www/[domain]/html`
@@ -129,6 +129,10 @@ server {
   - `pm2 delete app_name`
 
 
+- installing pm2 without npm (this didn't seem to work):
+  - may need to `sudo apt update` first
+  - `sudo curl -sL https://raw.githubusercontent.com/Unitech/pm2/master/packager/setup.deb.sh | sudo -E bash -`
+
 
 ### Using SSH
 - followed instructions on Digital Ocean web interface when creating the droplet and creating SSH keys
@@ -206,25 +210,93 @@ https://serverfault.com/questions/929808/nginx-reverse-proxy-to-pass-subdomain-i
 
 
 ## AWS (EC2 instance)
+- create a publically accessible EC2 instance
+https://medium.com/@arthurraposodev/how-to-set-up-a-publicly-accessible-aws-ec2-instance-a18c5518a362
+  - not sure all of the above steps were actually necessary
+  - however, creating a new EC2 instance and ensure all of the checkboxes were appropriately ticked to allow public access was critical
+  - the auto-assigned public IP ended up working
+
+  - for a VPC CIDR Block of `10.0.0.0/16`
+    - Subnet 1: `10.0.1.0/24` worked
+
+
+- this may also have helped:
+  - https://documentation.stormshield.eu/SNS/v4/en/Content/EVA_-_Amazon_Web_Services/30-Create_elastic_IP.htm
+
+
+
+
 
 ### install Python
+
 - `curl https://pyenv.run | bash`
+
 - then cut, paste, execute the following 3 lines
   - `export PYENV_ROOT="$HOME/.pyenv"`
   - `[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"`
   - `eval "$(pyenv init -)"`
 
-  - note:  these commands can be added to `~/.bashrc` - see installation instructions for pyenv
+  - note:  these commands can be added to `~/.bashrc` - see installation instructions for pyenv:
+    ```bash
+    echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.profile
+    echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.profile
+    echo 'eval "$(pyenv init -)"' >> ~/.profile
+    ```
+
 
 - `sudo apt install build-essential libssl-dev zlib1g-dev \
 libbz2-dev libreadline-dev libsqlite3-dev curl \
 libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev`
 
 - `pyenv install 3.10.4`
+  - if pyenv freezes here and you re-start, use `pyenv install -v 3.10.4`
 - `pyenv global 3.10.4`
 
-- `pip install pipenv --user`
+- `pip install pipenv` (note:  pipenv must be installed globally for systemd to work as process manager)
 - `source ~/.profile`  :  to ensure path and new binaries are updated
+
+
+### Using systemd as process manager
+- need to create a "unit file"
+  - e.g., `sudo vim /etc/systemd/system/test.service`
+  ```
+  [Unit]
+  Description=Skateboard backend
+  After=network-online.target
+
+  [Service]
+  Type=simple
+  Restart=always
+  User=ubuntu
+  WorkingDirectory=/home/ubuntu/db/
+  Environment="PYTHONPATH=/home/ubuntu/.pyenv/versions/3.10.12/bin"
+  ExecStart=/home/ubuntu/.pyenv/shims/pipenv run python /home/ubuntu/db/server.py
+
+  [Install]
+  WantedBy=multi-user.target
+  ```
+  - note:  pipenv must be installed globally, not with `--user` flag
+  - note: need to define working directory for virtual environment to work
+
+- `sudo systemctl daemon-reload`
+- `sudo systemctl enable test.service`
+- `sudo systemctl start test.service`
+- `systemctl status test.service`
+
+
+- check this link for discussion on defining Environment for PYTHONPATH
+  - https://stackoverflow.com/questions/51318263/how-to-use-users-pipenv-via-systemd-python-is-installed-via-scl
+
+- this link helped with defining WorkingDirectory:
+  - https://www.rebeccapeck.org/2017/11/using-pipenv-with-systemd/
+
+- this link helped with troubleshooting systemd
+  - https://superuser.com/questions/997938/how-do-i-figure-out-why-systemctl-service-systemd-modules-load-fails
+  - https://superuser.com/questions/997938/how-do-i-figure-out-why-systemctl-service-systemd-modules-load-fails
+  - `journalctl _PID=1234` (need to find PID number from `systemctl status test.service`)
+
+- this link helped with understanding key systemd commands:
+  - https://medium.com/codex/setup-a-python-script-as-a-service-through-systemctl-systemd-f0cc55a42267
 
 
 ### Connecting to DocumentDB instance

@@ -744,6 +744,35 @@ print(v1 + v2)   # Vector(18, 8)
   - search for the method ends once (the first) method with the corresponding name has been found (based on MRO)
   - if nothing is found, return `AttributeError`
 
+## args, kwargs
+- when passing an ordered list of arguments to a function, can use the `*` ( *unpacking operator* )
+  - e.g., `def my_sum(*args)` : can iterate over args using `for x in args:`
+  - e.g., `def my_sum(*integers)` : equivalent, can iterate using `for x in integers:`
+  - Note:  `*` returns a *tuple* (immutable) as an iterable object (not a list)
+
+- if using keyword arguments (e.g., `a="word", b="another word", c="third"`) can use `**` (also an unpacking operator)
+  ```python
+  def concatenate(**words):
+    result = ''
+    for arg in words.values(): # iterates values
+      result += arg
+    return result
+
+  concatentate(a='word', b='another word', c='third') # returns wordanother wordthird
+  ```
+  - can iterate keys using `for arg in words:`  (in above example would return `abc`)
+
+- when defining functions with both positional and named (keyword) arguments, order counts:
+  1. standard arguments
+  2. positional (*args)
+  3. keyword (**kwargs)
+  
+  - e.g., `def my_function(a, b, *args, **kwargs)`
+
+- e.g., `*a, = "Real"` :  will initialize as `a = ['R','e','a','l']`
+
+
+
 
 ## Virtual environments (using venv)
 - `python3 -m venv [directoryName]`
@@ -766,6 +795,11 @@ print(v1 + v2)   # Vector(18, 8)
 ## FastAPI
 - `pip install fastapi`
 - `fastapi dev main.py`
+
+- when running fastAPI as part of a script, can do this:
+  - `pipenv run fastapi run server.py`
+  - runs `fastapi` command within the shell environment
+
 
 ## .env variables
 - use `python-dotenv`
