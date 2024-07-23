@@ -234,6 +234,7 @@
   - `\h [topic]` : help; indicate topic is optional [^13]
   - `\i file_name` : import SQL commands into current db [^19]
     - e.g., `\i ~/folder/file_to_import.sql`
+      - use `\ir file_name` for relative paths (to where you ran `psql`)
   - `\copy target_table from 'file.csv' WITH DELIMITER ',' CSV HEADER` : imports data from file.csv into a database [^42]
 
 ### from command line
