@@ -104,6 +104,38 @@ https://docs.github.com/en/get-started/using-git/getting-changes-from-a-remote-r
   - https://www.atlassian.com/git/tutorials/rewriting-history/git-rebase
 
 
+- if there are merge conflicts - need to modify the merge file (remove the git added annotations) and then add and commit that file
+  - i.e., edit conflicting file
+  - `git add conflicting file`
+  - `git commit -m "message here"`
+  - `git rebase --continue`
+
+- rules for using `rebase`:
+  - https://www.atlassian.com/git/tutorials/merging-vs-rebasing#the-golden-rule-of-rebasing
+  - use `git rebase main` ONLY on private (non-public) branches
+    - e.g.,  do NOT do `git checkout main`, `git rebase feature`  
+    - if you rebase a public branch (e.g., main) onto your feature branch, then there will be 2 diverging versions of that public branch - the original, and the one you added to your feature branch:  this is hard to fix and confusing
+
+  - rebase is typically best if your feature branch is long-lived
+    - rebase often will reduce conflicts for a future merge or rebase
+    - if you no longer need the feature branch, git merge may add an extra commit and obscure history, but may not require multiple conflicts to be resolved
+
+  - don't do a `git rebase` AFTER submitting your pull request (once other devs look at your code - it's a public branch)
+    - always use `git merge` for subsequent changes
+
+  - a great way to use `rebase` is BEFORE a pull request, do an interactive rebase (e.g., `git rebase -i HEAD~3` : allows you to re-write the last 3 commits (e.g., combine, etc.) and help create a linear commit history after merging onto main
+  - https://git-scm.com/docs/git-rebase#_interactive_mode
+
+
+
+
+
+## renaming a branch
+- `git branch -m oldName newName`
+- OR: rename current branch:
+  - `git branch -m newName`
+
+
 
 ## Conventional commits
 - <type>(scope): <description>
