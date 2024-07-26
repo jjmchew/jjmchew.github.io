@@ -136,6 +136,9 @@ https://docs.github.com/en/get-started/using-git/getting-changes-from-a-remote-r
   - `git branch -m newName`
 
 
+## delete a local branch
+- `git branch -d branchName`
+
 
 ## Conventional commits
 - <type>(scope): <description>
