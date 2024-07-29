@@ -128,6 +128,18 @@ logging.basicConfig(level=logginng.DEBUG)
 
 
 ## Indexing
+- indexes all inherit from `BaseIndex` class
+- indexes are based on nodes - can choose which nodes are part of index
+  - methods to insert new Nodes, delete existing ones are part of index
+  - e.g., can extract nodes from documents (use `.from_documents()`) OR pass in desired nodes directly
+  - can use `Settings` before building index
+
+- `storage_context` defines where index is stored (documents and nodes)
+- 'show_progress` : display progress bars during long operations
+- different indexes have different retrieval modes
+- can use `use_async` parameter in some indexes
+
+
 - note: indexing requires LLm calls - can incur cost and raise privacy issues
 
 - `VectorStoreIndex` : most commonly utilized index
@@ -139,6 +151,8 @@ logging.basicConfig(level=logginng.DEBUG)
     - MTEB is a text embedding benchmark on HF
     - for latency, check: https://blog.getzep.com/text-embedding-latency-a-semi-scientific-look/
     - complete list:  https://docs.llamaindex.ai/en/stable/module_guides/models/embeddings.html#list-of-supported-embeddings
+
+  - `store_nodes_override` : forces node objects to be stored in Index store and document store, even if the vector store keeps text
 
 - use `.persist()` method to write indexes to disk
   ```python
@@ -221,8 +235,17 @@ logging.basicConfig(level=logginng.DEBUG)
 
 
 ## Retrievers
+- retreivers browse an index, select relevant nodes to build context
+
 - return a `NodeWithScore` object
   - note: all retrievers return this object, but not all retrievers associate a specific node score
+
+- different ways to construct a retriever:
+  - from an `Index` object:   i.e., `retriever = SummaryIndex.from_documents(documents).as_retreiver(retriever_mode='embedding')`
+
+  - instantiation: e.g., `retriever = SummaryIndexEmbeddingRetriever(index=summary_index)`
+    - where `summary_index = SummaryIndex.from_documents(documents)`
+
 
 - all retrievers accept a query directly or a `QueryBundle`, accept `callback_manager` argument
   - all are subclasses of `BaseRetriever`

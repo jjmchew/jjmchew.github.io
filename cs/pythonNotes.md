@@ -772,6 +772,104 @@ print(v1 + v2)   # Vector(18, 8)
 - e.g., `*a, = "Real"` :  will initialize as `a = ['R','e','a','l']`
 
 
+## LS Python course
+- python uses `match` / `case` statements (instead of `switch`/`case`)
+- uses `unittest` for testing
+- uses `setuptools`, `twine` and defines the `pyproject.toml` file manually
+  ```pyproject.toml
+  [build-system]
+  requires = ["setuptools"]
+  build-backend = "setuptools.build_meta"
+
+  [project]
+  name = "todolist_YOUR_USERNAME"
+  version = "0.1.0"
+  authors = [
+      {name = "Your Name", email = "you@example.com"},
+  ]
+  description = "A fantastic todo list application."
+  readme = "README.md"
+  requires-python = ">=3.8"
+  classifiers = [
+      "Programming Language :: Python :: 3",
+      "License :: OSI Approved :: MIT License",
+      "Operating System :: OS Independent",
+      # More classifiers can be found at
+  ]
+  dependencies = [
+    "flask",
+    "numpy"
+  ]
+
+  [project.urls]
+  Homepage = "https://github.com/USERNAME/todolist"
+  Issues = "https://github.com/USERNAME/todolist/issues"
+  ```
+  - `python -m build` : builds a distribution archive
+  - `twine upload --repository testpypi path/to/dist/*`
+    - testpypi is a test PyPI repo - need to get a token
+
+  - also mentions poetry
+  - uses `psycopg2` for postgresql
+
+- creating command-line scripts:
+```python
+def main():
+    if len(sys.argv) > 1:
+        command = sys.argv[1]
+        if command == "list":
+            list_expenses()
+            return
+        elif command == "add":
+            if len(sys.argv) >= 4:
+                amount = sys.argv[2]
+                memo = sys.argv[3]
+                add_expense(amount, memo)
+                return
+            else:
+                print("You must provide an amount and memo.")
+                return
+    display_help()
+if __name__ == "__main__":
+    main()
+```
+  - note `CLI` should be a distinct class from the actual application (another class)
+    - the CLI can create an instance of the application when instantiated
+
+
+```python
+# app.py
+
+#!/user/bin/env python3
+
+class ExpenseData:
+    def __init__(self):
+        self.connection = psycopg2.connect(dbname="expenses")
+
+    def list_expenses():
+      pass
+
+
+class CLI:
+    def __init__(self):
+        self.application = ExpenseData()
+
+    def run(self, arguments):
+        if not arguments:
+            self.display_help()
+            return
+
+    def display_help(self):
+      pass
+
+if __name__ == "__main__":
+    cli = CLI()
+    cli.run(sys.argv[1:])
+
+```
+
+- use `secrets` library
+  - `secrets.token_hex(32)`
 
 
 ## Virtual environments (using venv)
@@ -811,3 +909,50 @@ print(v1 + v2)   # Vector(18, 8)
   load_dotenv()
   ```
 
+
+
+
+## Using sub-directories
+
+### Import best practices
+- we should separate imports by:
+    - system:  i.e., don't need to install anything
+    - 3rd party: i.e., need to install something
+    - local application imports: i.e., stuff we write
+- use absolute imports (i.e., don't use `from . import mylib`, use `from mylibdir import mylib`)
+- be VERY careful with naming - don't shadow other libraries
+- if putting python files into another directory, that DIRECTORY name is used part of the import (see example below)
+
+### Example: Creating regular packages
+files
+```python
+/test.py
+/hybridSearch/__init__.py   # blank file
+/hybridSearch/search.py
+/hybridSearch/keyword.py
+```
+
+test.py
+```python
+import hybridSearch.search as s  # note import match to directory.filename
+
+s.hybrid_write()
+```
+
+search.py
+```python
+from hybridSearch import keyword  # note match to directory name and filename
+def hybrid_write():
+    keyword.write_to_db()
+```
+
+keyword.py
+```python
+def write_to_db():
+    print('do something')
+```
+
+- https://realpython.com/python-import/
+- https://stackoverflow.com/questions/43476403/importerror-no-module-named-something
+- https://packaging.python.org/en/latest/discussions/distribution-package-vs-import-package/#distribution-package-vs-import-package
+- https://packaging.python.org/en/latest/tutorials/packaging-projects/

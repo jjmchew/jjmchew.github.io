@@ -124,6 +124,11 @@
 
 - `:norm` runs vim commands at each line in the specified range
 
+
+### definitions
+- `gd` or `gD` : "go to definitions" - opens source code defining the symbol under the cursor
+
+
 ---
 
 ## : commands

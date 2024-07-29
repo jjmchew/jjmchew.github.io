@@ -5,6 +5,10 @@
   - i.e., `cache = [ [-1 for _ in range(len(text2))] for _ in range(len(text1))]`
   - NOT `[ [-1]*len(text2) ]*len(text)` : the nested subarray will be copied and changing any element will be reflected in every sub-array
 
+- ALWAYS double-check debug statements (e.g., like `print`):
+  - I was trying to print the output of a method call, but I FORGOT the `print` statement and was just invoking the method, with no way of logging or viewing the output: *stupid*
+
+
 
 ## SQL
 - SQL strings need to have single quotes:  i.e, 'value', NOT "value"
