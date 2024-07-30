@@ -8,6 +8,8 @@
 - ALWAYS double-check debug statements (e.g., like `print`):
   - I was trying to print the output of a method call, but I FORGOT the `print` statement and was just invoking the method, with no way of logging or viewing the output: *stupid*
 
+- when using unpacking operators (`*` or `**`) *always* double-check which operator you want to use
+  - i.e., `**` for dicts!
 
 
 ## SQL
