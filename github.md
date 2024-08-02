@@ -127,6 +127,10 @@ https://docs.github.com/en/get-started/using-git/getting-changes-from-a-remote-r
   - https://git-scm.com/docs/git-rebase#_interactive_mode
 
 
+## stash / pop
+- use `git stash` to temporarily store changes
+- can then do merge, etc.
+- then use `git pop` to recover stashed changes
 
 
 

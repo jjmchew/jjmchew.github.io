@@ -890,6 +890,12 @@ if __name__ == "__main__":
 
 - `pipenv requirements > requirements.txt`
 
+- `pipenv install packageName` (for dependencies)
+- `pipenv install -d packageName` (for dev-dependencies)
+
+
+
+
 ## FastAPI
 - `pip install fastapi`
 - `fastapi dev main.py`
@@ -956,3 +962,23 @@ def write_to_db():
 - https://stackoverflow.com/questions/43476403/importerror-no-module-named-something
 - https://packaging.python.org/en/latest/discussions/distribution-package-vs-import-package/#distribution-package-vs-import-package
 - https://packaging.python.org/en/latest/tutorials/packaging-projects/
+
+
+
+
+## Arguments
+
+```python
+def write_to_db(db_name='default db', file_path='default file'):
+    print(f"db_name {db_name}   file_path {file_path}")
+
+
+write_to_db() # this works since defaults are defined
+write_to_db('db', 'file') # this works even tho arguments are defined as keyword arguments
+write_to_db(db_name='db', file_path='file') # this works, positional arguments can be keyword arguments
+write_to_db(file_path='file', db_name='db') # this works, keyword arguments aren't positional
+write_to_db('file', 'db') # this works, but note arguments are positional so values may be unexpected
+```
+- If I hadn't defined defaults in the function definition, all but the first would also work.
+
+
