@@ -144,6 +144,11 @@ https://docs.github.com/en/get-started/using-git/getting-changes-from-a-remote-r
 - `git branch -d branchName`
 
 
+## clean-up remote branches
+- `git remote prune origin`
+
+
+
 ## Conventional commits
 - <type>(scope): <description>
 
