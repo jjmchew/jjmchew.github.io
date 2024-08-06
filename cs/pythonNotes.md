@@ -891,6 +891,7 @@ if __name__ == "__main__":
 - `pipenv requirements > requirements.txt`
 
 - `pipenv install packageName` (for dependencies)
+  - `pipenv uninstall packageName`
 - `pipenv install -d packageName` (for dev-dependencies)
 
 
