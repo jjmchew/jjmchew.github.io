@@ -892,7 +892,7 @@ if __name__ == "__main__":
 
 - `pipenv install packageName` (for dependencies)
   - `pipenv uninstall packageName`
-- `pipenv install -d packageName` (for dev-dependencies)
+- `pipenv install -d packageName`p (for dev-dependencies)
 
 
 

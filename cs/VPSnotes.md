@@ -287,6 +287,7 @@ libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-d
 - `sudo systemctl start test.service`
 - `systemctl status test.service`
 
+- `journalctl -u test.service` : view logs for specified service
 
 - check this link for discussion on defining Environment for PYTHONPATH
   - https://stackoverflow.com/questions/51318263/how-to-use-users-pipenv-via-systemd-python-is-installed-via-scl

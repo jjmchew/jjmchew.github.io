@@ -147,6 +147,8 @@ https://docs.github.com/en/get-started/using-git/getting-changes-from-a-remote-r
 ## clean-up remote branches
 - `git remote prune origin`
 
+## reset a local branch to remote status
+- `git reset --hard HEAD`
 
 
 ## Conventional commits
